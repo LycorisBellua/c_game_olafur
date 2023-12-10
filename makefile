@@ -1,11 +1,12 @@
 CC = gcc
-CFLAGS = -ansi -pedantic -Wall -Wextra 
-LDFLAGS = -O2 
+CFLAGS = -ansi -pedantic -Wall -Wextra -O2 
+LDFLAGS = -lglfw -lGL
 
+NAME = Cimmerian
 DIR_BUILD = builds
 DIR_OBJ = $(DIR_BUILD)/unix/objects
 
-EXECUTABLE = $(DIR_BUILD)/unix/cimmerian
+EXECUTABLE = $(DIR_BUILD)/unix/$(NAME)
 
 SOURCE_FILES = $(wildcard sources/*.c)
 OBJ_FILES = $(patsubst sources/%.c, $(DIR_OBJ)/%.o, $(SOURCE_FILES))
@@ -13,7 +14,7 @@ OBJ_FILES = $(patsubst sources/%.c, $(DIR_OBJ)/%.o, $(SOURCE_FILES))
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJ_FILES)
-	@$(CC) $(LDFLAGS) $^ -o $@
+	@$(CC) $^ -o $@ $(LDFLAGS)
 
 $(DIR_OBJ)/%.o: sources/%.c
 	@mkdir -p $(@D)
@@ -27,12 +28,12 @@ win64:
 	@$(MAKE) -s all \
 	CC=x86_64-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win64/objects \
-	EXECUTABLE=$(DIR_BUILD)/win64/Cimmerian-64bit.exe
+	EXECUTABLE=$(DIR_BUILD)/win64/$(NAME)-64bit.exe
 win32:
 	@$(MAKE) -s all \
 	CC=i686-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win32/objects \
-	EXECUTABLE=$(DIR_BUILD)/win32/Cimmerian-32bit.exe
+	EXECUTABLE=$(DIR_BUILD)/win32/$(NAME)-32bit.exe
 
 .PHONY: clean
 .PHONY: clean-unix
