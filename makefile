@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -ansi -pedantic -Wall -Wextra -O2 
-LDFLAGS = -lglfw -lGL
+LDFLAGS = -lGLEW -lglfw -lGL
 
 NAME = Cimmerian
 DIR_BUILD = builds
