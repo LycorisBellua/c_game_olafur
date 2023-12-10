@@ -131,8 +131,15 @@ void char_key_callback
     unsigned int codepoint
 )
 {
-    /* TODO: Print with UTF-8 encoding */
-    printf("Debug (char callback): %c\n", codepoint);
+    /*
+        UTF-8 characters such as diacritics and Japanese handled 
+        thanks to %lc, but -pedantic GCC warning [-Wformat]:
+        "ISO C90 does not support the ‘%lc’ gnu_printf format"
+    */
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wformat"
+    printf("Debug (char callback): %lc\n", codepoint);
+    #pragma GCC diagnostic pop
     return;
 }
 
