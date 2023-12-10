@@ -2,6 +2,13 @@
 #include <GLFW/glfw3.h>
 #include "../headers/input.h"
 
+int get_local_key(int physical_key)
+{
+    /* It will be in lowercase, so -32 for uppercase */
+    const char* key_name = glfwGetKeyName(physical_key, 0);
+    return key_name[0] - 32;
+}
+
 void input_escape(GLFWwindow* window)
 {
     /* 
@@ -109,6 +116,8 @@ void physical_key_callback
     }
     else if (key >= 'A' && key <= 'Z')
     {
+        printf("Local key: %c\n", get_local_key(key));
+
         if (key == GLFW_KEY_W)
             input_up(action);
         else if (key == GLFW_KEY_S)

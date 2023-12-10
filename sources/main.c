@@ -21,6 +21,7 @@ int main(int argc, char** argv)
     const char* title = "Cimmerian";
     GLFWwindow* window = get_window(title);
     glfwSetKeyCallback(window, physical_key_callback);
+    /* TODO: The char callback may not be useful anymore */
     glfwSetCharCallback(window, char_key_callback);
 
     glfwSwapInterval(1);
