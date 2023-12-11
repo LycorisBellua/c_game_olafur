@@ -3,8 +3,9 @@
 #include <GLFW/glfw3.h>
 #include "../headers/windowing.h"
 #include "../headers/input.h"
+#include "../headers/immediate_rendering_mode.h"
 
-void list_arguments(int argc, char** argv)
+static void list_arguments(int argc, char** argv)
 {
     int i;
     printf("Debug: %d arguments\n", argc - 1);
@@ -67,8 +68,33 @@ int main(int argc, char** argv)
 
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);
-        /* Insert OpenGL here */
+        /*
+            Buffer clearing
+            -------------------------------------------------------------------
+            Buffer clearing is the first step of the rendering process. Here 
+            we are not refering to the front and back buffers, but to other 
+            buffers: color, depth, stencil and accumulation buffers. The back 
+            buffer uses these buffers to render the frame, so if they're not 
+            cleared then using both old and new data may lead to artifacts. Of 
+            course, there may not be a huge difference between the current 
+            frame and the next one, so instead of drawing the entire frame we 
+            could implement smart rendering: modify the part of the buffers 
+            which should be different, and leave the rest as is. For the sake 
+            of simplicity, we'll just clear the buffers.
+
+            In 2D graphics, we can get away with only clearing the color 
+            buffer, but the depth buffer needs to be cleared as well in 3D 
+            graphics or we'll get artifacts. As for stencil and accumulation, 
+            they are used in complex effects, so for our use case we only care 
+            about clearing the color and depth buffers.
+        */
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        /*
+        irm_triangle_white();
+        */
+        irm_triangle_rgb();
+        irm_viewport_white();
 
         /* Display frame */
         glfwSwapBuffers(window);

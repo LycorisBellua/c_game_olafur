@@ -2,14 +2,14 @@
 #include <GLFW/glfw3.h>
 #include "../headers/input.h"
 
-int get_local_key(int physical_key)
+static int get_local_key(int physical_key)
 {
     /* It will be in lowercase, so -32 for uppercase */
     const char* key_name = glfwGetKeyName(physical_key, 0);
     return key_name[0] - 32;
 }
 
-void input_escape(GLFWwindow* window)
+static void input_escape(GLFWwindow* window)
 {
     /* 
        By default, the window closing event is triggered by the cross 
@@ -26,7 +26,7 @@ void input_escape(GLFWwindow* window)
     return;
 }
 
-void input_up(int action)
+static void input_up(int action)
 {
     if (action == GLFW_PRESS)
         printf("Debug: UP started\n");
@@ -37,7 +37,7 @@ void input_up(int action)
     return;
 }
 
-void input_down(int action)
+static void input_down(int action)
 {
     if (action == GLFW_PRESS)
         printf("Debug: DOWN started\n");
@@ -48,7 +48,7 @@ void input_down(int action)
     return;
 }
 
-void input_right(int action)
+static void input_right(int action)
 {
     if (action == GLFW_PRESS)
         printf("Debug: RIGHT started\n");
@@ -59,7 +59,7 @@ void input_right(int action)
     return;
 }
 
-void input_left(int action)
+static void input_left(int action)
 {
     if (action == GLFW_PRESS)
         printf("Debug: LEFT started\n");
@@ -70,7 +70,7 @@ void input_left(int action)
     return;
 }
 
-void input_strafe_left(int action)
+static void input_strafe_left(int action)
 {
     if (action == GLFW_PRESS)
         printf("Debug: STRAFE LEFT started\n");
@@ -81,7 +81,7 @@ void input_strafe_left(int action)
     return;
 }
 
-void input_strafe_right(int action)
+static void input_strafe_right(int action)
 {
     if (action == GLFW_PRESS)
         printf("Debug: STRAFE RIGHT started\n");
