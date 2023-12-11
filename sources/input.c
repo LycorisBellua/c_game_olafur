@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include "../headers/input.h"
+#include "../headers/windowing.h"
 
 static int get_local_key(int physical_key)
 {
@@ -113,6 +114,8 @@ void physical_key_callback
             input_right(action);
         else if (key == GLFW_KEY_LEFT)
             input_left(action);
+        else if (key == GLFW_KEY_F11 && action == GLFW_PRESS)
+            toggle_fullscreen(window);
     }
     else if (key >= 'A' && key <= 'Z')
     {

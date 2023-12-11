@@ -9,6 +9,9 @@
 #define WINDOW_DEFAULT_HEIGHT 480
 #define ASPECT_RATIO (16.0f / 9.0f)
 
+static int window_size[2] = {0};
+static int window_pos[2] = {0};
+
 static void set_aspect_ratio_viewport(int width, int height)
 {
     int new_width = width;
@@ -44,6 +47,24 @@ static void framebuffer_size_callback
 )
 {
     set_aspect_ratio_viewport(width, height);
+
+    /* for toggle_fullscreen() */
+    if (glfwGetWindowAttrib(window, GLFW_DECORATED))
+    {
+        window_size[0] = width;
+        window_size[1] = height;
+    }
+    return;
+}
+
+void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
+{
+    /* for toggle_fullscreen() */
+    if (glfwGetWindowAttrib(window, GLFW_DECORATED))
+    {
+        window_pos[0] = xpos;
+        window_pos[1] = ypos;
+    }
     return;
 }
 
@@ -51,7 +72,6 @@ GLFWwindow* get_window(const char* title)
 {
     GLFWwindow* window;
     const GLFWvidmode* vid_mode;
-    int window_size[2];
 
     if (!glfwInit())
     {
@@ -88,6 +108,7 @@ GLFWwindow* get_window(const char* title)
     glfwMakeContextCurrent(window);
     set_initial_viewport(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetWindowPosCallback(window, window_pos_callback);
 
     /* GLEW includes the latest version of OpenGL available on the machine */
     glewExperimental = GL_TRUE;
@@ -99,6 +120,32 @@ GLFWwindow* get_window(const char* title)
     }
 
     return window;
+}
+
+void toggle_fullscreen(GLFWwindow* window)
+{
+    int decorated = !glfwGetWindowAttrib(window, GLFW_DECORATED);
+    GLFWmonitor* monitor;
+    const GLFWvidmode* mode;
+
+    if (decorated)
+    {
+        /* Switch to windowed mode */
+        glfwSetWindowMonitor(window, NULL, 
+            window_pos[0], window_pos[1], 
+            window_size[0], window_size[1], GLFW_DONT_CARE);
+    }
+    else
+    {
+        /* Switch to fullscreen */
+        monitor = glfwGetPrimaryMonitor();
+        mode = glfwGetVideoMode(monitor);
+        glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, 
+            mode->refreshRate);
+    }
+
+    glfwSetWindowAttrib(window, GLFW_DECORATED, decorated);
+    return;
 }
 
 int get_glsl_version(void)
