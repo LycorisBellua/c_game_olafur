@@ -7,21 +7,21 @@
 #define MIN(a, b) (a < b ? a : b)
 #define WINDOW_DEFAULT_WIDTH 640
 #define WINDOW_DEFAULT_HEIGHT 480
-#define ASPECT_RATIO (16.0f / 9.0f)
 
 static int window_size[2] = {0};
 static int window_pos[2] = {0};
+static float aspect_ratio = 0;
 
 static void set_aspect_ratio_viewport(int width, int height)
 {
     int new_width = width;
-    int new_height = width / ASPECT_RATIO;
+    int new_height = width / aspect_ratio;
     int x_offset, y_offset;
 
     if (new_height > height)
     {
         new_height = height;
-        new_width = height * ASPECT_RATIO;
+        new_width = height * aspect_ratio;
     }
 
     x_offset = (width - new_width) / 2;
@@ -82,6 +82,7 @@ GLFWwindow* get_window(const char* title)
     vid_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     window_size[0] = MIN(WINDOW_DEFAULT_WIDTH, vid_mode->width);
     window_size[1] = MIN(WINDOW_DEFAULT_HEIGHT, vid_mode->height);
+    aspect_ratio = (float)vid_mode->width / vid_mode->height;
 
     #ifdef __APPLE__
     /* Window hints are to be called before creating the window */
