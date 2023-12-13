@@ -85,7 +85,7 @@ GLFWwindow* get_window(const char* title)
     aspect_ratio = (float)vid_mode->width / vid_mode->height;
 
     #ifdef __APPLE__
-    /* Window hints are to be called before creating the window */
+    /* These window hints are to be called before creating the window */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -111,9 +111,14 @@ GLFWwindow* get_window(const char* title)
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetWindowPosCallback(window, window_pos_callback);
 
-    /* GLEW includes the latest version of OpenGL available on the machine */
+    /*
+        GLEW includes the latest version of OpenGL available on the machine. 
+        Its header is to be included before GLFW's in a source file. 
+        And `glewExperimental` is to be set before GLEW is initialized.
+    */
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) /* GLEW_OK is zero */
+    /* GLEW_OK is zero */
+    if (glewInit() != GLEW_OK)
     {
         fprintf(stderr, "ERROR: The GLEW library failed to initialize.\n");
         glfwTerminate();
@@ -163,7 +168,8 @@ int get_glsl_version(void)
 
         No matter the type of shader, its first line is the GLSL version, like 
         so: "#version 400\n". The GLSL version depends on OpenGL's version, so 
-        this line has to be changed accordingly or there can be issues.
+        this line has to be changed accordingly to which OpenGL's version the 
+        OS has access to and has decided to use, or there can be issues.
 
         - OpenGL 4 and above   --> GLSL 400
         - OpenGL 3.3           --> GLSL 330
