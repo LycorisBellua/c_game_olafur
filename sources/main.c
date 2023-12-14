@@ -13,22 +13,6 @@ float points[] =
     -0.5f, -0.5f,  0.0f
 };
 
-const char* vs =
-"#version 400\n"
-"in vec3 vp;"
-"void main()"
-"{"
-"  gl_Position = vec4(vp, 1.0);"
-"}";
-
-const char* fs =
-"#version 400\n"
-"out vec4 frag_colour;"
-"void main()"
-"{"
-"  frag_colour = vec4(0.5, 0.8, 1.0, 1.0);"
-"}";
-
 static void list_arguments(int argc, char** argv)
 {
     int i;
@@ -45,8 +29,11 @@ int main(int argc, char** argv)
 {
     const char* title = "Cimmerian";
     GLFWwindow* window = get_window(title);
+
     int glsl_version = get_glsl_version();
-    GLuint vao, shader_program;
+    GLuint vao, vs, fs, shader_program;
+    const char* vs_filepath = "shaders/vs_position.glsl";
+    const char* fs_filepath = "shaders/fs_hardcoded_unicolor.glsl";
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -55,19 +42,36 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
+    /* TODO: */
     printf("GLSL version: %d\n", glsl_version);
-    printf("Todo: Load shaders from files\n");
+
     vao = create_mesh_vao(points, sizeof(points)/sizeof(float), 3, 
         GL_STATIC_DRAW);
+
+    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
+    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
     shader_program = create_shader_program(vs, fs);
+    if (!shader_program)
+    {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+        fprintf(stderr, "ERROR: Couldn't compile shader program from \"%s\" "
+            "vertex shader and \"%s\" fragment shader.\n", vs_filepath, 
+            fs_filepath);
+    }
+    /*
+        The shaders are already compiled in the shader program, so no need to 
+        keep them around unless you want to use them in another shader program.
+    */
+    free_shader(vs);
+    free_shader(fs);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            render_mesh(shader_program, vao, GL_TRIANGLES, 3);
+        render_mesh(shader_program, vao, GL_TRIANGLES, 3);
 
-            glfwSwapBuffers(window);
+        glfwSwapBuffers(window);
         glfwPollEvents();
     }
     free_mesh(vao);

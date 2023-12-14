@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "../headers/rendering.h"
@@ -102,50 +103,86 @@ GLuint create_mesh_vao(const GLfloat points[], const int points_len,
     return VAO;
 }
 
-GLuint create_shader_program(const char* vertex_shader, 
-    const char* fragment_shader)
+static char* read_file(const char* filepath)
 {
-    /*  EXAMPLES
+    char *ptr = 0;
+    long file_length;
+    size_t items_read;
+    FILE* file;
 
-        const char* vertex_shader =
-        "#version 400\n"
-        "in vec3 vp;"
-        "void main()"
-        "{"
-        "  gl_Position = vec4(vp, 1.0);"
-        "}";
+    file = fopen(filepath, "r");
+    if (!file)
+    {
+        fprintf(stderr, "ERROR: Couldn't open file from \"%s\".", filepath);
+        return 0;
+    }
 
-        const char* fragment_shader =
-        "#version 400\n"
-        "out vec4 frag_colour;"
-        "void main()"
-        "{"
-        "  frag_colour = vec4(0.5, 0.8, 1.0, 1.0);"
-        "}";
-    */
+    fseek(file, 0, SEEK_END);
+    file_length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    if (file_length < 0)
+    {
+        fclose(file);
+        fprintf(stderr, "ERROR: Could open but not read file from \"%s\".\n", 
+            filepath);
+        return 0;
+    }
 
-    GLuint vs, fs, shader_program;
+    ptr = malloc((file_length + 1) * sizeof(char));
+    if (!ptr)
+    {
+        fprintf(stderr, "ERROR: Couldn't allocate memory to store content " 
+            "from \"%s\".\n", filepath);
+        fclose(file);
+        return 0;
+    }
 
-    vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vertex_shader, NULL);
-    glCompileShader(vs);
+    items_read = fread(ptr, sizeof(char), file_length, file);
+    if (items_read != (size_t)file_length)
+    {
+        fclose(file);
+        free(ptr);
+        fprintf(stderr, "ERROR: Could open but not read file from \"%s\".\n", 
+            filepath);
+        return 0;
+    }
+    ptr[file_length] = 0;
 
-    fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fragment_shader, NULL);
-    glCompileShader(fs);
+    fclose(file);
+    return ptr;
+}
+
+GLuint compile_shader(const GLenum type, const char* filepath)
+{
+    GLuint shader;
+    char* ptr = read_file(filepath);
+
+    if (!ptr)
+        return 0;
+    else if (type != GL_VERTEX_SHADER && type != GL_FRAGMENT_SHADER)
+    {
+        free(ptr);
+        return 0;
+    }
+
+    shader = glCreateShader(type);
+    glShaderSource(shader, 1, (char const* const*)&ptr, NULL);
+    glCompileShader(shader);
+    free(ptr);
+    return shader;
+}
+
+GLuint create_shader_program(const GLuint vs, const GLuint fs)
+{
+    GLuint shader_program;
+
+    if (!vs || !fs)
+        return 0;
 
     shader_program = glCreateProgram();
     glAttachShader(shader_program, vs);
     glAttachShader(shader_program, fs);
     glLinkProgram(shader_program);
-
-    /*
-        The VS and FS are compiled into the shader program, so there's no use 
-        for them anymore. Free them.
-    */
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
     return shader_program;
 }
 
@@ -180,6 +217,12 @@ void free_mesh(const GLuint VAO)
 
     /* Free the VAO */
     glDeleteVertexArrays(1, &VAO);
+    return;
+}
+
+void free_shader(const GLuint shader)
+{
+    glDeleteShader(shader);
     return;
 }
 
