@@ -152,7 +152,34 @@ static char* read_file(const char* filepath)
     return ptr;
 }
 
-GLuint compile_shader(const GLenum type, const char* filepath)
+static void set_proper_glsl_version(char* ptr_shader, int glsl)
+{
+    int i;
+    char new_digits[3];
+
+    /* The first line of a shader is something like: "#version 400\n" */
+
+    new_digits[2] = glsl % 10 + '0';
+    glsl /= 10;
+    new_digits[1] = glsl % 10 + '0';
+    glsl /= 10;
+    new_digits[0] = glsl % 10 + '0';
+    glsl /= 10;
+
+    for (i = 0; ptr_shader[i]; ++i)
+    {
+        if (ptr_shader[i] >= '0' && ptr_shader[i] <= '9')
+        {
+            ptr_shader[i] = new_digits[0];
+            ptr_shader[i + 1] = new_digits[1];
+            ptr_shader[i + 2] = new_digits[2];
+            break;
+        }
+    }
+    return;
+}
+
+GLuint compile_shader(const GLenum type, const char* filepath, const int glsl)
 {
     GLuint shader;
     char* ptr = read_file(filepath);
@@ -164,6 +191,8 @@ GLuint compile_shader(const GLenum type, const char* filepath)
         free(ptr);
         return 0;
     }
+
+    set_proper_glsl_version(ptr, glsl);
 
     shader = glCreateShader(type);
     glShaderSource(shader, 1, (char const* const*)&ptr, NULL);

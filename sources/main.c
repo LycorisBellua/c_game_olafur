@@ -30,10 +30,10 @@ int main(int argc, char** argv)
     const char* title = "Cimmerian";
     GLFWwindow* window = get_window(title);
 
-    int glsl_version = get_glsl_version();
-    GLuint vao, vs, fs, shader_program;
+    const int glsl_version = get_glsl_version();
     const char* vs_filepath = "shaders/vs_position.glsl";
     const char* fs_filepath = "shaders/fs_hardcoded_unicolor.glsl";
+    GLuint vao, vs, fs, shader_program;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -42,14 +42,11 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    /* TODO: */
-    printf("GLSL version: %d\n", glsl_version);
-
     vao = create_mesh_vao(points, sizeof(points)/sizeof(float), 3, 
         GL_STATIC_DRAW);
 
-    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
-    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
+    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath, glsl_version);
+    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath, glsl_version);
     shader_program = create_shader_program(vs, fs);
     if (!shader_program)
     {
