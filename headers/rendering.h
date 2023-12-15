@@ -1,7 +1,7 @@
 #ifndef __RENDERING_H__
 #define __RENDERING_H__
 
-enum uniform_type
+typedef enum
 {
     UNIFORM_1F = 1,
     UNIFORM_2F,
@@ -36,18 +36,15 @@ enum uniform_type
     UNIFORM_MATRIX_4X2FV,
     UNIFORM_MATRIX_3X4FV,
     UNIFORM_MATRIX_4X3FV
-};
+} UniformType;
 
 /* TODO: Be careful, UniformStruct can currently only handle floats. */
 typedef struct
 {
     GLint loc;
-    enum uniform_type type;
+    UniformType type;
     float x, y, z, w;
 } UniformStruct;
-
-void irm_rectangle_bicolor(void);
-void irm_viewport_white(void);
 
 GLuint create_mesh_vao(const GLfloat vertex_data[], const int vertex_data_len, 
     const int nbr_attributes, const GLenum usage);
@@ -55,7 +52,7 @@ GLuint compile_shader(const GLenum type, const char* filepath, const int glsl);
 GLuint create_shader_program(const GLuint vs, const GLuint fs);
 
 UniformStruct init_uniform(const GLuint shader_program, const char* name, 
-    const enum uniform_type type, const float x, const float y, const float z, 
+    const UniformType type, const float x, const float y, const float z, 
     const float w);
 void render_mesh(const GLuint shader_program, const UniformStruct* u, 
     const GLuint VAO, const GLenum drawing_mode, const int nbr_vertices);

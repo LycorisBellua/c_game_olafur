@@ -6,6 +6,7 @@
 #include "../headers/input.h"
 #include "../headers/rendering.h"
 
+/* Triangle no color */
 /*
 float vertex_data_pos[] =
 {
@@ -15,13 +16,41 @@ float vertex_data_pos[] =
 };
 */
 
+/* Triangle RGB (position, color) */
 float vertex_data[] =
 {
-    /* Position */          /* Color */
      0.0f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
      0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
     -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
 };
+
+/* Rectangle */
+/*
+float vertex_data[] =
+{
+    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
+     0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
+    -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
+
+    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
+     0.5f,  0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
+     0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
+};
+*/
+
+/* Viewport */
+/*
+float vertex_data[] =
+{
+    -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+     1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+
+    -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+    -1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+};
+*/
 
 static void list_arguments(int argc, char** argv)
 {
@@ -76,15 +105,12 @@ int main(int argc, char** argv)
     free_shader(vs);
     free_shader(fs);
     uniform_struct = init_uniform(shader_program, "single_color", UNIFORM_3F, 
-        0.8f, 0.21f, 0.0f, 0);
+        0.4f, 0.21f, 0.5f, 0);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        /*
-        uniform_struct.z = 0.5f;
-        */
         render_mesh(shader_program, &uniform_struct, vao, GL_TRIANGLES, 
             nbr_vertices);
 

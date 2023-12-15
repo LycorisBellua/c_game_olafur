@@ -4,48 +4,6 @@
 #include <GLFW/glfw3.h>
 #include "../headers/rendering.h"
 
-/* IMMEDIATE RENDERING MODE ------------------------------------------------ */
-
-void irm_rectangle_bicolor(void)
-{
-    /* Red */
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(-0.5, 0.5, 0.0);
-    glVertex3f(0.5, -0.5, 0.0);
-    glVertex3f(-0.5, -0.5, 0.0);
-    glEnd();
-
-    /* Green */
-    glBegin(GL_TRIANGLES);
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f(-0.5, 0.5, 0.0);
-    glVertex3f(0.5, 0.5, 0.0);
-    glVertex3f(0.5, -0.5, 0.0);
-    glEnd();
-    return;
-}
-
-void irm_viewport_white(void)
-{
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(-1, 1, 0.0);
-    glVertex3f(1, 1, 0.0);
-    glVertex3f(1, -1, 0.0);
-    glEnd();
-
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(-1, 1, 0.0);
-    glVertex3f(1, -1, 0.0);
-    glVertex3f(-1, -1, 0.0);
-    glEnd();
-    return;
-}
-
-/* SHADERS ----------------------------------------------------------------- */
-
 GLuint create_mesh_vao(const GLfloat vertex_data[], const int vertex_data_len, 
     const int nbr_attributes, const GLenum usage)
 {
@@ -209,7 +167,7 @@ GLuint create_shader_program(const GLuint vs, const GLuint fs)
 }
 
 UniformStruct init_uniform(const GLuint shader_program, const char* name, 
-    const enum uniform_type type, const float x, const float y, const float z, 
+    const UniformType type, const float x, const float y, const float z, 
     const float w)
 {
     /* Type example: UNIFORM_3F for three floats. */
