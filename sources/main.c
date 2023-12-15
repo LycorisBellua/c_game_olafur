@@ -6,6 +6,15 @@
 #include "../headers/input.h"
 #include "../headers/rendering.h"
 
+/*
+float vertex_data_pos[] =
+{
+     0.0f,  0.5f,  0.0f, 
+     0.5f, -0.5f,  0.0f, 
+    -0.5f, -0.5f,  0.0f,
+};
+*/
+
 float vertex_data[] =
 {
     /* Position */          /* Color */
@@ -31,10 +40,14 @@ int main(int argc, char** argv)
     const char* title = "Cimmerian";
     GLFWwindow* window = get_window(title);
 
+    const int nbr_attributes = 2;
+    const int vertex_data_length = sizeof(vertex_data)/sizeof(float);
+    const int nbr_vertices = vertex_data_length / 3 / nbr_attributes;
     const int glsl_version = get_glsl_version();
     const char* vs_filepath = "shaders/vs.glsl";
     const char* fs_filepath = "shaders/fs.glsl";
     GLuint vao, vs, fs, shader_program;
+    UniformStruct uniform_struct;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -43,7 +56,7 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    vao = create_mesh_vao(vertex_data, sizeof(vertex_data)/sizeof(float), 
+    vao = create_mesh_vao(vertex_data, vertex_data_length, nbr_attributes, 
         GL_STATIC_DRAW);
 
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath, glsl_version);
@@ -62,12 +75,18 @@ int main(int argc, char** argv)
     */
     free_shader(vs);
     free_shader(fs);
+    uniform_struct = init_uniform(shader_program, "single_color", UNIFORM_3F, 
+        0.8f, 0.21f, 0.0f, 0);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        render_mesh(shader_program, vao, GL_TRIANGLES, 3);
+        /*
+        uniform_struct.z = 0.5f;
+        */
+        render_mesh(shader_program, &uniform_struct, vao, GL_TRIANGLES, 
+            nbr_vertices);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

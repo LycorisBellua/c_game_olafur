@@ -47,12 +47,13 @@ void irm_viewport_white(void)
 /* SHADERS ----------------------------------------------------------------- */
 
 GLuint create_mesh_vao(const GLfloat vertex_data[], const int vertex_data_len, 
-    const GLenum usage)
+    const int nbr_attributes, const GLenum usage)
 {
+    int i;
     /* Vertex Buffer Object / Vertex Array Object */
     GLuint VBO, VAO;
 
-    /*  ARRAY EXAMPLE:
+    /*  ARRAY EXAMPLE WITH TWO ATTRIBUTES:
         ```
         float vertex_data[] =
         {
@@ -77,22 +78,20 @@ GLuint create_mesh_vao(const GLfloat vertex_data[], const int vertex_data_len,
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     /*
-        Set up position attribute (location = 0)
+        Set up attributes. For example, the position attribute is represented 
+        by layout(location = 0) in the vertex shader, then 
+        layout(location = 1) is the color attribute.
 
-        - 2nd argument is 3 because the floats are organized in vec3.
-        - `6 * sizeof(float)` is the stride, aka how many bytes a vertex is 
-        made of in total. Here our vertices are made of a vec3 position 
-        attribute and a vec3 color attribute, and they're all floats, which 
-        means a byte length of `6 * sizeof(float)`.
+        - The 3 is the args is because our attributes are organized in vec3.
+        - `nbr_attributes * 3 * sizeof(float)` is the stride, aka how many 
+        bytes a vertex is made of in total.
         - Last arg is, in the stride, a pointer to the attribute.
     */
-    glEnableVertexArrayAttrib(VAO, 0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)0);
-
-    /* Set up color attribute (location = 1) */
-    glEnableVertexArrayAttrib(VAO, 1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 
-        (const void*)(3 * sizeof(float)));
+    for (i = 0; i < nbr_attributes; ++i)
+    {
+        glEnableVertexArrayAttrib(VAO, i);
+        glVertexAttribPointer(i, 3, GL_FLOAT, GL_FALSE, 3 * nbr_attributes * sizeof(float), (const void*)(3 * i * sizeof(float)));
+    }
 
     return VAO;
 }
@@ -209,13 +208,31 @@ GLuint create_shader_program(const GLuint vs, const GLuint fs)
     return shader_program;
 }
 
-void render_mesh(const GLuint shader_program, const GLuint VAO, 
-    const GLenum drawing_mode, const int nbr_vertices)
+UniformStruct init_uniform(const GLuint shader_program, const char* name, 
+    const enum uniform_type type, const float x, const float y, const float z, 
+    const float w)
+{
+    /* Type example: UNIFORM_3F for three floats. */
+
+    UniformStruct u;
+    u.loc = glGetUniformLocation(shader_program, name);
+    u.type = type;
+    u.x = !x ? 0.0f : x;
+    u.y = !y ? 0.0f : y;
+    u.z = !z ? 0.0f : z;
+    u.w = !w ? 0.0f : w;
+    return u;
+}
+
+void render_mesh(const GLuint shader_program, const UniformStruct* u, 
+    const GLuint VAO, const GLenum drawing_mode, const int nbr_vertices)
 {
     /* Drawing mode example: GL_TRIANGLES */
 
     int start_index = 0;
     glUseProgram(shader_program);
+    if (u && u->type == UNIFORM_3F)
+        glUniform3f(u->loc, u->x, u->y, u->z);
     glBindVertexArray(VAO);
     glDrawArrays(drawing_mode, start_index, nbr_vertices);
     return;
