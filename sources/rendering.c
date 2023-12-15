@@ -6,30 +6,6 @@
 
 /* IMMEDIATE RENDERING MODE ------------------------------------------------ */
 
-void irm_triangle_white(void)
-{
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(0.0, 0.5, 0.0);
-    glVertex3f(0.5, -0.5, 0.0);
-    glVertex3f(-0.5, -0.5, 0.0);
-    glEnd();
-    return;
-}
-
-void irm_triangle_rgb(void)
-{
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.5, 0.0);
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f(0.5, -0.5, 0.0);
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(-0.5, -0.5, 0.0);
-    glEnd();
-    return;
-}
-
 void irm_rectangle_bicolor(void)
 {
     /* Red */
@@ -70,19 +46,20 @@ void irm_viewport_white(void)
 
 /* SHADERS ----------------------------------------------------------------- */
 
-GLuint create_mesh_vao(const GLfloat points[], const int points_len, 
-    const int nbr_vertices, const GLenum usage)
+GLuint create_mesh_vao(const GLfloat vertex_data[], const int vertex_data_len, 
+    const GLenum usage)
 {
     /* Vertex Buffer Object / Vertex Array Object */
     GLuint VBO, VAO;
 
     /*  ARRAY EXAMPLE:
         ```
-        float points[] =
+        float vertex_data[] =
         {
-            0.0f,  0.5f,  0.0f,
-            0.5f, -0.5f,  0.0f,
-            -0.5f, -0.5f,  0.0f
+             // Position             // Color
+             0.0f,  0.5f,  0.0f,     0.5f, 0.8f, 1.0f, 
+             0.5f, -0.5f,  0.0f,     0.5f, 0.8f, 1.0f, 
+            -0.5f, -0.5f,  0.0f,     0.5f, 0.8f, 1.0f, 
         };
         ```
 
@@ -92,13 +69,30 @@ GLuint create_mesh_vao(const GLfloat points[], const int points_len,
     VBO = 0;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, points_len * sizeof(float), points, usage);
+    glBufferData(GL_ARRAY_BUFFER, vertex_data_len * sizeof(float), 
+        vertex_data, usage);
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
-    glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, nbr_vertices, GL_FLOAT, GL_FALSE, 0, NULL);
+
+    /*
+        Set up position attribute (location = 0)
+
+        - 2nd argument is 3 because the floats are organized in vec3.
+        - `6 * sizeof(float)` is the stride, aka how many bytes a vertex is 
+        made of in total. Here our vertices are made of a vec3 position 
+        attribute and a vec3 color attribute, and they're all floats, which 
+        means a byte length of `6 * sizeof(float)`.
+        - Last arg is, in the stride, a pointer to the attribute.
+    */
+    glEnableVertexArrayAttrib(VAO, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)0);
+
+    /* Set up color attribute (location = 1) */
+    glEnableVertexArrayAttrib(VAO, 1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 
+        (const void*)(3 * sizeof(float)));
 
     return VAO;
 }

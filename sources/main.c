@@ -6,11 +6,12 @@
 #include "../headers/input.h"
 #include "../headers/rendering.h"
 
-float points[] =
+float vertex_data[] =
 {
-    0.0f,  0.5f,  0.0f,
-    0.5f, -0.5f,  0.0f,
-    -0.5f, -0.5f,  0.0f
+    /* Position */          /* Color */
+     0.0f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
+     0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
+    -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
 };
 
 static void list_arguments(int argc, char** argv)
@@ -31,8 +32,8 @@ int main(int argc, char** argv)
     GLFWwindow* window = get_window(title);
 
     const int glsl_version = get_glsl_version();
-    const char* vs_filepath = "shaders/vs_position.glsl";
-    const char* fs_filepath = "shaders/fs_hardcoded_unicolor.glsl";
+    const char* vs_filepath = "shaders/vs.glsl";
+    const char* fs_filepath = "shaders/fs.glsl";
     GLuint vao, vs, fs, shader_program;
 
     glfwSetKeyCallback(window, physical_key_callback);
@@ -42,7 +43,7 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    vao = create_mesh_vao(points, sizeof(points)/sizeof(float), 3, 
+    vao = create_mesh_vao(vertex_data, sizeof(vertex_data)/sizeof(float), 
         GL_STATIC_DRAW);
 
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath, glsl_version);
