@@ -1,6 +1,7 @@
 #ifndef __RENDERING_H__
 #define __RENDERING_H__
 
+/*
 typedef enum
 {
     UNIFORM_1F = 1,
@@ -37,14 +38,17 @@ typedef enum
     UNIFORM_MATRIX_3X4FV,
     UNIFORM_MATRIX_4X3FV
 } UniformType;
+*/
 
+typedef struct UniformStruct UniformStruct;
+typedef void (*UniformCallback)(const UniformStruct* u, const int activate);
 /* TODO: Be careful, UniformStruct can currently only handle floats. */
-typedef struct
+struct UniformStruct
 {
     GLint loc;
-    UniformType type;
     float x, y, z, w;
-} UniformStruct;
+    UniformCallback activate;
+};
 
 GLuint create_mesh_vao(const GLfloat vertex_data[], const int vertex_data_len, 
     const int nbr_attributes, const GLenum usage);
@@ -52,10 +56,9 @@ GLuint compile_shader(const GLenum type, const char* filepath, const int glsl);
 GLuint create_shader_program(const GLuint vs, const GLuint fs);
 
 UniformStruct init_uniform(const GLuint shader_program, const char* name, 
-    const UniformType type, const float x, const float y, const float z, 
-    const float w);
-void activate_uniform(const UniformStruct* u);
-void deactivate_uniform(const UniformStruct* u);
+    const float x, const float y, const float z, const float w, 
+    UniformCallback activate);
+void activate_uniform_3f(const UniformStruct* u, const int activate);
 
 void render_mesh(const GLuint shader_program, const GLuint VAO, 
     const GLenum drawing_mode, const int nbr_vertices);

@@ -108,17 +108,17 @@ int main(int argc, char** argv)
     */
     free_shader(vs);
     free_shader(fs);
-    color_uniform = init_uniform(shader_program, "single_color", UNIFORM_3F, 
-        0.4f, 0.21f, 0.5f, 0);
+    color_uniform = init_uniform(shader_program, "single_color", 
+        0.4f, 0.21f, 0.5f, 0, activate_uniform_3f);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        activate_uniform(&color_uniform);
+        color_uniform.activate(&color_uniform, 1);
         render_mesh(shader_program, vao_2, GL_LINE_LOOP, nbr_vertices_2);
 
-        deactivate_uniform(&color_uniform);
+        color_uniform.activate(&color_uniform, 0);
         render_mesh(shader_program, vao, GL_TRIANGLES, nbr_vertices);
 
         glfwSwapBuffers(window);

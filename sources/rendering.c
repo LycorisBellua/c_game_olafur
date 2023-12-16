@@ -117,34 +117,27 @@ GLuint create_shader_program(const GLuint vs, const GLuint fs)
     return shader_program;
 }
 
-UniformStruct init_uniform(const GLuint shader_program, const char* name, 
-    const UniformType type, const float x, const float y, const float z, 
-    const float w)
+void activate_uniform_3f(const UniformStruct* u, const int activate)
 {
-    /* Type example: UNIFORM_3F for three floats. */
-
-    UniformStruct u;
-    u.loc = glGetUniformLocation(shader_program, name);
-    u.type = type;
-    u.x = !x ? 0.0f : x;
-    u.y = !y ? 0.0f : y;
-    u.z = !z ? 0.0f : z;
-    u.w = !w ? 0.0f : w;
-    return u;
-}
-
-void activate_uniform(const UniformStruct* u)
-{
-    if (u->type == UNIFORM_3F)
+    if (activate)
         glUniform3f(u->loc, u->x, u->y, u->z);
-    return;
-}
-
-void deactivate_uniform(const UniformStruct* u)
-{
-    if (u->type == UNIFORM_3F)
+    else
         glUniform3f(u->loc, 0, 0, 0);
     return;
+}
+
+UniformStruct init_uniform(const GLuint shader_program, const char* name, 
+    const float x, const float y, const float z, const float w, 
+    UniformCallback activate)
+{
+    UniformStruct u;
+    u.loc = glGetUniformLocation(shader_program, name);
+    u.x = x;
+    u.y = y;
+    u.z = z;
+    u.w = w;
+    u.activate = activate;
+    return u;
 }
 
 void render_mesh(const GLuint shader_program, const GLuint VAO, 
