@@ -25,8 +25,7 @@ float vertex_data[] =
 };
 
 /* Rectangle */
-/*
-float vertex_data[] =
+float vertex_data_2[] =
 {
     -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
      0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
@@ -36,7 +35,6 @@ float vertex_data[] =
      0.5f,  0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
      0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
 };
-*/
 
 /* Viewport */
 /*
@@ -71,22 +69,28 @@ int main(int argc, char** argv)
 
     const int nbr_attributes = 2;
     const int vertex_data_length = sizeof(vertex_data)/sizeof(float);
+    const int vertex_data_length_2 = sizeof(vertex_data_2)/
+        sizeof(float);
     const int nbr_vertices = vertex_data_length / 3 / nbr_attributes;
+    const int nbr_vertices_2 = vertex_data_length_2 / 3 / 
+        nbr_attributes;
     const int glsl_version = get_glsl_version();
     const char* vs_filepath = "shaders/vs.glsl";
     const char* fs_filepath = "shaders/fs.glsl";
-    GLuint vao, vs, fs, shader_program;
-    UniformStruct uniform_struct;
+    GLuint vao, vao_2, vs, fs, shader_program;
+    UniformStruct color_uniform;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    glDepthFunc(GL_LEQUAL);
 
     vao = create_mesh_vao(vertex_data, vertex_data_length, nbr_attributes, 
         GL_STATIC_DRAW);
+    vao_2 = create_mesh_vao(vertex_data_2, 
+        vertex_data_length_2, nbr_attributes, GL_STATIC_DRAW);
 
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath, glsl_version);
     fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath, glsl_version);
@@ -104,15 +108,18 @@ int main(int argc, char** argv)
     */
     free_shader(vs);
     free_shader(fs);
-    uniform_struct = init_uniform(shader_program, "single_color", UNIFORM_3F, 
+    color_uniform = init_uniform(shader_program, "single_color", UNIFORM_3F, 
         0.4f, 0.21f, 0.5f, 0);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        render_mesh(shader_program, &uniform_struct, vao, GL_TRIANGLES, 
-            nbr_vertices);
+        activate_uniform(&color_uniform);
+        render_mesh(shader_program, vao_2, GL_LINE_LOOP, nbr_vertices_2);
+
+        deactivate_uniform(&color_uniform);
+        render_mesh(shader_program, vao, GL_TRIANGLES, nbr_vertices);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

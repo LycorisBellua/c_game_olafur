@@ -54,8 +54,11 @@ GLuint create_shader_program(const GLuint vs, const GLuint fs);
 UniformStruct init_uniform(const GLuint shader_program, const char* name, 
     const UniformType type, const float x, const float y, const float z, 
     const float w);
-void render_mesh(const GLuint shader_program, const UniformStruct* u, 
-    const GLuint VAO, const GLenum drawing_mode, const int nbr_vertices);
+void activate_uniform(const UniformStruct* u);
+void deactivate_uniform(const UniformStruct* u);
+
+void render_mesh(const GLuint shader_program, const GLuint VAO, 
+    const GLenum drawing_mode, const int nbr_vertices);
 
 void free_mesh(const GLuint VAO);
 void free_shader(const GLuint shader);

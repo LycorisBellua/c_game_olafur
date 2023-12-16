@@ -182,15 +182,27 @@ UniformStruct init_uniform(const GLuint shader_program, const char* name,
     return u;
 }
 
-void render_mesh(const GLuint shader_program, const UniformStruct* u, 
-    const GLuint VAO, const GLenum drawing_mode, const int nbr_vertices)
+void activate_uniform(const UniformStruct* u)
+{
+    if (u->type == UNIFORM_3F)
+        glUniform3f(u->loc, u->x, u->y, u->z);
+    return;
+}
+
+void deactivate_uniform(const UniformStruct* u)
+{
+    if (u->type == UNIFORM_3F)
+        glUniform3f(u->loc, 0, 0, 0);
+    return;
+}
+
+void render_mesh(const GLuint shader_program, const GLuint VAO, 
+    const GLenum drawing_mode, const int nbr_vertices)
 {
     /* Drawing mode example: GL_TRIANGLES */
-
     int start_index = 0;
+
     glUseProgram(shader_program);
-    if (u && u->type == UNIFORM_3F)
-        glUniform3f(u->loc, u->x, u->y, u->z);
     glBindVertexArray(VAO);
     glDrawArrays(drawing_mode, start_index, nbr_vertices);
     return;
