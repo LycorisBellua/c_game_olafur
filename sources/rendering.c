@@ -117,29 +117,6 @@ GLuint create_shader_program(const GLuint vs, const GLuint fs)
     return shader_program;
 }
 
-void activate_uniform_3f(const UniformStruct* u, const int activate)
-{
-    if (activate)
-        glUniform3f(u->loc, u->x, u->y, u->z);
-    else
-        glUniform3f(u->loc, 0, 0, 0);
-    return;
-}
-
-UniformStruct init_uniform(const GLuint shader_program, const char* name, 
-    const float x, const float y, const float z, const float w, 
-    UniformCallback activate)
-{
-    UniformStruct u;
-    u.loc = glGetUniformLocation(shader_program, name);
-    u.x = x;
-    u.y = y;
-    u.z = z;
-    u.w = w;
-    u.activate = activate;
-    return u;
-}
-
 void render_mesh(const GLuint shader_program, const GLuint VAO, 
     const GLenum drawing_mode, const int nbr_vertices)
 {

@@ -5,6 +5,7 @@
 #include "../headers/windowing.h"
 #include "../headers/input.h"
 #include "../headers/rendering.h"
+#include "../headers/uniforms.h"
 
 /* Triangle no color */
 /*
@@ -109,7 +110,7 @@ int main(int argc, char** argv)
     free_shader(vs);
     free_shader(fs);
     color_uniform = init_uniform(shader_program, "single_color", 
-        0.4f, 0.21f, 0.5f, 0, activate_uniform_3f);
+        activate_uniform_3f, 0.4f, 0.21f, 0.5f, 0);
 
     while (!glfwWindowShouldClose(window))
     {
