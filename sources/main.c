@@ -80,7 +80,6 @@ int main(int argc, char** argv)
     const char* fs_filepath = "shaders/fs.glsl";
     GLuint vao, vao_2, vs, fs, shader_program;
     UniformStruct* color_uniform = 0;
-    float single_color_data[] = { 0.4f, 0.21f, 0.5f };
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -111,7 +110,7 @@ int main(int argc, char** argv)
     free_shader(vs);
     free_shader(fs);
     color_uniform = create_uniform(shader_program, "single_color", 
-        activate_uniform_vec3, single_color_data);
+        activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -125,15 +124,14 @@ int main(int argc, char** argv)
 
         /*
             *((float*)color_uniform->data + 2) = 0.0f;
-            single_color_data[2] = 0.0f;
         */
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    free_mesh(vao);
     free_shader_program(shader_program);
-    free(color_uniform);
+    free_uniform(color_uniform);
+    free_mesh(vao);
     glfwTerminate();
 
     list_arguments(argc, argv);

@@ -10,8 +10,16 @@ struct UniformStruct
     void* data;
 };
 
+typedef enum
+{
+    FLOAT = 1,
+    INT,
+    UINT
+} GlslDatatype;
+
 UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
-    const UniformCallback activate, void* data);
+    const UniformCallback activate, ...);
+void free_uniform(UniformStruct* u);
 
 void activate_uniform_float(const UniformStruct* u, const int activate);
 void activate_uniform_int(const UniformStruct* u, const int activate);

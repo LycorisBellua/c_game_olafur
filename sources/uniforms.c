@@ -4,21 +4,178 @@
 #include <GL/glew.h>
 #include "../headers/uniforms.h"
 
+static void get_length_and_datatype(const UniformCallback activate, 
+    int* length, GlslDatatype* type);
+static void populate_data(void* data, const va_list args, const int length, 
+    const GlslDatatype type);
+
 UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
-    const UniformCallback activate, void* data)
+    const UniformCallback activate, ...)
 {
-    UniformStruct* ptr = malloc(sizeof(UniformStruct));
-    if (!ptr)
+    UniformStruct* u;
+    va_list args;
+    int length;
+    GlslDatatype type;
+
+    u = malloc(sizeof(UniformStruct));
+    if (!u)
     {
         fprintf(stderr, "ERROR: Couldn't allocate memory for \"%s\" uniform.", 
             name);
         exit(EXIT_FAILURE);
     }
 
-    ptr->loc = glGetUniformLocation(shader_program, name);
-    ptr->activate = activate;
-    ptr->data = data;
-    return ptr;
+    u->loc = glGetUniformLocation(shader_program, name);
+    u->activate = activate;
+    u->data = 0;
+
+    length = type = 0;
+    get_length_and_datatype(activate, &length, &type);
+    if (!length || !type)
+    {
+        /* TODO: Matrices handling */
+        fprintf(stderr, "ERROR: WIP MATRIX UNIFORM FEATURE\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (type == FLOAT)
+        u->data = malloc(length * sizeof(float));
+    else if (type == INT)
+        u->data = malloc(length * sizeof(int));
+    else if (type == UINT)
+        u->data = malloc(length * sizeof(unsigned int));
+
+    if (!u->data)
+    {
+        fprintf(stderr, "ERROR: Couldn't allocate memory for \"%s\" uniform.", 
+            name);
+        free(u);
+        exit(EXIT_FAILURE);
+    }
+
+    va_start(args, activate);
+    populate_data(u->data, args, length, type);
+    va_end(args);
+
+    return u;
+}
+
+static void populate_data(void* data, const va_list args, const int length, 
+    const GlslDatatype type)
+{
+    int i;
+    if (type == FLOAT)
+    {
+        for (i = 0; i < length; ++i)
+            *((float*)data + i) = va_arg(args, double);
+    }
+    else if (type == INT)
+    {
+        for (i = 0; i < length; ++i)
+            *((int*)data + i) = va_arg(args, int);
+    }
+    else if (type == UINT)
+    {
+        for (i = 0; i < length; ++i)
+            *((unsigned int*)data + i) = va_arg(args, unsigned int);
+    }
+    return;
+}
+
+void free_uniform(UniformStruct* u)
+{
+    /*
+        Check whether the pointer is null. If it is, it means it doesn't 
+        reference any struct, which therefore means that `data` is not a 
+        pointer to a legal address.
+    */
+    if (u)
+    {
+        free(u->data);
+        free(u);
+    }
+    return;
+}
+
+static void get_length_and_datatype(const UniformCallback activate, 
+    int* length, GlslDatatype* type)
+{
+    if (activate == activate_uniform_float)
+    {
+        *length = 1;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_int)
+    {
+        *length = 1;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_uint)
+    {
+        *length = 1;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_vec2)
+    {
+        *length = 2;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_vec3)
+    {
+        *length = 3;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_vec4)
+    {
+        *length = 4;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_ivec2)
+    {
+        *length = 2;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_ivec3)
+    {
+        *length = 3;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_ivec4)
+    {
+        *length = 4;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_uvec2)
+    {
+        *length = 2;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_uvec3)
+    {
+        *length = 3;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_uvec4)
+    {
+        *length = 4;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_mat2)
+    {
+        *length = 0;
+        *type = 0;
+    }
+    else if (activate == activate_uniform_mat3)
+    {
+        *length = 0;
+        *type = 0;
+    }
+    else if (activate == activate_uniform_mat4)
+    {
+        *length = 0;
+        *type = 0;
+    }
+    return;
 }
 
 /*
