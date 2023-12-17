@@ -1,61 +1,37 @@
 #ifndef __UNIFORMS_H__
 #define __UNIFORMS_H__
 
-/*
-typedef enum
-{
-    UNIFORM_1F = 1,
-    UNIFORM_2F,
-    UNIFORM_3F,
-    UNIFORM_4F,
-    UNIFORM_1I,
-    UNIFORM_2I,
-    UNIFORM_3I,
-    UNIFORM_4I,
-    UNIFORM_1UI,
-    UNIFORM_2UI,
-    UNIFORM_3UI,
-    UNIFORM_4UI,
-    UNIFORM_1FV,
-    UNIFORM_2FV,
-    UNIFORM_3FV,
-    UNIFORM_4FV,
-    UNIFORM_1IV,
-    UNIFORM_2IV,
-    UNIFORM_3IV,
-    UNIFORM_4IV,
-    UNIFORM_1UIV,
-    UNIFORM_2UIV,
-    UNIFORM_3UIV,
-    UNIFORM_4UIV,
-    UNIFORM_MATRIX_2FV,
-    UNIFORM_MATRIX_3FV,
-    UNIFORM_MATRIX_4FV,
-    UNIFORM_MATRIX_2X3FV,
-    UNIFORM_MATRIX_3X2FV,
-    UNIFORM_MATRIX_2X4FV,
-    UNIFORM_MATRIX_4X2FV,
-    UNIFORM_MATRIX_3X4FV,
-    UNIFORM_MATRIX_4X3FV
-} UniformType;
-*/
-
 typedef struct UniformStruct UniformStruct;
 typedef void (*UniformCallback)(const UniformStruct* u, const int activate);
-/* TODO: Be careful, UniformStruct can currently only handle floats. */
 struct UniformStruct
 {
     GLint loc;
     UniformCallback activate;
-    float x, y, z, w;
+    void* data;
 };
 
+UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
+    const UniformCallback activate, void* data);
 
-UniformStruct init_uniform(const GLuint shader_program, const char* name, 
-    const UniformCallback activate, 
-    const float x, const float y, const float z, const float w); 
+void activate_uniform_float(const UniformStruct* u, const int activate);
+void activate_uniform_int(const UniformStruct* u, const int activate);
+void activate_uniform_uint(const UniformStruct* u, const int activate);
 
-void activate_uniform_3f(const UniformStruct* u, const int activate);
+void activate_uniform_vec2(const UniformStruct* u, const int activate);
+void activate_uniform_vec3(const UniformStruct* u, const int activate);
+void activate_uniform_vec4(const UniformStruct* u, const int activate);
+
+void activate_uniform_ivec2(const UniformStruct* u, const int activate);
+void activate_uniform_ivec3(const UniformStruct* u, const int activate);
+void activate_uniform_ivec4(const UniformStruct* u, const int activate);
+
+void activate_uniform_uvec2(const UniformStruct* u, const int activate);
+void activate_uniform_uvec3(const UniformStruct* u, const int activate);
+void activate_uniform_uvec4(const UniformStruct* u, const int activate);
+
+void activate_uniform_mat2(const UniformStruct* u, const int activate);
+void activate_uniform_mat3(const UniformStruct* u, const int activate);
+void activate_uniform_mat4(const UniformStruct* u, const int activate);
 
 #endif
 

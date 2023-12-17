@@ -79,7 +79,8 @@ int main(int argc, char** argv)
     const char* vs_filepath = "shaders/vs.glsl";
     const char* fs_filepath = "shaders/fs.glsl";
     GLuint vao, vao_2, vs, fs, shader_program;
-    UniformStruct color_uniform;
+    UniformStruct* color_uniform = 0;
+    float single_color_data[] = { 0.4f, 0.21f, 0.5f };
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -109,24 +110,30 @@ int main(int argc, char** argv)
     */
     free_shader(vs);
     free_shader(fs);
-    color_uniform = init_uniform(shader_program, "single_color", 
-        activate_uniform_3f, 0.4f, 0.21f, 0.5f, 0);
+    color_uniform = create_uniform(shader_program, "single_color", 
+        activate_uniform_vec3, single_color_data);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        color_uniform.activate(&color_uniform, 1);
+        color_uniform->activate(color_uniform, 1);
         render_mesh(shader_program, vao_2, GL_LINE_LOOP, nbr_vertices_2);
 
-        color_uniform.activate(&color_uniform, 0);
+        color_uniform->activate(color_uniform, 0);
         render_mesh(shader_program, vao, GL_TRIANGLES, nbr_vertices);
+
+        /*
+            *((float*)color_uniform->data + 2) = 0.0f;
+            single_color_data[2] = 0.0f;
+        */
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
     free_mesh(vao);
     free_shader_program(shader_program);
+    free(color_uniform);
     glfwTerminate();
 
     list_arguments(argc, argv);
