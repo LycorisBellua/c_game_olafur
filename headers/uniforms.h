@@ -1,6 +1,13 @@
 #ifndef __UNIFORMS_H__
 #define __UNIFORMS_H__
 
+typedef enum
+{
+    FLOAT = 1,
+    INT,
+    UINT
+} GlslDatatype;
+
 typedef struct UniformStruct UniformStruct;
 typedef void (*UniformCallback)(const UniformStruct* u, const int activate);
 struct UniformStruct
@@ -9,13 +16,6 @@ struct UniformStruct
     UniformCallback activate;
     void* data;
 };
-
-typedef enum
-{
-    FLOAT = 1,
-    INT,
-    UINT
-} GlslDatatype;
 
 UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
     const UniformCallback activate, ...);

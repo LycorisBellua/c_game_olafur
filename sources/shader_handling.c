@@ -5,9 +5,84 @@
 #include "../headers/shader_handling.h"
 #include "../headers/file_handling.h"
 
-int app_glsl_version = 0;
+static int app_glsl_version = 0;
 
-int get_app_glsl_version(void)
+static int get_app_glsl_version(void);
+static void set_glsl_version_in_shader(char* ptr_shader);
+
+/* Call before compiling the first shader */
+void set_app_glsl_version(void)
+{
+    app_glsl_version = get_app_glsl_version();
+    return;
+}
+
+GLuint compile_shader(const GLenum type, const char* filepath)
+{
+    GLuint shader;
+    char* ptr = read_file(filepath);
+
+    if (!ptr)
+        return 0;
+    else if (type != GL_VERTEX_SHADER && type != GL_FRAGMENT_SHADER)
+    {
+        free(ptr);
+        return 0;
+    }
+
+    set_glsl_version_in_shader(ptr);
+
+    shader = glCreateShader(type);
+    glShaderSource(shader, 1, (char const* const*)&ptr, NULL);
+    glCompileShader(shader);
+    free(ptr);
+    return shader;
+}
+
+GLuint create_shader_program(GLFWwindow* window, GLuint vs, GLuint fs)
+{
+    GLuint shader_program;
+
+    if (!vs || !fs)
+        return 0;
+
+    shader_program = glCreateProgram();
+
+    if (!shader_program)
+    {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+        fprintf(stderr, "ERROR: Couldn't compile shader program.\n");
+        free_shader(&vs);
+        free_shader(&fs);
+    }
+    else
+    {
+        glAttachShader(shader_program, vs);
+        glAttachShader(shader_program, fs);
+        glLinkProgram(shader_program);
+    }
+    return shader_program;
+}
+
+void free_shader(GLuint* shader)
+{
+    glDeleteShader(*shader);
+
+    /* Nullify the reference to avoid a double free */
+    *shader = 0;
+    return;
+}
+
+void free_shader_program(GLuint* shader_program)
+{
+    glDeleteProgram(*shader_program);
+
+    /* Nullify the reference to avoid a double free */
+    *shader_program = 0;
+    return;
+}
+
+static int get_app_glsl_version(void)
 {
     /*
         GLSL (OpenGL Shader Language)
@@ -65,73 +140,6 @@ static void set_glsl_version_in_shader(char* ptr_shader)
             break;
         }
     }
-    return;
-}
-
-GLuint compile_shader(const GLenum type, const char* filepath)
-{
-    GLuint shader;
-    char* ptr = read_file(filepath);
-
-    if (!ptr)
-        return 0;
-    else if (type != GL_VERTEX_SHADER && type != GL_FRAGMENT_SHADER)
-    {
-        free(ptr);
-        return 0;
-    }
-
-    if (!app_glsl_version)
-        app_glsl_version = get_app_glsl_version();
-    set_glsl_version_in_shader(ptr);
-
-    shader = glCreateShader(type);
-    glShaderSource(shader, 1, (char const* const*)&ptr, NULL);
-    glCompileShader(shader);
-    free(ptr);
-    return shader;
-}
-
-GLuint create_shader_program(GLFWwindow* window, GLuint vs, GLuint fs)
-{
-    GLuint shader_program;
-
-    if (!vs || !fs)
-        return 0;
-
-    shader_program = glCreateProgram();
-
-    if (!shader_program)
-    {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-        fprintf(stderr, "ERROR: Couldn't compile shader program.\n");
-        free_shader(&vs);
-        free_shader(&fs);
-    }
-    else
-    {
-        glAttachShader(shader_program, vs);
-        glAttachShader(shader_program, fs);
-        glLinkProgram(shader_program);
-    }
-    return shader_program;
-}
-
-void free_shader(GLuint* shader)
-{
-    glDeleteShader(*shader);
-
-    /* Nullify the reference to avoid a double free */
-    *shader = 0;
-    return;
-}
-
-void free_shader_program(GLuint* shader_program)
-{
-    glDeleteProgram(*shader_program);
-
-    /* Nullify the reference to avoid a double free */
-    *shader_program = 0;
     return;
 }
 

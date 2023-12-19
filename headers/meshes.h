@@ -8,6 +8,7 @@ typedef enum
     MESH_VIEWPORT
 } MeshShape;
 
+void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio);
 GLuint create_mesh(const MeshShape shape, int* nbr_vertices);
 void free_mesh(GLuint* VAO);
 

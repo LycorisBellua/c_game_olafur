@@ -12,6 +12,19 @@ static int window_size[2] = {0};
 static int window_pos[2] = {0};
 static float aspect_ratio = 0;
 
+/* Encapsulation (public get, private set) --------------------------------- */
+float get_aspect_ratio(void)
+{
+    return aspect_ratio;
+}
+
+static void set_aspect_ratio(const GLFWvidmode* vid_mode)
+{
+    aspect_ratio = (float)vid_mode->width / vid_mode->height;
+    return;
+}
+/* ------------------------------------------------------------------------- */
+
 static void set_aspect_ratio_viewport(int width, int height)
 {
     int new_width = width;
@@ -82,7 +95,7 @@ GLFWwindow* get_window(const char* title)
     vid_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     window_size[0] = MIN(WINDOW_DEFAULT_WIDTH, vid_mode->width);
     window_size[1] = MIN(WINDOW_DEFAULT_HEIGHT, vid_mode->height);
-    aspect_ratio = (float)vid_mode->width / vid_mode->height;
+    set_aspect_ratio(vid_mode);
 
     #ifdef __APPLE__
     /* These window hints are to be called before creating the window */

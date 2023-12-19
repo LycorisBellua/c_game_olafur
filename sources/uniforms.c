@@ -60,28 +60,6 @@ UniformStruct* create_uniform(const GLuint shader_program, const char* name,
     return u;
 }
 
-static void populate_data(void* data, const va_list args, const int length, 
-    const GlslDatatype type)
-{
-    int i;
-    if (type == FLOAT)
-    {
-        for (i = 0; i < length; ++i)
-            *((float*)data + i) = va_arg(args, double);
-    }
-    else if (type == INT)
-    {
-        for (i = 0; i < length; ++i)
-            *((int*)data + i) = va_arg(args, int);
-    }
-    else if (type == UINT)
-    {
-        for (i = 0; i < length; ++i)
-            *((unsigned int*)data + i) = va_arg(args, unsigned int);
-    }
-    return;
-}
-
 void free_uniform(UniformStruct** u)
 {
     /*
@@ -97,87 +75,6 @@ void free_uniform(UniformStruct** u)
 
     /* Nullify the reference to avoid a double free */
     *u = 0;
-    return;
-}
-
-static void get_length_and_datatype(const UniformCallback activate, 
-    int* length, GlslDatatype* type)
-{
-    if (activate == activate_uniform_float)
-    {
-        *length = 1;
-        *type = FLOAT;
-    }
-    else if (activate == activate_uniform_int)
-    {
-        *length = 1;
-        *type = INT;
-    }
-    else if (activate == activate_uniform_uint)
-    {
-        *length = 1;
-        *type = UINT;
-    }
-    else if (activate == activate_uniform_vec2)
-    {
-        *length = 2;
-        *type = FLOAT;
-    }
-    else if (activate == activate_uniform_vec3)
-    {
-        *length = 3;
-        *type = FLOAT;
-    }
-    else if (activate == activate_uniform_vec4)
-    {
-        *length = 4;
-        *type = FLOAT;
-    }
-    else if (activate == activate_uniform_ivec2)
-    {
-        *length = 2;
-        *type = INT;
-    }
-    else if (activate == activate_uniform_ivec3)
-    {
-        *length = 3;
-        *type = INT;
-    }
-    else if (activate == activate_uniform_ivec4)
-    {
-        *length = 4;
-        *type = INT;
-    }
-    else if (activate == activate_uniform_uvec2)
-    {
-        *length = 2;
-        *type = UINT;
-    }
-    else if (activate == activate_uniform_uvec3)
-    {
-        *length = 3;
-        *type = UINT;
-    }
-    else if (activate == activate_uniform_uvec4)
-    {
-        *length = 4;
-        *type = UINT;
-    }
-    else if (activate == activate_uniform_mat2)
-    {
-        *length = 0;
-        *type = 0;
-    }
-    else if (activate == activate_uniform_mat3)
-    {
-        *length = 0;
-        *type = 0;
-    }
-    else if (activate == activate_uniform_mat4)
-    {
-        *length = 0;
-        *type = 0;
-    }
     return;
 }
 
@@ -362,3 +259,107 @@ void activate_uniform_mat4(const UniformStruct* u, const int activate)
     return;
 }
 
+/* ------------------------------------------------------------------------- */
+
+static void get_length_and_datatype(const UniformCallback activate, 
+    int* length, GlslDatatype* type)
+{
+    if (activate == activate_uniform_float)
+    {
+        *length = 1;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_int)
+    {
+        *length = 1;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_uint)
+    {
+        *length = 1;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_vec2)
+    {
+        *length = 2;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_vec3)
+    {
+        *length = 3;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_vec4)
+    {
+        *length = 4;
+        *type = FLOAT;
+    }
+    else if (activate == activate_uniform_ivec2)
+    {
+        *length = 2;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_ivec3)
+    {
+        *length = 3;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_ivec4)
+    {
+        *length = 4;
+        *type = INT;
+    }
+    else if (activate == activate_uniform_uvec2)
+    {
+        *length = 2;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_uvec3)
+    {
+        *length = 3;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_uvec4)
+    {
+        *length = 4;
+        *type = UINT;
+    }
+    else if (activate == activate_uniform_mat2)
+    {
+        *length = 0;
+        *type = 0;
+    }
+    else if (activate == activate_uniform_mat3)
+    {
+        *length = 0;
+        *type = 0;
+    }
+    else if (activate == activate_uniform_mat4)
+    {
+        *length = 0;
+        *type = 0;
+    }
+    return;
+}
+
+static void populate_data(void* data, const va_list args, const int length, 
+    const GlslDatatype type)
+{
+    int i;
+    if (type == FLOAT)
+    {
+        for (i = 0; i < length; ++i)
+            *((float*)data + i) = va_arg(args, double);
+    }
+    else if (type == INT)
+    {
+        for (i = 0; i < length; ++i)
+            *((int*)data + i) = va_arg(args, int);
+    }
+    else if (type == UINT)
+    {
+        for (i = 0; i < length; ++i)
+            *((unsigned int*)data + i) = va_arg(args, unsigned int);
+    }
+    return;
+}

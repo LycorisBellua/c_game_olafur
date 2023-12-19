@@ -45,6 +45,7 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
+    set_app_glsl_version();
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
     fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
     shader_program = create_shader_program(window, vs, fs);
@@ -57,6 +58,7 @@ int main(int argc, char** argv)
     color_uniform = create_uniform(shader_program, "single_color", 
         activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
 
+    convert_vertex_positions_to_aspect_ratio(get_aspect_ratio());
     mesh = create_mesh(MESH_TRIANGLE, &nbr_vertices);
     mesh1 = create_mesh(MESH_SQUARE, &nbr_vertices1);
 
