@@ -1,7 +1,10 @@
 #include <GL/glew.h>
 #include "../headers/meshes.h"
 
+#define FLOAT_TOLERANCE 0.001f
+
 static const int attr_len = 3;
+static const int nbr_attributes = 2;
 
 /*
 static float triangle_nocolor[] =
@@ -54,6 +57,61 @@ static GLuint create_mesh_vao(const GLfloat vertex_data[],
 
 void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
 {
+    /*
+        Example: Aspect ratio of 16/9 (~= 1.77)
+        -----------------------------------------------------------------------
+        If the width is larger than the height, the aspect ratio is superior 
+        to 1. In this case, only modify the width, that is to say the X axis 
+        (index 0 in a vector).
+
+        Example: Aspect ratio of 9/16 (~= 0.56)
+        -----------------------------------------------------------------------
+        A larger height is expressed by an aspect ratio inferior to 1, which 
+        means to only modify the height, and therefore the Y axis (index 1).
+
+        Example: Aspect ratio of 16/16 (= 1)
+        -----------------------------------------------------------------------
+        A square monitor has an aspect ratio of 1, which means you don't touch 
+        the coordinate values. However, given that the aspect ratio is a float 
+        you'd need to account for floating point imprecision if you wanted to 
+        compare it to an equality. Through trial and error, I have judged that 
+        there's a tolerance of 0.001f, meaning that (>= 0.999f && <= 1.001f) 
+        is close enough to 1 to be accepted as such.
+
+        However, I have realized that checking for this case is unnecessary. 
+        Indeed, using for example 1.002f to modify an axis should go 
+        unnoticed on screen (0.5f/1.002f would become 0.499f). So we can just 
+        allow it and not bother to compare with 1.
+    */
+
+    int i;
+    const int index_to_modify = aspect_ratio < 1;
+    const float multiplier = index_to_modify ? aspect_ratio : 1 / aspect_ratio;
+    int vertex_data_len;
+
+    vertex_data_len = sizeof(triangle)/sizeof(triangle[0]);
+    for (i = index_to_modify; i < vertex_data_len; i += attr_len)
+    {
+        if (i % 2 == index_to_modify)
+            triangle[i] *= multiplier;
+    }
+
+    vertex_data_len = sizeof(square)/sizeof(square[0]);
+    for (i = index_to_modify; i < vertex_data_len; i += attr_len)
+    {
+        if (i % 2 == index_to_modify)
+            square[i] *= multiplier;
+    }
+
+    /*
+    vertex_data_len = sizeof(viewport)/sizeof(viewport[0]);
+    for (i = index_to_modify; i < vertex_data_len; i += attr_len)
+    {
+        if (i % 2 == index_to_modify)
+            viewport[i] *= multiplier;
+    }
+    */
+
     return;
 }
 
@@ -62,7 +120,6 @@ GLuint create_mesh(const MeshShape shape, int* nbr_vertices)
     GLuint VAO = 0;
     float* vertex_data;
     int vertex_data_len;
-    const int nbr_attributes = 2;
 
     if (shape == MESH_TRIANGLE)
     {

@@ -37,6 +37,8 @@ int main(int argc, char** argv)
     int nbr_vertices;
     GLuint mesh1 = 0;
     int nbr_vertices1;
+    GLuint mesh2 = 0;
+    int nbr_vertices2;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -59,18 +61,22 @@ int main(int argc, char** argv)
         activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
 
     convert_vertex_positions_to_aspect_ratio(get_aspect_ratio());
-    mesh = create_mesh(MESH_TRIANGLE, &nbr_vertices);
-    mesh1 = create_mesh(MESH_SQUARE, &nbr_vertices1);
+    mesh = create_mesh(MESH_SQUARE, &nbr_vertices);
+    mesh1 = create_mesh(MESH_TRIANGLE, &nbr_vertices1);
+    mesh2 = create_mesh(MESH_VIEWPORT, &nbr_vertices2);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        color_uniform->activate(color_uniform, 1);
-        render_mesh(shader_program, mesh1, GL_LINE_LOOP, nbr_vertices1);
+        color_uniform->activate(color_uniform, 0);
+        render_mesh(shader_program, mesh2, GL_TRIANGLES, nbr_vertices2);
 
         color_uniform->activate(color_uniform, 0);
-        render_mesh(shader_program, mesh, GL_TRIANGLES, nbr_vertices);
+        render_mesh(shader_program, mesh1, GL_TRIANGLES, nbr_vertices1);
+
+        color_uniform->activate(color_uniform, 1);
+        render_mesh(shader_program, mesh, GL_LINE_LOOP, nbr_vertices);
 
         /*
             *((float*)color_uniform->data + 2) = 0.0f;

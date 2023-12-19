@@ -119,16 +119,17 @@ static int get_app_glsl_version(void)
 static void set_glsl_version_in_shader(char* ptr_shader)
 {
     int i;
+    int glsl = app_glsl_version;
     char new_digits[3];
 
     /* The first line of a shader is something like: "#version 400\n" */
 
-    new_digits[2] = app_glsl_version % 10 + '0';
-    app_glsl_version /= 10;
-    new_digits[1] = app_glsl_version % 10 + '0';
-    app_glsl_version /= 10;
-    new_digits[0] = app_glsl_version % 10 + '0';
-    app_glsl_version /= 10;
+    new_digits[2] = glsl % 10 + '0';
+    glsl /= 10;
+    new_digits[1] = glsl % 10 + '0';
+    glsl /= 10;
+    new_digits[0] = glsl % 10 + '0';
+    glsl /= 10;
 
     for (i = 0; ptr_shader[i]; ++i)
     {
