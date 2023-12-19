@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -103,7 +104,7 @@ GLuint compile_shader(const GLenum type, const char* filepath, const int glsl)
     return shader;
 }
 
-GLuint create_shader_program(const GLuint vs, const GLuint fs)
+GLuint create_shader_program(GLFWwindow* window, GLuint vs, GLuint fs)
 {
     GLuint shader_program;
 
@@ -111,9 +112,20 @@ GLuint create_shader_program(const GLuint vs, const GLuint fs)
         return 0;
 
     shader_program = glCreateProgram();
-    glAttachShader(shader_program, vs);
-    glAttachShader(shader_program, fs);
-    glLinkProgram(shader_program);
+
+    if (!shader_program)
+    {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+        fprintf(stderr, "ERROR: Couldn't compile shader program.\n");
+        free_shader(&vs);
+        free_shader(&fs);
+    }
+    else
+    {
+        glAttachShader(shader_program, vs);
+        glAttachShader(shader_program, fs);
+        glLinkProgram(shader_program);
+    }
     return shader_program;
 }
 
@@ -129,14 +141,14 @@ void render_mesh(const GLuint shader_program, const GLuint VAO,
     return;
 }
 
-void free_mesh(const GLuint VAO)
+void free_mesh(GLuint* VAO)
 {
     int i = 0;
     GLint len = 0;
     GLuint vbo = 0;
 
     /* Free the VBOs related to the VAO */
-    glBindVertexArray(VAO);
+    glBindVertexArray(*VAO);
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &len);
     for (i = 0; i < len; ++i)
     {
@@ -147,19 +159,28 @@ void free_mesh(const GLuint VAO)
     }
 
     /* Free the VAO */
-    glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, VAO);
+
+    /* Nullify the reference to avoid a double free */
+    *VAO = 0;
     return;
 }
 
-void free_shader(const GLuint shader)
+void free_shader(GLuint* shader)
 {
-    glDeleteShader(shader);
+    glDeleteShader(*shader);
+
+    /* Nullify the reference to avoid a double free */
+    *shader = 0;
     return;
 }
 
-void free_shader_program(const GLuint shader_program)
+void free_shader_program(GLuint* shader_program)
 {
-    glDeleteProgram(shader_program);
+    glDeleteProgram(*shader_program);
+
+    /* Nullify the reference to avoid a double free */
+    *shader_program = 0;
     return;
 }
 

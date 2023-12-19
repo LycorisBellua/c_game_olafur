@@ -82,18 +82,21 @@ static void populate_data(void* data, const va_list args, const int length,
     return;
 }
 
-void free_uniform(UniformStruct* u)
+void free_uniform(UniformStruct** u)
 {
     /*
         Check whether the pointer is null. If it is, it means it doesn't 
         reference any struct, which therefore means that `data` is not a 
         pointer to a legal address.
     */
-    if (u)
-    {
-        free(u->data);
-        free(u);
-    }
+    if (!u)
+        return;
+
+    free((*u)->data);
+    free(*u);
+
+    /* Nullify the reference to avoid a double free */
+    *u = 0;
     return;
 }
 
