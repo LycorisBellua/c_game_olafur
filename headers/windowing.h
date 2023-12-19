@@ -3,7 +3,6 @@
 
 GLFWwindow* get_window(const char* title);
 void toggle_fullscreen(GLFWwindow* window);
-int get_glsl_version(void);
 
 #endif
 

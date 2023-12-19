@@ -4,60 +4,10 @@
 #include <GLFW/glfw3.h>
 #include "../headers/windowing.h"
 #include "../headers/input.h"
-#include "../headers/rendering.h"
+#include "../headers/shader_handling.h"
 #include "../headers/uniforms.h"
-
-/* Triangle no color */
-/*
-float vertex_data_pos[] =
-{
-     0.0f,  0.5f,  0.0f, 
-     0.5f, -0.5f,  0.0f, 
-    -0.5f, -0.5f,  0.0f,
-};
-*/
-
-/* Triangle RGB (position, color) */
-float vertex_data[] =
-{
-     0.0f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
-     0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
-    -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
-};
-
-/* Square */
-float vertex_data_2[] =
-{
-    /*
-        .
-        .  .
-    */
-    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
-     0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
-    -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
-
-    /*
-        .  .
-           .
-    */
-    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
-     0.5f,  0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
-     0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
-};
-
-/* Viewport */
-/*
-float vertex_data[] =
-{
-    -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-
-    -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-    -1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-};
-*/
+#include "../headers/meshes.h"
+#include "../headers/rendering.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -78,11 +28,15 @@ int main(int argc, char** argv)
 
     const char* vs_filepath = "shaders/vs.glsl";
     const char* fs_filepath = "shaders/fs.glsl";
-    const int glsl_version = get_glsl_version();
     GLuint vs = 0;
     GLuint fs = 0;
     GLuint shader_program = 0;
     UniformStruct* color_uniform = 0;
+
+    GLuint mesh = 0;
+    int nbr_vertices;
+    GLuint mesh1 = 0;
+    int nbr_vertices1;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -91,8 +45,8 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath, glsl_version);
-    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath, glsl_version);
+    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
+    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
     shader_program = create_shader_program(window, vs, fs);
     /*
         The shaders are already compiled in the shader program, so no need to 
@@ -103,34 +57,21 @@ int main(int argc, char** argv)
     color_uniform = create_uniform(shader_program, "single_color", 
         activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
 
-    /*
-    const int nbr_attributes = 2;
-    const int vertex_data_length = sizeof(vertex_data)/sizeof(float);
-    const int vertex_data_length_2 = sizeof(vertex_data_2)/
-        sizeof(float);
-    const int nbr_vertices = vertex_data_length / 3 / nbr_attributes;
-    const int nbr_vertices_2 = vertex_data_length_2 / 3 / 
-        nbr_attributes;
-    GLuint vao, vao_2;
-
-    vao = create_mesh_vao(vertex_data, vertex_data_length, nbr_attributes, 
-        GL_STATIC_DRAW);
-    vao_2 = create_mesh_vao(vertex_data_2, 
-        vertex_data_length_2, nbr_attributes, GL_STATIC_DRAW);
-    */
+    mesh = create_mesh(MESH_TRIANGLE, &nbr_vertices);
+    mesh1 = create_mesh(MESH_SQUARE, &nbr_vertices1);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        /*
         color_uniform->activate(color_uniform, 1);
-        render_mesh(shader_program, vao_2, GL_LINE_LOOP, nbr_vertices_2);
+        render_mesh(shader_program, mesh1, GL_LINE_LOOP, nbr_vertices1);
 
         color_uniform->activate(color_uniform, 0);
-        render_mesh(shader_program, vao, GL_TRIANGLES, nbr_vertices);
+        render_mesh(shader_program, mesh, GL_TRIANGLES, nbr_vertices);
 
-        //      *((float*)color_uniform->data + 2) = 0.0f;
+        /*
+            *((float*)color_uniform->data + 2) = 0.0f;
         */
 
         glfwSwapBuffers(window);
@@ -138,9 +79,8 @@ int main(int argc, char** argv)
     }
     free_shader_program(&shader_program);
     free_uniform(&color_uniform);
-    /*
-    free_mesh(&vao);
-    */
+    free_mesh(&mesh);
+    free_mesh(&mesh1);
     glfwTerminate();
 
     list_arguments(argc, argv);

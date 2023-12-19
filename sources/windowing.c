@@ -154,35 +154,3 @@ void toggle_fullscreen(GLFWwindow* window)
     return;
 }
 
-int get_glsl_version(void)
-{
-    /*
-        GLSL (OpenGL Shader Language)
-        -----------------------------------------------------------------------
-        There is a deprecated way to render graphics in OpenGL, but the modern 
-        way is to use shaders. There are two sorts: vertex shader (shape) and 
-        fragment shader (color). They are written in a language called GLSL, 
-        and are stored in a *.glsl text file, although it's possible to simply 
-        hardcode them in the source code, as they'll end up in a string anyway 
-        once the file is processed.
-
-        No matter the type of shader, its first line is the GLSL version, like 
-        so: "#version 400\n". The GLSL version depends on OpenGL's version, so 
-        this line has to be changed accordingly to which OpenGL's version the 
-        OS has access to and has decided to use, or there can be issues.
-
-        - OpenGL 4 and above   --> GLSL 400
-        - OpenGL 3.3           --> GLSL 330
-        - OpenGL 3.2 and below --> GLSL 150
-    */
-
-    const unsigned char* gl = glGetString(GL_VERSION); /* 4.6.0 ... */
-
-    if (gl[0]-48 >= 4)
-        return 400;
-    else if (gl[0]-48 == 3 && gl[2]-48 == 3)
-        return 330;
-    else
-        return 150;
-}
-
