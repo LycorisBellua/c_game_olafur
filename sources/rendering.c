@@ -1,15 +1,15 @@
 #include <GL/glew.h>
+#include "../headers/meshes.h"
 #include "../headers/rendering.h"
 
-void render_mesh(const GLuint shader_program, const GLuint VAO, 
-    const GLenum drawing_mode, const int nbr_vertices)
+void render_mesh(const MeshStruct* mesh, const GLenum drawing_mode)
 {
-    /* Drawing mode example: GL_TRIANGLES */
-    int start_index = 0;
+    if (!mesh)
+        return;
 
-    glUseProgram(shader_program);
-    glBindVertexArray(VAO);
-    glDrawArrays(drawing_mode, start_index, nbr_vertices);
+    glBindVertexArray(mesh->VAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
+    glDrawElements(drawing_mode, mesh->indices_len, GL_UNSIGNED_INT, 0); 
     return;
 }
 

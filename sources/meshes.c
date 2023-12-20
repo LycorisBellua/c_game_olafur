@@ -1,59 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <GL/glew.h>
 #include "../headers/meshes.h"
 
 #define FLOAT_TOLERANCE 0.001f
 
 static const int attr_len = 3;
-static const int nbr_attributes = 2;
 
 /*
-static float triangle_nocolor[] =
+static GLfloat triangle_nocolor[] =
 {
      0.0f,  0.5f,  0.0f, 
      0.5f, -0.5f,  0.0f, 
     -0.5f, -0.5f,  0.0f,
 };
+static GLuint triangle_nocolor_indices[] = { 0, 1, 2 };
 */
 
-static float triangle[] =
+static GLfloat triangle[] =
 {
      0.0f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
      0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
     -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
 };
+static GLuint triangle_indices[] = { 0, 1, 2 };
 
-static float square[] =
+static GLfloat square[] =
 {
     /*
-        .
-        .  .
+        .   + . .   0, 1, 2,
+        . .     .   0, 3, 1
     */
-    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
+    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f,
      0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
     -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
-
-    /*
-        .  .
-           .
-    */
-    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
      0.5f,  0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
-     0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
+};
+static GLuint square_indices[] = 
+{
+    0, 1, 2,
+    0, 3, 1
 };
 
-static float viewport[] =
+static GLfloat viewport[] =
 {
     -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
      1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
      1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-
-    -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
     -1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
 };
+static GLuint viewport_indices[] = 
+{
+    0, 1, 2, 
+    0, 2, 3
+};
 
-static GLuint create_mesh_vao(const GLfloat vertex_data[], 
-    const int vertex_data_len, const int nbr_attributes, const GLenum usage);
+static void create_mesh_buffer_objects(MeshStruct* mesh);
 
 void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
 {
@@ -115,77 +117,103 @@ void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
     return;
 }
 
-GLuint create_mesh(const MeshShape shape, int* nbr_vertices)
+MeshStruct* create_mesh(const MeshShape shape)
 {
-    GLuint VAO = 0;
-    float* vertex_data;
-    int vertex_data_len;
+    MeshStruct* mesh = 0;
+
+    mesh = malloc(sizeof(MeshStruct));
+    if (!mesh)
+    {
+        fprintf(stderr, "ERROR: Couldn't allocate memory for mesh.\n");
+        return 0;
+    }
+
+    mesh->shape = shape;
+    mesh->usage = GL_STATIC_DRAW;
+    mesh->VAO = 0;
+    mesh->EBO = 0;
+    mesh->nbr_attributes = 2;
 
     if (shape == MESH_TRIANGLE)
     {
-        vertex_data = triangle;
-        vertex_data_len = sizeof(triangle)/sizeof(triangle[0]);
+        mesh->vertex_data = triangle;
+        mesh->vertex_data_len = sizeof(triangle)/sizeof(triangle[0]);
+        mesh->indices = triangle_indices;
+        mesh->indices_len = sizeof(triangle_indices)
+            /sizeof(triangle_indices[0]);
     }
     else if (shape == MESH_SQUARE)
     {
-        vertex_data = square;
-        vertex_data_len = sizeof(square)/sizeof(square[0]);
+        mesh->vertex_data = square;
+        mesh->vertex_data_len = sizeof(square)/sizeof(square[0]);
+        mesh->indices = square_indices;
+        mesh->indices_len = sizeof(square_indices)/sizeof(square_indices[0]);
     }
     else if (shape == MESH_VIEWPORT)
     {
-        vertex_data = viewport;
-        vertex_data_len = sizeof(viewport)/sizeof(viewport[0]);
+        mesh->vertex_data = viewport;
+        mesh->vertex_data_len = sizeof(viewport)/sizeof(viewport[0]);
+        mesh->indices = viewport_indices;
+        mesh->indices_len = sizeof(viewport_indices)
+            /sizeof(viewport_indices[0]);
     }
     else
-        return 0;
-
-    VAO = create_mesh_vao(vertex_data, vertex_data_len, nbr_attributes, 
-        GL_STATIC_DRAW);
-
-    if (!VAO)
     {
-        /* TODO: Error handling */
+        free(mesh);
+        fprintf(stderr, "ERROR: Invalid enum for mesh shape. "
+            "Mesh not created.\n");
+        return 0;
     }
 
-    *nbr_vertices = vertex_data_len / attr_len / nbr_attributes;
-    return VAO;
+    create_mesh_buffer_objects(mesh);
+
+    return mesh;
 }
 
-void free_mesh(GLuint* VAO)
+void free_mesh(MeshStruct* mesh)
 {
     int i = 0;
     GLint len = 0;
-    GLuint vbo = 0;
+    GLuint VBO = 0;
+
+    if (!mesh)
+        return;
+
+    /* Free the EBO */
+    glDeleteBuffers(1, &mesh->EBO);
 
     /* Free the VBOs related to the VAO */
-    glBindVertexArray(*VAO);
+    glBindVertexArray(mesh->VAO);
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &len);
     for (i = 0; i < len; ++i)
     {
-        vbo = 0;
-        glGetVertexAttribIuiv(i, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &vbo);
-        if (vbo)
-            glDeleteBuffers(1, &vbo);
+        VBO = 0;
+        glGetVertexAttribIuiv(i, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &VBO);
+        if (VBO)
+            glDeleteBuffers(1, &VBO);
     }
 
     /* Free the VAO */
-    glDeleteVertexArrays(1, VAO);
+    glDeleteVertexArrays(1, &mesh->VAO);
+
+    /* Free the struct */
+    free(mesh);
 
     /* Nullify the reference to avoid a double free */
-    *VAO = 0;
+    mesh = 0;
     return;
 }
 
-static GLuint create_mesh_vao(const GLfloat vertex_data[], 
-    const int vertex_data_len, const int nbr_attributes, const GLenum usage)
+static void create_mesh_buffer_objects(MeshStruct* mesh)
 {
     int i;
-    /* Vertex Buffer Object / Vertex Array Object */
-    GLuint VBO, VAO;
+    GLuint VBO; /* Vertex Buffer Object */
+    GLuint VAO; /* Vertex Array Object */
+    GLuint EBO; /* Element Buffer Object */
 
     /*  ARRAY EXAMPLE WITH TWO ATTRIBUTES:
         ```
-        float vertex_data[] =
+        GLfloat vertex_data[] =
         {
              // Position             // Color
              0.0f,  0.5f,  0.0f,     0.5f, 0.8f, 1.0f, 
@@ -193,19 +221,25 @@ static GLuint create_mesh_vao(const GLfloat vertex_data[],
             -0.5f, -0.5f,  0.0f,     0.5f, 0.8f, 1.0f, 
         };
         ```
-
-        USAGE EXAMPLE: `GL_STATIC_DRAW`
     */
+
+    if (!mesh)
+        return;
 
     VBO = 0;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertex_data_len * sizeof(float), 
-        vertex_data, usage);
+    glBufferData(GL_ARRAY_BUFFER, mesh->vertex_data_len * sizeof(GLfloat), 
+        mesh->vertex_data, mesh->usage);
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->indices_len * sizeof(GLuint), 
+        mesh->indices, mesh->usage);
 
     /*
         Set up attributes. For example, the position attribute is represented 
@@ -213,20 +247,22 @@ static GLuint create_mesh_vao(const GLfloat vertex_data[],
         layout(location = 1) is the color attribute.
 
         - `attr_len` being 3 means vertex_data is organized in vec3.
-        - `nbr_attributes * attr_len * sizeof(float)` is the stride, aka how many 
-        bytes a vertex is made of in total.
+        - `nbr_attributes * attr_len * sizeof(GLfloat)` is the stride, aka how 
+        many bytes a vertex is made of in total.
         - Last arg is, in the stride, a pointer to the attribute.
     */
-    for (i = 0; i < nbr_attributes; ++i)
+    for (i = 0; i < mesh->nbr_attributes; ++i)
     {
         glEnableVertexArrayAttrib(VAO, i);
         glVertexAttribPointer(i, attr_len, GL_FLOAT, GL_FALSE, 
-            attr_len * nbr_attributes * sizeof(float), 
-            (const void*)(attr_len * i * sizeof(float)));
+            attr_len * mesh->nbr_attributes * sizeof(GLfloat), 
+            (const void*)(attr_len * i * sizeof(GLfloat)));
     }
 
-    /* TODO: Error handling for VAO? */
+    /* TODO: Error handling for VBO, VAO or EBO? */
 
-    return VAO;
+    mesh->VAO = VAO;
+    mesh->EBO = EBO;
+    return;
 }
 
