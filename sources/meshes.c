@@ -11,23 +11,23 @@ static const int attr_len = 3;
 static GLfloat triangle_nocolor[] =
 {
      0.0f,  0.5f,  0.0f, 
-     0.5f, -0.5f,  0.0f, 
     -0.5f, -0.5f,  0.0f,
+     0.5f, -0.5f,  0.0f
 };
 static GLuint triangle_nocolor_indices[] = { 0, 1, 2 };
 */
 
 static GLfloat point[] = 
 {
-    0.0f, 0.0f, 0.0f,       1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f,       1.0f, 0.0f, 0.0f
 };
 static GLuint point_indices[] = { 0 };
 
 static GLfloat triangle[] =
 {
      0.0f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
-     0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
-    -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
+    -0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
+     0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f
 };
 static GLuint triangle_indices[] = { 0, 1, 2 };
 
@@ -35,25 +35,25 @@ static GLfloat square[] =
 {
     /*
         .   + . .   0, 1, 2,
-        . .     .   0, 3, 1
+        . .     .   0, 2, 3
     */
-    -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
-    -0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f, 
-     0.5f,  0.5f,  0.0f,    0.0f, 1.0f, 0.0f, 
+    -0.5f,  0.5f,  0.0f,    0.8f, 0.0f, 0.0f,
+    -0.5f, -0.5f,  0.0f,    0.0f, 0.5f, 0.0f, 
+     0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 0.8f, 
+     0.5f,  0.5f,  0.0f,    0.3f, 0.2f, 0.5f
 };
 static GLuint square_indices[] = 
 {
     0, 1, 2,
-    0, 3, 1
+    0, 2, 3
 };
 
 static GLfloat viewport[] =
 {
     -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
     -1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
+     1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f
 };
 static GLuint viewport_indices[] = 
 {

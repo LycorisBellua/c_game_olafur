@@ -44,6 +44,7 @@ int main(int argc, char** argv)
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
+    glEnable(GL_CULL_FACE);
     /*
         Line width should be 1.0f by default, but it's better to set it 
         explicitely to know which width we deal with. Set it to 1.5f otherwise 
@@ -53,10 +54,6 @@ int main(int argc, char** argv)
         enough.
     */
     glLineWidth(1.5f);
-
-    /*
-    glEnable(GL_CULL_FACE);
-    */
 
     set_app_glsl_version();
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
@@ -97,8 +94,8 @@ int main(int argc, char** argv)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        color_uniform->activate(color_uniform, 0);
         /*
+        color_uniform->activate(color_uniform, 0);
         render_mesh(mesh_viewport, GL_TRIANGLES);
         render_mesh(mesh_triangle, GL_TRIANGLES);
         */
