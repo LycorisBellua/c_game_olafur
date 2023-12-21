@@ -17,6 +17,12 @@ static GLfloat triangle_nocolor[] =
 static GLuint triangle_nocolor_indices[] = { 0, 1, 2 };
 */
 
+static GLfloat point[] = 
+{
+    0.0f, 0.0f, 0.0f,       1.0f, 0.0f, 0.0f,
+};
+static GLuint point_indices[] = { 0 };
+
 static GLfloat triangle[] =
 {
      0.0f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f, 
@@ -134,7 +140,15 @@ MeshStruct* create_mesh(const MeshShape shape)
     mesh->EBO = 0;
     mesh->nbr_attributes = 2;
 
-    if (shape == MESH_TRIANGLE)
+    if (shape == MESH_POINT)
+    {
+        mesh->vertex_data = point;
+        mesh->vertex_data_len = sizeof(point)/sizeof(point[0]);
+        mesh->indices = point_indices;
+        mesh->indices_len = sizeof(point_indices)
+            /sizeof(point_indices[0]);
+    }
+    else if (shape == MESH_TRIANGLE)
     {
         mesh->vertex_data = triangle;
         mesh->vertex_data_len = sizeof(triangle)/sizeof(triangle[0]);

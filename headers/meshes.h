@@ -3,7 +3,8 @@
 
 typedef enum
 {
-    MESH_TRIANGLE = 1,
+    MESH_POINT = 1,
+    MESH_TRIANGLE,
     MESH_SQUARE,
     MESH_VIEWPORT
 } MeshShape;
