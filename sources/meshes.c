@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "../headers/meshes.h"
+#include "../headers/windowing.h"
 
 #define FLOAT_TOLERANCE 0.001f
 
+MeshStruct* meshes[5] = {0};
 static const int attr_len = 3;
 
 /*
@@ -62,6 +65,18 @@ static GLuint viewport_indices[] =
 };
 
 static void create_mesh_buffer_objects(MeshStruct* mesh);
+
+void create_meshes(void)
+{
+    convert_vertex_positions_to_aspect_ratio(get_aspect_ratio());
+
+    meshes[0] = create_mesh(SHAPE_POINT);
+    meshes[1] = create_mesh(SHAPE_SQUARE);
+    meshes[2] = create_mesh(SHAPE_TRIANGLE);
+    meshes[3] = create_mesh(SHAPE_VIEWPORT);
+    meshes[4] = 0;
+    return;
+}
 
 void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
 {
@@ -140,7 +155,7 @@ MeshStruct* create_mesh(const MeshShape shape)
     mesh->EBO = 0;
     mesh->nbr_attributes = 2;
 
-    if (shape == MESH_POINT)
+    if (shape == SHAPE_POINT)
     {
         mesh->vertex_data = point;
         mesh->vertex_data_len = sizeof(point)/sizeof(point[0]);
@@ -148,7 +163,7 @@ MeshStruct* create_mesh(const MeshShape shape)
         mesh->indices_len = sizeof(point_indices)
             /sizeof(point_indices[0]);
     }
-    else if (shape == MESH_TRIANGLE)
+    else if (shape == SHAPE_TRIANGLE)
     {
         mesh->vertex_data = triangle;
         mesh->vertex_data_len = sizeof(triangle)/sizeof(triangle[0]);
@@ -156,14 +171,14 @@ MeshStruct* create_mesh(const MeshShape shape)
         mesh->indices_len = sizeof(triangle_indices)
             /sizeof(triangle_indices[0]);
     }
-    else if (shape == MESH_SQUARE)
+    else if (shape == SHAPE_SQUARE)
     {
         mesh->vertex_data = square;
         mesh->vertex_data_len = sizeof(square)/sizeof(square[0]);
         mesh->indices = square_indices;
         mesh->indices_len = sizeof(square_indices)/sizeof(square_indices[0]);
     }
-    else if (shape == MESH_VIEWPORT)
+    else if (shape == SHAPE_VIEWPORT)
     {
         mesh->vertex_data = viewport;
         mesh->vertex_data_len = sizeof(viewport)/sizeof(viewport[0]);
@@ -184,20 +199,32 @@ MeshStruct* create_mesh(const MeshShape shape)
     return mesh;
 }
 
-void free_mesh(MeshStruct* mesh)
+void free_meshes(void)
+{
+    unsigned int i;
+    for (i = 0; i < sizeof(meshes)/sizeof(MeshStruct*); ++i)
+    {
+        if (!meshes[i])
+            break;
+        free_mesh(&meshes[i]);
+    }
+    return;
+}
+
+void free_mesh(MeshStruct** mesh)
 {
     int i = 0;
     GLint len = 0;
     GLuint VBO = 0;
 
-    if (!mesh)
+    if (!*mesh)
         return;
 
     /* Free the EBO */
-    glDeleteBuffers(1, &mesh->EBO);
+    glDeleteBuffers(1, &(*mesh)->EBO);
 
     /* Free the VBOs related to the VAO */
-    glBindVertexArray(mesh->VAO);
+    glBindVertexArray((*mesh)->VAO);
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &len);
     for (i = 0; i < len; ++i)
     {
@@ -208,13 +235,13 @@ void free_mesh(MeshStruct* mesh)
     }
 
     /* Free the VAO */
-    glDeleteVertexArrays(1, &mesh->VAO);
+    glDeleteVertexArrays(1, &(*mesh)->VAO);
 
     /* Free the struct */
-    free(mesh);
+    free(*mesh);
 
     /* Nullify the reference to avoid a double free */
-    mesh = 0;
+    *mesh = 0;
     return;
 }
 

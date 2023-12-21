@@ -3,10 +3,10 @@
 
 typedef enum
 {
-    MESH_POINT = 1,
-    MESH_TRIANGLE,
-    MESH_SQUARE,
-    MESH_VIEWPORT
+    SHAPE_POINT = 1,
+    SHAPE_TRIANGLE,
+    SHAPE_SQUARE,
+    SHAPE_VIEWPORT
 } MeshShape;
 
 typedef struct
@@ -24,9 +24,13 @@ typedef struct
     int indices_len;
 } MeshStruct;
 
+extern MeshStruct* meshes[5];
+
+void create_meshes(void);
 void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio);
 MeshStruct* create_mesh(const MeshShape shape);
-void free_mesh(MeshStruct* mesh);
+void free_meshes(void);
+void free_mesh(MeshStruct** mesh);
 
 #endif
 

@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "../headers/input.h"
 #include "../headers/windowing.h"
-#include "../headers/player.h"
+#include "../headers/interfaces.h"
 
 static int get_local_key(const int physical_key);
 static void input_escape(GLFWwindow* window, const int action);
@@ -103,16 +103,19 @@ static void input_escape(GLFWwindow* window, const int action)
     if (action != GLFW_PRESS)
         return;
 
-    if (is_in_main_menu)
+    if (!active_interface->previous)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    is_in_main_menu = !is_in_main_menu;
+    set_active_interface(active_interface->previous);
     return;
 }
 
 static void input_enter(const int action)
 {
-    if (action == GLFW_PRESS)
-        is_in_main_menu = 0;
+    if (action != GLFW_PRESS || !active_interface->next)
+        return;
+
+    set_active_interface(active_interface->next);
+    return;
 }
 
 static void input_up(const int action)

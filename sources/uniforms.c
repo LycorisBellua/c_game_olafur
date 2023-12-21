@@ -4,10 +4,20 @@
 #include <GL/glew.h>
 #include "../headers/uniforms.h"
 
+UniformStruct* uniforms[2] = {0};
+
 static void get_length_and_datatype(const UniformCallback activate, 
     int* length, GlslDatatype* type);
 static void populate_data(void* data, const va_list args, const int length, 
     const GlslDatatype type);
+
+void create_uniforms(const GLuint shader_program)
+{
+    uniforms[0] = create_uniform(shader_program, "single_color", 
+        activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
+    uniforms[1] = 0;
+    return;
+}
 
 UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
     const UniformCallback activate, ...)
@@ -58,6 +68,18 @@ UniformStruct* create_uniform(const GLuint shader_program, const char* name,
     va_end(args);
 
     return u;
+}
+
+void free_uniforms(void)
+{
+    unsigned int i;
+    for (i = 0; i < sizeof(uniforms)/sizeof(UniformStruct*); ++i)
+    {
+        if (!uniforms[i])
+            break;
+        free_uniform(&uniforms[i]);
+    }
+    return;
 }
 
 void free_uniform(UniformStruct** u)

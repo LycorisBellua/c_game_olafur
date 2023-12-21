@@ -7,8 +7,8 @@
 #include "../headers/shader_handling.h"
 #include "../headers/uniforms.h"
 #include "../headers/meshes.h"
+#include "../headers/interfaces.h"
 #include "../headers/rendering.h"
-#include "../headers/player.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -32,12 +32,6 @@ int main(int argc, char** argv)
     GLuint vs = 0;
     GLuint fs = 0;
     GLuint shader_program = 0;
-    UniformStruct* color_uniform = 0;
-
-    MeshStruct* mesh_point = 0;
-    MeshStruct* mesh_square = 0;
-    MeshStruct* mesh_triangle = 0;
-    MeshStruct* mesh_viewport = 0;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -66,61 +60,27 @@ int main(int argc, char** argv)
     */
     free_shader(&vs);
     free_shader(&fs);
-    color_uniform = create_uniform(shader_program, "single_color", 
-        activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
 
-    convert_vertex_positions_to_aspect_ratio(get_aspect_ratio());
-    mesh_point = create_mesh(MESH_POINT);
-    mesh_square = create_mesh(MESH_SQUARE);
-    mesh_triangle = create_mesh(MESH_TRIANGLE);
-    mesh_viewport = create_mesh(MESH_VIEWPORT);
+    create_uniforms(shader_program);
+    create_meshes();
+    initialize_interfaces();
 
     /* Switch to another shader program by calling this function again */
     if (shader_program)
         glUseProgram(shader_program);
 
-    /*
-       GL_POINTS
-
-       GL_LINES
-       GL_LINE_STRIP
-       GL_LINE_LOOP
-
-       GL_TRIANGLES
-       GL_TRIANGLE_STRIP
-       GL_TRIANGLE_FAN
-    */
-
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if (is_in_main_menu)
-        {
-            color_uniform->activate(color_uniform, 0);
-            render_mesh(mesh_triangle, GL_TRIANGLES);
-        }
-        else
-        {
-            color_uniform->activate(color_uniform, 0);
-            render_mesh(mesh_square, GL_TRIANGLES);
-            color_uniform->activate(color_uniform, 1);
-            render_mesh(mesh_square, GL_LINE_LOOP);
-        }
-
-        /*
-            *((float*)color_uniform->data + 2) = 0.0f;
-        */
+        active_interface->render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
     free_shader_program(&shader_program);
-    free_uniform(&color_uniform);
-    free_mesh(mesh_point);
-    free_mesh(mesh_square);
-    free_mesh(mesh_triangle);
-    free_mesh(mesh_viewport);
+    free_uniforms();
+    free_meshes();
     glfwTerminate();
 
     list_arguments(argc, argv);

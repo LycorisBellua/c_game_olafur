@@ -17,8 +17,12 @@ struct UniformStruct
     void* data;
 };
 
+extern UniformStruct* uniforms[2];
+
+void create_uniforms(const GLuint shader_program);
 UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
     const UniformCallback activate, ...);
+void free_uniforms(void);
 void free_uniform(UniformStruct** u);
 
 void activate_uniform_float(const UniformStruct* u, const int activate);
