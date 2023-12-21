@@ -8,6 +8,7 @@
 #include "../headers/uniforms.h"
 #include "../headers/meshes.h"
 #include "../headers/rendering.h"
+#include "../headers/player.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -94,18 +95,18 @@ int main(int argc, char** argv)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        /*
-        color_uniform->activate(color_uniform, 0);
-        render_mesh(mesh_viewport, GL_TRIANGLES);
-        render_mesh(mesh_triangle, GL_TRIANGLES);
-        */
-
-        render_mesh(mesh_square, GL_TRIANGLES);
-        color_uniform->activate(color_uniform, 1);
-        render_mesh(mesh_square, GL_LINE_LOOP);
-
-        color_uniform->activate(color_uniform, 0);
-        render_mesh(mesh_point, GL_POINTS);
+        if (is_in_main_menu)
+        {
+            color_uniform->activate(color_uniform, 0);
+            render_mesh(mesh_triangle, GL_TRIANGLES);
+        }
+        else
+        {
+            color_uniform->activate(color_uniform, 0);
+            render_mesh(mesh_square, GL_TRIANGLES);
+            color_uniform->activate(color_uniform, 1);
+            render_mesh(mesh_square, GL_LINE_LOOP);
+        }
 
         /*
             *((float*)color_uniform->data + 2) = 0.0f;

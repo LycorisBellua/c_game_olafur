@@ -2,9 +2,11 @@
 #include <GLFW/glfw3.h>
 #include "../headers/input.h"
 #include "../headers/windowing.h"
+#include "../headers/player.h"
 
 static int get_local_key(const int physical_key);
-static void input_escape(GLFWwindow* window);
+static void input_escape(GLFWwindow* window, const int action);
+static void input_enter(const int action);
 
 static void input_up(const int action);
 static void input_down(const int action);
@@ -25,7 +27,9 @@ void physical_key_callback
     if (key > 255)
     {
         if (key == GLFW_KEY_ESCAPE)
-            input_escape(window);
+            input_escape(window, action);
+        else if (key == GLFW_KEY_ENTER)
+            input_enter(action);
         else if (key == GLFW_KEY_UP)
             input_up(action);
         else if (key == GLFW_KEY_DOWN)
@@ -82,7 +86,7 @@ static int get_local_key(const int physical_key)
     return key_name[0] - 32;
 }
 
-static void input_escape(GLFWwindow* window)
+static void input_escape(GLFWwindow* window, const int action)
 {
     /* 
        By default, the window closing event is triggered by the cross 
@@ -95,8 +99,20 @@ static void input_escape(GLFWwindow* window)
        whole program (windows included) can be closed with 
        `glfwTerminate()`.
     */
-    glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+    if (action != GLFW_PRESS)
+        return;
+
+    if (is_in_main_menu)
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    is_in_main_menu = !is_in_main_menu;
     return;
+}
+
+static void input_enter(const int action)
+{
+    if (action == GLFW_PRESS)
+        is_in_main_menu = 0;
 }
 
 static void input_up(const int action)
