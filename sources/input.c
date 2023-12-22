@@ -4,6 +4,8 @@
 #include "../headers/windowing.h"
 #include "../headers/interfaces.h"
 
+int movement_input[3] = {0};
+
 static int get_local_key(const int physical_key);
 static void input_escape(GLFWwindow* window, const int action);
 static void input_enter(const int action);
@@ -120,67 +122,71 @@ static void input_enter(const int action)
 
 static void input_up(const int action)
 {
+    /* Temporary player movement: Y axis */
     if (action == GLFW_PRESS)
-        printf("Debug: UP started\n");
+        movement_input[1] = 1;
     else if (action == GLFW_REPEAT)
-        printf("Debug: UP performed\n");
+        movement_input[1] = 1;
     else
-        printf("Debug: UP canceled\n");
+        movement_input[1] = 0;
     return;
 }
 
 static void input_down(const int action)
 {
+    /* Temporary player movement: Y axis */
     if (action == GLFW_PRESS)
-        printf("Debug: DOWN started\n");
+        movement_input[1] = -1;
     else if (action == GLFW_REPEAT)
-        printf("Debug: DOWN performed\n");
+        movement_input[1] = -1;
     else
-        printf("Debug: DOWN canceled\n");
+        movement_input[1] = 0;
     return;
 }
 
 static void input_right(const int action)
 {
+    /* Temporary player movement: X axis, meant to be rotation */
     if (action == GLFW_PRESS)
-        printf("Debug: RIGHT started\n");
+        movement_input[0] = 1;
     else if (action == GLFW_REPEAT)
-        printf("Debug: RIGHT performed\n");
+        movement_input[0] = 1;
     else
-        printf("Debug: RIGHT canceled\n");
+        movement_input[0] = 0;
     return;
 }
 
 static void input_left(const int action)
 {
+    /* Temporary player movement: X axis, meant to be rotation */
     if (action == GLFW_PRESS)
-        printf("Debug: LEFT started\n");
+        movement_input[0] = -1;
     else if (action == GLFW_REPEAT)
-        printf("Debug: LEFT performed\n");
+        movement_input[0] = -1;
     else
-        printf("Debug: LEFT canceled\n");
+        movement_input[0] = 0;
     return;
 }
 
 static void input_strafe_left(const int action)
 {
     if (action == GLFW_PRESS)
-        printf("Debug: STRAFE LEFT started\n");
+        movement_input[0] = -1;
     else if (action == GLFW_REPEAT)
-        printf("Debug: STRAFE LEFT performed\n");
+        movement_input[0] = -1;
     else
-        printf("Debug: STRAFE LEFT canceled\n");
+        movement_input[0] = 0;
     return;
 }
 
 static void input_strafe_right(const int action)
 {
     if (action == GLFW_PRESS)
-        printf("Debug: STRAFE RIGHT started\n");
+        movement_input[0] = 1;
     else if (action == GLFW_REPEAT)
-        printf("Debug: STRAFE RIGHT performed\n");
+        movement_input[0] = 1;
     else
-        printf("Debug: STRAFE RIGHT canceled\n");
+        movement_input[0] = 0;
     return;
 }
 

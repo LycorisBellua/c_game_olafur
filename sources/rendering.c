@@ -1,7 +1,13 @@
+#include <stdio.h>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "../headers/meshes.h"
 #include "../headers/rendering.h"
 #include "../headers/uniforms.h"
+#include "../headers/input.h"
+#include "../headers/windowing.h"
+
+float player_speed[3] = { -0.01f, -0.01f, -0.01f };
 
 /*
    GL_POINTS
@@ -43,6 +49,17 @@ void render_game(void)
     /* Square & "single_color" uniform */
     uniforms[0]->activate(uniforms[0], 1);
     render_mesh(meshes[1], GL_LINE_LOOP);
+    return;
+}
+
+void move_player(void)
+{
+    /* "pos_offset" uniform */
+    *((float*)uniforms[1]->data + 0) += movement_input[0] * player_speed[0];
+    *((float*)uniforms[1]->data + 1) += movement_input[1] * player_speed[1];
+    *((float*)uniforms[1]->data + 2) += movement_input[2] * player_speed[2];
+
+    uniforms[1]->activate(uniforms[1], 1);
     return;
 }
 

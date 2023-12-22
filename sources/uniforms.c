@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include "../headers/uniforms.h"
 
-UniformStruct* uniforms[2] = {0};
+UniformStruct* uniforms[NBR_UNIFORMS] = {0};
 
 static void get_length_and_datatype(const UniformCallback activate, 
     int* length, GlslDatatype* type);
@@ -15,7 +15,9 @@ void create_uniforms(const GLuint shader_program)
 {
     uniforms[0] = create_uniform(shader_program, "single_color", 
         activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
-    uniforms[1] = 0;
+    uniforms[1] = create_uniform(shader_program, "pos_offset", 
+        activate_uniform_vec3, 0.0f, 0.0f, 0.0f);
+    uniforms[NBR_UNIFORMS - 1] = 0;
     return;
 }
 
@@ -385,3 +387,4 @@ static void populate_data(void* data, const va_list args, const int length,
     }
     return;
 }
+
