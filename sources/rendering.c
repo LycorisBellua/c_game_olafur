@@ -34,6 +34,12 @@ void render_mesh(const MeshStruct* mesh, const GLenum drawing_mode)
 
 void render_main_menu(void)
 {
+    /* Background representing the viewport:
+    uniforms[1]->activate(uniforms[1], 0);
+    render_mesh(meshes[3], GL_TRIANGLES);
+    uniforms[1]->activate(uniforms[1], 1);
+    */
+
     /* Triangle & "single_color" uniform */
     uniforms[0]->activate(uniforms[0], 0);
     render_mesh(meshes[2], GL_TRIANGLES);
@@ -55,9 +61,9 @@ void render_game(void)
 void move_player(void)
 {
     /* "pos_offset" uniform */
-    *((float*)uniforms[1]->data + 0) += movement_input[0] * player_speed[0];
-    *((float*)uniforms[1]->data + 1) += movement_input[1] * player_speed[1];
-    *((float*)uniforms[1]->data + 2) += movement_input[2] * player_speed[2];
+    *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
+    *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
+    *((float*)uniforms[1]->data + 2) += movement_action[2] * player_speed[2];
 
     uniforms[1]->activate(uniforms[1], 1);
     return;

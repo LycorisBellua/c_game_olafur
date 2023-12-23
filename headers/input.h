@@ -1,7 +1,7 @@
 #ifndef __INPUT_H__
 #define __INPUT_H__
 
-extern int movement_input[3];
+extern int movement_action[3];
 
 void physical_key_callback(GLFWwindow* window, const int key, 
     const int scancode, const int action, const int mods);

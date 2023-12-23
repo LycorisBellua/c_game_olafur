@@ -4,9 +4,12 @@
 #include "../headers/windowing.h"
 #include "../headers/interfaces.h"
 
-int movement_input[3] = {0};
+int movement_action[3] = {0};
+static int movement_input[3] = {0};
 
 static int get_local_key(const int physical_key);
+static void update_movement_action(const int axis);
+
 static void input_escape(GLFWwindow* window, const int action);
 static void input_enter(const int action);
 
@@ -88,6 +91,19 @@ static int get_local_key(const int physical_key)
     return key_name[0] - 32;
 }
 
+static void update_movement_action(const int axis)
+{
+    int input = movement_input[axis];
+
+    if (input < 0)
+        movement_action[axis] = -1;
+    else if (input > 0)
+        movement_action[axis] = 1;
+    else
+        movement_action[axis] = 0;
+    return;
+}
+
 static void input_escape(GLFWwindow* window, const int action)
 {
     /* 
@@ -124,11 +140,14 @@ static void input_up(const int action)
 {
     /* Temporary player movement: Y axis */
     if (action == GLFW_PRESS)
-        movement_input[1] = 1;
+        movement_input[1] += 1;
     else if (action == GLFW_REPEAT)
-        movement_input[1] = 1;
+    {
+    }
     else
-        movement_input[1] = 0;
+        movement_input[1] -= 1;
+
+    update_movement_action(1);
     return;
 }
 
@@ -136,11 +155,14 @@ static void input_down(const int action)
 {
     /* Temporary player movement: Y axis */
     if (action == GLFW_PRESS)
-        movement_input[1] = -1;
+        movement_input[1] += -1;
     else if (action == GLFW_REPEAT)
-        movement_input[1] = -1;
+    {
+    }
     else
-        movement_input[1] = 0;
+        movement_input[1] -= -1;
+
+    update_movement_action(1);
     return;
 }
 
@@ -148,11 +170,14 @@ static void input_right(const int action)
 {
     /* Temporary player movement: X axis, meant to be rotation */
     if (action == GLFW_PRESS)
-        movement_input[0] = 1;
+        movement_input[0] += 1;
     else if (action == GLFW_REPEAT)
-        movement_input[0] = 1;
+    {
+    }
     else
-        movement_input[0] = 0;
+        movement_input[0] -= 1;
+
+    update_movement_action(0);
     return;
 }
 
@@ -160,33 +185,42 @@ static void input_left(const int action)
 {
     /* Temporary player movement: X axis, meant to be rotation */
     if (action == GLFW_PRESS)
-        movement_input[0] = -1;
+        movement_input[0] += -1;
     else if (action == GLFW_REPEAT)
-        movement_input[0] = -1;
+    {
+    }
     else
-        movement_input[0] = 0;
+        movement_input[0] -= -1;
+
+    update_movement_action(0);
     return;
 }
 
 static void input_strafe_left(const int action)
 {
     if (action == GLFW_PRESS)
-        movement_input[0] = -1;
+        movement_input[0] += -1;
     else if (action == GLFW_REPEAT)
-        movement_input[0] = -1;
+    {
+    }
     else
-        movement_input[0] = 0;
+        movement_input[0] -= -1;
+
+    update_movement_action(0);
     return;
 }
 
 static void input_strafe_right(const int action)
 {
     if (action == GLFW_PRESS)
-        movement_input[0] = 1;
+        movement_input[0] += 1;
     else if (action == GLFW_REPEAT)
-        movement_input[0] = 1;
+    {
+    }
     else
-        movement_input[0] = 0;
+        movement_input[0] -= 1;
+
+    update_movement_action(0);
     return;
 }
 
