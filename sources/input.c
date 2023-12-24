@@ -6,10 +6,13 @@
 
 int movement_action[3] = {0};
 static int movement_input[3] = {0};
-
-static int get_local_key(const int physical_key);
 static void update_movement_action(const int axis);
 
+int rotation_action = 0;
+static int rotation_input = 0;
+static void update_rotation_action(void);
+
+static int get_local_key(const int physical_key);
 static void input_escape(GLFWwindow* window, const int action);
 static void input_enter(const int action);
 
@@ -84,13 +87,6 @@ void char_key_callback
     return;
 }
 
-static int get_local_key(const int physical_key)
-{
-    /* It will be in lowercase, so -32 for uppercase */
-    const char* key_name = glfwGetKeyName(physical_key, 0);
-    return key_name[0] - 32;
-}
-
 static void update_movement_action(const int axis)
 {
     int input = movement_input[axis];
@@ -102,6 +98,24 @@ static void update_movement_action(const int axis)
     else
         movement_action[axis] = 0;
     return;
+}
+
+static void update_rotation_action(void)
+{
+    if (rotation_input < 0)
+        rotation_action = -1;
+    else if (rotation_input > 0)
+        rotation_action = 1;
+    else
+        rotation_action = 0;
+    return;
+}
+
+static int get_local_key(const int physical_key)
+{
+    /* It will be in lowercase, so -32 for uppercase */
+    const char* key_name = glfwGetKeyName(physical_key, 0);
+    return key_name[0] - 32;
 }
 
 static void input_escape(GLFWwindow* window, const int action)
@@ -168,31 +182,29 @@ static void input_down(const int action)
 
 static void input_right(const int action)
 {
-    /* Temporary player movement: X axis, meant to be rotation */
     if (action == GLFW_PRESS)
-        movement_input[0] += 1;
+        rotation_input += 1;
     else if (action == GLFW_REPEAT)
     {
     }
     else
-        movement_input[0] -= 1;
+        rotation_input -= 1;
 
-    update_movement_action(0);
+    update_rotation_action();
     return;
 }
 
 static void input_left(const int action)
 {
-    /* Temporary player movement: X axis, meant to be rotation */
     if (action == GLFW_PRESS)
-        movement_input[0] += -1;
+        rotation_input += -1;
     else if (action == GLFW_REPEAT)
     {
     }
     else
-        movement_input[0] -= -1;
+        rotation_input -= -1;
 
-    update_movement_action(0);
+    update_rotation_action();
     return;
 }
 

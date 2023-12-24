@@ -64,8 +64,11 @@ void move_player(void)
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
     *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
     *((float*)uniforms[1]->data + 2) += movement_action[2] * player_speed[2];
-
     uniforms[1]->activate(uniforms[1], 1);
+
+    /* "yaw" uniform (rotation around Y axis) */
+    *((float*)uniforms[2]->data + 0) += rotation_action * player_speed[1];
+    uniforms[2]->activate(uniforms[2], 1);
     return;
 }
 

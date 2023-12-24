@@ -17,7 +17,7 @@ struct UniformStruct
     void* data;
 };
 
-#define NBR_UNIFORMS 3
+#define NBR_UNIFORMS 4
 extern UniformStruct* uniforms[NBR_UNIFORMS];
 
 void create_uniforms(const GLuint shader_program);
