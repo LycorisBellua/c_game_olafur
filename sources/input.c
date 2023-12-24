@@ -152,31 +152,29 @@ static void input_enter(const int action)
 
 static void input_up(const int action)
 {
-    /* Temporary player movement: Y axis */
     if (action == GLFW_PRESS)
-        movement_input[1] += 1;
+        movement_input[2] += 1;
     else if (action == GLFW_REPEAT)
     {
     }
     else
-        movement_input[1] -= 1;
+        movement_input[2] -= 1;
 
-    update_movement_action(1);
+    update_movement_action(2);
     return;
 }
 
 static void input_down(const int action)
 {
-    /* Temporary player movement: Y axis */
     if (action == GLFW_PRESS)
-        movement_input[1] += -1;
+        movement_input[2] += -1;
     else if (action == GLFW_REPEAT)
     {
     }
     else
-        movement_input[1] -= -1;
+        movement_input[2] -= -1;
 
-    update_movement_action(1);
+    update_movement_action(2);
     return;
 }
 

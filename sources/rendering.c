@@ -7,7 +7,7 @@
 #include "../headers/input.h"
 #include "../headers/windowing.h"
 
-float player_speed[3] = { -0.01f, -0.01f, -0.01f };
+float player_speed[3] = { -0.01f, -0.01f, 0.007f };
 
 /*
    GL_POINTS
@@ -65,7 +65,6 @@ void move_player(void)
     /* "pos_offset" uniform */
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
     *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
-    *((float*)uniforms[1]->data + 2) += movement_action[2] * player_speed[2];
     uniforms[1]->activate(uniforms[1], 1);
 
     /* "yaw" uniform (rotation around Y axis) */
@@ -76,6 +75,10 @@ void move_player(void)
         yaw -= 360.0f;
     *((float*)uniforms[2]->data + 0) = yaw;
     uniforms[2]->activate(uniforms[2], 1);
+
+    /* "scale_factor" uniform */
+    *((float*)uniforms[3]->data + 0) += movement_action[2] * player_speed[2];
+    uniforms[3]->activate(uniforms[3], 1);
     return;
 }
 

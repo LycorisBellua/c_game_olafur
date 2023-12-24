@@ -19,6 +19,8 @@ void create_uniforms(const GLuint shader_program)
         activate_uniform_vec3, 0.0f, 0.0f, 0.0f);
     uniforms[2] = create_uniform(shader_program, "yaw", 
         activate_uniform_float, 0.0f);
+    uniforms[3] = create_uniform(shader_program, "scale_factor", 
+        activate_uniform_float, 1.0f);
     uniforms[NBR_UNIFORMS - 1] = 0;
     return;
 }
