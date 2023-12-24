@@ -60,6 +60,8 @@ void render_game(void)
 
 void move_player(void)
 {
+    float yaw;
+
     /* "pos_offset" uniform */
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
     *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
@@ -67,7 +69,12 @@ void move_player(void)
     uniforms[1]->activate(uniforms[1], 1);
 
     /* "yaw" uniform (rotation around Y axis) */
-    *((float*)uniforms[2]->data + 0) += rotation_action * player_speed[1];
+    yaw = *((float*)uniforms[2]->data + 0) + rotation_action * player_speed[1];
+    if (yaw < -360.0f)
+        yaw += 360.0f;
+    else if (yaw > 360.0f)
+        yaw -= 360.0f;
+    *((float*)uniforms[2]->data + 0) = yaw;
     uniforms[2]->activate(uniforms[2], 1);
     return;
 }
