@@ -6,7 +6,8 @@ typedef enum
     SHAPE_POINT = 1,
     SHAPE_TRIANGLE,
     SHAPE_SQUARE,
-    SHAPE_VIEWPORT
+    SHAPE_VIEWPORT,
+    SHAPE_CUBE
 } MeshShape;
 
 typedef struct
@@ -24,7 +25,8 @@ typedef struct
     int indices_len;
 } MeshStruct;
 
-extern MeshStruct* meshes[5];
+#define NBR_MESHES 6
+extern MeshStruct* meshes[NBR_MESHES];
 
 void create_meshes(void);
 void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio);

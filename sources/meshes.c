@@ -8,7 +8,7 @@
 
 #define FLOAT_TOLERANCE 0.001f
 
-MeshStruct* meshes[5] = {0};
+MeshStruct* meshes[NBR_MESHES] = {0};
 static const int attr_len = 3;
 
 /*
@@ -65,6 +65,48 @@ static GLuint viewport_indices[] =
     0, 2, 3
 };
 
+static GLfloat cube[] =
+{
+    -0.5f,  0.5f, -0.5f,    0.8f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,    0.0f, 0.5f, 0.0f, 
+     0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.8f, 
+     0.5f,  0.5f, -0.5f,    0.3f, 0.2f, 0.5f,
+
+     0.5f,  0.5f,  0.5f,    1.0f, 1.0f, 1.0f, 
+     0.5f, -0.5f,  0.5f,    1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,    1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,    1.0f, 1.0f, 1.0f, 
+
+};
+static GLuint cube_indices[] = 
+{
+    /* Front */
+    0, 1, 2,
+    0, 2, 3,
+
+    /* Back */
+    4, 5, 6,
+    4, 6, 7,
+
+    /* Right */
+    3, 2, 5,
+    3, 5, 4,
+
+    /* Left */
+    7, 6, 1,
+    7, 1, 0,
+
+    /* Top */
+    7, 0, 3,
+    7, 3, 4,
+
+    /* Bottom (commented out because unseen) */
+    /*
+    1, 6, 5,
+    1, 5, 2,
+    */
+};
+
 static void create_mesh_buffer_objects(MeshStruct* mesh);
 
 void create_meshes(void)
@@ -75,7 +117,8 @@ void create_meshes(void)
     meshes[1] = create_mesh(SHAPE_SQUARE);
     meshes[2] = create_mesh(SHAPE_TRIANGLE);
     meshes[3] = create_mesh(SHAPE_VIEWPORT);
-    meshes[4] = 0;
+    meshes[4] = create_mesh(SHAPE_CUBE);
+    meshes[NBR_MESHES - 1] = 0;
     return;
 }
 
@@ -139,6 +182,22 @@ void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
     }
     */
 
+    vertex_data_len = sizeof(cube)/sizeof(cube[0]);
+    for (i = index_to_modify; i < vertex_data_len; i += attr_len)
+    {
+        if (i % 2 == index_to_modify)
+        {
+            cube[i] *= multiplier;
+
+            /*
+               If X is to be modified, then modify Z as well, as once the 
+               shape is rotated Z is seen as horizontal.
+            */
+            if (!index_to_modify)
+                cube[i + 2] *= multiplier;
+        }
+    }
+
     return;
 }
 
@@ -189,6 +248,13 @@ MeshStruct* create_mesh(const MeshShape shape)
         mesh->indices = viewport_indices;
         mesh->indices_len = sizeof(viewport_indices)
             /sizeof(viewport_indices[0]);
+    }
+    else if (shape == SHAPE_CUBE)
+    {
+        mesh->vertex_data = cube;
+        mesh->vertex_data_len = sizeof(cube)/sizeof(cube[0]);
+        mesh->indices = cube_indices;
+        mesh->indices_len = sizeof(cube_indices)/sizeof(cube_indices[0]);
     }
     else
     {

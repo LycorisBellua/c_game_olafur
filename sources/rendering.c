@@ -50,11 +50,11 @@ void render_game(void)
 {
     /* Square & "single_color" uniform */
     uniforms[0]->activate(uniforms[0], 0);
-    render_mesh(meshes[1], GL_TRIANGLES);
+    render_mesh(meshes[4], GL_TRIANGLES);
 
     /* Square & "single_color" uniform */
     uniforms[0]->activate(uniforms[0], 1);
-    render_mesh(meshes[1], GL_LINE_LOOP);
+    render_mesh(meshes[4], GL_LINE_LOOP);
     return;
 }
 
@@ -65,7 +65,6 @@ void move_player(void)
     /* "pos_offset" uniform */
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
     *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
-    uniforms[1]->activate(uniforms[1], 1);
 
     /* "yaw" uniform (rotation around Y axis) */
     yaw = *((float*)uniforms[2]->data + 0) + rotation_action * player_speed[1];
