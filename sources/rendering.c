@@ -60,7 +60,7 @@ void render_game(void)
 
 void move_player(void)
 {
-    float yaw;
+    float yaw, scale_factor;
 
     /* "pos_offset" uniform */
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
@@ -76,7 +76,11 @@ void move_player(void)
     uniforms[2]->activate(uniforms[2], 1);
 
     /* "scale_factor" uniform */
-    *((float*)uniforms[3]->data + 0) += movement_action[2] * player_speed[2];
+    scale_factor = *((float*)uniforms[3]->data + 0) + movement_action[2] 
+        * player_speed[2];
+    if (scale_factor < 0.0f)
+        scale_factor = 0.0f;
+    *((float*)uniforms[3]->data + 0) = scale_factor;
     uniforms[3]->activate(uniforms[3], 1);
     return;
 }
