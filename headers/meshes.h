@@ -7,7 +7,8 @@ typedef enum
     SHAPE_TRIANGLE,
     SHAPE_SQUARE,
     SHAPE_VIEWPORT,
-    SHAPE_CUBE
+    SHAPE_CUBE,
+    SHAPE_FLOOR
 } MeshShape;
 
 typedef struct
@@ -25,7 +26,7 @@ typedef struct
     int indices_len;
 } MeshStruct;
 
-#define NBR_MESHES 6
+#define NBR_MESHES 7
 extern MeshStruct* meshes[NBR_MESHES];
 
 void create_meshes(void);

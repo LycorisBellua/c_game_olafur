@@ -9,6 +9,8 @@ void render_main_menu(void);
 void render_game(void);
 
 void move_player(void);
+void straighten_pitch(void);
+void set_pitch_back(void);
 
 #endif
 

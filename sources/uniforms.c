@@ -3,7 +3,9 @@
 #include <stdarg.h>
 #include <GL/glew.h>
 #include "../headers/uniforms.h"
+#include "../headers/maths.h"
 
+const float pitch = 10.0f;
 UniformStruct* uniforms[NBR_UNIFORMS] = {0};
 
 static void get_length_and_datatype(const UniformCallback activate, 
@@ -17,8 +19,8 @@ void create_uniforms(const GLuint shader_program)
         activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
     uniforms[1] = create_uniform(shader_program, "pos_offset", 
         activate_uniform_vec3, 0.0f, 0.0f, 0.0f);
-    uniforms[2] = create_uniform(shader_program, "yaw", 
-        activate_uniform_float, 0.0f);
+    uniforms[2] = create_uniform(shader_program, "euler_angles", 
+        activate_uniform_vec3, deg2rad(pitch), 0.0f, 0.0f);
     uniforms[3] = create_uniform(shader_program, "scale_factor", 
         activate_uniform_float, 1.0f);
     uniforms[NBR_UNIFORMS - 1] = 0;

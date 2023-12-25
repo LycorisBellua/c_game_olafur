@@ -17,6 +17,7 @@ struct UniformStruct
     void* data;
 };
 
+extern const float pitch;
 #define NBR_UNIFORMS 5
 extern UniformStruct* uniforms[NBR_UNIFORMS];
 

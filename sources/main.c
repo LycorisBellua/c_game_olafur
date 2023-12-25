@@ -28,10 +28,11 @@ int main(int argc, char** argv)
     GLFWwindow* window = get_window(title);
 
     const char* vs_filepath = "shaders/vs.glsl";
+    const char* vs_ui_filepath = "shaders/vs_ui.glsl";
     const char* fs_filepath = "shaders/fs.glsl";
     GLuint vs = 0;
+    GLuint vs_ui = 0;
     GLuint fs = 0;
-    GLuint shader_program = 0;
 
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
@@ -52,22 +53,24 @@ int main(int argc, char** argv)
 
     set_app_glsl_version();
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
+    vs_ui = compile_shader(GL_VERTEX_SHADER, vs_ui_filepath);
     fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
-    shader_program = create_shader_program(window, vs, fs);
+    world_shader_program = create_shader_program(window, vs, fs);
+    ui_shader_program = create_shader_program(window, vs_ui, fs);
     /*
         The shaders are already compiled in the shader program, so no need to 
         keep them around unless you want to use them in another shader program.
     */
     free_shader(&vs);
+    free_shader(&vs_ui);
     free_shader(&fs);
 
-    create_uniforms(shader_program);
+    create_uniforms(world_shader_program);
     create_meshes();
     initialize_interfaces();
 
     /* Switch to another shader program by calling this function again */
-    if (shader_program)
-        glUseProgram(shader_program);
+    glUseProgram(world_shader_program);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -79,7 +82,8 @@ int main(int argc, char** argv)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    free_shader_program(&shader_program);
+    free_shader_program(&world_shader_program);
+    free_shader_program(&ui_shader_program);
     free_uniforms();
     free_meshes();
     glfwTerminate();

@@ -6,6 +6,8 @@
 #include "../headers/uniforms.h"
 #include "../headers/input.h"
 #include "../headers/windowing.h"
+#include "../headers/shader_handling.h"
+#include "../headers/maths.h"
 
 float player_speed[3] = { -0.01f, -0.01f, 0.007f };
 
@@ -32,13 +34,19 @@ void render_mesh(const MeshStruct* mesh, const GLenum drawing_mode)
     return;
 }
 
-void render_main_menu(void)
+void render_viewport(void)
 {
-    /* Background representing the viewport:
+    glUseProgram(ui_shader_program);
     uniforms[1]->activate(uniforms[1], 0);
     render_mesh(meshes[3], GL_TRIANGLES);
     uniforms[1]->activate(uniforms[1], 1);
-    */
+    glUseProgram(world_shader_program);
+    return;
+}
+
+void render_main_menu(void)
+{
+    render_viewport();
 
     /* Triangle & "single_color" uniform */
     uniforms[0]->activate(uniforms[0], 0);
@@ -48,11 +56,14 @@ void render_main_menu(void)
 
 void render_game(void)
 {
-    /* Square & "single_color" uniform */
+    render_viewport();
+
+    /* Floor & cube with original colors */
     uniforms[0]->activate(uniforms[0], 0);
+    render_mesh(meshes[5], GL_TRIANGLES);
     render_mesh(meshes[4], GL_TRIANGLES);
 
-    /* Square & "single_color" uniform */
+    /* Wireframe square with single color */
     uniforms[0]->activate(uniforms[0], 1);
     render_mesh(meshes[4], GL_LINE_LOOP);
     return;
@@ -65,14 +76,15 @@ void move_player(void)
     /* "pos_offset" uniform */
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
     *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
+    uniforms[1]->activate(uniforms[1], 1);
 
-    /* "yaw" uniform (rotation around Y axis) */
-    yaw = *((float*)uniforms[2]->data + 0) + rotation_action * player_speed[1];
+    /* "euler_angles" uniform (yaw is rotation around Y axis) */
+    yaw = *((float*)uniforms[2]->data + 1) + rotation_action * player_speed[1];
     if (yaw < -360.0f)
         yaw += 360.0f;
     else if (yaw > 360.0f)
         yaw -= 360.0f;
-    *((float*)uniforms[2]->data + 0) = yaw;
+    *((float*)uniforms[2]->data + 1) = yaw;
     uniforms[2]->activate(uniforms[2], 1);
 
     /* "scale_factor" uniform */
@@ -82,6 +94,22 @@ void move_player(void)
         scale_factor = 0.0f;
     *((float*)uniforms[3]->data + 0) = scale_factor;
     uniforms[3]->activate(uniforms[3], 1);
+    return;
+}
+
+void straighten_pitch(void)
+{
+    /* "euler_angles" uniform */
+    *((float*)uniforms[2]->data + 0) = 0.0f;
+    uniforms[2]->activate(uniforms[2], 1);
+    return;
+}
+
+void set_pitch_back(void)
+{
+    /* "euler_angles" uniform */
+    *((float*)uniforms[2]->data + 0) = deg2rad(pitch);
+    uniforms[2]->activate(uniforms[2], 1);
     return;
 }
 

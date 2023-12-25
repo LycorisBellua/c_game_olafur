@@ -25,6 +25,11 @@ void initialize_interfaces(void)
 void set_active_interface(Interface* interface)
 {
     active_interface = interface;
+
+    if (interface == &main_menu_interface)
+        straighten_pitch();
+    else
+        set_pitch_back();
     return;
 }
 

@@ -54,10 +54,10 @@ static GLuint square_indices[] =
 
 static GLfloat viewport[] =
 {
-    -1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-    -1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f, -1.0f,  0.0f,    1.0f, 1.0f, 1.0f, 
-     1.0f,  1.0f,  0.0f,    1.0f, 1.0f, 1.0f
+    -1.0f,  1.0f,  1.0f,    0.078f, 0.05f, 0.062f, 
+    -1.0f, -1.0f,  1.0f,    0.078f, 0.05f, 0.062f, 
+     1.0f, -1.0f,  1.0f,    0.078f, 0.05f, 0.062f, 
+     1.0f,  1.0f,  1.0f,    0.078f, 0.05f, 0.062f, 
 };
 static GLuint viewport_indices[] = 
 {
@@ -67,15 +67,15 @@ static GLuint viewport_indices[] =
 
 static GLfloat cube[] =
 {
-    -0.5f,  0.5f, -0.5f,    0.8f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,    0.0f, 0.5f, 0.0f, 
-     0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.8f, 
-     0.5f,  0.5f, -0.5f,    0.3f, 0.2f, 0.5f,
+    -0.5f,  1.0f, -0.5f,    0.8f, 0.0f, 0.0f,
+    -0.5f,  0.0f, -0.5f,    0.0f, 0.5f, 0.0f, 
+     0.5f,  0.0f, -0.5f,    0.0f, 0.0f, 0.8f, 
+     0.5f,  1.0f, -0.5f,    0.3f, 0.2f, 0.5f,
 
-     0.5f,  0.5f,  0.5f,    1.0f, 1.0f, 1.0f, 
-     0.5f, -0.5f,  0.5f,    1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,    1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,    1.0f, 1.0f, 1.0f, 
+     0.5f,  1.0f,  0.5f,    1.0f, 1.0f, 1.0f, 
+     0.5f,  0.0f,  0.5f,    1.0f, 1.0f, 1.0f,
+    -0.5f,  0.0f,  0.5f,    1.0f, 1.0f, 1.0f,
+    -0.5f,  1.0f,  0.5f,    1.0f, 1.0f, 1.0f, 
 
 };
 static GLuint cube_indices[] = 
@@ -107,6 +107,19 @@ static GLuint cube_indices[] =
     */
 };
 
+static GLfloat floor[] =
+{
+    -100.0f,  0.0f,  100.0f,    0.3f, 0.3f, 0.5f, 
+    -100.0f,  0.0f, -100.0f,    0.3f, 0.3f, 0.5f, 
+     100.0f,  0.0f, -100.0f,    0.3f, 0.3f, 0.5f, 
+     100.0f,  0.0f,  100.0f,    0.3f, 0.3f, 0.5f
+};
+static GLuint floor_indices[] = 
+{
+    0, 1, 2, 
+    0, 2, 3
+};
+
 static void create_mesh_buffer_objects(MeshStruct* mesh);
 
 void create_meshes(void)
@@ -118,6 +131,7 @@ void create_meshes(void)
     meshes[2] = create_mesh(SHAPE_TRIANGLE);
     meshes[3] = create_mesh(SHAPE_VIEWPORT);
     meshes[4] = create_mesh(SHAPE_CUBE);
+    meshes[5] = create_mesh(SHAPE_FLOOR);
     meshes[NBR_MESHES - 1] = 0;
     return;
 }
@@ -172,15 +186,6 @@ void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
         if (i % 2 == index_to_modify)
             square[i] *= multiplier;
     }
-
-    /*
-    vertex_data_len = sizeof(viewport)/sizeof(viewport[0]);
-    for (i = index_to_modify; i < vertex_data_len; i += attr_len)
-    {
-        if (i % 2 == index_to_modify)
-            viewport[i] *= multiplier;
-    }
-    */
 
     vertex_data_len = sizeof(cube)/sizeof(cube[0]);
     for (i = index_to_modify; i < vertex_data_len; i += attr_len)
@@ -255,6 +260,14 @@ MeshStruct* create_mesh(const MeshShape shape)
         mesh->vertex_data_len = sizeof(cube)/sizeof(cube[0]);
         mesh->indices = cube_indices;
         mesh->indices_len = sizeof(cube_indices)/sizeof(cube_indices[0]);
+    }
+    else if (shape == SHAPE_FLOOR)
+    {
+        mesh->vertex_data = floor;
+        mesh->vertex_data_len = sizeof(floor)/sizeof(floor[0]);
+        mesh->indices = floor_indices;
+        mesh->indices_len = sizeof(floor_indices)
+            /sizeof(floor_indices[0]);
     }
     else
     {

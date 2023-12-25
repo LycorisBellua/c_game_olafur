@@ -5,6 +5,9 @@
 #include "../headers/shader_handling.h"
 #include "../headers/file_handling.h"
 
+GLuint world_shader_program = 0;
+GLuint ui_shader_program = 0;
+
 static int app_glsl_version = 0;
 
 static int get_app_glsl_version(void);
