@@ -5,7 +5,6 @@ layout(location = 1) in vec3 in_color;
 
 uniform vec3 pos_offset;
 uniform vec3 euler_angles;
-uniform float scale_factor;
 uniform vec3 single_color;
 
 out vec3 frag_color;
@@ -33,7 +32,7 @@ void main()
     );
     mat3 rotation = rotation_yaw * rotation_pitch * rotation_roll;
 
-    gl_Position = vec4(position * rotation * scale_factor, 1.0);
+    gl_Position = vec4(in_pos * rotation + pos_offset, 1.0);
 
 
 
