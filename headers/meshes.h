@@ -1,6 +1,21 @@
 #ifndef __MESHES_H__
 #define __MESHES_H__
 
+#ifndef __STDIO_H__
+#define __STDIO_H__
+#include <stdio.h>
+#endif
+
+#ifndef __STDLIB_H__
+#define __STDLIB_H__
+#include <stdlib.h>
+#endif
+
+#ifndef __GLEW_H__
+#define __GLEW_H__
+#include <GL/glew.h>
+#endif
+
 typedef enum
 {
     SHAPE_POINT = 1,

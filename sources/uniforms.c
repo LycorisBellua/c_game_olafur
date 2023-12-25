@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <GL/glew.h>
 #include "../headers/uniforms.h"
 #include "../headers/maths.h"
 

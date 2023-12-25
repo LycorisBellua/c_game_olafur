@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <GLFW/glfw3.h>
 #include "../headers/input.h"
 #include "../headers/windowing.h"
 #include "../headers/interfaces.h"

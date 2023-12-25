@@ -1,6 +1,16 @@
 #ifndef __SHADER_HANDLING_H__
 #define __SHADER_HANDLING_H__
 
+#ifndef __GLEW_H__
+#define __GLEW_H__
+#include <GL/glew.h>
+#endif
+
+#ifndef __GLFW_H__
+#define __GLFW_H__
+#include <GLFW/glfw3.h>
+#endif
+
 extern GLuint world_shader_program;
 extern GLuint ui_shader_program;
 

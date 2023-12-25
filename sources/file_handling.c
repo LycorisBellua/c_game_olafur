@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "../headers/file_handling.h"
 
 char* read_file(const char* filepath)
