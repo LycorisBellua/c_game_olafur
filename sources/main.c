@@ -51,12 +51,13 @@ int main(int argc, char** argv)
     */
     glLineWidth(1.5f);
 
-    set_app_glsl_version();
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
     vs_ui = compile_shader(GL_VERTEX_SHADER, vs_ui_filepath);
     fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
-    world_shader_program = create_shader_program(window, vs, fs);
-    ui_shader_program = create_shader_program(window, vs_ui, fs);
+    id_shader_program_world = create_shader_program(vs, fs);
+    id_shader_program_ui = create_shader_program(vs_ui, fs);
+    if (!id_shader_program_world || !id_shader_program_ui)
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
     /*
         The shaders are already compiled in the shader program, so no need to 
         keep them around unless you want to use them in another shader program.
@@ -65,12 +66,12 @@ int main(int argc, char** argv)
     free_shader(&vs_ui);
     free_shader(&fs);
 
-    create_uniforms(world_shader_program);
+    create_uniforms(id_shader_program_world);
     create_meshes();
     initialize_interfaces();
 
     /* Switch to another shader program by calling this function again */
-    glUseProgram(world_shader_program);
+    glUseProgram(id_shader_program_world);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -82,8 +83,8 @@ int main(int argc, char** argv)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    free_shader_program(&world_shader_program);
-    free_shader_program(&ui_shader_program);
+    free_shader_program(&id_shader_program_world);
+    free_shader_program(&id_shader_program_ui);
     free_uniforms();
     free_meshes();
     glfwTerminate();

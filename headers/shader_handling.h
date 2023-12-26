@@ -6,19 +6,13 @@
 #include <GL/glew.h>
 #endif
 
-#ifndef __GLFW_H__
-#define __GLFW_H__
-#include <GLFW/glfw3.h>
-#endif
+extern GLuint id_shader_program_world;
+extern GLuint id_shader_program_ui;
 
-extern GLuint world_shader_program;
-extern GLuint ui_shader_program;
-
-void set_app_glsl_version(void);
 GLuint compile_shader(const GLenum type, const char* filepath);
-GLuint create_shader_program(GLFWwindow* window, GLuint vs, GLuint fs);
-void free_shader(GLuint* shader);
-void free_shader_program(GLuint* shader_program);
+GLuint create_shader_program(GLuint id_vs, GLuint id_fs);
+void free_shader(GLuint* id);
+void free_shader_program(GLuint* id);
 
 #endif
 

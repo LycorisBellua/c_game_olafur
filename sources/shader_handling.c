@@ -1,24 +1,16 @@
 #include "../headers/shader_handling.h"
 #include "../headers/file_handling.h"
 
-GLuint world_shader_program = 0;
-GLuint ui_shader_program = 0;
-
+GLuint id_shader_program_world = 0;
+GLuint id_shader_program_ui = 0;
 static int app_glsl_version = 0;
 
 static int get_app_glsl_version(void);
 static void set_glsl_version_in_shader(char* ptr_shader);
 
-/* Call before compiling the first shader */
-void set_app_glsl_version(void)
-{
-    app_glsl_version = get_app_glsl_version();
-    return;
-}
-
 GLuint compile_shader(const GLenum type, const char* filepath)
 {
-    GLuint shader;
+    GLuint id_shader;
     char* ptr = read_file(filepath);
 
     if (!ptr)
@@ -29,55 +21,56 @@ GLuint compile_shader(const GLenum type, const char* filepath)
         return 0;
     }
 
+    if (!app_glsl_version)
+        app_glsl_version = get_app_glsl_version();
     set_glsl_version_in_shader(ptr);
 
-    shader = glCreateShader(type);
-    glShaderSource(shader, 1, (char const* const*)&ptr, NULL);
-    glCompileShader(shader);
+    id_shader = glCreateShader(type);
+    glShaderSource(id_shader, 1, (const char* const*)&ptr, 0);
+    glCompileShader(id_shader);
     free(ptr);
-    return shader;
+    return id_shader;
 }
 
-GLuint create_shader_program(GLFWwindow* window, GLuint vs, GLuint fs)
+GLuint create_shader_program(GLuint id_vs, GLuint id_fs)
 {
-    GLuint shader_program;
+    GLuint id_shader_program;
 
-    if (!vs || !fs)
+    if (!id_vs || !id_fs)
         return 0;
 
-    shader_program = glCreateProgram();
+    id_shader_program = glCreateProgram();
 
-    if (!shader_program)
+    if (!id_shader_program)
     {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
         fprintf(stderr, "ERROR: Couldn't compile shader program.\n");
-        free_shader(&vs);
-        free_shader(&fs);
+        free_shader(&id_vs);
+        free_shader(&id_fs);
     }
     else
     {
-        glAttachShader(shader_program, vs);
-        glAttachShader(shader_program, fs);
-        glLinkProgram(shader_program);
+        glAttachShader(id_shader_program, id_vs);
+        glAttachShader(id_shader_program, id_fs);
+        glLinkProgram(id_shader_program);
     }
-    return shader_program;
+    return id_shader_program;
 }
 
-void free_shader(GLuint* shader)
+void free_shader(GLuint* id)
 {
-    glDeleteShader(*shader);
+    glDeleteShader(*id);
 
-    /* Nullify the reference to avoid a double free */
-    *shader = 0;
+    /* Nullify the reference to prevent a double free */
+    *id = 0;
     return;
 }
 
-void free_shader_program(GLuint* shader_program)
+void free_shader_program(GLuint* id)
 {
-    glDeleteProgram(*shader_program);
+    glDeleteProgram(*id);
 
-    /* Nullify the reference to avoid a double free */
-    *shader_program = 0;
+    /* Nullify the reference to prevent a double free */
+    *id = 0;
     return;
 }
 
@@ -119,26 +112,25 @@ static void set_glsl_version_in_shader(char* ptr_shader)
 {
     int i;
     int glsl = app_glsl_version;
-    char new_digits[3];
 
-    /* The first line of a shader is something like: "#version 400\n" */
-
-    new_digits[2] = glsl % 10 + '0';
-    glsl /= 10;
-    new_digits[1] = glsl % 10 + '0';
-    glsl /= 10;
-    new_digits[0] = glsl % 10 + '0';
-    glsl /= 10;
+    /* The first line of a shader is something like: "#version 400 core\n" */
 
     for (i = 0; ptr_shader[i]; ++i)
     {
-        if (ptr_shader[i] >= '0' && ptr_shader[i] <= '9')
+        if (char_is_digit(ptr_shader[i]))
         {
-            ptr_shader[i] = new_digits[0];
-            ptr_shader[i + 1] = new_digits[1];
-            ptr_shader[i + 2] = new_digits[2];
+            ptr_shader[i + 2] = glsl % 10 + '0';
+            glsl /= 10;
+
+            ptr_shader[i + 1] = glsl % 10 + '0';
+            glsl /= 10;
+
+            ptr_shader[i] = glsl % 10 + '0';
+            glsl /= 10;
             break;
         }
+        else if (ptr_shader[i] == '\n')
+            break;
     }
     return;
 }

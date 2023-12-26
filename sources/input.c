@@ -151,12 +151,16 @@ static void input_enter(const int action)
 static void input_up(const int action)
 {
     if (action == GLFW_PRESS)
+    {
         movement_input[2] += 1;
+    }
     else if (action == GLFW_REPEAT)
     {
     }
     else
+    {
         movement_input[2] -= 1;
+    }
 
     update_movement_action(2);
     return;
@@ -165,12 +169,16 @@ static void input_up(const int action)
 static void input_down(const int action)
 {
     if (action == GLFW_PRESS)
+    {
         movement_input[2] += -1;
+    }
     else if (action == GLFW_REPEAT)
     {
     }
     else
+    {
         movement_input[2] -= -1;
+    }
 
     update_movement_action(2);
     return;
@@ -179,12 +187,16 @@ static void input_down(const int action)
 static void input_right(const int action)
 {
     if (action == GLFW_PRESS)
+    {
         rotation_input += 1;
+    }
     else if (action == GLFW_REPEAT)
     {
     }
     else
+    {
         rotation_input -= 1;
+    }
 
     update_rotation_action();
     return;
@@ -193,12 +205,16 @@ static void input_right(const int action)
 static void input_left(const int action)
 {
     if (action == GLFW_PRESS)
+    {
         rotation_input += -1;
+    }
     else if (action == GLFW_REPEAT)
     {
     }
     else
+    {
         rotation_input -= -1;
+    }
 
     update_rotation_action();
     return;
@@ -207,12 +223,16 @@ static void input_left(const int action)
 static void input_strafe_left(const int action)
 {
     if (action == GLFW_PRESS)
+    {
         movement_input[0] += -1;
+    }
     else if (action == GLFW_REPEAT)
     {
     }
     else
+    {
         movement_input[0] -= -1;
+    }
 
     update_movement_action(0);
     return;
@@ -221,12 +241,16 @@ static void input_strafe_left(const int action)
 static void input_strafe_right(const int action)
 {
     if (action == GLFW_PRESS)
+    {
         movement_input[0] += 1;
+    }
     else if (action == GLFW_REPEAT)
     {
     }
     else
+    {
         movement_input[0] -= 1;
+    }
 
     update_movement_action(0);
     return;

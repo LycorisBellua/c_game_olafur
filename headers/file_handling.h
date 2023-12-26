@@ -12,6 +12,7 @@
 #endif
 
 char* read_file(const char* filepath);
+int char_is_digit(const char c);
 
 #endif
 

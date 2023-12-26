@@ -49,3 +49,8 @@ char* read_file(const char* filepath)
     return ptr;
 }
 
+int char_is_digit(const char c)
+{
+    return c >= '0' && c <= '9';
+}
+

@@ -4,9 +4,9 @@
 #define WINDOW_DEFAULT_WIDTH 640
 #define WINDOW_DEFAULT_HEIGHT 480
 
+static float aspect_ratio = 0;
 static int window_size[2] = {0};
 static int window_pos[2] = {0};
-static float aspect_ratio = 0;
 
 /* Encapsulation (public get, private set) --------------------------------- */
 float get_aspect_ratio(void)
@@ -21,61 +21,11 @@ static void set_aspect_ratio(const GLFWvidmode* vid_mode)
 }
 /* ------------------------------------------------------------------------- */
 
-static void set_aspect_ratio_viewport(int width, int height)
-{
-    int new_width = width;
-    int new_height = width / aspect_ratio;
-    int x_offset, y_offset;
-
-    if (new_height > height)
-    {
-        new_height = height;
-        new_width = height * aspect_ratio;
-    }
-
-    x_offset = (width - new_width) / 2;
-    y_offset = (height - new_height) / 2;
-
-    glViewport(x_offset, y_offset, new_width, new_height);
-    return;
-}
-
-static void set_initial_viewport(GLFWwindow* window)
-{
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    set_aspect_ratio_viewport(width, height);
-    return;
-}
-
-static void framebuffer_size_callback
-(
-    __attribute__((unused))GLFWwindow* window, 
-    int width, 
-    int height
-)
-{
-    set_aspect_ratio_viewport(width, height);
-
-    /* for toggle_fullscreen() */
-    if (glfwGetWindowAttrib(window, GLFW_DECORATED))
-    {
-        window_size[0] = width;
-        window_size[1] = height;
-    }
-    return;
-}
-
-void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
-{
-    /* for toggle_fullscreen() */
-    if (glfwGetWindowAttrib(window, GLFW_DECORATED))
-    {
-        window_pos[0] = xpos;
-        window_pos[1] = ypos;
-    }
-    return;
-}
+static void set_aspect_ratio_viewport(int width, int height);
+static void set_initial_viewport(GLFWwindow* window);
+static void framebuffer_size_callback(GLFWwindow* window, int width, 
+    int height);
+static void window_pos_callback(GLFWwindow* window, int xpos, int ypos);
 
 GLFWwindow* get_window(const char* title)
 {
@@ -139,7 +89,7 @@ GLFWwindow* get_window(const char* title)
 
 void toggle_fullscreen(GLFWwindow* window)
 {
-    int decorated = !glfwGetWindowAttrib(window, GLFW_DECORATED);
+    const int decorated = !glfwGetWindowAttrib(window, GLFW_DECORATED);
     GLFWmonitor* monitor;
     const GLFWvidmode* mode;
 
@@ -160,6 +110,62 @@ void toggle_fullscreen(GLFWwindow* window)
     }
 
     glfwSetWindowAttrib(window, GLFW_DECORATED, decorated);
+    return;
+}
+
+static void set_aspect_ratio_viewport(int width, int height)
+{
+    int new_width = width;
+    int new_height = width / aspect_ratio;
+    int x_offset, y_offset;
+
+    if (new_height > height)
+    {
+        new_height = height;
+        new_width = height * aspect_ratio;
+    }
+
+    x_offset = (width - new_width) / 2;
+    y_offset = (height - new_height) / 2;
+
+    glViewport(x_offset, y_offset, new_width, new_height);
+    return;
+}
+
+static void set_initial_viewport(GLFWwindow* window)
+{
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    set_aspect_ratio_viewport(width, height);
+    return;
+}
+
+static void framebuffer_size_callback
+(
+    __attribute__((unused))GLFWwindow* window, 
+    int width, 
+    int height
+)
+{
+    set_aspect_ratio_viewport(width, height);
+
+    /* for toggle_fullscreen() */
+    if (glfwGetWindowAttrib(window, GLFW_DECORATED))
+    {
+        window_size[0] = width;
+        window_size[1] = height;
+    }
+    return;
+}
+
+static void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
+{
+    /* for toggle_fullscreen() */
+    if (glfwGetWindowAttrib(window, GLFW_DECORATED))
+    {
+        window_pos[0] = xpos;
+        window_pos[1] = ypos;
+    }
     return;
 }
 

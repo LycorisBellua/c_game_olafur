@@ -4,8 +4,8 @@
 
 Interface* active_interface = {0};
 
-Interface main_menu_interface;
-Interface game_interface;
+static Interface main_menu_interface;
+static Interface game_interface;
 
 void initialize_interfaces(void)
 {

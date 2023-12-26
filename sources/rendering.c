@@ -33,11 +33,11 @@ void render_mesh(const MeshStruct* mesh, const GLenum drawing_mode)
 
 void render_viewport(void)
 {
-    glUseProgram(ui_shader_program);
+    glUseProgram(id_shader_program_ui);
     uniforms[1]->activate(uniforms[1], 0);
     render_mesh(meshes[3], GL_TRIANGLES);
     uniforms[1]->activate(uniforms[1], 1);
-    glUseProgram(world_shader_program);
+    glUseProgram(id_shader_program_world);
     return;
 }
 
@@ -68,11 +68,11 @@ void render_game(void)
 
 void move_player(void)
 {
-    float yaw, scale_factor;
+    float yaw;
 
     /* "pos_offset" uniform */
     *((float*)uniforms[1]->data + 0) += movement_action[0] * player_speed[0];
-    *((float*)uniforms[1]->data + 1) += movement_action[1] * player_speed[1];
+    *((float*)uniforms[1]->data + 2) += movement_action[2] * player_speed[2];
     uniforms[1]->activate(uniforms[1], 1);
 
     /* "euler_angles" uniform (yaw is rotation around Y axis) */
@@ -85,15 +85,18 @@ void move_player(void)
     uniforms[2]->activate(uniforms[2], 1);
 
     /* "scale_factor" uniform */
+    /*
     scale_factor = *((float*)uniforms[3]->data + 0) + movement_action[2] 
         * player_speed[2];
     if (scale_factor < 0.0f)
         scale_factor = 0.0f;
     *((float*)uniforms[3]->data + 0) = scale_factor;
     uniforms[3]->activate(uniforms[3], 1);
+    */
     return;
 }
 
+/* called from set_active_interface() */
 void straighten_pitch(void)
 {
     /* "euler_angles" uniform */
@@ -102,6 +105,7 @@ void straighten_pitch(void)
     return;
 }
 
+/* called from set_active_interface() */
 void set_pitch_back(void)
 {
     /* "euler_angles" uniform */
