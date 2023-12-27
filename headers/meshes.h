@@ -18,7 +18,7 @@
 
 typedef enum
 {
-    SHAPE_POINT = 1,
+    SHAPE_POINT,
     SHAPE_TRIANGLE,
     SHAPE_SQUARE,
     SHAPE_VIEWPORT,
@@ -39,16 +39,14 @@ typedef struct
 
     GLuint* indices;
     int indices_len;
-} MeshStruct;
+} Mesh;
 
 #define NBR_MESHES 7
-extern MeshStruct* meshes[NBR_MESHES];
+extern Mesh* meshes[NBR_MESHES];
 
 void create_meshes(void);
-void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio);
-MeshStruct* create_mesh(const MeshShape shape);
+void render_mesh(const Mesh* mesh, const GLenum drawing_mode);
 void free_meshes(void);
-void free_mesh(MeshStruct** mesh);
 
 #endif
 

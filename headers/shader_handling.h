@@ -6,13 +6,20 @@
 #include <GL/glew.h>
 #endif
 
-extern GLuint id_shader_program_world;
-extern GLuint id_shader_program_ui;
+typedef struct ShaderProgram ShaderProgram;
+typedef void (*ShaderProgramFunction)(const ShaderProgram* instance);
 
-GLuint compile_shader(const GLenum type, const char* filepath);
-GLuint create_shader_program(GLuint id_vs, GLuint id_fs);
-void free_shader(GLuint* id);
-void free_shader_program(GLuint* id);
+struct ShaderProgram
+{
+    GLuint id;
+    ShaderProgramFunction use;
+};
+
+extern ShaderProgram* shader_program_world;
+extern ShaderProgram* shader_program_ui;
+
+int create_shader_programs(void);
+void free_shader_programs(void);
 
 #endif
 

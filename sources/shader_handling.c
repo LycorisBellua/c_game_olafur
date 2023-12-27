@@ -1,14 +1,79 @@
 #include "../headers/shader_handling.h"
 #include "../headers/file_handling.h"
 
-GLuint id_shader_program_world = 0;
-GLuint id_shader_program_ui = 0;
+ShaderProgram* shader_program_world = 0;
+ShaderProgram* shader_program_ui = 0;
 static int app_glsl_version = 0;
 
+static ShaderProgram* create_shader_program(GLuint id_vs, GLuint id_fs);
+static GLuint compile_shader(const GLenum type, const char* filepath);
 static int get_app_glsl_version(void);
 static void set_glsl_version_in_shader(char* ptr_shader);
+static void use_shader_program(const ShaderProgram* instance);
+static void free_shader_program(ShaderProgram** shader_program);
+static void free_shader(GLuint* id);
 
-GLuint compile_shader(const GLenum type, const char* filepath)
+int create_shader_programs(void)
+{
+    const char* vs_filepath = "shaders/vs.glsl";
+    GLuint vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
+
+    const char* vs_ui_filepath = "shaders/vs_ui.glsl";
+    GLuint vs_ui = compile_shader(GL_VERTEX_SHADER, vs_ui_filepath);
+
+    const char* fs_filepath = "shaders/fs.glsl";
+    GLuint fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
+
+    shader_program_world = create_shader_program(vs, fs);
+    shader_program_ui = create_shader_program(vs_ui, fs);
+
+    /*
+        The shaders are already compiled in the shader programs, so no need to 
+        keep them around unless you want to use them in another shader program.
+    */
+    free_shader(&vs);
+    free_shader(&vs_ui);
+    free_shader(&fs);
+
+    return shader_program_world && shader_program_ui;
+}
+
+void free_shader_programs(void)
+{
+    free_shader_program(&shader_program_world);
+    free_shader_program(&shader_program_ui);
+    return;
+}
+
+static ShaderProgram* create_shader_program(GLuint id_vs, GLuint id_fs)
+{
+    ShaderProgram* shader_program = 0;
+
+    if (!id_vs || !id_fs)
+        return 0;
+
+    shader_program = malloc(sizeof(ShaderProgram));
+    if (!shader_program)
+        return 0;
+
+    shader_program->id = glCreateProgram();
+    if (!shader_program->id)
+    {
+        fprintf(stderr, "ERROR: Couldn't compile shader program.\n");
+        free(shader_program);
+        return 0;
+    }
+
+    glAttachShader(shader_program->id, id_vs);
+    glAttachShader(shader_program->id, id_fs);
+    glLinkProgram(shader_program->id);
+
+    shader_program->use = use_shader_program;
+
+    return shader_program;
+}
+
+static GLuint compile_shader(const GLenum type, const char* filepath)
 {
     GLuint id_shader;
     char* ptr = read_file(filepath);
@@ -30,48 +95,6 @@ GLuint compile_shader(const GLenum type, const char* filepath)
     glCompileShader(id_shader);
     free(ptr);
     return id_shader;
-}
-
-GLuint create_shader_program(GLuint id_vs, GLuint id_fs)
-{
-    GLuint id_shader_program;
-
-    if (!id_vs || !id_fs)
-        return 0;
-
-    id_shader_program = glCreateProgram();
-
-    if (!id_shader_program)
-    {
-        fprintf(stderr, "ERROR: Couldn't compile shader program.\n");
-        free_shader(&id_vs);
-        free_shader(&id_fs);
-    }
-    else
-    {
-        glAttachShader(id_shader_program, id_vs);
-        glAttachShader(id_shader_program, id_fs);
-        glLinkProgram(id_shader_program);
-    }
-    return id_shader_program;
-}
-
-void free_shader(GLuint* id)
-{
-    glDeleteShader(*id);
-
-    /* Nullify the reference to prevent a double free */
-    *id = 0;
-    return;
-}
-
-void free_shader_program(GLuint* id)
-{
-    glDeleteProgram(*id);
-
-    /* Nullify the reference to prevent a double free */
-    *id = 0;
-    return;
 }
 
 static int get_app_glsl_version(void)
@@ -132,6 +155,31 @@ static void set_glsl_version_in_shader(char* ptr_shader)
         else if (ptr_shader[i] == '\n')
             break;
     }
+    return;
+}
+
+static void use_shader_program(const ShaderProgram* instance)
+{
+    glUseProgram(instance->id);
+    return;
+}
+
+static void free_shader_program(ShaderProgram** shader_program)
+{
+    glDeleteProgram((*shader_program)->id);
+    free(*shader_program);
+
+    /* Nullify the reference to prevent a double free */
+    *shader_program = 0;
+    return;
+}
+
+static void free_shader(GLuint* id)
+{
+    glDeleteShader(*id);
+
+    /* Nullify the reference to prevent a double free */
+    *id = 0;
     return;
 }
 

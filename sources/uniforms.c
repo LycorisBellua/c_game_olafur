@@ -1,37 +1,36 @@
 #include "../headers/uniforms.h"
+#include "../headers/shader_handling.h"
 #include "../headers/maths.h"
 
 const float pitch = 10.0f;
-UniformStruct* uniforms[NBR_UNIFORMS] = {0};
+Uniform* uniforms[NBR_UNIFORMS] = {0};
 
-static void get_length_and_datatype(const UniformCallback activate, 
+static void get_length_and_datatype(const ActivateUniformFunction activate, 
     int* length, GlslDatatype* type);
 static void populate_data(void* data, const va_list args, const int length, 
     const GlslDatatype type);
 
-void create_uniforms(const GLuint shader_program)
+void create_uniforms(void)
 {
-    uniforms[0] = create_uniform(shader_program, "single_color", 
-        activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
-    uniforms[1] = create_uniform(shader_program, "pos_offset", 
-        activate_uniform_vec3, 0.0f, 0.0f, 0.0f);
-    uniforms[2] = create_uniform(shader_program, "euler_angles", 
-        activate_uniform_vec3, deg2rad(pitch), 0.0f, 0.0f);
-    uniforms[3] = create_uniform(shader_program, "scale_factor", 
-        activate_uniform_float, 1.0f);
+    UNIFORM_SINGLE_COLOR = create_uniform(shader_program_world->id, 
+        "single_color", activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
+    UNIFORM_POS_OFFSET = create_uniform(shader_program_world->id, 
+        "pos_offset", activate_uniform_vec3, 0.0f, 0.0f, 0.0f);
+    UNIFORM_EULER_ANGLES = create_uniform(shader_program_world->id, 
+        "euler_angles", activate_uniform_vec3, deg2rad(pitch), 0.0f, 0.0f);
     uniforms[NBR_UNIFORMS - 1] = 0;
     return;
 }
 
-UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
-    const UniformCallback activate, ...)
+Uniform* create_uniform(const GLuint id_shader_program, const char* name, 
+    const ActivateUniformFunction activate, ...)
 {
-    UniformStruct* u;
+    Uniform* u;
     va_list args;
     int length;
     GlslDatatype type;
 
-    u = malloc(sizeof(UniformStruct));
+    u = malloc(sizeof(Uniform));
     if (!u)
     {
         fprintf(stderr, "ERROR: Couldn't allocate memory for \"%s\" uniform.", 
@@ -39,7 +38,12 @@ UniformStruct* create_uniform(const GLuint shader_program, const char* name,
         exit(EXIT_FAILURE);
     }
 
-    u->loc = glGetUniformLocation(shader_program, name);
+    /*
+        A uniform can only have one shader location. If you want to use the 
+        same uniform data in different shaders, different uniform names will 
+        be necessary.
+    */
+    u->loc = glGetUniformLocation(id_shader_program, name);
     u->activate = activate;
     u->data = 0;
 
@@ -77,7 +81,7 @@ UniformStruct* create_uniform(const GLuint shader_program, const char* name,
 void free_uniforms(void)
 {
     unsigned int i;
-    for (i = 0; i < sizeof(uniforms)/sizeof(UniformStruct*); ++i)
+    for (i = 0; i < sizeof(uniforms)/sizeof(Uniform*); ++i)
     {
         if (!uniforms[i])
             break;
@@ -86,7 +90,7 @@ void free_uniforms(void)
     return;
 }
 
-void free_uniform(UniformStruct** u)
+void free_uniform(Uniform** u)
 {
     /*
         Check whether the pointer is null. If it is, it means it doesn't 
@@ -99,7 +103,7 @@ void free_uniform(UniformStruct** u)
     free((*u)->data);
     free(*u);
 
-    /* Nullify the reference to avoid a double free */
+    /* Nullify the reference to prevent a double free */
     *u = 0;
     return;
 }
@@ -114,7 +118,7 @@ void free_uniform(UniformStruct** u)
     - [doubles may not work]
 */
 
-void activate_uniform_float(const UniformStruct* u, const int activate)
+void activate_uniform_float(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform1f(u->loc, *(float*)u->data);
@@ -123,7 +127,7 @@ void activate_uniform_float(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_int(const UniformStruct* u, const int activate)
+void activate_uniform_int(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform1i(u->loc, *(int*)u->data);
@@ -132,7 +136,7 @@ void activate_uniform_int(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_uint(const UniformStruct* u, const int activate)
+void activate_uniform_uint(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform1ui(u->loc, *(unsigned int*)u->data);
@@ -153,7 +157,7 @@ void activate_uniform_uint(const UniformStruct* u, const int activate)
     integer vectors instead.]
 */
 
-void activate_uniform_vec2(const UniformStruct* u, const int activate)
+void activate_uniform_vec2(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform2fv(u->loc, 1, (float*)u->data);
@@ -162,7 +166,7 @@ void activate_uniform_vec2(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_vec3(const UniformStruct* u, const int activate)
+void activate_uniform_vec3(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform3fv(u->loc, 1, (float*)u->data);
@@ -171,7 +175,7 @@ void activate_uniform_vec3(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_vec4(const UniformStruct* u, const int activate)
+void activate_uniform_vec4(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform4fv(u->loc, 1, (float*)u->data);
@@ -180,7 +184,7 @@ void activate_uniform_vec4(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_ivec2(const UniformStruct* u, const int activate)
+void activate_uniform_ivec2(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform2iv(u->loc, 1, (int*)u->data);
@@ -189,7 +193,7 @@ void activate_uniform_ivec2(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_ivec3(const UniformStruct* u, const int activate)
+void activate_uniform_ivec3(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform3iv(u->loc, 1, (int*)u->data);
@@ -198,7 +202,7 @@ void activate_uniform_ivec3(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_ivec4(const UniformStruct* u, const int activate)
+void activate_uniform_ivec4(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform4iv(u->loc, 1, (int*)u->data);
@@ -207,7 +211,7 @@ void activate_uniform_ivec4(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_uvec2(const UniformStruct* u, const int activate)
+void activate_uniform_uvec2(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform2uiv(u->loc, 1, (unsigned int*)u->data);
@@ -216,7 +220,7 @@ void activate_uniform_uvec2(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_uvec3(const UniformStruct* u, const int activate)
+void activate_uniform_uvec3(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform3uiv(u->loc, 1, (unsigned int*)u->data);
@@ -225,7 +229,7 @@ void activate_uniform_uvec3(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_uvec4(const UniformStruct* u, const int activate)
+void activate_uniform_uvec4(const Uniform* u, const int activate)
 {
     if (activate)
         glUniform4uiv(u->loc, 1, (unsigned int*)u->data);
@@ -258,7 +262,7 @@ void activate_uniform_uvec4(const UniformStruct* u, const int activate)
     transpose to GL_FALSE or simply use the matrices as they are.
 */
 
-void activate_uniform_mat2(const UniformStruct* u, const int activate)
+void activate_uniform_mat2(const Uniform* u, const int activate)
 {
     if (activate)
         glUniformMatrix2fv(u->loc, 1, GL_TRUE, (float*)u->data);
@@ -267,7 +271,7 @@ void activate_uniform_mat2(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_mat3(const UniformStruct* u, const int activate)
+void activate_uniform_mat3(const Uniform* u, const int activate)
 {
     if (activate)
         glUniformMatrix3fv(u->loc, 1, GL_TRUE, (float*)u->data);
@@ -276,7 +280,7 @@ void activate_uniform_mat3(const UniformStruct* u, const int activate)
     return;
 }
 
-void activate_uniform_mat4(const UniformStruct* u, const int activate)
+void activate_uniform_mat4(const Uniform* u, const int activate)
 {
     if (activate)
         glUniformMatrix4fv(u->loc, 1, GL_TRUE, (float*)u->data);
@@ -287,7 +291,7 @@ void activate_uniform_mat4(const UniformStruct* u, const int activate)
 
 /* ------------------------------------------------------------------------- */
 
-static void get_length_and_datatype(const UniformCallback activate, 
+static void get_length_and_datatype(const ActivateUniformFunction activate, 
     int* length, GlslDatatype* type)
 {
     if (activate == activate_uniform_float)

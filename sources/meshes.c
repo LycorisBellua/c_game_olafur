@@ -1,10 +1,10 @@
 #include "../headers/meshes.h"
 #include "../headers/windowing.h"
-#include "../headers/rendering.h"
+#include "../headers/transform.h"
 
 #define FLOAT_TOLERANCE 0.001f
 
-MeshStruct* meshes[NBR_MESHES] = {0};
+Mesh* meshes[NBR_MESHES] = {0};
 static const int attr_len = 3;
 
 /*
@@ -116,23 +116,61 @@ static GLuint floor_indices[] =
     0, 2, 3
 };
 
-static void create_mesh_buffer_objects(MeshStruct* mesh);
+static void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio);
+static Mesh* create_mesh(const MeshShape shape);
+static void create_mesh_buffer_objects(Mesh* mesh);
+static void free_mesh(Mesh** mesh);
 
 void create_meshes(void)
 {
     convert_vertex_positions_to_aspect_ratio(get_aspect_ratio());
 
-    meshes[0] = create_mesh(SHAPE_POINT);
-    meshes[1] = create_mesh(SHAPE_SQUARE);
-    meshes[2] = create_mesh(SHAPE_TRIANGLE);
-    meshes[3] = create_mesh(SHAPE_VIEWPORT);
-    meshes[4] = create_mesh(SHAPE_CUBE);
-    meshes[5] = create_mesh(SHAPE_FLOOR);
+    meshes[SHAPE_POINT] = create_mesh(SHAPE_POINT);
+    meshes[SHAPE_TRIANGLE] = create_mesh(SHAPE_TRIANGLE);
+    meshes[SHAPE_SQUARE] = create_mesh(SHAPE_SQUARE);
+    meshes[SHAPE_VIEWPORT] = create_mesh(SHAPE_VIEWPORT);
+    meshes[SHAPE_CUBE] = create_mesh(SHAPE_CUBE);
+    meshes[SHAPE_FLOOR] = create_mesh(SHAPE_FLOOR);
     meshes[NBR_MESHES - 1] = 0;
     return;
 }
 
-void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
+void render_mesh(const Mesh* mesh, const GLenum drawing_mode)
+{
+    /*
+       GL_POINTS
+
+       GL_LINES
+       GL_LINE_STRIP
+       GL_LINE_LOOP
+
+       GL_TRIANGLES
+       GL_TRIANGLE_STRIP
+       GL_TRIANGLE_FAN
+    */
+
+    if (!mesh)
+        return;
+
+    glBindVertexArray(mesh->VAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
+    glDrawElements(drawing_mode, mesh->indices_len, GL_UNSIGNED_INT, 0); 
+    return;
+}
+
+void free_meshes(void)
+{
+    unsigned int i;
+    for (i = 0; i < sizeof(meshes)/sizeof(Mesh*); ++i)
+    {
+        if (!meshes[i])
+            break;
+        free_mesh(&meshes[i]);
+    }
+    return;
+}
+
+static void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
 {
     /*
         Example: Aspect ratio of 16/9 (~= 1.77)
@@ -202,11 +240,11 @@ void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
     return;
 }
 
-MeshStruct* create_mesh(const MeshShape shape)
+static Mesh* create_mesh(const MeshShape shape)
 {
-    MeshStruct* mesh = 0;
+    Mesh* mesh = 0;
 
-    mesh = malloc(sizeof(MeshStruct));
+    mesh = malloc(sizeof(Mesh));
     if (!mesh)
     {
         fprintf(stderr, "ERROR: Couldn't allocate memory for mesh.\n");
@@ -278,53 +316,7 @@ MeshStruct* create_mesh(const MeshShape shape)
     return mesh;
 }
 
-void free_meshes(void)
-{
-    unsigned int i;
-    for (i = 0; i < sizeof(meshes)/sizeof(MeshStruct*); ++i)
-    {
-        if (!meshes[i])
-            break;
-        free_mesh(&meshes[i]);
-    }
-    return;
-}
-
-void free_mesh(MeshStruct** mesh)
-{
-    int i = 0;
-    GLint len = 0;
-    GLuint VBO = 0;
-
-    if (!*mesh)
-        return;
-
-    /* Free the EBO */
-    glDeleteBuffers(1, &(*mesh)->EBO);
-
-    /* Free the VBOs related to the VAO */
-    glBindVertexArray((*mesh)->VAO);
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &len);
-    for (i = 0; i < len; ++i)
-    {
-        VBO = 0;
-        glGetVertexAttribIuiv(i, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &VBO);
-        if (VBO)
-            glDeleteBuffers(1, &VBO);
-    }
-
-    /* Free the VAO */
-    glDeleteVertexArrays(1, &(*mesh)->VAO);
-
-    /* Free the struct */
-    free(*mesh);
-
-    /* Nullify the reference to avoid a double free */
-    *mesh = 0;
-    return;
-}
-
-static void create_mesh_buffer_objects(MeshStruct* mesh)
+static void create_mesh_buffer_objects(Mesh* mesh)
 {
     int i;
     GLuint VBO; /* Vertex Buffer Object */
@@ -383,6 +375,40 @@ static void create_mesh_buffer_objects(MeshStruct* mesh)
 
     mesh->VAO = VAO;
     mesh->EBO = EBO;
+    return;
+}
+
+static void free_mesh(Mesh** mesh)
+{
+    int i = 0;
+    GLint len = 0;
+    GLuint VBO = 0;
+
+    if (!*mesh)
+        return;
+
+    /* Free the EBO */
+    glDeleteBuffers(1, &(*mesh)->EBO);
+
+    /* Free the VBOs related to the VAO */
+    glBindVertexArray((*mesh)->VAO);
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &len);
+    for (i = 0; i < len; ++i)
+    {
+        VBO = 0;
+        glGetVertexAttribIuiv(i, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &VBO);
+        if (VBO)
+            glDeleteBuffers(1, &VBO);
+    }
+
+    /* Free the VAO */
+    glDeleteVertexArrays(1, &(*mesh)->VAO);
+
+    /* Free the struct */
+    free(*mesh);
+
+    /* Nullify the reference to prevent a double free */
+    *mesh = 0;
     return;
 }
 

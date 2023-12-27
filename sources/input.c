@@ -10,7 +10,9 @@ int rotation_action = 0;
 static int rotation_input = 0;
 static void update_rotation_action(void);
 
+/*
 static int get_local_key(const int physical_key);
+*/
 static void input_escape(GLFWwindow* window, const int action);
 static void input_enter(const int action);
 
@@ -49,8 +51,6 @@ void physical_key_callback
     }
     else if (key >= 'A' && key <= 'Z')
     {
-        printf("Local key: %c\n", get_local_key(key));
-
         if (key == GLFW_KEY_W)
             input_up(action);
         else if (key == GLFW_KEY_S)
@@ -109,12 +109,14 @@ static void update_rotation_action(void)
     return;
 }
 
+/*
 static int get_local_key(const int physical_key)
 {
-    /* It will be in lowercase, so -32 for uppercase */
+    // It will be in lowercase, so -32 for uppercase
     const char* key_name = glfwGetKeyName(physical_key, 0);
     return key_name[0] - 32;
 }
+*/
 
 static void input_escape(GLFWwindow* window, const int action)
 {

@@ -28,44 +28,49 @@ typedef enum
     UINT
 } GlslDatatype;
 
-typedef struct UniformStruct UniformStruct;
-typedef void (*UniformCallback)(const UniformStruct* u, const int activate);
-struct UniformStruct
+typedef struct Uniform Uniform;
+typedef void (*ActivateUniformFunction)(const Uniform* instance, 
+    const int activate);
+struct Uniform
 {
     GLint loc;
-    UniformCallback activate;
+    ActivateUniformFunction activate;
     void* data;
 };
 
 extern const float pitch;
-#define NBR_UNIFORMS 5
-extern UniformStruct* uniforms[NBR_UNIFORMS];
+#define NBR_UNIFORMS 4
+extern Uniform* uniforms[NBR_UNIFORMS];
 
-void create_uniforms(const GLuint shader_program);
-UniformStruct* create_uniform(const GLuint shader_program, const char* name, 
-    const UniformCallback activate, ...);
+#define UNIFORM_SINGLE_COLOR (uniforms[0])
+#define UNIFORM_POS_OFFSET   (uniforms[1])
+#define UNIFORM_EULER_ANGLES (uniforms[2])
+
+void create_uniforms(void);
+Uniform* create_uniform(const GLuint id_shader_program, const char* name, 
+    const ActivateUniformFunction activate, ...);
 void free_uniforms(void);
-void free_uniform(UniformStruct** u);
+void free_uniform(Uniform** u);
 
-void activate_uniform_float(const UniformStruct* u, const int activate);
-void activate_uniform_int(const UniformStruct* u, const int activate);
-void activate_uniform_uint(const UniformStruct* u, const int activate);
+void activate_uniform_float(const Uniform* u, const int activate);
+void activate_uniform_int(const Uniform* u, const int activate);
+void activate_uniform_uint(const Uniform* u, const int activate);
 
-void activate_uniform_vec2(const UniformStruct* u, const int activate);
-void activate_uniform_vec3(const UniformStruct* u, const int activate);
-void activate_uniform_vec4(const UniformStruct* u, const int activate);
+void activate_uniform_vec2(const Uniform* u, const int activate);
+void activate_uniform_vec3(const Uniform* u, const int activate);
+void activate_uniform_vec4(const Uniform* u, const int activate);
 
-void activate_uniform_ivec2(const UniformStruct* u, const int activate);
-void activate_uniform_ivec3(const UniformStruct* u, const int activate);
-void activate_uniform_ivec4(const UniformStruct* u, const int activate);
+void activate_uniform_ivec2(const Uniform* u, const int activate);
+void activate_uniform_ivec3(const Uniform* u, const int activate);
+void activate_uniform_ivec4(const Uniform* u, const int activate);
 
-void activate_uniform_uvec2(const UniformStruct* u, const int activate);
-void activate_uniform_uvec3(const UniformStruct* u, const int activate);
-void activate_uniform_uvec4(const UniformStruct* u, const int activate);
+void activate_uniform_uvec2(const Uniform* u, const int activate);
+void activate_uniform_uvec3(const Uniform* u, const int activate);
+void activate_uniform_uvec4(const Uniform* u, const int activate);
 
-void activate_uniform_mat2(const UniformStruct* u, const int activate);
-void activate_uniform_mat3(const UniformStruct* u, const int activate);
-void activate_uniform_mat4(const UniformStruct* u, const int activate);
+void activate_uniform_mat2(const Uniform* u, const int activate);
+void activate_uniform_mat3(const Uniform* u, const int activate);
+void activate_uniform_mat4(const Uniform* u, const int activate);
 
 #endif
 

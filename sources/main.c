@@ -8,7 +8,7 @@
 #include "../headers/uniforms.h"
 #include "../headers/meshes.h"
 #include "../headers/interfaces.h"
-#include "../headers/rendering.h"
+#include "../headers/transform.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -27,13 +27,6 @@ int main(int argc, char** argv)
     const char* title = "Cimmerian";
     GLFWwindow* window = get_window(title);
 
-    const char* vs_filepath = "shaders/vs.glsl";
-    const char* vs_ui_filepath = "shaders/vs_ui.glsl";
-    const char* fs_filepath = "shaders/fs.glsl";
-    GLuint vs = 0;
-    GLuint vs_ui = 0;
-    GLuint fs = 0;
-
     glfwSetKeyCallback(window, physical_key_callback);
     /* glfwSetCharCallback(window, char_key_callback); */
 
@@ -51,27 +44,17 @@ int main(int argc, char** argv)
     */
     glLineWidth(1.5f);
 
-    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
-    vs_ui = compile_shader(GL_VERTEX_SHADER, vs_ui_filepath);
-    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
-    id_shader_program_world = create_shader_program(vs, fs);
-    id_shader_program_ui = create_shader_program(vs_ui, fs);
-    if (!id_shader_program_world || !id_shader_program_ui)
+    if (!create_shader_programs())
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    /*
-        The shaders are already compiled in the shader program, so no need to 
-        keep them around unless you want to use them in another shader program.
-    */
-    free_shader(&vs);
-    free_shader(&vs_ui);
-    free_shader(&fs);
+    else
+    {
+        create_uniforms();
+        create_meshes();
+        initialize_interfaces();
 
-    create_uniforms(id_shader_program_world);
-    create_meshes();
-    initialize_interfaces();
-
-    /* Switch to another shader program by calling this function again */
-    glUseProgram(id_shader_program_world);
+        shader_program_world->use(shader_program_world);
+        /* shader_program_ui->use(shader_program_ui); */
+    }
 
     while (!glfwWindowShouldClose(window))
     {
@@ -83,8 +66,7 @@ int main(int argc, char** argv)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    free_shader_program(&id_shader_program_world);
-    free_shader_program(&id_shader_program_ui);
+    free_shader_programs();
     free_uniforms();
     free_meshes();
     glfwTerminate();
