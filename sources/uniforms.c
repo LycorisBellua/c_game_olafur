@@ -2,7 +2,7 @@
 #include "../headers/shader_handling.h"
 #include "../headers/maths.h"
 
-const float pitch = 10.0f;
+const float pitch = 15.0f;
 Uniform* uniforms[NBR_UNIFORMS] = {0};
 
 static void get_length_and_datatype(const ActivateUniformFunction activate, 
@@ -15,7 +15,7 @@ void create_uniforms(void)
     UNIFORM_SINGLE_COLOR = create_uniform(shader_program_world->id, 
         "single_color", activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
     UNIFORM_POS_OFFSET = create_uniform(shader_program_world->id, 
-        "pos_offset", activate_uniform_vec3, 0.0f, 0.0f, 0.0f);
+        "pos_offset", activate_uniform_vec3, 0.0f, -1.0f, 0.0f);
     UNIFORM_EULER_ANGLES = create_uniform(shader_program_world->id, 
         "euler_angles", activate_uniform_vec3, deg2rad(pitch), 0.0f, 0.0f);
     uniforms[NBR_UNIFORMS - 1] = 0;

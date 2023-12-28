@@ -6,11 +6,11 @@
 #include <GL/glew.h>
 #endif
 
+extern int zero_player_transform;
 extern float player_speed[3];
 
 void move_player(void);
-void straighten_pitch(void);
-void set_pitch_back(void);
+void deactivate_player_transform(void);
 
 #endif
 

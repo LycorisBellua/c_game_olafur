@@ -12,7 +12,7 @@ static void render_viewport(void);
 
 void initialize_interfaces(void)
 {
-    active_interface = &main_menu_interface;
+    set_active_interface(&main_menu_interface);
 
     main_menu_interface.render = render_main_menu;
     main_menu_interface.previous = 0;
@@ -28,10 +28,8 @@ void set_active_interface(Interface* interface)
 {
     active_interface = interface;
 
-    if (interface == &main_menu_interface)
-        straighten_pitch();
-    else
-        set_pitch_back();
+    zero_player_transform = interface == &main_menu_interface;
+    deactivate_player_transform();
     return;
 }
 
