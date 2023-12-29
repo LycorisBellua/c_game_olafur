@@ -28,8 +28,10 @@ void set_active_interface(Interface* interface)
 {
     active_interface = interface;
 
+    /*
     zero_player_transform = interface == &main_menu_interface;
     deactivate_player_transform();
+    */
     return;
 }
 

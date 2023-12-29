@@ -12,11 +12,14 @@ float player_speed[3] = { -0.01f, -0.01f, 0.007f };
     - Pos offset Y is -1.0f
 */
 
+/*
 static float clamp_euler_angle(float angle);
+*/
 
 /* Called from set_active_interface() */
 void deactivate_player_transform(void)
 {
+    /*
     if (zero_player_transform)
     {
         UNIFORM_POS_OFFSET->activate(UNIFORM_POS_OFFSET, 0);
@@ -27,6 +30,7 @@ void deactivate_player_transform(void)
         UNIFORM_POS_OFFSET->activate(UNIFORM_POS_OFFSET, 1);
         UNIFORM_EULER_ANGLES->activate(UNIFORM_EULER_ANGLES, 1);
     }
+    */
     return;
 }
 
@@ -36,6 +40,7 @@ void move_player(void)
     if (zero_player_transform)
         return;
 
+    /*
     *((float*)UNIFORM_POS_OFFSET->data + 0) += movement_action[0] 
         * player_speed[0];
     *((float*)UNIFORM_POS_OFFSET->data + 2) += movement_action[2] 
@@ -49,10 +54,12 @@ void move_player(void)
         player_speed[1]
     );
     UNIFORM_EULER_ANGLES->activate(UNIFORM_EULER_ANGLES, 1);
+    */
 
     return;
 }
 
+/*
 static float clamp_euler_angle(float angle)
 {
     if (angle < -360.0f)
@@ -61,4 +68,5 @@ static float clamp_euler_angle(float angle)
         angle -= 360.0f;
     return angle;
 }
+*/
 

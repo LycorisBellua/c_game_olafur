@@ -2,7 +2,6 @@
 #include "../headers/shader_handling.h"
 #include "../headers/maths.h"
 
-const float pitch = 15.0f;
 Uniform* uniforms[NBR_UNIFORMS] = {0};
 
 static void get_length_and_datatype(const ActivateUniformFunction activate, 
@@ -12,12 +11,36 @@ static void populate_data(void* data, const va_list args, const int length,
 
 void create_uniforms(void)
 {
+    float model_matrix[16] = {0};
+    float view_matrix[16] = {0};
+    float projection_matrix[16] = {0};
+
+    /* Example setup for model matrix (translate, rotate, scale a cube) */
+    compose_transform_matrix(model_matrix, 1.0f, 1.0f, 1.0f, 45.0f, 30.0f, 60.0f, 2.0f, 3.0f, 1.0f);
+
+    /* Example setup for view matrix (first-person camera at position (0, 0, -5) looking along the positive Z-axis) */
+    /*
+    compose_transform_matrix(view_matrix, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -5.0f);
+    */
+
+    /* Example setup for perspective projection matrix */
+    /*
+       float fov = 60.0f;  // Field of view in degrees
+       float aspectRatio = screenWidth / screenHeight;  // Adjust based on your screen dimensions
+       float near_plane = 0.1f;
+       float far_plane = 100.0f;
+       compose_perspective_projection_matrix(projection_matrix, fov, aspect_ratio, near_plane, far_plane);
+    compose_transform_matrix(projection_matrix, 1.0f, 1.0f, 1.0f, 45.0f, 30.0f, 60.0f, 2.0f, 3.0f, 1.0f);
+    */
+
+    UNIFORM_MODEL_MATRIX = create_uniform(shader_program_world->id, 
+        "model_matrix", activate_uniform_mat4, model_matrix);
+    UNIFORM_VIEW_MATRIX = create_uniform(shader_program_world->id, 
+        "view_matrix", activate_uniform_mat4, view_matrix);
+    UNIFORM_PROJECTION_MATRIX = create_uniform(shader_program_world->id, 
+        "projection_matrix", activate_uniform_mat4, projection_matrix);
     UNIFORM_SINGLE_COLOR = create_uniform(shader_program_world->id, 
         "single_color", activate_uniform_vec3, 0.4f, 0.21f, 0.5f);
-    UNIFORM_POS_OFFSET = create_uniform(shader_program_world->id, 
-        "pos_offset", activate_uniform_vec3, 0.0f, -1.0f, 0.0f);
-    UNIFORM_EULER_ANGLES = create_uniform(shader_program_world->id, 
-        "euler_angles", activate_uniform_vec3, deg2rad(pitch), 0.0f, 0.0f);
     uniforms[NBR_UNIFORMS - 1] = 0;
     return;
 }
@@ -51,12 +74,11 @@ Uniform* create_uniform(const GLuint id_shader_program, const char* name,
     get_length_and_datatype(activate, &length, &type);
     if (!length || !type)
     {
-        /* TODO: Matrices handling */
-        fprintf(stderr, "ERROR: WIP MATRIX UNIFORM FEATURE\n");
+        fprintf(stderr, "ERROR: Unknown uniform type.\n");
         exit(EXIT_FAILURE);
     }
 
-    if (type == FLOAT)
+    if (type == FLOAT || type == MATRIX)
         u->data = malloc(length * sizeof(float));
     else if (type == INT)
         u->data = malloc(length * sizeof(int));
@@ -65,7 +87,7 @@ Uniform* create_uniform(const GLuint id_shader_program, const char* name,
 
     if (!u->data)
     {
-        fprintf(stderr, "ERROR: Couldn't allocate memory for \"%s\" uniform.", 
+        fprintf(stderr, "ERROR: Couldn't allocate memory for \"%s\" uniform.\n", 
             name);
         free(u);
         exit(EXIT_FAILURE);
@@ -246,7 +268,7 @@ void activate_uniform_uvec4(const Uniform* u, const int activate)
 */
 
 /*
-    TODO: Figure out the `transpose` parameter (the boolean).
+    The `transpose` boolean parameter
     ---------------------------------------------------------------------------
     - If transpose is set to GL_FALSE, it means that the matrices are supplied 
     in column-major order, where each sequence of four contiguous elements 
@@ -265,27 +287,27 @@ void activate_uniform_uvec4(const Uniform* u, const int activate)
 void activate_uniform_mat2(const Uniform* u, const int activate)
 {
     if (activate)
-        glUniformMatrix2fv(u->loc, 1, GL_TRUE, (float*)u->data);
+        glUniformMatrix2fv(u->loc, 1, GL_FALSE, (float*)u->data);
     else
-        glUniformMatrix2fv(u->loc, 1, GL_TRUE, 0);
+        glUniformMatrix2fv(u->loc, 1, GL_FALSE, 0);
     return;
 }
 
 void activate_uniform_mat3(const Uniform* u, const int activate)
 {
     if (activate)
-        glUniformMatrix3fv(u->loc, 1, GL_TRUE, (float*)u->data);
+        glUniformMatrix3fv(u->loc, 1, GL_FALSE, (float*)u->data);
     else
-        glUniformMatrix3fv(u->loc, 1, GL_TRUE, 0);
+        glUniformMatrix3fv(u->loc, 1, GL_FALSE, 0);
     return;
 }
 
 void activate_uniform_mat4(const Uniform* u, const int activate)
 {
     if (activate)
-        glUniformMatrix4fv(u->loc, 1, GL_TRUE, (float*)u->data);
+        glUniformMatrix4fv(u->loc, 1, GL_FALSE, (float*)u->data);
     else
-        glUniformMatrix4fv(u->loc, 1, GL_TRUE, 0);
+        glUniformMatrix4fv(u->loc, 1, GL_FALSE, 0);
     return;
 }
 
@@ -356,15 +378,20 @@ static void get_length_and_datatype(const ActivateUniformFunction activate,
     }
     else if (activate == activate_uniform_mat2)
     {
-        *length = 0;
-        *type = 0;
+        *length = 2*2;
+        *type = MATRIX;
     }
     else if (activate == activate_uniform_mat3)
     {
-        *length = 0;
-        *type = 0;
+        *length = 3*3;
+        *type = MATRIX;
     }
     else if (activate == activate_uniform_mat4)
+    {
+        *length = 4*4;
+        *type = MATRIX;
+    }
+    else
     {
         *length = 0;
         *type = 0;
@@ -376,6 +403,8 @@ static void populate_data(void* data, const va_list args, const int length,
     const GlslDatatype type)
 {
     int i;
+    float* matrix_ptr;
+
     if (type == FLOAT)
     {
         for (i = 0; i < length; ++i)
@@ -390,6 +419,12 @@ static void populate_data(void* data, const va_list args, const int length,
     {
         for (i = 0; i < length; ++i)
             *((unsigned int*)data + i) = va_arg(args, unsigned int);
+    }
+    else if (type == MATRIX)
+    {
+        matrix_ptr = va_arg(args, float*);
+        for (i = 0; i < length; ++i)
+            *((float*)data + i) = matrix_ptr[i];
     }
     return;
 }

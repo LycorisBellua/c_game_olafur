@@ -25,7 +25,8 @@ typedef enum
 {
     FLOAT = 1,
     INT,
-    UINT
+    UINT,
+    MATRIX
 } GlslDatatype;
 
 typedef struct Uniform Uniform;
@@ -39,12 +40,13 @@ struct Uniform
 };
 
 extern const float pitch;
-#define NBR_UNIFORMS 4
+#define NBR_UNIFORMS 5
 extern Uniform* uniforms[NBR_UNIFORMS];
 
-#define UNIFORM_SINGLE_COLOR (uniforms[0])
-#define UNIFORM_POS_OFFSET   (uniforms[1])
-#define UNIFORM_EULER_ANGLES (uniforms[2])
+#define UNIFORM_MODEL_MATRIX      (uniforms[0])
+#define UNIFORM_VIEW_MATRIX       (uniforms[1])
+#define UNIFORM_PROJECTION_MATRIX (uniforms[2])
+#define UNIFORM_SINGLE_COLOR      (uniforms[3])
 
 void create_uniforms(void);
 Uniform* create_uniform(const GLuint id_shader_program, const char* name, 

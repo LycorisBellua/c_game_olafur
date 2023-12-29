@@ -9,6 +9,7 @@
 #include "../headers/meshes.h"
 #include "../headers/interfaces.h"
 #include "../headers/transform.h"
+#include "../headers/maths.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -54,6 +55,10 @@ int main(int argc, char** argv)
 
         shader_program_world->use(shader_program_world);
         /* shader_program_ui->use(shader_program_ui); */
+
+        UNIFORM_MODEL_MATRIX->activate(UNIFORM_MODEL_MATRIX, 1);
+        UNIFORM_VIEW_MATRIX->activate(UNIFORM_VIEW_MATRIX, 1);
+        UNIFORM_PROJECTION_MATRIX->activate(UNIFORM_PROJECTION_MATRIX, 1);
     }
 
     while (!glfwWindowShouldClose(window))
@@ -61,7 +66,9 @@ int main(int argc, char** argv)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         active_interface->render();
+        /*
         move_player();
+        */
 
         glfwSwapBuffers(window);
         glfwPollEvents();

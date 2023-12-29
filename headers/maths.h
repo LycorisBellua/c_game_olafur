@@ -1,8 +1,9 @@
 #ifndef __MATHS_H__
 #define __MATHS_H__
 
-float deg2rad(const float degrees);
-float rad2deg(const float radians);
+void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float scaleZ,
+                            float rotateX, float rotateY, float rotateZ,
+                            float translateX, float translateY, float translateZ);
 
 #endif
 
