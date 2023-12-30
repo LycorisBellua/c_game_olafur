@@ -2,7 +2,7 @@
 #include "../headers/shader_handling.h"
 #include "../headers/meshes.h"
 #include "../headers/uniforms.h"
-#include "../headers/transform.h"
+#include "../headers/camera.h"
 
 Interface* active_interface = {0};
 static Interface main_menu_interface;
@@ -28,10 +28,8 @@ void set_active_interface(Interface* interface)
 {
     active_interface = interface;
 
-    /*
-    zero_player_transform = interface == &main_menu_interface;
-    deactivate_player_transform();
-    */
+    camera_moves = interface != &main_menu_interface;
+    deactivate_camera_transform();
     return;
 }
 

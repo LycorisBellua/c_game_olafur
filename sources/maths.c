@@ -53,6 +53,27 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
                             float rotateX, float rotateY, float rotateZ,
                             float translateX, float translateY, float translateZ)
 {
+    /*
+        By default, OpenGL reads matrices in column-major order, and has a 
+        left-handed coordinate system. Left or right-handed is about how the Z 
+        axis works: is what comes out of the screen the negative part or the 
+        positive part? By default, the Z axis starts negative and becomes 
+        positive the further into the 3D world we go, meaning the coordinate 
+        system is left-handed. This also means that the Z rotation is counter 
+        clockwise.
+
+        This is vital to know for two reasons:
+        - The Z rotation matrix that can be found online is likely to be for a 
+        clockwise type of rotation. I've changed my Z rotation matrix to match.
+        - In a left-handed system, the rotation matrices are to be multiplied 
+        in a ZYX order, not XYZ. The order matters because matrix 
+        multiplication is not commutative, meaning that A*B != B*A.
+
+        And as to why people seem confused online as to whether OpenGL is left 
+        or right-handed by default, it's because "OpenGL ES" (for Embedded 
+        Systems) and the deprecated fixed-point pipeline are both right-handed.
+    */
+
     int i, j, k;
 
     /* Convert angles from degrees to radians */

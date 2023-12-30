@@ -8,7 +8,7 @@
 #include "../headers/uniforms.h"
 #include "../headers/meshes.h"
 #include "../headers/interfaces.h"
-#include "../headers/transform.h"
+#include "../headers/camera.h"
 #include "../headers/maths.h"
 
 static void list_arguments(int argc, char** argv)
@@ -49,16 +49,16 @@ int main(int argc, char** argv)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     else
     {
-        create_uniforms();
-        create_meshes();
-        initialize_interfaces();
-
         shader_program_world->use(shader_program_world);
         /* shader_program_ui->use(shader_program_ui); */
 
+        create_uniforms();
         UNIFORM_MODEL_MATRIX->activate(UNIFORM_MODEL_MATRIX, 1);
         UNIFORM_VIEW_MATRIX->activate(UNIFORM_VIEW_MATRIX, 1);
         UNIFORM_PROJECTION_MATRIX->activate(UNIFORM_PROJECTION_MATRIX, 1);
+
+        create_meshes();
+        initialize_interfaces();
     }
 
     while (!glfwWindowShouldClose(window))

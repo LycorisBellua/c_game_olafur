@@ -1,6 +1,6 @@
 #include "../headers/meshes.h"
 #include "../headers/windowing.h"
-#include "../headers/transform.h"
+#include "../headers/camera.h"
 
 #define FLOAT_TOLERANCE 0.001f
 
@@ -204,8 +204,8 @@ static void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
     const float multiplier = index_to_modify ? aspect_ratio : 1 / aspect_ratio;
     int vertex_data_len;
 
-    /* Player speed */
-    player_speed[index_to_modify] *= multiplier;
+    /* Camera speed */
+    camera_speed[index_to_modify] *= multiplier;
 
     vertex_data_len = sizeof(triangle)/sizeof(triangle[0]);
     for (i = index_to_modify; i < vertex_data_len; i += attr_len)

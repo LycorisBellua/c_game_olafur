@@ -1,6 +1,7 @@
 #include "../headers/uniforms.h"
 #include "../headers/shader_handling.h"
 #include "../headers/maths.h"
+#include "../headers/camera.h"
 
 Uniform* uniforms[NBR_UNIFORMS] = {0};
 
@@ -15,13 +16,25 @@ void create_uniforms(void)
     float view_matrix[16] = {0};
     float projection_matrix[16] = {0};
 
-    /* Example setup for model matrix (translate, rotate, scale a cube) */
+    /* Example setup for model matrix (3D scale, 3D rotate, 3D translate) */
     compose_transform_matrix(model_matrix, 1.0f, 1.0f, 1.0f, 45.0f, 30.0f, 60.0f, 2.0f, 3.0f, 1.0f);
 
     /* Example setup for view matrix (first-person camera at position (0, 0, -5) looking along the positive Z-axis) */
-    /*
-    compose_transform_matrix(view_matrix, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -5.0f);
-    */
+    camera_transform[0] = 1.0f;
+    camera_transform[1] = 1.0f;
+    camera_transform[2] = 1.0f;
+
+    camera_transform[3] = 0.0f;
+    camera_transform[4] = 0.0f;
+    camera_transform[5] = 0.0f;
+
+    camera_transform[6] = 0.0f;
+    camera_transform[7] = 0.0f;
+    camera_transform[8] = -5.0f;
+
+    compose_transform_matrix(view_matrix, camera_transform[0], camera_transform[1], 
+        camera_transform[2], camera_transform[3], camera_transform[4], camera_transform[5], 
+        camera_transform[6], camera_transform[7], camera_transform[8]); 
 
     /* Example setup for perspective projection matrix */
     /*
@@ -270,18 +283,19 @@ void activate_uniform_uvec4(const Uniform* u, const int activate)
 /*
     The `transpose` boolean parameter
     ---------------------------------------------------------------------------
-    - If transpose is set to GL_FALSE, it means that the matrices are supplied 
-    in column-major order, where each sequence of four contiguous elements 
-    represents a column of the matrix.
-    - If transpose is set to GL_TRUE, it means that the matrices are supplied 
-    in row-major order, where each sequence of four contiguous elements 
-    represents a row of the matrix.
-    - The choice of setting transpose to GL_TRUE or GL_FALSE depends on how 
-    your matrices are stored or generated. In many cases, matrices are 
-    created in row-major order (for example, in code or in some file formats), 
-    and you might need to set transpose to GL_TRUE to correctly interpret them 
-    in OpenGL. If your matrices are in column-major order, you can set 
-    transpose to GL_FALSE or simply use the matrices as they are.
+    - Matrices are supplied in column-major order by default, where each 
+    sequence of four contiguous elements represents a column of the matrix.
+
+    matrix[0]   matrix[4]   matrix[8]    matrix[12]
+    matrix[1]   matrix[5]   matrix[9]    matrix[13]
+    matrix[2]   matrix[6]   matrix[10]   matrix[14]
+    matrix[3]   matrix[7]   matrix[11]   matrix[15]
+
+    - The other possibility is row-major order. In which case the transpose 
+    argument has to be set to GL_TRUE so that OpenGL can interpret the data 
+    properly.
+    - Either way, matrices are stored in memory as 1D arrays, not 2D. For 
+    example, a mat4 or a 4x4 matrix is not `matrix[4][4]` but `matrix[16]`.
 */
 
 void activate_uniform_mat2(const Uniform* u, const int activate)
