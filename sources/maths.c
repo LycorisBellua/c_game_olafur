@@ -68,6 +68,9 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
         - In a left-handed system, the rotation matrices are to be multiplied 
         in a ZYX order, not XYZ. The order matters because matrix 
         multiplication is not commutative, meaning that A*B != B*A.
+        - View Matrix: In the end, I've put the yaw last, because it's the 
+        only axis that I change at runtime and this rotation would have been 
+        funky otherwise.
 
         And as to why people seem confused online as to whether OpenGL is left 
         or right-handed by default, it's because "OpenGL ES" (for Embedded 
@@ -129,24 +132,6 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
     for (i = 0; i < 16; ++i)
         matrix[i] = matrix_temp[i];
 
-    /* Rotate around Y */
-    matrix_rotateY[0] = cosY;
-    matrix_rotateY[2] = -sinY;
-    matrix_rotateY[8] = sinY;
-    matrix_rotateY[10] = cosY;
-
-    for (i = 0; i < 4; ++i)
-    {
-        for (j = 0; j < 4; ++j)
-        {
-            matrix_temp[i + 4 * j] = 0.0f;
-            for (k = 0; k < 4; ++k)
-                matrix_temp[i + 4 * j] += matrix[i + 4 * k] * matrix_rotateY[k + 4 * j];
-        }
-    }
-    for (i = 0; i < 16; ++i)
-        matrix[i] = matrix_temp[i];
-
     /* Rotate around X */
     matrix_rotateX[5] = cosX;
     matrix_rotateX[6] = sinX;
@@ -160,6 +145,24 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
             matrix_temp[i + 4 * j] = 0.0f;
             for (k = 0; k < 4; ++k)
                 matrix_temp[i + 4 * j] += matrix[i + 4 * k] * matrix_rotateX[k + 4 * j];
+        }
+    }
+    for (i = 0; i < 16; ++i)
+        matrix[i] = matrix_temp[i];
+
+    /* Rotate around Y */
+    matrix_rotateY[0] = cosY;
+    matrix_rotateY[2] = -sinY;
+    matrix_rotateY[8] = sinY;
+    matrix_rotateY[10] = cosY;
+
+    for (i = 0; i < 4; ++i)
+    {
+        for (j = 0; j < 4; ++j)
+        {
+            matrix_temp[i + 4 * j] = 0.0f;
+            for (k = 0; k < 4; ++k)
+                matrix_temp[i + 4 * j] += matrix[i + 4 * k] * matrix_rotateY[k + 4 * j];
         }
     }
     for (i = 0; i < 16; ++i)

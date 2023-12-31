@@ -28,8 +28,8 @@ void set_active_interface(Interface* interface)
 {
     active_interface = interface;
 
-    camera_moves = interface != &main_menu_interface;
-    deactivate_camera_transform();
+    if (interface)
+        camera_moves = interface != &main_menu_interface;
     return;
 }
 
@@ -37,8 +37,10 @@ void render_main_menu(void)
 {
     render_viewport();
 
+    shader_program_ui->use(shader_program_ui);
     UNIFORM_SINGLE_COLOR->activate(UNIFORM_SINGLE_COLOR, 0);
     render_mesh(meshes[SHAPE_TRIANGLE], GL_TRIANGLES);
+    shader_program_world->use(shader_program_world);
     return;
 }
 

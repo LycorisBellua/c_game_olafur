@@ -6,21 +6,16 @@
 int camera_moves = 1;
 float camera_transform[9] = {0};
 float camera_speed[3] = { -0.01f, -0.01f, -0.01f };
+static float camera_rotation_speed = 0.1f;
 
 static float clamp_euler_angle(float angle);
-
-/* Called from set_active_interface() */
-void deactivate_camera_transform(void)
-{
-    UNIFORM_VIEW_MATRIX->activate(UNIFORM_VIEW_MATRIX, camera_moves);
-    return;
-}
 
 /* Called from rendering loop for smooth movement */
 void move_camera(void)
 {
     float yaw;
 
+    /* Updated in set_active_interface() */
     if (!camera_moves)
         return;
 
@@ -29,7 +24,8 @@ void move_camera(void)
     camera_transform[8] += movement_action[2] * camera_speed[2];
 
     /* Rotate camera transform */
-    yaw = clamp_euler_angle(camera_transform[4] + rotation_action * camera_speed[1]);
+    yaw = clamp_euler_angle(camera_transform[4] + rotation_action 
+        * camera_rotation_speed);
     camera_transform[4] = yaw;
 
     /* Update view matrix */

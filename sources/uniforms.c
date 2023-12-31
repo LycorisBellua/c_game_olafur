@@ -4,6 +4,7 @@
 #include "../headers/camera.h"
 
 Uniform* uniforms[NBR_UNIFORMS] = {0};
+static const float matrix_zero[16] = {0};
 
 static void get_length_and_datatype(const ActivateUniformFunction activate, 
     int* length, GlslDatatype* type);
@@ -16,24 +17,27 @@ void create_uniforms(void)
     float view_matrix[16] = {0};
     float projection_matrix[16] = {0};
 
-    /* Example setup for model matrix (3D scale, 3D rotate, 3D translate) */
-    compose_transform_matrix(model_matrix, 1.0f, 1.0f, 1.0f, 45.0f, 30.0f, 60.0f, 2.0f, 3.0f, 1.0f);
+    /* Scale, Rotate, Translate */
+    compose_transform_matrix(model_matrix, 
+        1.0f, 1.0f, 1.0f, 
+        0.0f, 45.0f, 0.0f, 
+        0.0f, 0.0f, 0.0f);
 
-    /* Example setup for view matrix (first-person camera at position (0, 0, -5) looking along the positive Z-axis) */
     camera_transform[0] = 1.0f;
     camera_transform[1] = 1.0f;
     camera_transform[2] = 1.0f;
 
-    camera_transform[3] = 0.0f;
+    camera_transform[3] = -20.0f;
     camera_transform[4] = 0.0f;
     camera_transform[5] = 0.0f;
 
     camera_transform[6] = 0.0f;
-    camera_transform[7] = 0.0f;
-    camera_transform[8] = -5.0f;
+    camera_transform[7] = -0.5f;
+    camera_transform[8] = 0.0f;
 
-    compose_transform_matrix(view_matrix, camera_transform[0], camera_transform[1], 
-        camera_transform[2], camera_transform[3], camera_transform[4], camera_transform[5], 
+    compose_transform_matrix(view_matrix, 
+        camera_transform[0], camera_transform[1], camera_transform[2], 
+        camera_transform[3], camera_transform[4], camera_transform[5], 
         camera_transform[6], camera_transform[7], camera_transform[8]); 
 
     /* Example setup for perspective projection matrix */
@@ -80,6 +84,14 @@ Uniform* create_uniform(const GLuint id_shader_program, const char* name,
         be necessary.
     */
     u->loc = glGetUniformLocation(id_shader_program, name);
+    if (u->loc < 0)
+    {
+        fprintf(stderr, "ERROR: The \"%s\" uniform is either not found or "
+            "unused in shader ID°%d.\n", name, id_shader_program);
+        free(u);
+        exit(EXIT_FAILURE);
+    }
+
     u->activate = activate;
     u->data = 0;
 
@@ -88,6 +100,7 @@ Uniform* create_uniform(const GLuint id_shader_program, const char* name,
     if (!length || !type)
     {
         fprintf(stderr, "ERROR: Unknown uniform type.\n");
+        free(u);
         exit(EXIT_FAILURE);
     }
 
@@ -303,7 +316,7 @@ void activate_uniform_mat2(const Uniform* u, const int activate)
     if (activate)
         glUniformMatrix2fv(u->loc, 1, GL_FALSE, (float*)u->data);
     else
-        glUniformMatrix2fv(u->loc, 1, GL_FALSE, 0);
+        glUniformMatrix2fv(u->loc, 1, GL_FALSE, matrix_zero);
     return;
 }
 
@@ -312,7 +325,7 @@ void activate_uniform_mat3(const Uniform* u, const int activate)
     if (activate)
         glUniformMatrix3fv(u->loc, 1, GL_FALSE, (float*)u->data);
     else
-        glUniformMatrix3fv(u->loc, 1, GL_FALSE, 0);
+        glUniformMatrix3fv(u->loc, 1, GL_FALSE, matrix_zero);
     return;
 }
 
@@ -321,7 +334,7 @@ void activate_uniform_mat4(const Uniform* u, const int activate)
     if (activate)
         glUniformMatrix4fv(u->loc, 1, GL_FALSE, (float*)u->data);
     else
-        glUniformMatrix4fv(u->loc, 1, GL_FALSE, 0);
+        glUniformMatrix4fv(u->loc, 1, GL_FALSE, matrix_zero);
     return;
 }
 
