@@ -37,10 +37,10 @@ void render_main_menu(void)
 {
     render_viewport();
 
-    shader_program_ui->use(shader_program_ui);
+    use_shader_program(shader_program_ui);
     UNIFORM_SINGLE_COLOR->activate(UNIFORM_SINGLE_COLOR, 0);
     render_mesh(meshes[SHAPE_TRIANGLE], GL_TRIANGLES);
-    shader_program_world->use(shader_program_world);
+    use_shader_program(shader_program_world);
     return;
 }
 
@@ -59,9 +59,9 @@ void render_game(void)
 
 static void render_viewport(void)
 {
-    shader_program_ui->use(shader_program_ui);
+    use_shader_program(shader_program_ui);
     render_mesh(meshes[SHAPE_VIEWPORT], GL_TRIANGLES);
-    shader_program_world->use(shader_program_world);
+    use_shader_program(shader_program_world);
     return;
 }
 

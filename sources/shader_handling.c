@@ -9,7 +9,6 @@ static ShaderProgram* create_shader_program(GLuint id_vs, GLuint id_fs);
 static GLuint compile_shader(const GLenum type, const char* filepath);
 static int get_app_glsl_version(void);
 static void set_glsl_version_in_shader(char* ptr_shader);
-static void use_shader_program(const ShaderProgram* instance);
 static void free_shader_program(ShaderProgram** shader_program);
 static void free_shader(GLuint* id);
 
@@ -36,6 +35,15 @@ int create_shader_programs(void)
     free_shader(&fs);
 
     return shader_program_world && shader_program_ui;
+}
+
+void use_shader_program(const ShaderProgram* instance)
+{
+    if (instance)
+        glUseProgram(instance->id);
+    else
+        glUseProgram(0);
+    return;
 }
 
 void free_shader_programs(void)
@@ -67,8 +75,6 @@ static ShaderProgram* create_shader_program(GLuint id_vs, GLuint id_fs)
     glAttachShader(shader_program->id, id_vs);
     glAttachShader(shader_program->id, id_fs);
     glLinkProgram(shader_program->id);
-
-    shader_program->use = use_shader_program;
 
     return shader_program;
 }
@@ -155,12 +161,6 @@ static void set_glsl_version_in_shader(char* ptr_shader)
         else if (ptr_shader[i] == '\n')
             break;
     }
-    return;
-}
-
-static void use_shader_program(const ShaderProgram* instance)
-{
-    glUseProgram(instance->id);
     return;
 }
 

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../headers/maths.h"
 
 #define PI 3.1416
@@ -24,34 +25,66 @@ static float factorial(const int n)
 
 static float power(const float base, const int exponent)
 {
-    float result = 1.0f;
     int i;
+    float result = 1.0f;
     for (i = 0; i < exponent; ++i)
         result *= base;
     return result;
 }
 
-static float fsin(const float radians)
+static float f_abs(const float value)
 {
-    float result = 0.0f;
+    return (value < 0) ? -value : value;
+}
+
+static float f_sin(const float radians)
+{
     int n;
+    float result = 0.0f;
+    float fact;
     for (n = 0; n < 10; ++n)
-        result += power(-1, n) * power(radians, 2 * n + 1) / factorial(2 * n + 1);
+    {
+        fact = factorial(2 * n + 1);
+        /* Check if factorial is close to zero to avoid division by zero */
+        if (f_abs(fact) < 1e-15)
+            result += 0.0f;
+        else
+            result += power(-1, n) * power(radians, 2 * n + 1) / fact;
+    }
     return result;
 }
 
-static float fcos(const float radians)
+static float f_cos(const float radians)
 {
-    float result = 0.0f;
     int n;
+    float result = 0.0f;
+    float fact;
     for (n = 0; n < 10; ++n)
-        result += power(-1, n) * power(radians, 2 * n) / factorial(2 * n);
+    {
+        fact = factorial(2 * n);
+        if (f_abs(fact) < 1e-15)
+            result += 0.0f;
+        else
+            result += power(-1, n) * power(radians, 2 * n) / fact;
+    }
     return result;
 }
 
-void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float scaleZ,
-                            float rotateX, float rotateY, float rotateZ,
-                            float translateX, float translateY, float translateZ)
+static float f_tan(const float radians)
+{
+    float sine = f_sin(radians);
+    float cosine = f_cos(radians);
+
+    if (f_abs(cosine) < 1e-15)
+        return 0.0f;
+
+    return sine / cosine;
+}
+
+void compose_transform_matrix(float* matrix, 
+    const float scale_x, const float scale_y, const float scale_z,
+    const float rotate_x, const float rotate_y, const float rotate_z,
+    const float translate_x, const float translate_y, const float translate_z)
 {
     /*
         By default, OpenGL reads matrices in column-major order, and has a 
@@ -80,21 +113,21 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
     int i, j, k;
 
     /* Convert angles from degrees to radians */
-    float radX = deg2rad(rotateX);
-    float radY = deg2rad(rotateY);
-    float radZ = deg2rad(rotateZ);
+    const float rad_x = deg2rad(rotate_x);
+    const float rad_y = deg2rad(rotate_y);
+    const float rad_z = deg2rad(rotate_z);
 
     /* Calculate sines and cosines */
-    float sinX = fsin(radX);
-    float cosX = fcos(radX);
-    float sinY = fsin(radY);
-    float cosY = fcos(radY);
-    float sinZ = fsin(radZ);
-    float cosZ = fcos(radZ);
+    const float sin_x = f_sin(rad_x);
+    const float cos_x = f_cos(rad_x);
+    const float sin_y = f_sin(rad_y);
+    const float cos_y = f_cos(rad_y);
+    const float sin_z = f_sin(rad_z);
+    const float cos_z = f_cos(rad_z);
 
-    float matrix_rotateX[16];
-    float matrix_rotateY[16];
-    float matrix_rotateZ[16];
+    float matrix_rotate_x[16];
+    float matrix_rotate_y[16];
+    float matrix_rotate_z[16];
     float matrix_temp[16];
 
     /* Identity */
@@ -104,21 +137,21 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
 
     for (i = 0; i < 14; ++i)
     {
-        matrix_rotateX[i] = matrix[i];
-        matrix_rotateY[i] = matrix[i];
-        matrix_rotateZ[i] = matrix[i];
+        matrix_rotate_x[i] = matrix[i];
+        matrix_rotate_y[i] = matrix[i];
+        matrix_rotate_z[i] = matrix[i];
     }
 
     /* Scale */
-    matrix[0] *= scaleX;
-    matrix[5] *= scaleY;
-    matrix[10] *= scaleZ;
+    matrix[0] *= scale_x;
+    matrix[5] *= scale_y;
+    matrix[10] *= scale_z;
 
     /* Rotate around Z */
-    matrix_rotateZ[0] = cosZ;
-    matrix_rotateZ[1] = -sinZ;
-    matrix_rotateZ[4] = sinZ;
-    matrix_rotateZ[5] = cosZ;
+    matrix_rotate_z[0] = cos_z;
+    matrix_rotate_z[1] = -sin_z;
+    matrix_rotate_z[4] = sin_z;
+    matrix_rotate_z[5] = cos_z;
 
     for (i = 0; i < 4; ++i)
     {
@@ -126,17 +159,18 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
         {
             matrix_temp[i + 4 * j] = 0.0f;
             for (k = 0; k < 4; ++k)
-                matrix_temp[i + 4 * j] += matrix[i + 4 * k] * matrix_rotateZ[k + 4 * j];
+                matrix_temp[i + 4 * j] += matrix[i + 4 * k] 
+                    * matrix_rotate_z[k + 4 * j];
         }
     }
     for (i = 0; i < 16; ++i)
         matrix[i] = matrix_temp[i];
 
     /* Rotate around X */
-    matrix_rotateX[5] = cosX;
-    matrix_rotateX[6] = sinX;
-    matrix_rotateX[9] = -sinX;
-    matrix_rotateX[10] = cosX;
+    matrix_rotate_x[5] = cos_x;
+    matrix_rotate_x[6] = sin_x;
+    matrix_rotate_x[9] = -sin_x;
+    matrix_rotate_x[10] = cos_x;
 
     for (i = 0; i < 4; ++i)
     {
@@ -144,17 +178,18 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
         {
             matrix_temp[i + 4 * j] = 0.0f;
             for (k = 0; k < 4; ++k)
-                matrix_temp[i + 4 * j] += matrix[i + 4 * k] * matrix_rotateX[k + 4 * j];
+                matrix_temp[i + 4 * j] += matrix[i + 4 * k] 
+                    * matrix_rotate_x[k + 4 * j];
         }
     }
     for (i = 0; i < 16; ++i)
         matrix[i] = matrix_temp[i];
 
     /* Rotate around Y */
-    matrix_rotateY[0] = cosY;
-    matrix_rotateY[2] = -sinY;
-    matrix_rotateY[8] = sinY;
-    matrix_rotateY[10] = cosY;
+    matrix_rotate_y[0] = cos_y;
+    matrix_rotate_y[2] = -sin_y;
+    matrix_rotate_y[8] = sin_y;
+    matrix_rotate_y[10] = cos_y;
 
     for (i = 0; i < 4; ++i)
     {
@@ -162,18 +197,52 @@ void compose_transform_matrix(float* matrix, float scaleX, float scaleY, float s
         {
             matrix_temp[i + 4 * j] = 0.0f;
             for (k = 0; k < 4; ++k)
-                matrix_temp[i + 4 * j] += matrix[i + 4 * k] * matrix_rotateY[k + 4 * j];
+                matrix_temp[i + 4 * j] += matrix[i + 4 * k] 
+                    * matrix_rotate_y[k + 4 * j];
         }
     }
     for (i = 0; i < 16; ++i)
         matrix[i] = matrix_temp[i];
 
     /* Translate */
-    matrix[12] += translateX;
-    matrix[13] += translateY;
-    matrix[14] += translateZ;
-    /* matrix[15] became 0 at some point and it needs to be 1 */
+    matrix[12] = translate_x;
+    matrix[13] = translate_y;
+    matrix[14] = translate_z;
     matrix[15] = 1.0f;
+    return;
+}
+
+void compose_perspective_projection_matrix(float* matrix, 
+    const float fov, const float aspect_ratio, 
+    const float near_clip, const float far_clip)
+{
+    /* Clipping plane distances */
+    const float tan_half_fov = f_tan(deg2rad(fov/2));
+    const float right = near_clip * tan_half_fov;
+    const float left = -right;
+    const float top = near_clip * tan_half_fov / aspect_ratio;
+    const float bottom = -top;
+
+    matrix[0] = (2 * near_clip) / (right - left);
+    matrix[1] = 0.0f;
+    matrix[2] = (right + left) / (right - left);
+    matrix[3] = 0.0f;
+
+    matrix[4] = 0.0f;
+    matrix[5] = (2 * near_clip) / (top - bottom);
+    matrix[6] = (top + bottom) / (top - bottom);
+    matrix[7] = 0.0f;
+
+    matrix[8] = 0.0f;
+    matrix[9] = 0.0f;
+    matrix[10] = -(far_clip + near_clip) / (far_clip - near_clip);
+    matrix[11] = -2 * far_clip * near_clip / (far_clip - near_clip);
+
+    matrix[12] = 0.0f;
+    matrix[13] = 0.0f;
+    matrix[14] = -1.0f;
+    matrix[15] = 0.0f;
+
     return;
 }
 

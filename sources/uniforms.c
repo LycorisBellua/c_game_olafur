@@ -2,6 +2,7 @@
 #include "../headers/shader_handling.h"
 #include "../headers/maths.h"
 #include "../headers/camera.h"
+#include "../headers/windowing.h"
 
 Uniform* uniforms[NBR_UNIFORMS] = {0};
 static const float matrix_zero[16] = {0};
@@ -40,15 +41,7 @@ void create_uniforms(void)
         camera_transform[3], camera_transform[4], camera_transform[5], 
         camera_transform[6], camera_transform[7], camera_transform[8]); 
 
-    /* Example setup for perspective projection matrix */
-    /*
-       float fov = 60.0f;  // Field of view in degrees
-       float aspectRatio = screenWidth / screenHeight;  // Adjust based on your screen dimensions
-       float near_plane = 0.1f;
-       float far_plane = 100.0f;
-       compose_perspective_projection_matrix(projection_matrix, fov, aspect_ratio, near_plane, far_plane);
-    compose_transform_matrix(projection_matrix, 1.0f, 1.0f, 1.0f, 45.0f, 30.0f, 60.0f, 2.0f, 3.0f, 1.0f);
-    */
+    compose_perspective_projection_matrix(projection_matrix, 60.0f, get_aspect_ratio(), 0.1f, 100.0f);
 
     UNIFORM_MODEL_MATRIX = create_uniform(shader_program_world->id, 
         "model_matrix", activate_uniform_mat4, model_matrix);

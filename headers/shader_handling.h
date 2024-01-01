@@ -6,19 +6,16 @@
 #include <GL/glew.h>
 #endif
 
-typedef struct ShaderProgram ShaderProgram;
-typedef void (*ShaderProgramFunction)(const ShaderProgram* instance);
-
-struct ShaderProgram
+typedef struct
 {
     GLuint id;
-    ShaderProgramFunction use;
-};
+} ShaderProgram;
 
 extern ShaderProgram* shader_program_world;
 extern ShaderProgram* shader_program_ui;
 
 int create_shader_programs(void);
+void use_shader_program(const ShaderProgram* instance);
 void free_shader_programs(void);
 
 #endif
