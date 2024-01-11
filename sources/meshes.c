@@ -221,6 +221,7 @@ static void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
             square[i] *= multiplier;
     }
 
+    /*
     vertex_data_len = sizeof(cube)/sizeof(cube[0]);
     for (i = index_to_modify; i < vertex_data_len; i += attr_len)
     {
@@ -228,14 +229,15 @@ static void convert_vertex_positions_to_aspect_ratio(const float aspect_ratio)
         {
             cube[i] *= multiplier;
 
-            /*
+            /
                If X is to be modified, then modify Z as well, as once the 
                shape is rotated Z is seen as horizontal.
-            */
+            /
             if (!index_to_modify)
                 cube[i + 2] *= multiplier;
         }
     }
+    */
 
     return;
 }

@@ -86,30 +86,6 @@ void compose_transform_matrix(float* matrix,
     const float rotate_x, const float rotate_y, const float rotate_z,
     const float translate_x, const float translate_y, const float translate_z)
 {
-    /*
-        By default, OpenGL reads matrices in column-major order, and has a 
-        left-handed coordinate system. Left or right-handed is about how the Z 
-        axis works: is what comes out of the screen the negative part or the 
-        positive part? By default, the Z axis starts negative and becomes 
-        positive the further into the 3D world we go, meaning the coordinate 
-        system is left-handed. This also means that the Z rotation is counter 
-        clockwise.
-
-        This is vital to know for two reasons:
-        - The Z rotation matrix that can be found online is likely to be for a 
-        clockwise type of rotation. I've changed my Z rotation matrix to match.
-        - In a left-handed system, the rotation matrices are to be multiplied 
-        in a ZYX order, not XYZ. The order matters because matrix 
-        multiplication is not commutative, meaning that A*B != B*A.
-        - View Matrix: In the end, I've put the yaw last, because it's the 
-        only axis that I change at runtime and this rotation would have been 
-        funky otherwise.
-
-        And as to why people seem confused online as to whether OpenGL is left 
-        or right-handed by default, it's because "OpenGL ES" (for Embedded 
-        Systems) and the deprecated fixed-point pipeline are both right-handed.
-    */
-
     int i, j, k;
 
     /* Convert angles from degrees to radians */
@@ -147,25 +123,6 @@ void compose_transform_matrix(float* matrix,
     matrix[5] *= scale_y;
     matrix[10] *= scale_z;
 
-    /* Rotate around Z */
-    matrix_rotate_z[0] = cos_z;
-    matrix_rotate_z[1] = -sin_z;
-    matrix_rotate_z[4] = sin_z;
-    matrix_rotate_z[5] = cos_z;
-
-    for (i = 0; i < 4; ++i)
-    {
-        for (j = 0; j < 4; ++j)
-        {
-            matrix_temp[i + 4 * j] = 0.0f;
-            for (k = 0; k < 4; ++k)
-                matrix_temp[i + 4 * j] += matrix[i + 4 * k] 
-                    * matrix_rotate_z[k + 4 * j];
-        }
-    }
-    for (i = 0; i < 16; ++i)
-        matrix[i] = matrix_temp[i];
-
     /* Rotate around X */
     matrix_rotate_x[5] = cos_x;
     matrix_rotate_x[6] = sin_x;
@@ -199,6 +156,25 @@ void compose_transform_matrix(float* matrix,
             for (k = 0; k < 4; ++k)
                 matrix_temp[i + 4 * j] += matrix[i + 4 * k] 
                     * matrix_rotate_y[k + 4 * j];
+        }
+    }
+    for (i = 0; i < 16; ++i)
+        matrix[i] = matrix_temp[i];
+
+    /* Rotate around Z */
+    matrix_rotate_z[0] = cos_z;
+    matrix_rotate_z[1] = sin_z;
+    matrix_rotate_z[4] = -sin_z;
+    matrix_rotate_z[5] = cos_z;
+
+    for (i = 0; i < 4; ++i)
+    {
+        for (j = 0; j < 4; ++j)
+        {
+            matrix_temp[i + 4 * j] = 0.0f;
+            for (k = 0; k < 4; ++k)
+                matrix_temp[i + 4 * j] += matrix[i + 4 * k] 
+                    * matrix_rotate_z[k + 4 * j];
         }
     }
     for (i = 0; i < 16; ++i)

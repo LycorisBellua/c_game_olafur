@@ -28,20 +28,20 @@ void create_uniforms(void)
     camera_transform[1] = 1.0f;
     camera_transform[2] = 1.0f;
 
-    camera_transform[3] = -20.0f;
+    camera_transform[3] = -5.0f;
     camera_transform[4] = 0.0f;
     camera_transform[5] = 0.0f;
 
     camera_transform[6] = 0.0f;
-    camera_transform[7] = -0.5f;
-    camera_transform[8] = 0.0f;
+    camera_transform[7] = -0.6f;
+    camera_transform[8] = 3.0f;
 
     compose_transform_matrix(view_matrix, 
         camera_transform[0], camera_transform[1], camera_transform[2], 
         camera_transform[3], camera_transform[4], camera_transform[5], 
         camera_transform[6], camera_transform[7], camera_transform[8]); 
 
-    compose_perspective_projection_matrix(projection_matrix, 60.0f, get_aspect_ratio(), 0.1f, 100.0f);
+    compose_perspective_projection_matrix(projection_matrix, 60.0f, get_aspect_ratio(), -1.0f, -100.0f);
 
     UNIFORM_MODEL_MATRIX = create_uniform(shader_program_world->id, 
         "model_matrix", activate_uniform_mat4, model_matrix);

@@ -5,8 +5,8 @@
 
 int camera_moves = 0;
 float camera_transform[9] = {0};
-float camera_speed[3] = { -0.01f, -0.01f, -0.01f };
-static float camera_rotation_speed = 0.1f;
+float camera_speed[3] = { -0.02f, -0.01f, -0.01f };
+static float camera_rotation_speed = 0.5f;
 
 static float clamp_euler_angle(float angle);
 
