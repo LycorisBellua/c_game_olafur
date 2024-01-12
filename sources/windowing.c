@@ -1,6 +1,6 @@
 #include "../headers/windowing.h"
+#include "../headers/maths.h"
 
-#define MIN(a, b) (a < b ? a : b)
 #define WINDOW_DEFAULT_WIDTH 640
 #define WINDOW_DEFAULT_HEIGHT 480
 

@@ -18,12 +18,7 @@
 
 typedef enum
 {
-    SHAPE_POINT,
-    SHAPE_TRIANGLE,
-    SHAPE_SQUARE,
-    SHAPE_VIEWPORT,
-    SHAPE_CUBE,
-    SHAPE_FLOOR
+    SHAPE_VIEWPORT = 1
 } MeshShape;
 
 typedef struct
@@ -36,13 +31,15 @@ typedef struct
     GLfloat* vertex_data;
     int vertex_data_len;
     int nbr_attributes;
+    int attr_len;
 
     GLuint* indices;
     int indices_len;
 } Mesh;
 
-#define NBR_MESHES 7
+#define NBR_MESHES 2
 extern Mesh* meshes[NBR_MESHES];
+#define MESH_VIEWPORT (meshes[0])
 
 void create_meshes(void);
 void render_mesh(const Mesh* mesh, const GLenum drawing_mode);

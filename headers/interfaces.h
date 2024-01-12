@@ -15,8 +15,6 @@ extern Interface* active_interface;
 
 void initialize_interfaces(void);
 void set_active_interface(Interface* interface);
-void render_main_menu(void);
-void render_game(void);
 
 #endif
 

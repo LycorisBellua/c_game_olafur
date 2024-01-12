@@ -11,8 +11,7 @@ typedef struct
     GLuint id;
 } ShaderProgram;
 
-extern ShaderProgram* shader_program_world;
-extern ShaderProgram* shader_program_ui;
+extern ShaderProgram* shader_program_default;
 
 int create_shader_programs(void);
 void use_shader_program(const ShaderProgram* instance);

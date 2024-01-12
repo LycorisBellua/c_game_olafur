@@ -35,44 +35,17 @@ typedef void (*ActivateUniformFunction)(const Uniform* instance,
 struct Uniform
 {
     GLint loc;
+    int activate_on_create;
     ActivateUniformFunction activate;
     void* data;
 };
 
-extern const float pitch;
-#define NBR_UNIFORMS 5
+#define NBR_UNIFORMS 2
 extern Uniform* uniforms[NBR_UNIFORMS];
-
-#define UNIFORM_MODEL_MATRIX      (uniforms[0])
-#define UNIFORM_VIEW_MATRIX       (uniforms[1])
-#define UNIFORM_PROJECTION_MATRIX (uniforms[2])
-#define UNIFORM_SINGLE_COLOR      (uniforms[3])
+#define UNIFORM_FRAME_TEXTURE (uniforms[0])
 
 void create_uniforms(void);
-Uniform* create_uniform(const GLuint id_shader_program, const char* name, 
-    const ActivateUniformFunction activate, ...);
 void free_uniforms(void);
-void free_uniform(Uniform** u);
-
-void activate_uniform_float(const Uniform* u, const int activate);
-void activate_uniform_int(const Uniform* u, const int activate);
-void activate_uniform_uint(const Uniform* u, const int activate);
-
-void activate_uniform_vec2(const Uniform* u, const int activate);
-void activate_uniform_vec3(const Uniform* u, const int activate);
-void activate_uniform_vec4(const Uniform* u, const int activate);
-
-void activate_uniform_ivec2(const Uniform* u, const int activate);
-void activate_uniform_ivec3(const Uniform* u, const int activate);
-void activate_uniform_ivec4(const Uniform* u, const int activate);
-
-void activate_uniform_uvec2(const Uniform* u, const int activate);
-void activate_uniform_uvec3(const Uniform* u, const int activate);
-void activate_uniform_uvec4(const Uniform* u, const int activate);
-
-void activate_uniform_mat2(const Uniform* u, const int activate);
-void activate_uniform_mat3(const Uniform* u, const int activate);
-void activate_uniform_mat4(const Uniform* u, const int activate);
 
 #endif
 

@@ -1,8 +1,7 @@
 #include "../headers/shader_handling.h"
 #include "../headers/file_handling.h"
 
-ShaderProgram* shader_program_world = 0;
-ShaderProgram* shader_program_ui = 0;
+ShaderProgram* shader_program_default = 0;
 static int app_glsl_version = 0;
 
 static ShaderProgram* create_shader_program(GLuint id_vs, GLuint id_fs);
@@ -15,26 +14,21 @@ static void free_shader(GLuint* id);
 int create_shader_programs(void)
 {
     const char* vs_filepath = "shaders/vs.glsl";
-    GLuint vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
-
-    const char* vs_ui_filepath = "shaders/vs_ui.glsl";
-    GLuint vs_ui = compile_shader(GL_VERTEX_SHADER, vs_ui_filepath);
-
     const char* fs_filepath = "shaders/fs.glsl";
+
+    GLuint vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
     GLuint fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
 
-    shader_program_world = create_shader_program(vs, fs);
-    shader_program_ui = create_shader_program(vs_ui, fs);
+    shader_program_default = create_shader_program(vs, fs);
 
     /*
         The shaders are already compiled in the shader programs, so no need to 
         keep them around unless you want to use them in another shader program.
     */
     free_shader(&vs);
-    free_shader(&vs_ui);
     free_shader(&fs);
 
-    return shader_program_world && shader_program_ui;
+    return shader_program_default != 0;
 }
 
 void use_shader_program(const ShaderProgram* instance)
@@ -48,8 +42,7 @@ void use_shader_program(const ShaderProgram* instance)
 
 void free_shader_programs(void)
 {
-    free_shader_program(&shader_program_world);
-    free_shader_program(&shader_program_ui);
+    free_shader_program(&shader_program_default);
     return;
 }
 
@@ -146,7 +139,7 @@ static void set_glsl_version_in_shader(char* ptr_shader)
 
     for (i = 0; ptr_shader[i]; ++i)
     {
-        if (char_is_digit(ptr_shader[i]))
+        if (CHAR_IS_DIGIT(ptr_shader[i]))
         {
             ptr_shader[i + 2] = glsl % 10 + '0';
             glsl /= 10;

@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #endif
 
+#define CHAR_IS_DIGIT(c) (c >= '0' && c <= '9')
+
 char* read_file(const char* filepath);
 int char_is_digit(const char c);
 
