@@ -4,24 +4,12 @@
 #define WINDOW_DEFAULT_WIDTH 640
 #define WINDOW_DEFAULT_HEIGHT 480
 
-static float aspect_ratio = 0;
+MonitorSize monitor_size = { 0, 0, 0 };
 static int window_size[2] = {0};
 static int window_pos[2] = {0};
 
-/* Encapsulation (public get, private set) --------------------------------- */
-float get_aspect_ratio(void)
-{
-    return aspect_ratio;
-}
-
-static void set_aspect_ratio(const GLFWvidmode* vid_mode)
-{
-    aspect_ratio = (float)vid_mode->width / vid_mode->height;
-    return;
-}
-/* ------------------------------------------------------------------------- */
-
-static void set_aspect_ratio_viewport(int width, int height);
+static void set_monitor_size(const GLFWvidmode* vid_mode);
+static void set_viewport(const int width, const int height);
 static void set_initial_viewport(GLFWwindow* window);
 static void framebuffer_size_callback(GLFWwindow* window, int width, 
     int height);
@@ -30,7 +18,6 @@ static void window_pos_callback(GLFWwindow* window, int xpos, int ypos);
 GLFWwindow* get_window(const char* title)
 {
     GLFWwindow* window;
-    const GLFWvidmode* vid_mode;
 
     if (!glfwInit())
     {
@@ -38,10 +25,9 @@ GLFWwindow* get_window(const char* title)
         exit(EXIT_FAILURE);
     }
 
-    vid_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    window_size[0] = MIN(WINDOW_DEFAULT_WIDTH, vid_mode->width);
-    window_size[1] = MIN(WINDOW_DEFAULT_HEIGHT, vid_mode->height);
-    set_aspect_ratio(vid_mode);
+    set_monitor_size(glfwGetVideoMode(glfwGetPrimaryMonitor()));
+    window_size[0] = MIN(WINDOW_DEFAULT_WIDTH, monitor_size.width);
+    window_size[1] = MIN(WINDOW_DEFAULT_HEIGHT, monitor_size.height);
 
     #ifdef __APPLE__
     /* These window hints are to be called before creating the window */
@@ -64,7 +50,7 @@ GLFWwindow* get_window(const char* title)
 
     glfwSetWindowSizeLimits(window, 
         /* min */ window_size[0], window_size[1], 
-        /* max */ vid_mode->width, vid_mode->height);
+        /* max */ monitor_size.width, monitor_size.height);
     glfwMakeContextCurrent(window);
     set_initial_viewport(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -113,16 +99,24 @@ void toggle_fullscreen(GLFWwindow* window)
     return;
 }
 
-static void set_aspect_ratio_viewport(int width, int height)
+static void set_monitor_size(const GLFWvidmode* vid_mode)
+{
+    monitor_size.width = vid_mode->width;
+    monitor_size.height = vid_mode->height;
+    monitor_size.aspect_ratio = (float)vid_mode->width / vid_mode->height;
+    return;
+}
+
+static void set_viewport(const int width, const int height)
 {
     int new_width = width;
-    int new_height = width / aspect_ratio;
+    int new_height = width / monitor_size.aspect_ratio;
     int x_offset, y_offset;
 
     if (new_height > height)
     {
         new_height = height;
-        new_width = height * aspect_ratio;
+        new_width = height * monitor_size.aspect_ratio;
     }
 
     x_offset = (width - new_width) / 2;
@@ -136,7 +130,7 @@ static void set_initial_viewport(GLFWwindow* window)
 {
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
-    set_aspect_ratio_viewport(width, height);
+    set_viewport(width, height);
     return;
 }
 
@@ -147,7 +141,7 @@ static void framebuffer_size_callback
     int height
 )
 {
-    set_aspect_ratio_viewport(width, height);
+    set_viewport(width, height);
 
     /* for toggle_fullscreen() */
     if (glfwGetWindowAttrib(window, GLFW_DECORATED))

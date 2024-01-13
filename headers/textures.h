@@ -1,5 +1,5 @@
-#ifndef __WINDOWING_H__
-#define __WINDOWING_H__
+#ifndef __TEXTURES_H__
+#define __TEXTURES_H__
 
 #ifndef __STDIO_H__
 #define __STDIO_H__
@@ -23,15 +23,18 @@
 
 typedef struct
 {
+    GLuint id;
     int width;
     int height;
-    float aspect_ratio;
-} MonitorSize;
+    unsigned char* buffer;
+} Texture;
 
-extern MonitorSize monitor_size;
+#define NBR_TEXTURES 2
+extern Texture* textures[NBR_TEXTURES];
+#define TEXTURE_GAME (textures[0])
 
-GLFWwindow* get_window(const char* title);
-void toggle_fullscreen(GLFWwindow* window);
+void create_textures(void);
+void free_textures(void);
 
 #endif
 
