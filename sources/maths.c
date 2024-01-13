@@ -1,6 +1,10 @@
 #include "../headers/maths.h"
 
-/* MIN(a, b) and MAX(a, b) in the header */
+/*
+    In the header:
+    - MIN(a, b)
+    - MAX(a, b)
+*/
 
 #define PI 3.1416
 
@@ -8,6 +12,7 @@
 #define IS_CLOSE_TO_ZERO(x) (ABS(x) < 1e-15)
 #define DEG2RAD(degrees) (degrees * PI/180)
 #define RAD2DEG(radians) (radians * 180/PI)
+#define CLAMP(x, min, max) (x < min ? min : x > max ? max : x)
 
 static float factorial(const int n);
 static float power(const float base, const int exponent);

@@ -1,10 +1,12 @@
 #include "../headers/textures.h"
 #include "../headers/windowing.h"
+#include "../headers/file_handling.h"
 
 Texture* textures[NBR_TEXTURES] = {0};
 
 static Texture* create_texture(void);
 static void free_texture(Texture** t);
+static void set_color_from_hex_string(Color* color, const char* str);
 
 void create_textures(void)
 {
@@ -27,7 +29,7 @@ void set_texture(Texture* t)
             i = (y * t->width + x) * 4;
             t->buffer[i]   = x * 255 / t->width;
             t->buffer[i+1] = y * 255 / t->height;
-            t->buffer[i+2] = t->buffer[i]/2 + t->buffer[i+1]/2;
+            t->buffer[i+2] = 255/2;
             t->buffer[i+3] = 255;
         }
     }
@@ -104,6 +106,20 @@ static void free_texture(Texture** t)
 
     /* Nullify the reference to prevent a double free */
     *t = 0;
+    return;
+}
+
+static void set_color_from_hex_string(Color* color, const char* str)
+{
+    /* e.g.: "#097e7bff" - "#097e7b" - "097e7b" */
+    int i = str[0] == '#';
+
+    color->r = hex_char_to_int(str[i+0])*16 + hex_char_to_int(str[i+1]);
+    color->g = hex_char_to_int(str[i+2])*16 + hex_char_to_int(str[i+3]);
+    color->b = hex_char_to_int(str[i+4])*16 + hex_char_to_int(str[i+5]);
+
+    color->a = !str[i+6] ? 255 
+        : hex_char_to_int(str[i+6])*16 + hex_char_to_int(str[i+7]);
     return;
 }
 

@@ -29,6 +29,14 @@ typedef struct
     unsigned char* buffer;
 } Texture;
 
+typedef struct
+{
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    unsigned char a;
+} Color;
+
 #define NBR_TEXTURES 2
 extern Texture* textures[NBR_TEXTURES];
 #define TEXTURE_GAME (textures[0])

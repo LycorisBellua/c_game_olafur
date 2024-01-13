@@ -11,10 +11,11 @@
 #include <stdlib.h>
 #endif
 
-#define CHAR_IS_DIGIT(c) (c >= '0' && c <= '9')
-
 char* read_file(const char* filepath);
 int char_is_digit(const char c);
+int char_is_lowercase(const char c);
+int char_is_uppercase(const char c);
+int hex_char_to_int(const char c);
 
 #endif
 
