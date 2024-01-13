@@ -1,12 +1,16 @@
 #include "../headers/textures.h"
 #include "../headers/windowing.h"
 #include "../headers/file_handling.h"
+#include "../headers/maths.h"
 
 Texture* textures[NBR_TEXTURES] = {0};
 
 static Texture* create_texture(void);
 static void free_texture(Texture** t);
+
 static void set_color_from_hex_string(Color* color, const char* str);
+static void darken_color(Color* color, const int percentage);
+static void lighten_color(Color* color, const int percentage);
 
 void create_textures(void)
 {
@@ -120,6 +124,26 @@ static void set_color_from_hex_string(Color* color, const char* str)
 
     color->a = !str[i+6] ? 255 
         : hex_char_to_int(str[i+6])*16 + hex_char_to_int(str[i+7]);
+    return;
+}
+
+static void darken_color(Color* color, const int percentage)
+{
+    const int perc_to_rgb = 255/100 * percentage;
+
+    color->r = CLAMP(color->r - perc_to_rgb, 0, 255);
+    color->g = CLAMP(color->g - perc_to_rgb, 0, 255);
+    color->b = CLAMP(color->b - perc_to_rgb, 0, 255);
+    return;
+}
+
+static void lighten_color(Color* color, const int percentage)
+{
+    const int perc_to_rgb = 255/100 * percentage;
+
+    color->r = CLAMP(color->r + perc_to_rgb, 0, 255);
+    color->g = CLAMP(color->g + perc_to_rgb, 0, 255);
+    color->b = CLAMP(color->b + perc_to_rgb, 0, 255);
     return;
 }
 
