@@ -11,6 +11,11 @@
 #include <stdlib.h>
 #endif
 
+#ifndef __STRING_H__
+#define __STRING_H__
+#include <string.h>
+#endif
+
 #ifndef __GLEW_H__
 #define __GLEW_H__
 #include <GL/glew.h>
@@ -31,10 +36,16 @@ typedef struct
 
 #define NBR_TEXTURES 2
 extern Texture* textures[NBR_TEXTURES];
-#define TEXTURE_GAME (textures[0])
+#define TEX_MAIN (textures[0])
 
 void create_textures(void);
+void use_texture(const Texture* t);
+void save_drawing(const Texture* t);
 void free_textures(void);
+
+void clear_drawing(Texture* t, const int true_clear);
+void draw_gradient(Texture* t);
+void draw_point(Texture* t, const int thickness, const int x, const int y);
 
 #endif
 

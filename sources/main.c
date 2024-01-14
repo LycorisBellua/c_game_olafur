@@ -41,15 +41,8 @@ int main(int argc, char** argv)
     /* glfwSetCharCallback(window, char_key_callback); */
 
     glfwSwapInterval(1);
-    /*
-        Line width should be 1.0f by default, but it's better to set it 
-        explicitly to know which width we deal with. Set it to 1.5f otherwise 
-        lines at -1.0 on the X or Y axis won't show in the viewport. It's fine 
-        with a filled-up usage such as GL_TRIANGLES, but not when it comes to 
-        rendering lines. The visual difference between 1.0 and 1.5 is minimal 
-        enough.
-    */
-    glLineWidth(1.5f);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     if (!create_shader_programs())
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -60,15 +53,18 @@ int main(int argc, char** argv)
         create_textures();
         initialize_interfaces();
 
-        glBindTexture(GL_TEXTURE_2D, TEXTURE_GAME->id);
         use_shader_program(shader_program_default);
+        use_texture(TEX_MAIN);
     }
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
+        clear_drawing(TEX_MAIN, 1);
+        active_interface->draw();
+        save_drawing(TEX_MAIN);
+        render_mesh(MESH_VIEWPORT, GL_TRIANGLES);
 
-        active_interface->render();
         move_camera();
 
         glfwSwapBuffers(window);

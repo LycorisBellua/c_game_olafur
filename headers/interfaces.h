@@ -1,12 +1,12 @@
 #ifndef __INTERFACES_H__
 #define __INTERFACES_H__
 
-typedef void (*RenderFunction)(void);
+typedef void (*DrawFunction)(void);
 typedef struct Interface Interface;
 
 struct Interface
 {
-    RenderFunction render;
+    DrawFunction draw;
     Interface* previous;
     Interface* next;
 };
