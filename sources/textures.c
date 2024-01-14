@@ -151,10 +151,10 @@ void draw_point(Texture* t, const int thickness, const int x, const int y)
         return;
 
     i = (y * t->width + x) * 4;
-    t->buffer[i+0] = 255;
-    t->buffer[i+1] = 255;
-    t->buffer[i+2] = 255;
-    t->buffer[i+3] = 255;
+    set_pixel_color(t->buffer + i, *color_default);
+    /*
+    set_pixel_color(t->buffer + i, colors[COLOR_RED]);
+    */
     return;
 }
 

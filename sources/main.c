@@ -17,6 +17,7 @@
 #include "../headers/uniforms.h"
 #include "../headers/meshes.h"
 #include "../headers/textures.h"
+#include "../headers/colors.h"
 #include "../headers/interfaces.h"
 #include "../headers/camera.h"
 
@@ -51,6 +52,7 @@ int main(int argc, char** argv)
         create_uniforms();
         create_meshes();
         create_textures();
+        create_color_palette();
         initialize_interfaces();
 
         use_shader_program(shader_program_default);
@@ -76,6 +78,7 @@ int main(int argc, char** argv)
     free_uniforms();
     free_meshes();
     free_textures();
+    free_color_palette();
 
     list_arguments(argc, argv);
     return EXIT_SUCCESS;
