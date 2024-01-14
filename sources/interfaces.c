@@ -30,7 +30,7 @@ void set_active_interface(Interface* interface)
 
 static void render_main_menu(void)
 {
-    render_mesh(MESH_VIEWPORT, GL_LINE_LOOP);
+    render_mesh(MESH_VIEWPORT, GL_TRIANGLES);
     return;
 }
 

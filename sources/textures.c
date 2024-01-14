@@ -1,58 +1,17 @@
 #include "../headers/textures.h"
 #include "../headers/windowing.h"
-#include "../headers/file_handling.h"
-#include "../headers/maths.h"
+#include "../headers/colors.h"
 
 Texture* textures[NBR_TEXTURES] = {0};
 
 static Texture* create_texture(void);
 static void free_texture(Texture** t);
-
-static void set_color_from_hex_string(Color* color, const char* str);
-static void darken_color(Color* color, const int percentage);
-static void lighten_color(Color* color, const int percentage);
+static void set_texture(Texture* t);
 
 void create_textures(void)
 {
     TEXTURE_GAME = create_texture();
     textures[NBR_TEXTURES - 1] = 0;
-    return;
-}
-
-void set_texture(Texture* t)
-{
-    int x, y, i;
-
-    glBindTexture(GL_TEXTURE_2D, t->id);
-
-    /* Gradient */
-    for (y = 0; y < t->height; ++y)
-    {
-        for (x = 0; x < t->width; ++x)
-        {
-            i = (y * t->width + x) * 4;
-            t->buffer[i]   = x * 255 / t->width;
-            t->buffer[i+1] = y * 255 / t->height;
-            t->buffer[i+2] = 255/2;
-            t->buffer[i+3] = 255;
-        }
-    }
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t->width, t->height, 0, 
-        GL_RGBA, GL_UNSIGNED_BYTE, t->buffer);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return;
-}
-
-void free_textures(void)
-{
-    unsigned int i;
-    for (i = 0; i < sizeof(textures)/sizeof(Texture*); ++i)
-    {
-        if (!textures[i])
-            break;
-        free_texture(&textures[i]);
-    }
     return;
 }
 
@@ -94,6 +53,18 @@ static Texture* create_texture(void)
     return t;
 }
 
+void free_textures(void)
+{
+    unsigned int i;
+    for (i = 0; i < sizeof(textures)/sizeof(Texture*); ++i)
+    {
+        if (!textures[i])
+            break;
+        free_texture(&textures[i]);
+    }
+    return;
+}
+
 static void free_texture(Texture** t)
 {
     /*
@@ -113,37 +84,28 @@ static void free_texture(Texture** t)
     return;
 }
 
-static void set_color_from_hex_string(Color* color, const char* str)
+static void set_texture(Texture* t)
 {
-    /* e.g.: "#097e7bff" - "#097e7b" - "097e7b" */
-    int i = str[0] == '#';
+    int x, y, i;
 
-    color->r = hex_char_to_int(str[i+0])*16 + hex_char_to_int(str[i+1]);
-    color->g = hex_char_to_int(str[i+2])*16 + hex_char_to_int(str[i+3]);
-    color->b = hex_char_to_int(str[i+4])*16 + hex_char_to_int(str[i+5]);
+    glBindTexture(GL_TEXTURE_2D, t->id);
 
-    color->a = !str[i+6] ? 255 
-        : hex_char_to_int(str[i+6])*16 + hex_char_to_int(str[i+7]);
-    return;
-}
+    /* Gradient */
+    for (y = 0; y < t->height; ++y)
+    {
+        for (x = 0; x < t->width; ++x)
+        {
+            i = (y * t->width + x) * 4;
+            t->buffer[i]   = x * 255 / t->width;
+            t->buffer[i+1] = y * 255 / t->height;
+            t->buffer[i+2] = 255/2;
+            t->buffer[i+3] = 255;
+        }
+    }
 
-static void darken_color(Color* color, const int percentage)
-{
-    const int perc_to_rgb = 255/100 * percentage;
-
-    color->r = CLAMP(color->r - perc_to_rgb, 0, 255);
-    color->g = CLAMP(color->g - perc_to_rgb, 0, 255);
-    color->b = CLAMP(color->b - perc_to_rgb, 0, 255);
-    return;
-}
-
-static void lighten_color(Color* color, const int percentage)
-{
-    const int perc_to_rgb = 255/100 * percentage;
-
-    color->r = CLAMP(color->r + perc_to_rgb, 0, 255);
-    color->g = CLAMP(color->g + perc_to_rgb, 0, 255);
-    color->b = CLAMP(color->b + perc_to_rgb, 0, 255);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t->width, t->height, 0, 
+        GL_RGBA, GL_UNSIGNED_BYTE, t->buffer);
+    glBindTexture(GL_TEXTURE_2D, 0);
     return;
 }
 
