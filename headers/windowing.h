@@ -23,12 +23,21 @@
 
 typedef struct
 {
-    int width;
-    int height;
+    int monitor_width;
+    int monitor_height;
     float aspect_ratio;
-} MonitorSize;
 
-extern MonitorSize monitor_size;
+    int window_width_default;
+    int window_height_default;
+    int window_width;
+    int window_height;
+    int window_position_x;
+    int window_position_y;
+    int fullscreen_x;
+    int fullscreen_y;
+} Resolution;
+
+extern Resolution res;
 
 GLFWwindow* get_window(const char* title);
 void toggle_fullscreen(GLFWwindow* window);

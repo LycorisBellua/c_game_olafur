@@ -29,6 +29,9 @@
 typedef struct
 {
     GLuint id;
+    int real_width;
+    int real_height;
+    int thickness;
     int width;
     int height;
     unsigned char* buffer;
@@ -40,12 +43,16 @@ extern Texture* textures[NBR_TEXTURES];
 
 void create_textures(void);
 void use_texture(const Texture* t);
+void clear_drawing(Texture* t, const int true_clear);
 void save_drawing(const Texture* t);
 void free_textures(void);
 
-void clear_drawing(Texture* t, const int true_clear);
+void draw_point(Texture* t, int x, int y);
+
+/* Test functions */
+void draw_corners(Texture* t);
+void draw_center(Texture* t);
 void draw_gradient(Texture* t);
-void draw_point(Texture* t, const int thickness, const int x, const int y);
 
 #endif
 

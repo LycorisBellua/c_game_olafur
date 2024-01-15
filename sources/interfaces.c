@@ -1,5 +1,6 @@
 #include "../headers/interfaces.h"
 #include "../headers/textures.h"
+#include "../headers/colors.h"
 
 Interface* active_interface = {0};
 static Interface main_menu_interface;
@@ -36,7 +37,8 @@ static void draw_main_menu(void)
 
 static void draw_game(void)
 {
-    draw_point(TEX_MAIN, 1, TEX_MAIN->width/2, TEX_MAIN->height/2);
+    draw_corners(TEX_MAIN);
+    draw_center(TEX_MAIN);
     return;
 }
 

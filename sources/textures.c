@@ -21,9 +21,19 @@ void use_texture(const Texture* t)
     return;
 }
 
+void clear_drawing(Texture* t, const int true_clear)
+{
+    /* Memset is faster than zeroing the alpha channel */
+    if (true_clear)
+        memset(t->buffer, 0, t->real_width * t->real_height * 4);
+    else
+        set_alpha_to_zero(t);
+    return;
+}
+
 void save_drawing(const Texture* t)
 {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t->width, t->height, 0, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t->real_width, t->real_height, 0, 
         GL_RGBA, GL_UNSIGNED_BYTE, t->buffer);
     return;
 }
@@ -46,6 +56,7 @@ void free_textures(void)
 static Texture* create_texture(void)
 {
     Texture* t = malloc(sizeof(Texture));
+    long buffer_length;
     if (!t)
     {
         fprintf(stderr, "ERROR: Couldn't allocate memory for texture.");
@@ -53,16 +64,19 @@ static Texture* create_texture(void)
     }
 
     t->id = -1;
-    t->width = monitor_size.width;
-    t->height = monitor_size.height;
+    t->real_width = res.monitor_width;
+    t->real_height = res.monitor_height;
+    t->thickness = t->real_width/res.window_width_default;
+    t->width = t->real_width / t->thickness;
+    t->height = t->real_height / t->thickness;
 
-    t->buffer = malloc(t->width * t->height * 4 * sizeof(unsigned char));
+    buffer_length = t->real_width * t->real_height * 4 * sizeof(unsigned char);
+    t->buffer = malloc(buffer_length);
     if (!t->buffer)
     {
         fprintf(stderr, "ERROR: Couldn't allocate enough memory for a texture "
             "(= %ld bytes for RGBA texture of a %dx%d resolution).\n", 
-            t->width * t->height * 4 * sizeof(unsigned char), 
-            t->width, t->height);
+            buffer_length, t->real_width, t->real_height);
         free(t);
         return 0;
     }
@@ -74,11 +88,6 @@ static Texture* create_texture(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    /*
-    draw_gradient(t);
-    set_texture(t);
-    */
 
     glBindTexture(GL_TEXTURE_2D, 0);
     return t;
@@ -106,7 +115,7 @@ static void free_texture(Texture** t)
 static void set_alpha_to_zero(Texture* t)
 {
     unsigned char* ptr = t->buffer + 3;
-    unsigned char* end = t->buffer + t->width * t->height * 4;
+    unsigned char* end = t->buffer + t->real_width * t->real_height * 4;
 
     while (ptr < end)
     {
@@ -116,45 +125,83 @@ static void set_alpha_to_zero(Texture* t)
     return;
 }
 
-void clear_drawing(Texture* t, const int true_clear)
+void draw_point(Texture* t, int x, int y)
 {
-    if (true_clear)
-        memset(t->buffer, 0, t->width * t->height * 4);
-    else
-        set_alpha_to_zero(t);
+    int row, col;
+
+    x *= t->thickness;
+    y *= t->thickness;
+
+    for (row = 0; row < t->thickness; ++row)
+    {
+        for (col = 0; col < t->thickness; ++col)
+            set_pixel_color(t->buffer + ((y+row) * t->real_width + x+col) * 4, 
+                *color_default);
+    }
+    return;
+}
+
+/* Test functions ---------------------------------------------------------- */
+
+void draw_corners(Texture* t)
+{
+    /* Bottom left */
+    color_default = &colors[COLOR_WHITE];
+    draw_point(t, 0, 0);
+    /* Top left */
+    color_default = &colors[COLOR_RED];
+    draw_point(t, 0, t->height - 1);
+    /* Top right */
+    color_default = &colors[COLOR_GREEN];
+    draw_point(t, t->width - 1, t->height - 1);
+    /* Bottom right */
+    color_default = &colors[COLOR_BLUE];
+    draw_point(t, t->width - 1, 0);
+
+    color_default = &colors[COLOR_WHITE];
+    return;
+}
+
+void draw_center(Texture* t)
+{
+    /* Bottom left */
+    color_default = &colors[COLOR_WHITE];
+    draw_point(t, t->width/2 -1, t->height/2 -1);
+    /* Top left */
+    color_default = &colors[COLOR_RED];
+    draw_point(t, t->width/2 -1, t->height/2);
+    /* Top right */
+    color_default = &colors[COLOR_GREEN];
+    draw_point(t, t->width/2, t->height/2);
+    /* Bottom right */
+    color_default = &colors[COLOR_BLUE];
+    draw_point(t, t->width/2, t->height/2 -1);
+
+    color_default = &colors[COLOR_WHITE];
     return;
 }
 
 void draw_gradient(Texture* t)
 {
-    int x, y, i;
+    int x, y;
+
+    Color* color = malloc(sizeof(Color));
+    color_default = &color;
+    color->b = 255/2;
+    color->a = 255;
 
     for (y = 0; y < t->height; ++y)
     {
         for (x = 0; x < t->width; ++x)
         {
-            i = (y * t->width + x) * 4;
-            t->buffer[i+0] = x * 255 / t->width;
-            t->buffer[i+1] = y * 255 / t->height;
-            t->buffer[i+2] = 255/2;
-            t->buffer[i+3] = 255;
+            color->r = x * 255 / t->width;
+            color->g = y * 255 / t->height;
+            draw_point(t, x, y);
         }
     }
-    return;
-}
 
-void draw_point(Texture* t, const int thickness, const int x, const int y)
-{
-    int i;
-
-    if (y >= t->height || x >= t->width)
-        return;
-
-    i = (y * t->width + x) * 4;
-    set_pixel_color(t->buffer + i, *color_default);
-    /*
-    set_pixel_color(t->buffer + i, colors[COLOR_RED]);
-    */
+    color_default = &colors[COLOR_WHITE];
+    free(color);
     return;
 }
 
