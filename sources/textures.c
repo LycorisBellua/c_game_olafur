@@ -125,9 +125,42 @@ static void set_alpha_to_zero(Texture* t)
     return;
 }
 
+int is_coord_out_of_bounds(const int axis_length, const int coord)
+{
+    const int val = axis_length - coord;
+
+    /*
+        If coord is `x`, it's out of bounds to the right of the texture.
+        If coord is `y`, it's out of bounds to the top of the texture.
+    */
+    if (val < 1)
+        return 1;
+
+    /*
+        If coord is `x`, it's out of bounds to the left of the texture.
+        If coord is `y`, it's out of bounds to the bottom of the texture.
+    */
+    else if (val > axis_length)
+        return -1;
+
+    /* This coordinate is legal */
+    else
+        return 0;
+}
+
+/* Origin is bottom left hand corner */
 void draw_point(Texture* t, int x, int y)
 {
     int row, col;
+
+    /* TODO: Remove this check once the drawing functions are implemented */
+    if (is_coord_out_of_bounds(t->width, x) 
+        + is_coord_out_of_bounds(t->height, y))
+    {
+        printf("Forbidden coordinates: (%d,%d)\n", x, y);
+        return;
+    }
+    /* ------------------------------------------------------------------ */
 
     x *= t->thickness;
     y *= t->thickness;
@@ -138,6 +171,38 @@ void draw_point(Texture* t, int x, int y)
             set_pixel_color(t->buffer + ((y+row) * t->real_width + x+col) * 4, 
                 *color_default);
     }
+    return;
+}
+
+void draw_line(Texture* t, int x1, int y1, int x2, int y2)
+{
+    /* TODO */
+    int x, y;
+
+    for (x = x1; x <= x2; ++x)
+    {
+        for (y = y1; y <= y2; ++y)
+            draw_point(t, x, y);
+    }
+    return;
+}
+
+/* Coord is center of shape */
+void draw_circle(Texture* t, const int filled_up, int x, int y, int radius)
+{
+    /* TODO */
+    return;
+}
+
+/* Variadic arguments are coordinates: x1, y1, x2, y2... */
+void draw_polygon(Texture* t, const int filled_up, ...)
+{
+    /*
+        TODO
+        - Make sure you can at least make a triangle with it.
+        - Can you tell if it's convex before filling it up?
+        - This function is not important. Discard?
+    */
     return;
 }
 

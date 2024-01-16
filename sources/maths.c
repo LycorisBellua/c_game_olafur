@@ -9,10 +9,10 @@
 
 #define PI 3.1416
 
-#define ABS(x) (x < 0 ? -x : x)
+#define ABS(x) ((x) < 0 ? (-x) : (x))
 #define IS_CLOSE_TO_ZERO(x) (ABS(x) < 1e-15)
-#define DEG2RAD(degrees) (degrees * PI/180)
-#define RAD2DEG(radians) (radians * 180/PI)
+#define DEG2RAD(degrees) ((degrees) * PI/180)
+#define RAD2DEG(radians) ((radians) * 180/PI)
 
 static float factorial(const int n);
 static float power(const float base, const int exponent);
