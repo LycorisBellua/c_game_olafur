@@ -47,16 +47,5 @@ void clear_drawing(Texture* t, const int true_clear);
 void save_drawing(const Texture* t);
 void free_textures(void);
 
-int is_coord_out_of_bounds(const int axis_length, const int coord);
-void draw_point(Texture* t, int x, int y);
-void draw_line(Texture* t, int x1, int y1, int x2, int y2);
-void draw_circle(Texture* t, const int filled_up, int x, int y, int radius);
-void draw_polygon(Texture* t, const int filled_up, ...);
-
-/* Test functions */
-void draw_corners(Texture* t);
-void draw_center(Texture* t);
-void draw_gradient(Texture* t);
-
 #endif
 
