@@ -1,6 +1,11 @@
 #ifndef __DRAW_H__
 #define __DRAW_H__
 
+#ifndef __STRING_H__
+#define __STRING_H__
+#include <string.h>
+#endif
+
 #include "textures.h"
 
 /* 

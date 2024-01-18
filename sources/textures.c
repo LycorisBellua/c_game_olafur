@@ -69,7 +69,7 @@ static Texture* create_texture(void)
     t->width = t->real_width / t->thickness;
     t->height = t->real_height / t->thickness;
 
-    buffer_length = t->real_width * t->real_height * 4 * sizeof(unsigned char);
+    buffer_length = t->real_width * t->real_height * 4 * sizeof(GLubyte);
     t->buffer = malloc(buffer_length);
     if (!t->buffer)
     {
@@ -113,8 +113,8 @@ static void free_texture(Texture** t)
 
 static void set_alpha_to_zero(Texture* t)
 {
-    unsigned char* ptr = t->buffer + 3;
-    unsigned char* end = t->buffer + t->real_width * t->real_height * 4;
+    GLubyte* ptr = t->buffer + 3;
+    GLubyte* end = t->buffer + t->real_width * t->real_height * 4;
 
     while (ptr < end)
     {

@@ -29,11 +29,16 @@ void draw_point(Texture* t, int x, int y)
     x *= t->thickness;
     y *= t->thickness;
 
-    for (row = 0; row < t->thickness; ++row)
+    /* First row: Place each pixel one by one */
+    for (col = 0; col < t->thickness; ++col)
+        memcpy(t->buffer + (y * t->real_width + x+col) * 4, color_default, 4);
+
+    /* Use the first row to write the other ones */
+    for (row = 1; row < t->thickness; ++row)
     {
-        for (col = 0; col < t->thickness; ++col)
-            set_pixel_color(t->buffer + ((y+row) * t->real_width + x+col) * 4, 
-                *color_default);
+        memcpy(t->buffer + ((y+row) * t->real_width + x) * 4, 
+            t->buffer + (y * t->real_width + x) * 4, 
+            4 * t->thickness);
     }
     return;
 }
