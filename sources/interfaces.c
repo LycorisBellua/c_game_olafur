@@ -46,10 +46,8 @@ static void draw_game(void)
     draw_corners(TEX_MAIN);
     draw_center(TEX_MAIN);
 
-    /*
     draw_line(TEX_MAIN, TEX_MAIN->width/100*10, TEX_MAIN->height/100*10, 
-        TEX_MAIN->width/100*50, TEX_MAIN->height/100*50);
-    */
+        TEX_MAIN->width/100*50, TEX_MAIN->height/100*10);
 
     color_default = colors[COLOR_WHITE];
     draw_rectangle(TEX_MAIN, 1, TEX_MAIN->width*0.1f-1, TEX_MAIN->height*0.33f-1, 

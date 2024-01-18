@@ -5,6 +5,8 @@
     - MIN(a, b)
     - MAX(a, b)
     - CLAMP(x, min, max)
+    - CLAMP_MIN(x, min)
+    - CLAMP_MAX(x, max)
 */
 
 #define PI 3.1416

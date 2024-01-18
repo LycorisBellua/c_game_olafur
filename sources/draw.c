@@ -1,5 +1,6 @@
 #include "../headers/draw.h"
 #include "../headers/colors.h"
+#include "../headers/maths.h"
 
 /* 
     The origin of the coordinate system is in the bottom left hand corner.
@@ -8,6 +9,8 @@
 
 static int is_coord_out_of_bounds(const int axis_length, const int coord);
 static void clamp_straight_axis(const int max_length, int* length, int* coord);
+static void draw_line_horizontal(Texture* t, int x1, int x2, int y);
+static void draw_line_vertical(Texture* t, int x, int y1, int y2);
 static void draw_rectangle_empty(Texture* t, int x, int y, int width, 
     int height);
 static void draw_rectangle_full(Texture* t, int x, int y, int width, 
@@ -45,13 +48,67 @@ void draw_point(Texture* t, int x, int y)
 
 void draw_line(Texture* t, int x1, int y1, int x2, int y2)
 {
-    /* TODO */
-    int x, y;
+    int vector[2];
+    vector[0] = x2-x1;
+    vector[1] = y2-y1;
 
-    for (x = x1; x <= x2; ++x)
+    if (!vector[0] && !vector[1])
     {
-        for (y = y1; y <= y2; ++y)
-            draw_point(t, x, y);
+        if (is_coord_out_of_bounds(t->width, x1) 
+                || is_coord_out_of_bounds(t->height, y1))
+            return;
+        draw_point(t, x1, y1);
+    }
+
+    else if (!vector[0])
+    {
+        if (is_coord_out_of_bounds(t->width, x1))
+            return;
+
+        if (vector[1] > 0)
+        {
+            y1 = CLAMP_MIN(y1, 0);
+            y2 = CLAMP_MAX(y2, t->height-1);
+            draw_line_vertical(t, x1, y1, y2);
+        }
+        else
+        {
+            y2 = CLAMP_MIN(y2, 0);
+            y1 = CLAMP_MAX(y1, t->height-1);
+            draw_line_vertical(t, x1, y2, y1);
+        }
+    }
+
+    else if (!vector[1])
+    {
+        if (is_coord_out_of_bounds(t->height, y1))
+            return;
+
+        if (vector[0] > 0)
+        {
+            x1 = CLAMP_MIN(x1, 0);
+            x2 = CLAMP_MAX(x2, t->width-1);
+            draw_line_horizontal(t, x1, x2, y1);
+        }
+        else
+        {
+            x2 = CLAMP_MIN(x2, 0);
+            x1 = CLAMP_MAX(x1, t->width-1);
+            draw_line_horizontal(t, x2, x1, y1);
+        }
+    }
+
+    /* TODO */
+    /* Diagonal line */
+    else
+    {
+        /*
+        for (x = x1; x <= x2; ++x)
+        {
+            for (y = y1; y <= y2; ++y)
+                draw_point(t, x, y);
+        }
+        */
     }
     return;
 }
@@ -153,10 +210,23 @@ static void clamp_straight_axis(const int max_length, int* length, int* coord)
     return;
 }
 
+static void draw_line_horizontal(Texture* t, int x1, int x2, int y)
+{
+    while (x1 <= x2)
+        draw_point(t, x1++, y);
+    return;
+}
+
+static void draw_line_vertical(Texture* t, int x, int y1, int y2)
+{
+    while (y1 <= y2)
+        draw_point(t, x, y1++);
+    return;
+}
+
 static void draw_rectangle_empty(Texture* t, int x, int y, int width, 
     int height)
 {
-    int i;
     int last_x, last_y;
     int x_out_of_bounds, y_out_of_bounds;
     int last_x_out_of_bounds, last_y_out_of_bounds;
@@ -195,38 +265,26 @@ static void draw_rectangle_empty(Texture* t, int x, int y, int width,
 
     /* Draw bottom line */
     if (!y_out_of_bounds)
-    {
-        for (i = x; i <= last_x; ++i)
-            draw_point(t, i, y);
-    }
+        draw_line_horizontal(t, x, last_x, y);
 
     /* Draw top line */
     if (!last_y_out_of_bounds)
-    {
-        for (i = x; i <= last_x; ++i)
-            draw_point(t, i, last_y);
-    }
+        draw_line_horizontal(t, x, last_x, last_y);
 
     /* Draw left column */
     if (!x_out_of_bounds)
-    {
-        for (i = y; i <= last_y; ++i)
-            draw_point(t, x, i);
-    }
+        draw_line_vertical(t, x, y, last_y);
 
     /* Draw right column */
     if (!last_x_out_of_bounds)
-    {
-        for (i = y; i <= last_y; ++i)
-            draw_point(t, last_x, i);
-    }
+        draw_line_vertical(t, last_x, y, last_y);
     return;
 }
 
 static void draw_rectangle_full(Texture* t, int x, int y, int width, 
     int height)
 {
-    int i, j;
+    int i;
 
     clamp_straight_axis(t->width, &width, &x);
     if (!width)
@@ -235,11 +293,8 @@ static void draw_rectangle_full(Texture* t, int x, int y, int width,
     if (!height)
         return;
 
-    for (j = y; j < y+height; ++j)
-    {
-        for (i = x; i < x+width; ++i)
-            draw_point(t, i, j);
-    }
+    for (i = y; i < y+height; ++i)
+        draw_line_horizontal(t, x, x+width-1, i);
     return;
 }
 
