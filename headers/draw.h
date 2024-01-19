@@ -13,12 +13,37 @@
     The X axis range is [0, t->width] and the Y axis range is [0, t->height].
 */
 
-void draw_point(Texture* t, int x, int y);
-void draw_line(Texture* t, int x1, int y1, int x2, int y2);
-void draw_rectangle(Texture* t, const int is_filled, int x, int y, int width, 
+typedef struct
+{
+    int x;
+    int y;
+} Vector;
+
+typedef struct
+{
+    float x;
+    float y;
+} VectorF;
+
+typedef struct
+{
+    Vector coords;
+} Vertex;
+
+/* `int x, int y` here, so that either Vector or VectorF can be used */
+void draw_point(Texture* t, GLubyte* color, int x, int y);
+
+void draw_line(Texture* t, Vertex v1, Vertex v2);
+void draw_rectangle(Texture* t, const int is_filled, Vertex v, int width, 
     int height);
-void draw_circle(Texture* t, const int filled_up, int x, int y, int radius);
+void draw_circle(Texture* t, const int filled_up, Vertex v, int radius);
 void draw_polygon(Texture* t, const int filled_up, ...);
+
+void draw_test_corners(Texture* t);
+void draw_test_center(Texture* t);
+void draw_test_lines(Texture* t);
+void draw_test_rectangles(Texture* t);
+void draw_test_gradient(Texture* t);
 
 #endif
 

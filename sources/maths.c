@@ -2,6 +2,8 @@
 
 /*
     In the header:
+    - ABS(x)
+    - NORMALIZE(x)
     - MIN(a, b)
     - MAX(a, b)
     - CLAMP(x, min, max)
@@ -11,7 +13,6 @@
 
 #define PI 3.1416
 
-#define ABS(x) ((x) < 0 ? (-x) : (x))
 #define IS_CLOSE_TO_ZERO(x) (ABS(x) < 1e-15)
 #define DEG2RAD(degrees) ((degrees) * PI/180)
 #define RAD2DEG(radians) ((radians) * 180/PI)
@@ -22,6 +23,14 @@ static float f_sin(const float radians);
 static float f_cos(const float radians);
 static float f_tan(const float radians);
 static float clamp_euler_angle(float angle);
+
+void swap(int* a, int* b)
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+    return;
+}
 
 static float factorial(const int n)
 {
