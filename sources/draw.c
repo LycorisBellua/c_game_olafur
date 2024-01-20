@@ -7,12 +7,13 @@
     The X axis range is [0, t->width] and the Y axis range is [0, t->height].
 */
 
-static int is_coord_out_of_bounds(const int axis_length, const int coord);
-static void clamp_straight_axis(const int max_length, int* length, int* coord);
 static Vector get_direction(const Vector v1, const Vector v2);
+static int is_coord_out_of_bounds(const int axis_length, const int coord);
+static int clamp_straight_axis(const int max_length, int* length, int* coord);
+static int clamp_diagonal_line(Texture* t, Vector* p1, Vector* p2, Vector* dir);
 static void draw_line_horizontal(Texture* t, Vertex v, int last_x);
 static void draw_line_vertical(Texture* t, Vertex v, int last_y);
-static void draw_line_diagonal(Texture* t, Vertex v, Vector dir);
+static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir);
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
 
@@ -83,47 +84,9 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     }
     else
     {
-        /* TODO: Check for out of bound coordinates */
-        if (dir.x < 0 || dir.y < 0)
-        {
-            swap(&v1.coords.x, &v2.coords.x);
-            swap(&v1.coords.y, &v2.coords.y);
-        }
-
-        if (v1.coords.x < 0)
-        {
-            v1.coords.y -= v1.coords.x;
-            v1.coords.x = 0;
-        }
-        else if (v1.coords.x > t->width-1)
+        if (!clamp_diagonal_line(t, &v1.coords, &v2.coords, &dir))
             return;
-
-        if (v2.coords.x < 0)
-            return;
-        else if (v2.coords.x > t->width-1)
-        {
-            v2.coords.y -= t->width-1 - v2.coords.x;
-            v2.coords.x = t->width-1;
-        }
-
-        if (v1.coords.y < 0)
-        {
-            v1.coords.x -= v1.coords.y;
-            v1.coords.y = 0;
-        }
-        else if (v1.coords.y > t->height-1)
-            return;
-
-        if (v2.coords.y < 0)
-        {
-            v2.coords.x -= v2.coords.y;
-            v2.coords.y = 0;
-        }
-        else if (v2.coords.y > t->height-1)
-            return;
-
-        dir = get_direction(v1.coords, v2.coords);
-        draw_line_diagonal(t, v1, dir);
+        draw_line_diagonal(t, v1, v2, dir);
     }
     return;
 }
@@ -151,30 +114,38 @@ void draw_polygon(Texture* t, const int filled_up, ...)
     return;
 }
 
+static Vector get_direction(const Vector v1, const Vector v2)
+{
+    Vector dir;
+
+    dir.x = v1.x < 0 && v2.x < 0 ? ABS(v1.x) + v2.x : v2.x - v1.x;
+    dir.y = v1.y < 0 && v2.y < 0 ? ABS(v1.y) + v2.y : v2.y - v1.y;
+
+    return dir;
+}
+
 static int is_coord_out_of_bounds(const int axis_length, const int coord)
 {
-    const int val = axis_length - coord;
+    /*
+        If coord is `x`, it's out of bounds to the left of the texture.
+        If coord is `y`, it's out of bounds to the bottom of the texture.
+    */
+    if (coord < 0)
+        return -1;
 
     /*
         If coord is `x`, it's out of bounds to the right of the texture.
         If coord is `y`, it's out of bounds to the top of the texture.
     */
-    if (val < 1)
+    else if (coord >= axis_length)
         return 1;
-
-    /*
-        If coord is `x`, it's out of bounds to the left of the texture.
-        If coord is `y`, it's out of bounds to the bottom of the texture.
-    */
-    else if (val > axis_length)
-        return -1;
 
     /* This coordinate is legal */
     else
         return 0;
 }
 
-static void clamp_straight_axis(const int max_length, int* length, int* coord)
+static int clamp_straight_axis(const int max_length, int* length, int* coord)
 {
     int coord_in_bounds = max_length - *coord;
 
@@ -188,10 +159,7 @@ static void clamp_straight_axis(const int max_length, int* length, int* coord)
         - If coord is `y`, it's out of bounds to the top of the texture.
     */
     if (*length < 1 || coord_in_bounds < 1)
-    {
-        *length = 0;
-        return;
-    }
+        return 0;
 
     /*
         The shape is either invisible or just needs to be troncated.
@@ -204,10 +172,7 @@ static void clamp_straight_axis(const int max_length, int* length, int* coord)
         *length += *coord;
         *coord = 0;
         if (*length < 1)
-        {
-            *length = 0;
-            return;
-        }
+            return 0;
     }
 
     /*
@@ -217,17 +182,67 @@ static void clamp_straight_axis(const int max_length, int* length, int* coord)
     coord_in_bounds -= *length;
     if (coord_in_bounds < 0)
         *length += coord_in_bounds;
-    return;
+    return 1;
 }
 
-static Vector get_direction(const Vector v1, const Vector v2)
+static int clamp_diagonal_line(Texture* t, Vector* p1, Vector* p2, Vector* dir)
 {
-    Vector dir;
+    int tmp;
+    float slope;
+    VectorF new_p1, new_p2;
+    Vector p1_out_of_bounds, p2_out_of_bounds;
 
-    dir.x = v1.x < 0 && v2.x < 0 ? ABS(v1.x) + v2.x : v2.x - v1.x;
-    dir.y = v1.y < 0 && v2.y < 0 ? ABS(v1.y) + v2.y : v2.y - v1.y;
+    p1_out_of_bounds.x = is_coord_out_of_bounds(t->width, p1->x);
+    p1_out_of_bounds.y = is_coord_out_of_bounds(t->height, p1->y);
+    p2_out_of_bounds.x = is_coord_out_of_bounds(t->width, p2->x);
+    p2_out_of_bounds.y = is_coord_out_of_bounds(t->height, p2->y);
 
-    return dir;
+    /* Line completely out of bounds */
+    if (ABS(p1_out_of_bounds.x + p2_out_of_bounds.x) == 2 
+            || ABS(p1_out_of_bounds.y + p2_out_of_bounds.y) == 2)
+        return 0;
+
+    new_p1.x = p1->x;
+    new_p1.y = p1->y;
+    new_p2.x = p2->x;
+    new_p2.y = p2->y;
+    slope = dir->y / (float)dir->x;
+
+    if (p1_out_of_bounds.x)
+    {
+        tmp = p1_out_of_bounds.x == -1 ? 0 : t->width-1;
+        new_p1.y = p1->y - (p1->x - tmp) * slope;
+        new_p1.x = tmp;
+    }
+
+    if (p2_out_of_bounds.x)
+    {
+        tmp = p2_out_of_bounds.x == -1 ? 0 : t->width-1;
+        new_p2.y = p1->y + (tmp - p1->x) * slope;
+        new_p2.x = tmp;
+    }
+
+    if (p1_out_of_bounds.y)
+    {
+        tmp = p1_out_of_bounds.y == -1 ? 0 : t->height-1;
+        new_p1.x = p1->x - (p1->y - tmp) / slope;
+        new_p1.y = tmp;
+    }
+
+    if (p2_out_of_bounds.y)
+    {
+        tmp = p2_out_of_bounds.y == -1 ? 0 : t->height-1;
+        new_p2.x = p1->x + (tmp - p1->y) / slope;
+        new_p2.y = tmp;
+    }
+
+    p1->x = CLAMP(new_p1.x, 0, t->width-1);
+    p1->y = CLAMP(new_p1.y, 0, t->height-1);
+    p2->x = CLAMP(new_p2.x, 0, t->width-1);
+    p2->y = CLAMP(new_p2.y, 0, t->height-1);
+
+    *dir = get_direction(*p1, *p2);
+    return 1;
 }
 
 static void draw_line_horizontal(Texture* t, Vertex v, int last_x)
@@ -250,12 +265,14 @@ static void draw_line_vertical(Texture* t, Vertex v, int last_y)
     return;
 }
 
-static void draw_line_diagonal(Texture* t, Vertex v, Vector dir)
+static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir)
 {
+    int steps;
     VectorF coords, increment;
-    int steps = MAX(ABS(dir.x), ABS(dir.y));
-    coords.x = v.coords.x;
-    coords.y = v.coords.y;
+
+    steps = MAX(ABS(dir.x), ABS(dir.y));
+    coords.x = v1.coords.x;
+    coords.y = v1.coords.y;
     increment.x = dir.x / (float)steps;
     increment.y = dir.y / (float)steps;
 
@@ -338,11 +355,9 @@ static void draw_rectangle_full(Texture* t, Vertex v, int width, int height)
 {
     Vector last_coords;
 
-    clamp_straight_axis(t->width, &width, &v.coords.x);
-    if (!width)
+    if (!clamp_straight_axis(t->width, &width, &v.coords.x))
         return;
-    clamp_straight_axis(t->height, &height, &v.coords.y);
-    if (!height)
+    if (!clamp_straight_axis(t->height, &height, &v.coords.y))
         return;
 
     last_coords.x = v.coords.x + width-1;
@@ -428,8 +443,7 @@ void draw_test_lines(Texture* t)
 
     v1.coords.x = t->width*0.5f+2;
     v1.coords.y = t->height*0.5f+2;
-    v1.coords.y = -1;
-    v2.coords.x = v1.coords.x - 100;
+    v2.coords.x = v1.coords.x + 200;
     v2.coords.y = v1.coords.y + 100;
     color_default = colors[COLOR_GREEN];
     draw_line(t, v1, v2);
