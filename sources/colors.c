@@ -2,21 +2,17 @@
 #include "../headers/file_handling.h"
 #include "../headers/maths.h"
 
-GLubyte* color_default = 0;
 GLubyte* colors[NBR_COLORS] = {0};
 
 static GLubyte* create_color(const char* hex_code);
 
 void create_color_palette(void)
 {
-    colors[COLOR_BLACK] = create_color("#000000");
     colors[COLOR_WHITE] = create_color("#FFFFFF");
     colors[COLOR_RED] = create_color("#FF0000");
     colors[COLOR_GREEN] = create_color("#00FF00");
     colors[COLOR_BLUE] = create_color("#0000FF");
     colors[NBR_COLORS - 1] = 0;
-
-    color_default = colors[COLOR_WHITE];
     return;
 }
 

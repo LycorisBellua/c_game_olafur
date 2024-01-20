@@ -17,6 +17,16 @@ static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir);
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
 
+int get_coord_x(Texture* t, const float normalized)
+{
+    return (t->width-1) * normalized;
+}
+
+int get_coord_y(Texture* t, const float normalized)
+{
+    return (t->height-1) * normalized;
+}
+
 void draw_point(Texture* t, GLubyte* color, int x, int y)
 {
     int row, col;
@@ -32,7 +42,7 @@ void draw_point(Texture* t, GLubyte* color, int x, int y)
 
     x *= t->thickness;
     y *= t->thickness;
-
+    
     /* First row: Place each pixel one by one */
     for (col = 0; col < t->thickness; ++col)
         memcpy(t->buffer + (y * t->real_width + x+col) * 4, color, 4);
@@ -56,7 +66,7 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
         if (is_coord_out_of_bounds(t->width, v1.coords.x) 
                 || is_coord_out_of_bounds(t->height, v1.coords.y))
             return;
-        draw_point(t, color_default, v1.coords.x, v1.coords.y);
+        draw_point(t, v1.color, v1.coords.x, v1.coords.y);
     }
     else if (!dir.x)
     {
@@ -249,7 +259,7 @@ static void draw_line_horizontal(Texture* t, Vertex v, int last_x)
 {
     while (v.coords.x <= last_x)
     {
-        draw_point(t, color_default, v.coords.x, v.coords.y);
+        draw_point(t, v.color, v.coords.x, v.coords.y);
         ++v.coords.x;
     }
     return;
@@ -259,7 +269,7 @@ static void draw_line_vertical(Texture* t, Vertex v, int last_y)
 {
     while (v.coords.y <= last_y)
     {
-        draw_point(t, color_default, v.coords.x, v.coords.y);
+        draw_point(t, v.color, v.coords.x, v.coords.y);
         ++v.coords.y;
     }
     return;
@@ -280,7 +290,7 @@ static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir)
 
     while (steps-- > 0)
     {
-        draw_point(t, color_default, coords.x, coords.y);
+        draw_point(t, v1.color, coords.x, coords.y);
         coords.x += increment.x;
         coords.y += increment.y;
     }
@@ -378,30 +388,28 @@ void draw_test_corners(Texture* t)
     Vertex v;
 
     /* Bottom left */
-    color_default = colors[COLOR_WHITE];
     v.coords.x = 0;
     v.coords.y = 0;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
+    v.color = colors[COLOR_WHITE];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Top left */
-    color_default = colors[COLOR_RED];
     v.coords.x = 0;
-    v.coords.y = t->height-1;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
+    v.coords.y = get_coord_y(t, 1);
+    v.color = colors[COLOR_RED];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Top right */
-    color_default = colors[COLOR_GREEN];
-    v.coords.x = t->width-1;
-    v.coords.y = t->height-1;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
+    v.coords.x = get_coord_x(t, 1);
+    v.coords.y = get_coord_y(t, 1);
+    v.color = colors[COLOR_GREEN];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Bottom right */
-    color_default = colors[COLOR_BLUE];
-    v.coords.x = t->width-1;
+    v.coords.x = get_coord_x(t, 1);
     v.coords.y = 0;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
-
-    color_default = colors[COLOR_WHITE];
+    v.color = colors[COLOR_BLUE];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
     return;
 }
 
@@ -410,30 +418,28 @@ void draw_test_center(Texture* t)
     Vertex v;
 
     /* Bottom left */
-    color_default = colors[COLOR_WHITE];
-    v.coords.x = t->width/2 -1;
-    v.coords.y = t->height/2 -1;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
+    v.coords.x = get_coord_x(t, 0.5f);
+    v.coords.y = get_coord_y(t, 0.5f);
+    v.color = colors[COLOR_WHITE];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Top left */
-    color_default = colors[COLOR_RED];
-    v.coords.x = t->width/2 -1;
-    v.coords.y = t->height/2;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
+    v.coords.x = get_coord_x(t, 0.5f);
+    v.coords.y = get_coord_y(t, 0.5f) + 1;
+    v.color = colors[COLOR_RED];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Top right */
-    color_default = colors[COLOR_GREEN];
-    v.coords.x = t->width/2;
-    v.coords.y = t->height/2;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
+    v.coords.x = get_coord_x(t, 0.5f) + 1;
+    v.coords.y = get_coord_y(t, 0.5f) + 1;
+    v.color = colors[COLOR_GREEN];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Bottom right */
-    color_default = colors[COLOR_BLUE];
-    v.coords.x = t->width/2;
-    v.coords.y = t->height/2 -1;
-    draw_point(t, color_default, v.coords.x, v.coords.y);
-
-    color_default = colors[COLOR_WHITE];
+    v.coords.x = get_coord_x(t, 0.5f) + 1;
+    v.coords.y = get_coord_y(t, 0.5f);
+    v.color = colors[COLOR_BLUE];
+    draw_point(t, v.color, v.coords.x, v.coords.y);
     return;
 }
 
@@ -441,26 +447,29 @@ void draw_test_lines(Texture* t)
 {
     Vertex v1, v2;
 
-    v1.coords.x = t->width*0.5f+2;
-    v1.coords.y = t->height*0.5f+2;
+    v1.color = colors[COLOR_GREEN];
+    v2.color = colors[COLOR_GREEN];
+
+    v1.coords.x = get_coord_x(t, 0.5f) + 5;
+    v1.coords.y = get_coord_y(t, 0.5f) + 5;
     v2.coords.x = v1.coords.x + 200;
     v2.coords.y = v1.coords.y + 100;
-    color_default = colors[COLOR_GREEN];
     draw_line(t, v1, v2);
 
-    color_default = colors[COLOR_RED];
+    v1.color = colors[COLOR_RED];
+    v2.color = colors[COLOR_RED];
 
     v1.coords.x -= NORMALIZE(v2.coords.x - v1.coords.x)*2;
     v1.coords.y -= NORMALIZE(v2.coords.y - v1.coords.y)*2;
     if (!is_coord_out_of_bounds(t->width, v1.coords.x) 
         && !is_coord_out_of_bounds(t->height, v1.coords.y))
-        draw_point(t, color_default, v1.coords.x, v1.coords.y);
+        draw_point(t, v1.color, v1.coords.x, v1.coords.y);
 
     v2.coords.x -= NORMALIZE(v1.coords.x - v2.coords.x)*2;
     v2.coords.y -= NORMALIZE(v1.coords.y - v2.coords.y)*2;
     if (!is_coord_out_of_bounds(t->width, v2.coords.x) 
         && !is_coord_out_of_bounds(t->height, v2.coords.y))
-        draw_point(t, color_default, v2.coords.x, v2.coords.y);
+        draw_point(t, v2.color, v2.coords.x, v2.coords.y);
     return;
 }
 
@@ -468,14 +477,14 @@ void draw_test_rectangles(Texture* t)
 {
     Vertex v1, v2;
 
-    color_default = colors[COLOR_WHITE];
-    v1.coords.x = t->width*0.1f-1;
-    v1.coords.y = t->height*0.33f-1;
+    v1.coords.x = get_coord_x(t, 0.1f) - 1;
+    v1.coords.y = get_coord_y(t, 0.33f) - 1;
+    v1.color = colors[COLOR_WHITE];
     draw_rectangle(t, 1, v1, 100, 100);
 
-    color_default = colors[COLOR_RED];
-    v2.coords.x = t->width*0.1f;
-    v2.coords.y = t->height*0.33f-2;
+    v2.coords.x = get_coord_x(t, 0.1f);
+    v2.coords.y = get_coord_y(t, 0.33f) - 2;
+    v2.color = colors[COLOR_RED];
     draw_rectangle(t, 0, v2, 100, 100);
 
     return;
@@ -487,6 +496,7 @@ void draw_test_gradient(Texture* t)
     GLubyte color[4];
     color[2] = 255/2;
     color[3] = 255;
+    v.color = color;
 
     for (v.coords.y = 0; v.coords.y < t->height; ++v.coords.y)
     {
@@ -494,7 +504,7 @@ void draw_test_gradient(Texture* t)
         {
             color[0] = v.coords.x * 255 / t->width;
             color[1] = v.coords.y * 255 / t->height;
-            draw_point(t, color, v.coords.x, v.coords.y);
+            draw_point(t, v.color, v.coords.x, v.coords.y);
         }
     }
     return;

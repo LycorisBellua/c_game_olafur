@@ -9,19 +9,19 @@
 /*
     The color format is RGBA.
     GLubyte is an unsigned char and represents one RGBA channel.
+
+    If you want the default color, do `colors[0]`.
 */
 
 typedef enum
 {
-    COLOR_BLACK,
     COLOR_WHITE,
     COLOR_RED,
     COLOR_GREEN,
     COLOR_BLUE
 } ColorName;
 
-#define NBR_COLORS 6
-extern GLubyte* color_default;
+#define NBR_COLORS 4+1
 extern GLubyte* colors[NBR_COLORS];
 
 void create_color_palette(void);

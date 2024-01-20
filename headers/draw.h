@@ -6,6 +6,11 @@
 #include <string.h>
 #endif
 
+#ifndef __GLEW_H__
+#define __GLEW_H__
+#include <GL/glew.h>
+#endif
+
 #include "textures.h"
 
 /* 
@@ -28,7 +33,11 @@ typedef struct
 typedef struct
 {
     Vector coords;
+    GLubyte* color;
 } Vertex;
+
+int get_coord_x(Texture* t, const float normalized);
+int get_coord_y(Texture* t, const float normalized);
 
 /* `int x, int y` here, so that either Vector or VectorF can be used */
 void draw_point(Texture* t, GLubyte* color, int x, int y);
