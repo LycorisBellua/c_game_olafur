@@ -42,6 +42,7 @@ static void draw_game(void)
     draw_test_lines(TEX_MAIN);
     draw_test_corners(TEX_MAIN);
     draw_test_center(TEX_MAIN);
+    draw_test_gradient_line(TEX_MAIN);
     return;
 }
 

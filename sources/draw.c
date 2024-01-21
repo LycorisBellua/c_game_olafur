@@ -737,3 +737,71 @@ void draw_test_gradient(Texture* t)
     return;
 }
 
+void draw_test_gradient_line(Texture* t)
+{
+    int i;
+    const int dist = 200;
+    const int half_dist = dist/2;
+    float perc = 0;
+    GLubyte first_color[4] = {0};
+    GLubyte second_color[4] = {0};
+    GLubyte color_change[4] = {0};
+    Vertex v1, v2;
+    v1.coords.x = get_coord_x(t, 0.1f);
+    v1.coords.y = get_coord_x(t, 0.4f);
+    v2.coords.x = v1.coords.x + dist - 1;
+    v2.coords.y = v1.coords.y;
+    v1.color = first_color;
+    v2.color = second_color;
+
+    first_color[0] = colors[COLOR_RED][0];
+    first_color[1] = colors[COLOR_RED][1];
+    first_color[2] = colors[COLOR_RED][2];
+    first_color[3] = colors[COLOR_RED][3];
+
+    second_color[0] = colors[COLOR_GREEN][0];
+    second_color[1] = colors[COLOR_GREEN][1];
+    second_color[2] = colors[COLOR_GREEN][2];
+    second_color[3] = colors[COLOR_GREEN][3];
+
+    if (first_color[0] - second_color[0] 
+        || first_color[1] - second_color[1] 
+        || first_color[2] - second_color[2] 
+        || first_color[3] - second_color[3])
+    {
+        perc = 100.0f / dist;
+
+        color_change[0] = (second_color[0] - first_color[0]) / 50.0f * perc;
+        color_change[1] = (second_color[1] - first_color[1]) / 50.0f * perc;
+        color_change[2] = (second_color[2] - first_color[2]) / 50.0f * perc;
+        color_change[3] = (second_color[3] - first_color[3]) / 50.0f * perc;
+    }
+    for (i = 0; i < half_dist; ++i)
+    {
+        draw_point(t, first_color, v1.coords.x, v1.coords.y);
+        ++v1.coords.x;
+        first_color[0] = CLAMP(first_color[0] + color_change[0], 0, 255);
+        first_color[1] = CLAMP(first_color[1] + color_change[1], 0, 255);
+        first_color[2] = CLAMP(first_color[2] + color_change[2], 0, 255);
+        first_color[3] = CLAMP(first_color[3] + color_change[3], 0, 255);
+    }
+
+    if (perc > 0)
+    {
+        color_change[0] = (first_color[0] - second_color[0]) / 50.0f * perc;
+        color_change[1] = (first_color[1] - second_color[1]) / 50.0f * perc;
+        color_change[2] = (first_color[2] - second_color[2]) / 50.0f * perc;
+        color_change[3] = (first_color[3] - second_color[3]) / 50.0f * perc;
+    }
+    for (; i < dist; ++i)
+    {
+        draw_point(t, first_color, v1.coords.x, v1.coords.y);
+        ++v1.coords.x;
+        first_color[0] = CLAMP(first_color[0] - color_change[0], 0, 255);
+        first_color[1] = CLAMP(first_color[1] - color_change[1], 0, 255);
+        first_color[2] = CLAMP(first_color[2] - color_change[2], 0, 255);
+        first_color[3] = CLAMP(first_color[3] - color_change[3], 0, 255);
+    }
+    return;
+}
+
