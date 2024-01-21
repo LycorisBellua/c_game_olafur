@@ -1,4 +1,4 @@
-#include "../headers/file_handling.h"
+#include "../headers/files.h"
 
 char* read_file(const char* filepath)
 {

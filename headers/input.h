@@ -21,7 +21,6 @@ extern int rotation_action;
 
 void physical_key_callback(GLFWwindow* window, const int key, 
     const int scancode, const int action, const int mods);
-void char_key_callback(const GLFWwindow* window, const unsigned int codepoint);
 
 #endif
 

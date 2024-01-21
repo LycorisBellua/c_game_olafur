@@ -1,5 +1,5 @@
-#ifndef __FILE_HANDLING_H__
-#define __FILE_HANDLING_H__
+#ifndef __FILES_H__
+#define __FILES_H__
 
 #ifndef __STDIO_H__
 #define __STDIO_H__

@@ -13,13 +13,12 @@
 
 #include "../headers/windowing.h"
 #include "../headers/input.h"
-#include "../headers/shader_handling.h"
-#include "../headers/uniforms.h"
-#include "../headers/meshes.h"
+#include "../headers/shader_program.h"
+#include "../headers/uniform.h"
+#include "../headers/mesh.h"
 #include "../headers/colors.h"
 #include "../headers/textures.h"
 #include "../headers/interfaces.h"
-#include "../headers/camera.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -39,23 +38,20 @@ int main(int argc, char** argv)
     GLFWwindow* window = get_window(title);
 
     glfwSetKeyCallback(window, physical_key_callback);
-    /* glfwSetCharCallback(window, char_key_callback); */
-
     glfwSwapInterval(1);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    if (!create_shader_programs())
+    if (!create_shader_program())
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     else
     {
-        create_uniforms();
-        create_meshes();
+        create_uniform();
+        create_mesh();
         create_color_palette();
         create_textures();
         initialize_interfaces();
 
-        use_shader_program(shader_program_default);
         use_texture(TEX_MAIN);
     }
 
@@ -65,18 +61,16 @@ int main(int argc, char** argv)
         clear_drawing(TEX_MAIN, 1);
         active_interface->draw();
         save_drawing(TEX_MAIN);
-        render_mesh(MESH_VIEWPORT, GL_TRIANGLES);
-
-        move_camera();
+        render_mesh();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     glfwTerminate();
-    free_shader_programs();
-    free_uniforms();
-    free_meshes();
+    free_shader_program();
+    free_uniform();
+    free_mesh();
     free_color_palette();
     free_textures();
 

@@ -14,7 +14,7 @@ static int clamp_diagonal_line(Texture* t, Vector* p1, Vector* p2, Vector* dir);
 static void draw_line_horizontal(Texture* t, Vertex v, int last_x);
 static void draw_line_horizontal_safe(Texture* t, Vertex v, int last_x);
 static void draw_line_vertical(Texture* t, Vertex v, int last_y);
-static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir);
+static void draw_line_diagonal(Texture* t, const Vertex v, const Vector dir);
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
 static void draw_circle_full(Texture* t, Vertex center, const int radius);
@@ -109,7 +109,7 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     {
         if (!clamp_diagonal_line(t, &v1.coords, &v2.coords, &dir))
             return;
-        draw_line_diagonal(t, v1, v2, dir);
+        draw_line_diagonal(t, v1, dir);
     }
     return;
 }
@@ -318,14 +318,14 @@ static void draw_line_vertical(Texture* t, Vertex v, int last_y)
     return;
 }
 
-static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir)
+static void draw_line_diagonal(Texture* t, const Vertex v, const Vector dir)
 {
     int steps;
     VectorF coords, increment;
 
     steps = MAX(ABS(dir.x), ABS(dir.y));
-    coords.x = v1.coords.x;
-    coords.y = v1.coords.y;
+    coords.x = v.coords.x;
+    coords.y = v.coords.y;
     increment.x = dir.x / (float)steps;
     increment.y = dir.y / (float)steps;
 
@@ -333,7 +333,7 @@ static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir)
 
     while (steps-- > 0)
     {
-        draw_point(t, v1.color, coords.x, coords.y);
+        draw_point(t, v.color, coords.x, coords.y);
         coords.x += increment.x;
         coords.y += increment.y;
     }
@@ -746,13 +746,9 @@ void draw_test_gradient_line(Texture* t)
     GLubyte first_color[4] = {0};
     GLubyte second_color[4] = {0};
     GLubyte color_change[4] = {0};
-    Vertex v1, v2;
-    v1.coords.x = get_coord_x(t, 0.1f);
-    v1.coords.y = get_coord_x(t, 0.4f);
-    v2.coords.x = v1.coords.x + dist - 1;
-    v2.coords.y = v1.coords.y;
-    v1.color = first_color;
-    v2.color = second_color;
+    Vector v;
+    v.x = get_coord_x(t, 0.1f);
+    v.y = get_coord_x(t, 0.4f);
 
     first_color[0] = colors[COLOR_RED][0];
     first_color[1] = colors[COLOR_RED][1];
@@ -778,8 +774,8 @@ void draw_test_gradient_line(Texture* t)
     }
     for (i = 0; i < half_dist; ++i)
     {
-        draw_point(t, first_color, v1.coords.x, v1.coords.y);
-        ++v1.coords.x;
+        draw_point(t, first_color, v.x, v.y);
+        ++v.x;
         first_color[0] = CLAMP(first_color[0] + color_change[0], 0, 255);
         first_color[1] = CLAMP(first_color[1] + color_change[1], 0, 255);
         first_color[2] = CLAMP(first_color[2] + color_change[2], 0, 255);
@@ -795,8 +791,8 @@ void draw_test_gradient_line(Texture* t)
     }
     for (; i < dist; ++i)
     {
-        draw_point(t, first_color, v1.coords.x, v1.coords.y);
-        ++v1.coords.x;
+        draw_point(t, first_color, v.x, v.y);
+        ++v.x;
         first_color[0] = CLAMP(first_color[0] - color_change[0], 0, 255);
         first_color[1] = CLAMP(first_color[1] - color_change[1], 0, 255);
         first_color[2] = CLAMP(first_color[2] - color_change[2], 0, 255);

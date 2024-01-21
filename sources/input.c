@@ -67,24 +67,6 @@ void physical_key_callback
     return;
 }
 
-void char_key_callback
-(
-    __attribute__((unused))const GLFWwindow* window, 
-    const unsigned int codepoint
-)
-{
-    /*
-        UTF-8 characters such as diacritics and Japanese handled 
-        thanks to %lc, but -pedantic GCC warning [-Wformat]:
-        "ISO C90 does not support the ‘%lc’ gnu_printf format"
-    */
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wformat"
-    printf("Debug (char callback): %lc\n", codepoint);
-    #pragma GCC diagnostic pop
-    return;
-}
-
 static void update_movement_action(const int axis)
 {
     int input = movement_input[axis];

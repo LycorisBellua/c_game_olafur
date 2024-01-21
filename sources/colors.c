@@ -1,5 +1,5 @@
 #include "../headers/colors.h"
-#include "../headers/file_handling.h"
+#include "../headers/files.h"
 #include "../headers/maths.h"
 
 GLubyte* colors[NBR_COLORS] = {0};

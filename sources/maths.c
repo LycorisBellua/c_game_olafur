@@ -18,8 +18,10 @@
 
 static float factorial(const int n);
 static float power(const float base, const int exponent);
+/*
 static float f_tan(const float radians);
 static float clamp_euler_angle(float angle);
+*/
 
 void swap(int* a, int* b)
 {
@@ -78,6 +80,7 @@ static float power(const float base, const int exponent)
     return result;
 }
 
+/*
 static float f_tan(const float radians)
 {
     float cos = f_cos(radians);
@@ -96,4 +99,5 @@ static float clamp_euler_angle(float angle)
         angle -= 360.0f;
     return angle;
 }
+*/
 
