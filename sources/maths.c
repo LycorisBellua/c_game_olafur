@@ -2,6 +2,8 @@
 
 /*
     In the header:
+    - PI
+
     - ABS(x)
     - NORMALIZE(x)
     - MIN(a, b)
@@ -9,18 +11,13 @@
     - CLAMP(x, min, max)
     - CLAMP_MIN(x, min)
     - CLAMP_MAX(x, max)
+    - IS_CLOSE_TO_ZERO(x)
+    - DEG2RAD(degrees)
+    - RAD2DEG(radians)
 */
-
-#define PI 3.1416
-
-#define IS_CLOSE_TO_ZERO(x) (ABS(x) < 1e-15)
-#define DEG2RAD(degrees) ((degrees) * PI/180)
-#define RAD2DEG(radians) ((radians) * 180/PI)
 
 static float factorial(const int n);
 static float power(const float base, const int exponent);
-static float f_sin(const float radians);
-static float f_cos(const float radians);
 static float f_tan(const float radians);
 static float clamp_euler_angle(float angle);
 
@@ -30,6 +27,38 @@ void swap(int* a, int* b)
     *a = *b;
     *b = tmp;
     return;
+}
+
+float f_sin(const float radians)
+{
+    int n;
+    float result = 0.0f;
+    float fact;
+    for (n = 0; n < 10; ++n)
+    {
+        fact = factorial(2 * n + 1);
+        if (IS_CLOSE_TO_ZERO(fact))
+            result += 0.0f;
+        else
+            result += power(-1, n) * power(radians, 2 * n + 1) / fact;
+    }
+    return result;
+}
+
+float f_cos(const float radians)
+{
+    int n;
+    float result = 0.0f;
+    float fact;
+    for (n = 0; n < 10; ++n)
+    {
+        fact = factorial(2 * n);
+        if (IS_CLOSE_TO_ZERO(fact))
+            result += 0.0f;
+        else
+            result += power(-1, n) * power(radians, 2 * n) / fact;
+    }
+    return result;
 }
 
 static float factorial(const int n)
@@ -46,38 +75,6 @@ static float power(const float base, const int exponent)
     float result = 1.0f;
     for (i = 0; i < exponent; ++i)
         result *= base;
-    return result;
-}
-
-static float f_sin(const float radians)
-{
-    int n;
-    float result = 0.0f;
-    float fact;
-    for (n = 0; n < 10; ++n)
-    {
-        fact = factorial(2 * n + 1);
-        if (IS_CLOSE_TO_ZERO(fact))
-            result += 0.0f;
-        else
-            result += power(-1, n) * power(radians, 2 * n + 1) / fact;
-    }
-    return result;
-}
-
-static float f_cos(const float radians)
-{
-    int n;
-    float result = 0.0f;
-    float fact;
-    for (n = 0; n < 10; ++n)
-    {
-        fact = factorial(2 * n);
-        if (IS_CLOSE_TO_ZERO(fact))
-            result += 0.0f;
-        else
-            result += power(-1, n) * power(radians, 2 * n) / fact;
-    }
     return result;
 }
 

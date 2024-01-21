@@ -39,19 +39,18 @@ typedef struct
 int get_coord_x(Texture* t, const float normalized);
 int get_coord_y(Texture* t, const float normalized);
 
-/* `int x, int y` here, so that either Vector or VectorF can be used */
 void draw_point(Texture* t, GLubyte* color, int x, int y);
-
 void draw_line(Texture* t, Vertex v1, Vertex v2);
-void draw_rectangle(Texture* t, const int is_filled, Vertex v, int width, 
+void draw_rectangle(Texture* t, const int full, Vertex v, int width, 
     int height);
-void draw_circle(Texture* t, const int filled_up, Vertex v, int radius);
-void draw_polygon(Texture* t, const int filled_up, ...);
+void draw_circle(Texture* t, const int full, Vertex v, const int radius);
+void draw_polygon(Texture* t, const int full, ...);
 
 void draw_test_corners(Texture* t);
 void draw_test_center(Texture* t);
 void draw_test_lines(Texture* t);
 void draw_test_rectangles(Texture* t);
+void draw_test_circles(Texture* t);
 void draw_test_gradient(Texture* t);
 
 #endif

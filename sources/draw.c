@@ -12,10 +12,13 @@ static int is_coord_out_of_bounds(const int axis_length, const int coord);
 static int clamp_straight_axis(const int max_length, int* length, int* coord);
 static int clamp_diagonal_line(Texture* t, Vector* p1, Vector* p2, Vector* dir);
 static void draw_line_horizontal(Texture* t, Vertex v, int last_x);
+static void draw_line_horizontal_safe(Texture* t, Vertex v, int last_x);
 static void draw_line_vertical(Texture* t, Vertex v, int last_y);
 static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir);
-static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
+static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
+static void draw_circle_full(Texture* t, Vertex center, const int radius);
+static void draw_circle_empty(Texture* t, Vertex center, const int radius);
 
 int get_coord_x(Texture* t, const float normalized)
 {
@@ -29,11 +32,21 @@ int get_coord_y(Texture* t, const float normalized)
 
 void draw_point(Texture* t, GLubyte* color, int x, int y)
 {
+    /*
+        The coordinate parameters are individual ints and not a vector, so 
+        that either a Vector or VectorF can be used. Of course, float coords 
+        are converted into integers through being passed as arguments to this 
+        function. Float coords are needed for drawing diagonal lines.
+
+        As a bonus, being able to pass values directly into draw_point() 
+        instead of declaring a vector variable is neat. May be useful.
+    */
+
     int row, col;
 
     /* TODO: Remove this check once the drawing functions are implemented */
     if (is_coord_out_of_bounds(t->width, x) 
-        + is_coord_out_of_bounds(t->height, y))
+        || is_coord_out_of_bounds(t->height, y))
     {
         printf("Forbidden coordinates: (%d,%d)\n", x, y);
         return;
@@ -101,24 +114,43 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     return;
 }
 
-void draw_rectangle(Texture* t, const int is_filled, Vertex v, int width, 
+void draw_rectangle(Texture* t, const int full, Vertex v, int width, 
     int height)
 {
-    if (!is_filled)
-        draw_rectangle_empty(t, v, width, height);
-    else
+    if (full)
         draw_rectangle_full(t, v, width, height);
+    else
+        draw_rectangle_empty(t, v, width, height);
     return;
 }
 
-void draw_circle(Texture* t, const int filled_up, Vertex v, int radius)
+void draw_circle(Texture* t, const int full, Vertex v, const int radius)
 {
-    /* TODO */
+    Vector check_origin, check_opposite;
+
+    if (radius < 1)
+        return;
+
+    check_origin.x = is_coord_out_of_bounds(t->width, v.coords.x - radius);
+    check_origin.y = is_coord_out_of_bounds(t->height, v.coords.y - radius);
+    check_opposite.x = is_coord_out_of_bounds(t->width, v.coords.x + radius);
+    check_opposite.y = is_coord_out_of_bounds(t->height, v.coords.y + radius);
+
+    if (check_origin.x && check_origin.x == check_opposite.x)
+        return;
+    else if (check_origin.y && check_origin.y == check_opposite.y)
+        return;
+
+    /* Circle at least partly visible */
+    if (full)
+        draw_circle_full(t, v, radius);
+    else
+        draw_circle_empty(t, v, radius);
     return;
 }
 
 /* Variadic arguments are vertices: v1, v2... */
-void draw_polygon(Texture* t, const int filled_up, ...)
+void draw_polygon(Texture* t, const int full, ...)
 {
     /* TODO */
     return;
@@ -265,6 +297,17 @@ static void draw_line_horizontal(Texture* t, Vertex v, int last_x)
     return;
 }
 
+static void draw_line_horizontal_safe(Texture* t, Vertex v, int last_x)
+{
+    while (v.coords.x <= last_x)
+    {
+        if (!is_coord_out_of_bounds(t->width, v.coords.x))
+            draw_point(t, v.color, v.coords.x, v.coords.y);
+        ++v.coords.x;
+    }
+    return;
+}
+
 static void draw_line_vertical(Texture* t, Vertex v, int last_y)
 {
     while (v.coords.y <= last_y)
@@ -293,6 +336,26 @@ static void draw_line_diagonal(Texture* t, Vertex v1, Vertex v2, Vector dir)
         draw_point(t, v1.color, coords.x, coords.y);
         coords.x += increment.x;
         coords.y += increment.y;
+    }
+    return;
+}
+
+static void draw_rectangle_full(Texture* t, Vertex v, int width, int height)
+{
+    Vector last_coords;
+
+    if (!clamp_straight_axis(t->width, &width, &v.coords.x))
+        return;
+    if (!clamp_straight_axis(t->height, &height, &v.coords.y))
+        return;
+
+    last_coords.x = v.coords.x + width-1;
+    last_coords.y = v.coords.y + height-1;
+
+    while (v.coords.y <= last_coords.y)
+    {
+        draw_line_horizontal(t, v, last_coords.x);
+        ++v.coords.y;
     }
     return;
 }
@@ -361,25 +424,175 @@ static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height)
     return;
 }
 
-static void draw_rectangle_full(Texture* t, Vertex v, int width, int height)
+static void draw_circle_full(Texture* t, Vertex center, const int radius)
 {
-    Vector last_coords;
+    int x = radius;
+    int y = 0;
+    int decision = 1 - radius;
+    int last_coord;
+    Vertex v;
 
-    if (!clamp_straight_axis(t->width, &width, &v.coords.x))
-        return;
-    if (!clamp_straight_axis(t->height, &height, &v.coords.y))
-        return;
+    v.color = center.color;
 
-    last_coords.x = v.coords.x + width-1;
-    last_coords.y = v.coords.y + height-1;
-
-    while (v.coords.y <= last_coords.y)
+    while (y <= x)
     {
-        draw_line_horizontal(t, v, last_coords.x);
-        ++v.coords.y;
+        v.coords.x = center.coords.x - x;
+        last_coord = center.coords.x + x;
+
+        v.coords.y = center.coords.y - y;
+        if (!is_coord_out_of_bounds(t->height, v.coords.y))
+            draw_line_horizontal_safe(t, v, last_coord);
+
+        v.coords.y = center.coords.y + y;
+        if (!is_coord_out_of_bounds(t->height, v.coords.y))
+            draw_line_horizontal_safe(t, v, last_coord);
+
+        v.coords.x = center.coords.x - y;
+        last_coord = center.coords.x + y;
+
+        v.coords.y = center.coords.y - x;
+        if (!is_coord_out_of_bounds(t->height, v.coords.y))
+            draw_line_horizontal_safe(t, v, last_coord);
+
+        v.coords.y = center.coords.y + x;
+        if (!is_coord_out_of_bounds(t->height, v.coords.y))
+            draw_line_horizontal_safe(t, v, last_coord);
+
+        ++y;
+        if (decision <= 0)
+        {
+            decision += 2 * y + 1;
+        }
+        else
+        {
+            --x;
+            decision += 2 * (y - x) + 1;
+        }
     }
     return;
 }
+
+static void draw_circle_empty(Texture* t, Vertex center, const int radius)
+{
+    int x = radius;
+    int y = 0;
+    int decision = 1 - radius;
+    Vector point;
+
+    while (y <= x)
+    {
+        point.x = center.coords.x + x;
+        point.y = center.coords.y - y;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x - x;
+        point.y = center.coords.y - y;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x + x;
+        point.y = center.coords.y + y;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x - x;
+        point.y = center.coords.y + y;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x + y;
+        point.y = center.coords.y - x;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x - y;
+        point.y = center.coords.y - x;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x + y;
+        point.y = center.coords.y + x;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        point.x = center.coords.x - y;
+        point.y = center.coords.y + x;
+        if (!is_coord_out_of_bounds(t->width, point.x) 
+            && !is_coord_out_of_bounds(t->height, point.y))
+            draw_point(t, center.color, point.x, point.y);
+
+        ++y;
+        if (decision <= 0)
+        {
+            decision += 2 * y + 1;
+        }
+        else
+        {
+            --x;
+            decision += 2 * (y - x) + 1;
+        }
+    }
+    return;
+}
+
+/*
+void draw_spinner(Texture* t, Vertex center, const int radius)
+{
+    int x = radius;
+    int y = 0;
+    int decision = 1 - radius;
+
+    while (y <= x)
+    {
+        if (y == 0 || x == 0 || y == x)
+        {
+            draw_point(t, center.color, center.coords.x + x, 
+                                        center.coords.y - y);
+
+            draw_point(t, center.color, center.coords.x - x, 
+                                        center.coords.y - y);
+
+            draw_point(t, center.color, center.coords.x + x, 
+                                        center.coords.y + y);
+
+            draw_point(t, center.color, center.coords.x - x, 
+                                        center.coords.y + y);
+
+            draw_point(t, center.color, center.coords.x + y, 
+                                        center.coords.y - x);
+
+            draw_point(t, center.color, center.coords.x - y, 
+                                        center.coords.y - x);
+
+            draw_point(t, center.color, center.coords.x + y, 
+                                        center.coords.y + x);
+
+            draw_point(t, center.color, center.coords.x - y, 
+                                        center.coords.y + x);
+        }
+
+        ++y;
+        if (decision <= 0)
+        {
+            decision += 2 * y + 1;
+        }
+        else
+        {
+            --x;
+            decision += 2 * (y - x) + 1;
+        }
+    }
+    return;
+}
+*/
 
 /* Test functions ---------------------------------------------------------- */
 
@@ -487,6 +700,20 @@ void draw_test_rectangles(Texture* t)
     v2.color = colors[COLOR_RED];
     draw_rectangle(t, 0, v2, 100, 100);
 
+    return;
+}
+
+void draw_test_circles(Texture* t)
+{
+    int radius = 100;
+    Vertex v;
+    v.color = colors[COLOR_BLUE];
+    v.coords.x = get_coord_x(t, 0.7f);
+    v.coords.y = get_coord_y(t, 0.4f);
+    draw_circle(t, 1, v, radius);
+
+    v.color = colors[COLOR_WHITE];
+    draw_circle(t, 0, v, radius);
     return;
 }
 

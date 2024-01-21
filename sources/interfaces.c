@@ -37,10 +37,11 @@ static void draw_main_menu(void)
 
 static void draw_game(void)
 {
+    draw_test_rectangles(TEX_MAIN);
+    draw_test_circles(TEX_MAIN);
+    draw_test_lines(TEX_MAIN);
     draw_test_corners(TEX_MAIN);
     draw_test_center(TEX_MAIN);
-    draw_test_rectangles(TEX_MAIN);
-    draw_test_lines(TEX_MAIN);
     return;
 }
 
