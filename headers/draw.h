@@ -6,6 +6,11 @@
 #include <string.h>
 #endif
 
+#ifndef __STDARG_H__
+#define __STDARG_H__
+#include <stdarg.h>
+#endif
+
 #ifndef __GLEW_H__
 #define __GLEW_H__
 #include <GL/glew.h>
@@ -44,13 +49,14 @@ void draw_line(Texture* t, Vertex v1, Vertex v2);
 void draw_rectangle(Texture* t, const int full, Vertex v, int width, 
     int height);
 void draw_circle(Texture* t, const int full, Vertex v, const int radius);
-void draw_polygon(Texture* t, const int full, ...);
+void draw_shape(Texture* t, const int full, const Vertex arr[], const int len);
 
 void draw_test_corners(Texture* t);
 void draw_test_center(Texture* t);
 void draw_test_lines(Texture* t);
 void draw_test_rectangles(Texture* t);
 void draw_test_circles(Texture* t);
+void draw_test_shapes(Texture* t);
 void draw_test_gradient(Texture* t);
 void draw_test_gradient_line(Texture* t);
 #endif

@@ -19,6 +19,7 @@ static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
 static void draw_circle_full(Texture* t, Vertex center, const int radius);
 static void draw_circle_empty(Texture* t, Vertex center, const int radius);
+static void draw_shape_full(Texture* t, const Vertex arr[], const int len);
 
 int get_coord_x(Texture* t, const float normalized)
 {
@@ -44,14 +45,14 @@ void draw_point(Texture* t, GLubyte* color, int x, int y)
 
     int row, col;
 
-    /* TODO: Remove this check once the drawing functions are implemented */
+    /*
     if (is_coord_out_of_bounds(t->width, x) 
         || is_coord_out_of_bounds(t->height, y))
     {
         printf("Forbidden coordinates: (%d,%d)\n", x, y);
         return;
     }
-    /* ------------------------------------------------------------------ */
+    */
 
     x *= t->thickness;
     y *= t->thickness;
@@ -141,7 +142,12 @@ void draw_circle(Texture* t, const int full, Vertex v, const int radius)
     else if (check_origin.y && check_origin.y == check_opposite.y)
         return;
 
-    /* Circle at least partly visible */
+    /*
+        Circle either fully or partly visible.
+        Add checks within the drawing functions.
+    */
+
+    /* Midpoint Circle Drawing algorithm */
     if (full)
         draw_circle_full(t, v, radius);
     else
@@ -149,10 +155,23 @@ void draw_circle(Texture* t, const int full, Vertex v, const int radius)
     return;
 }
 
-/* Variadic arguments are vertices: v1, v2... */
-void draw_polygon(Texture* t, const int full, ...)
+void draw_shape(Texture* t, const int full, const Vertex arr[], const int len)
 {
-    /* TODO */
+    int i;
+
+    if (len < 3)
+        return;
+
+    if (full)
+    {
+        /* Scanline Fill algorithm */
+        draw_shape_full(t, arr, len);
+    }
+    else
+    {
+        for (i = 0; i < len; ++i)
+            draw_line(t, arr[i], arr[(i + 1) % len]);
+    }
     return;
 }
 
@@ -543,6 +562,56 @@ static void draw_circle_empty(Texture* t, Vertex center, const int radius)
     return;
 }
 
+static void draw_shape_full(Texture* t, const Vertex arr[], const int len)
+{
+    int i, j;
+    int y, x1, x2, x_intersection;
+    int ymin, ymax;
+    Vertex v;
+    v.color = arr[0].color;
+
+    ymin = arr[0].coords.y;
+    ymax = arr[0].coords.y;
+    for (i = 1; i < len; ++i)
+    {
+        if (arr[i].coords.y < ymin)
+            ymin = arr[i].coords.y;
+        if (arr[i].coords.y > ymax)
+            ymax = arr[i].coords.y;
+    }
+
+    for (y = ymin; y <= ymax; ++y)
+    {
+        x1 = t->width-1;
+        x2 = 0;
+
+        for (i = 0; i < len; ++i)
+        {
+            j = (i + 1) % len;
+            if ((arr[i].coords.y <= y && arr[j].coords.y > y) 
+                || (arr[j].coords.y <= y && arr[i].coords.y > y))
+            {
+                x_intersection = (arr[i].coords.x * (arr[j].coords.y - y) 
+                    + arr[j].coords.x * (y - arr[i].coords.y)) 
+                    / (arr[j].coords.y - arr[i].coords.y);
+
+                if (x_intersection < x1)
+                    x1 = x_intersection;
+                if (x_intersection > x2)
+                    x2 = x_intersection;
+            }
+        }
+
+        if (x1 <= x2)
+        {
+            v.coords.x = x1;
+            v.coords.y = y;
+            draw_line_horizontal(t, v, x2);
+        }
+    }
+    return;
+}
+
 /*
 void draw_spinner(Texture* t, Vertex center, const int radius)
 {
@@ -714,6 +783,48 @@ void draw_test_circles(Texture* t)
 
     v.color = colors[COLOR_WHITE];
     draw_circle(t, 0, v, radius);
+    return;
+}
+
+void draw_test_shapes(Texture* t)
+{
+    const int full = 1;
+
+    /* Convex (triangle) */
+    Vertex v[3];
+    v[0].color = colors[0];
+    v[1].color = v[0].color;
+    v[2].color = v[0].color;
+
+    v[0].coords.x = get_coord_x(t, 0.25f);
+    v[0].coords.y = get_coord_y(t, 0.25f);
+    v[1].coords.x = get_coord_x(t, 0.50f);
+    v[1].coords.y = get_coord_y(t, 0.75f);
+    v[2].coords.x = get_coord_x(t, 0.75f);
+    v[2].coords.y = get_coord_y(t, 0.25f);
+
+    /* Concave and self-intercepting */
+    /*
+    Vertex v[5];
+    v[0].color = colors[0];
+    v[1].color = v[0].color;
+    v[2].color = v[0].color;
+    v[3].color = v[0].color;
+    v[4].color = v[0].color;
+
+    v[0].coords.x = get_coord_x(t, 0.25f);
+    v[0].coords.y = get_coord_y(t, 0.25f);
+    v[1].coords.x = get_coord_x(t, 0.50f);
+    v[1].coords.y = get_coord_y(t, 0.75f);
+    v[2].coords.x = get_coord_x(t, 0.30f);
+    v[2].coords.y = get_coord_y(t, 0.44f);
+    v[3].coords.x = get_coord_x(t, 0.75f);
+    v[3].coords.y = get_coord_y(t, 0.25f);
+    v[4].coords.x = get_coord_x(t, 0.50f);
+    v[4].coords.y = get_coord_y(t, 0.10f);
+    */
+
+    draw_shape(t, full, v, sizeof(v)/sizeof(v[0]));
     return;
 }
 

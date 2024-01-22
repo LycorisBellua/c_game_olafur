@@ -32,6 +32,7 @@ void set_active_interface(Interface* interface)
 static void draw_main_menu(void)
 {
     draw_test_gradient(TEX_MAIN);
+    draw_test_shapes(TEX_MAIN);
     return;
 }
 
