@@ -1,16 +1,6 @@
 #ifndef __DRAW_H__
 #define __DRAW_H__
 
-#ifndef __STRING_H__
-#define __STRING_H__
-#include <string.h>
-#endif
-
-#ifndef __STDARG_H__
-#define __STDARG_H__
-#include <stdarg.h>
-#endif
-
 #ifndef __GLEW_H__
 #define __GLEW_H__
 #include <GL/glew.h>
@@ -41,23 +31,18 @@ typedef struct
     GLubyte* color;
 } Vertex;
 
-int get_coord_x(Texture* t, const float normalized);
-int get_coord_y(Texture* t, const float normalized);
+int get_coord_x(Texture* t, float normalized);
+int get_coord_y(Texture* t, float normalized);
+int is_coord_out_of_bounds(int axis_length, int coord);
+Vector get_direction(Vector v1, Vector v2);
 
 void draw_point(Texture* t, GLubyte* color, int x, int y);
 void draw_line(Texture* t, Vertex v1, Vertex v2);
-void draw_rectangle(Texture* t, const int full, Vertex v, int width, 
-    int height);
-void draw_circle(Texture* t, const int full, Vertex v, const int radius);
-void draw_shape(Texture* t, const int full, const Vertex arr[], const int len);
+void draw_line_horizontal(Texture* t, Vertex v, int last_x);
+void draw_line_vertical(Texture* t, Vertex v, int last_y);
+void draw_rectangle(Texture* t, int full, Vertex v, int width, int height);
+void draw_circle(Texture* t, int full, Vertex v, int radius);
+void draw_shape(Texture* t, int full, Vertex arr[], int len);
 
-void draw_test_corners(Texture* t);
-void draw_test_center(Texture* t);
-void draw_test_lines(Texture* t);
-void draw_test_rectangles(Texture* t);
-void draw_test_circles(Texture* t);
-void draw_test_shapes(Texture* t);
-void draw_test_gradient(Texture* t);
-void draw_test_gradient_line(Texture* t);
 #endif
 
