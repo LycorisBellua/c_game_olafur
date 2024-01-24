@@ -3,11 +3,15 @@
 #include "../headers/maths.h"
 
 GLubyte* colors[NBR_COLORS] = {0};
+static int is_little_endian = 0;
 
+static int check_little_endian(void);
 static GLubyte* create_color(const char* hex_code);
 
 void create_color_palette(void)
 {
+    is_little_endian = check_little_endian(); 
+
     colors[COLOR_WHITE] = create_color("#FFFFFF");
     colors[COLOR_RED] = create_color("#FF0000");
     colors[COLOR_GREEN] = create_color("#00FF00");
@@ -72,6 +76,44 @@ void lighten_color(GLubyte* color, const int percentage)
     color[1] = CLAMP(color[1] + perc_to_rgb, 0, 255);
     color[2] = CLAMP(color[2] + perc_to_rgb, 0, 255);
     return;
+}
+
+static int check_little_endian(void)
+{
+    /*
+        The bits in a byte are always ordered the same way: the first digit is 
+        the most significant one. Indeed, in a byte, the first bit means 
+        "bit_value * 128", whereas the last bit means "bit_value * 1". It's the 
+        same in a decimal number, for example "123", where the 1 is the most 
+        significant because it represents "1*100=100", and where 3 is the least 
+        significant because it represents "3*1=3". 100 is always closer to 123 
+        than 3 is.
+
+        This concept of most/least significant is relevant to the concept of 
+        endianness. A system is either Little Endian or Big Endian. Endianness 
+        is how bytes are ordered in a multi-byte piece of data, not at all 
+        about the bits in a given byte, whose order remains as we have seen.
+
+        Big Endian is when what comes first is the MSB (Most Significant Byte), 
+        which matches the logic we've seen so far, and Little Endian is when 
+        what comes first is the LSB (Least Significant Byte). Most modern 
+        machines are Little Endian, which is why we use it as our default.
+
+        To check the endianness, the simplest way is to:
+        - declare a variable for a multi-byte piece of data,
+        - give it a value of 1, which means that all bytes will be filled with 
+        zeros, except for one of them which holds this 1 value, and this byte 
+        is the LSB since 1 is the smallest non-null positive value possible,
+        - the address starts at the first byte, so as to read what value this 
+        first byte holds, cast the address to a char pointer (because a char is 
+        one byte long), 
+        - dereference it to read the value: 1 means that the LSB came first, 
+        and the system is therefore Little Endian, and 0 means that the LSB 
+        didn't come first, and therefore the system is Big Endian.
+    */
+
+    int n = 1;
+    return *(char *)&n;
 }
 
 static GLubyte* create_color(const char* hex_code)
