@@ -1,5 +1,6 @@
 #include "../headers/textures.h"
 #include "../headers/windowing.h"
+#include "../headers/colors.h"
 
 Texture* textures[NBR_TEXTURES] = {0};
 
@@ -24,7 +25,7 @@ void clear_drawing(Texture* t, const int true_clear)
 {
     /* Memset is faster than zeroing the alpha channel */
     if (true_clear)
-        memset(t->buffer, 0, t->real_width * t->real_height * 4);
+        memset(t->buffer, 0, t->real_width * t->real_height * sizeof(GLuint));
     else
         set_alpha_to_zero(t);
     return;
@@ -69,7 +70,7 @@ static Texture* create_texture(void)
     t->width = t->real_width / t->thickness;
     t->height = t->real_height / t->thickness;
 
-    buffer_length = t->real_width * t->real_height * 4 * sizeof(GLubyte);
+    buffer_length = t->real_width * t->real_height * sizeof(GLuint);
     t->buffer = malloc(buffer_length);
     if (!t->buffer)
     {
@@ -113,14 +114,11 @@ static void free_texture(Texture** t)
 
 static void set_alpha_to_zero(Texture* t)
 {
-    GLubyte* ptr = t->buffer + 3;
-    GLubyte* end = t->buffer + t->real_width * t->real_height * 4;
+    GLuint* ptr = t->buffer;
+    GLuint* end = t->buffer + t->real_width * t->real_height;
 
     while (ptr < end)
-    {
-        *ptr = 0;
-        ptr += 4;
-    }
+        set_alpha_channel(ptr++, 0);
     return;
 }
 

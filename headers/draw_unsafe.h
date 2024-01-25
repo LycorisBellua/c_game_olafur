@@ -8,9 +8,10 @@
 
 #include "draw.h"
 #include "textures.h"
+#include "colors.h"
 
 Vector get_direction_unsafe(Vector v1, Vector v2);
-void draw_point_unsafe(Texture* t, GLubyte* color, int x, int y);
+void draw_point_unsafe(Texture* t, GLuint* color, int x, int y);
 void draw_line_unsafe(Texture* t, Vertex v1, Vertex v2);
 void draw_line_horizontal_unsafe(Texture* t, Vertex v, int last_x);
 void draw_line_vertical_unsafe(Texture* t, Vertex v, int last_y);

@@ -34,7 +34,7 @@ typedef struct
     int thickness;
     int width;
     int height;
-    unsigned char* buffer;
+    GLuint* buffer;
 } Texture;
 
 #define NBR_TEXTURES 2

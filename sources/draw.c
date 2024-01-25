@@ -1,6 +1,5 @@
 #include "../headers/draw.h"
 #include "../headers/draw_unsafe.h"
-#include "../headers/colors.h"
 #include "../headers/maths.h"
 
 static int clamp_straight_axis(int max_length, int* length, int* coord);
@@ -52,7 +51,7 @@ Vector get_direction(Vector v1, Vector v2)
     return dir;
 }
 
-void draw_point(Texture* t, GLubyte* color, int x, int y)
+void draw_point(Texture* t, GLuint* color, int x, int y)
 {
     /*
         The coordinate parameters are individual ints and not a vector, so 
@@ -75,14 +74,14 @@ void draw_point(Texture* t, GLubyte* color, int x, int y)
     
     /* First row: Place each pixel one by one */
     for (col = 0; col < t->thickness; ++col)
-        memcpy(t->buffer + (y * t->real_width + x+col) * 4, color, 4);
+        memcpy(t->buffer + (y * t->real_width + x+col), color, sizeof(GLuint));
 
     /* Use the first row to write the other ones */
     for (row = 1; row < t->thickness; ++row)
     {
-        memcpy(t->buffer + ((y+row) * t->real_width + x) * 4, 
-            t->buffer + (y * t->real_width + x) * 4, 
-            4 * t->thickness);
+        memcpy(t->buffer + ((y+row) * t->real_width + x), 
+            t->buffer + (y * t->real_width + x), 
+            sizeof(GLuint) * t->thickness);
     }
     return;
 }

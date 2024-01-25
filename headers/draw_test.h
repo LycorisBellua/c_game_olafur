@@ -14,8 +14,11 @@ void draw_test_lines(Texture* t);
 void draw_test_rectangles(Texture* t);
 void draw_test_circles(Texture* t);
 void draw_test_shapes(Texture* t);
-void draw_test_gradient(Texture* t);
 void draw_test_gradient_line(Texture* t);
+void draw_test_gradient(Texture* t);
+
+void draw_8bit_rgb_palette(Texture* t);
+void draw_8bit_rgba_palette(Texture* t);
 
 #endif
 

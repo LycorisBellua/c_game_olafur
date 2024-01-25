@@ -7,10 +7,10 @@
 #endif
 
 /*
-    The color format is RGBA.
-    GLubyte is an unsigned char and represents one RGBA channel.
+    The color format is RGBA. The color type is GLuint (unsigned int) and 
+    the type of an individual RGBA channel is GLubyte (unsigned char).
 
-    If you want the default color, do `colors[0]`.
+    If you want the default color, which is white, do `colors[0]`.
 */
 
 typedef enum
@@ -22,14 +22,23 @@ typedef enum
 } ColorName;
 
 #define NBR_COLORS 4+1
-extern GLubyte* colors[NBR_COLORS];
+extern GLuint* colors[NBR_COLORS];
 
 void create_color_palette(void);
+void set_color_from_hex_code(GLuint* color, const char* str);
 void free_color_palette(void);
-void set_color_from_hex_code(GLubyte* color, const char* str);
-void set_color_from_other_color(GLubyte* dst, const GLubyte* src);
-void darken_color(GLubyte* color, const int percentage);
-void lighten_color(GLubyte* color, const int percentage);
+
+extern GLuint (*get_color_from_rgba)(const GLubyte r, const GLubyte g, 
+    const GLubyte b, const GLubyte a);
+extern void (*set_color_from_int)(GLuint* color, const GLuint value);
+extern GLubyte (*get_red_channel)(const GLuint color);
+extern GLubyte (*get_green_channel)(const GLuint color);
+extern GLubyte (*get_blue_channel)(const GLuint color);
+extern GLubyte (*get_alpha_channel)(const GLuint color);
+extern void (*set_red_channel)(GLuint* color, const GLubyte value);
+extern void (*set_green_channel)(GLuint* color, const GLubyte value);
+extern void (*set_blue_channel)(GLuint* color, const GLubyte value);
+extern void (*set_alpha_channel)(GLuint* color, const GLubyte value);
 
 #endif
 
