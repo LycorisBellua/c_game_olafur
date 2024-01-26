@@ -54,11 +54,16 @@ void draw_line_unsafe(Texture* t, Vertex v1, Vertex v2)
 
 void draw_line_horizontal_unsafe(Texture* t, Vertex v, int last_x)
 {
-    while (v.coords.x <= last_x)
-    {
-        draw_point_unsafe(t, v.color, v.coords.x, v.coords.y);
-        ++v.coords.x;
-    }
+    int pixel_length = last_x - v.coords.x + 1;
+    int row;
+
+    v.coords.x *= t->thickness;
+    v.coords.y *= t->thickness;
+    pixel_length *= t->thickness;
+
+    for (row = 0; row < t->thickness; ++row)
+        memset(t->buffer + ((v.coords.y+row) * t->real_width + v.coords.x), 
+            v.color, pixel_length);
     return;
 }
 
