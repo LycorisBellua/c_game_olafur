@@ -7,8 +7,10 @@
 #endif
 
 /*
-    The color format is RGBA. The color type is GLuint (unsigned int) and 
-    the type of an individual RGBA channel is GLubyte (unsigned char).
+    The color format is RGB332. This means only one byte, composed of 3 bits 
+    for the red channel, 3 bits for the green one, and 2 bits for blue. It 
+    makes for a limited palette in comparison to using 4 bytes per pixel, but 
+    it remains pleasant looking and it's a nice challenge.
 
     If you want the default color, which is white, do `colors[0]`.
 */
@@ -22,23 +24,18 @@ typedef enum
 } ColorName;
 
 #define NBR_COLORS 4+1
-extern GLuint* colors[NBR_COLORS];
+extern GLubyte colors[NBR_COLORS];
 
 void create_color_palette(void);
-void set_color_from_hex_code(GLuint* color, const char* str);
-void free_color_palette(void);
 
-extern GLuint (*get_color_from_rgba)(const GLubyte r, const GLubyte g, 
-    const GLubyte b, const GLubyte a);
-extern void (*set_color_from_int)(GLuint* color, const GLuint value);
-extern GLubyte (*get_red_channel)(const GLuint color);
-extern GLubyte (*get_green_channel)(const GLuint color);
-extern GLubyte (*get_blue_channel)(const GLuint color);
-extern GLubyte (*get_alpha_channel)(const GLuint color);
-extern void (*set_red_channel)(GLuint* color, const GLubyte value);
-extern void (*set_green_channel)(GLuint* color, const GLubyte value);
-extern void (*set_blue_channel)(GLuint* color, const GLubyte value);
-extern void (*set_alpha_channel)(GLuint* color, const GLubyte value);
+GLubyte get_color_from_hex_code(const char* str);
+GLubyte get_color_from_rgb(GLubyte r_3bits, GLubyte g_3bits, GLubyte b_2bits);
+GLubyte get_red_channel(const GLubyte color);
+GLubyte get_green_channel(const GLubyte color);
+GLubyte get_blue_channel(const GLubyte color);
+void set_red_channel(GLubyte* color, GLubyte value_3bits);
+void set_green_channel(GLubyte* color, GLubyte value_3bits);
+void set_blue_channel(GLubyte* color, GLubyte value_2bits);
 
 #endif
 

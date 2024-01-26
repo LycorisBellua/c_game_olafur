@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
-        clear_drawing(TEX_MAIN, 1);
+        clear_drawing(TEX_MAIN);
         active_interface->draw();
         save_drawing(TEX_MAIN);
         render_mesh();
@@ -71,7 +71,6 @@ int main(int argc, char** argv)
     free_shader_program();
     free_uniform();
     free_mesh();
-    free_color_palette();
     free_textures();
 
     list_arguments(argc, argv);

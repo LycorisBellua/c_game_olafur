@@ -11,24 +11,15 @@ Vector get_direction_unsafe(Vector v1, Vector v2)
     return dir;
 }
 
-void draw_point_unsafe(Texture* t, GLuint* color, int x, int y)
+void draw_point_unsafe(Texture* t, GLubyte color, int x, int y)
 {
-    int row, col;
+    int row;
 
     x *= t->thickness;
     y *= t->thickness;
     
-    /* First row: Place each pixel one by one */
-    for (col = 0; col < t->thickness; ++col)
-        memcpy(t->buffer + (y * t->real_width + x+col), color, sizeof(GLuint));
-
-    /* Use the first row to write the other ones */
-    for (row = 1; row < t->thickness; ++row)
-    {
-        memcpy(t->buffer + ((y+row) * t->real_width + x), 
-            t->buffer + (y * t->real_width + x), 
-            sizeof(GLuint) * t->thickness);
-    }
+    for (row = 0; row < t->thickness; ++row)
+        memset(t->buffer + ((y+row) * t->real_width + x), color, t->thickness);
     return;
 }
 

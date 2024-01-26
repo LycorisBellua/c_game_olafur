@@ -29,7 +29,7 @@ typedef struct
 typedef struct
 {
     Vector coords;
-    GLuint* color;
+    GLubyte color;
 } Vertex;
 
 int get_coord_x(Texture* t, float normalized);
@@ -37,7 +37,7 @@ int get_coord_y(Texture* t, float normalized);
 int is_coord_out_of_bounds(int axis_length, int coord);
 Vector get_direction(Vector v1, Vector v2);
 
-void draw_point(Texture* t, GLuint* color, int x, int y);
+void draw_point(Texture* t, GLubyte color, int x, int y);
 void draw_line(Texture* t, Vertex v1, Vertex v2);
 void draw_line_horizontal(Texture* t, Vertex v, int last_x);
 void draw_line_vertical(Texture* t, Vertex v, int last_y);

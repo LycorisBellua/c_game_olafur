@@ -34,7 +34,7 @@ typedef struct
     int thickness;
     int width;
     int height;
-    GLuint* buffer;
+    GLubyte* buffer;
 } Texture;
 
 #define NBR_TEXTURES 2
@@ -43,7 +43,7 @@ extern Texture* textures[NBR_TEXTURES];
 
 void create_textures(void);
 void use_texture(const Texture* t);
-void clear_drawing(Texture* t, const int true_clear);
+void clear_drawing(Texture* t);
 void save_drawing(const Texture* t);
 void free_textures(void);
 

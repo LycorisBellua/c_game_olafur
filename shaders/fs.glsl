@@ -7,6 +7,10 @@ out vec4 frag_color;
 
 void main()
 {
-    frag_color = texture(frame_texture, frag_tex_coord);
+    // GREYSCALE (GL_RED + GL_UNSIGNED_BYTE)
+    //frag_color = vec4(texture(frame_texture, frag_tex_coord).r);
+
+    vec3 colors = texture(frame_texture, frag_tex_coord).rgb;
+    frag_color = vec4(colors, 1.0);
 }
 

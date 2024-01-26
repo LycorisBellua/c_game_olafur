@@ -51,7 +51,7 @@ Vector get_direction(Vector v1, Vector v2)
     return dir;
 }
 
-void draw_point(Texture* t, GLuint* color, int x, int y)
+void draw_point(Texture* t, GLubyte color, int x, int y)
 {
     /*
         The coordinate parameters are individual ints and not a vector, so 
@@ -63,7 +63,7 @@ void draw_point(Texture* t, GLuint* color, int x, int y)
         instead of declaring a vector variable is neat. May be useful.
     */
 
-    int row, col;
+    int row;
 
     if (is_coord_out_of_bounds(t->width, x) 
         || is_coord_out_of_bounds(t->height, y))
@@ -72,17 +72,8 @@ void draw_point(Texture* t, GLuint* color, int x, int y)
     x *= t->thickness;
     y *= t->thickness;
     
-    /* First row: Place each pixel one by one */
-    for (col = 0; col < t->thickness; ++col)
-        memcpy(t->buffer + (y * t->real_width + x+col), color, sizeof(GLuint));
-
-    /* Use the first row to write the other ones */
-    for (row = 1; row < t->thickness; ++row)
-    {
-        memcpy(t->buffer + ((y+row) * t->real_width + x), 
-            t->buffer + (y * t->real_width + x), 
-            sizeof(GLuint) * t->thickness);
-    }
+    for (row = 0; row < t->thickness; ++row)
+        memset(t->buffer + ((y+row) * t->real_width + x), color, t->thickness);
     return;
 }
 

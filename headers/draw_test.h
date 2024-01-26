@@ -18,7 +18,6 @@ void draw_test_gradient_line(Texture* t);
 void draw_test_gradient(Texture* t);
 
 void draw_8bit_rgb_palette(Texture* t);
-void draw_8bit_rgba_palette(Texture* t);
 
 #endif
 

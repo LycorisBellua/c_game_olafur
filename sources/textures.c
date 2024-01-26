@@ -6,7 +6,6 @@ Texture* textures[NBR_TEXTURES] = {0};
 
 static Texture* create_texture(void);
 static void free_texture(Texture** t);
-static void set_alpha_to_zero(Texture* t);
 
 void create_textures(void)
 {
@@ -21,20 +20,16 @@ void use_texture(const Texture* t)
     return;
 }
 
-void clear_drawing(Texture* t, const int true_clear)
+void clear_drawing(Texture* t)
 {
-    /* Memset is faster than zeroing the alpha channel */
-    if (true_clear)
-        memset(t->buffer, 0, t->real_width * t->real_height * sizeof(GLuint));
-    else
-        set_alpha_to_zero(t);
+    memset(t->buffer, 0, t->real_width * t->real_height * sizeof(GLubyte));
     return;
 }
 
 void save_drawing(const Texture* t)
 {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t->real_width, t->real_height, 0, 
-        GL_RGBA, GL_UNSIGNED_BYTE, t->buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, t->real_width, t->real_height, 0, 
+        GL_RGB, GL_UNSIGNED_BYTE_3_3_2, t->buffer);
     return;
 }
 
@@ -70,12 +65,12 @@ static Texture* create_texture(void)
     t->width = t->real_width / t->thickness;
     t->height = t->real_height / t->thickness;
 
-    buffer_length = t->real_width * t->real_height * sizeof(GLuint);
+    buffer_length = t->real_width * t->real_height * sizeof(GLubyte);
     t->buffer = malloc(buffer_length);
     if (!t->buffer)
     {
         fprintf(stderr, "ERROR: Couldn't allocate enough memory for a texture "
-            "(= %ld bytes for RGBA texture of a %dx%d resolution).\n", 
+            "(= %ld bytes for texture of a %dx%d resolution).\n", 
             buffer_length, t->real_width, t->real_height);
         free(t);
         return 0;
@@ -109,16 +104,6 @@ static void free_texture(Texture** t)
 
     /* Nullify the reference to prevent a double free */
     *t = 0;
-    return;
-}
-
-static void set_alpha_to_zero(Texture* t)
-{
-    GLuint* ptr = t->buffer;
-    GLuint* end = t->buffer + t->real_width * t->real_height;
-
-    while (ptr < end)
-        set_alpha_channel(ptr++, 0);
     return;
 }
 
