@@ -19,6 +19,7 @@
 #include "../headers/colors.h"
 #include "../headers/textures.h"
 #include "../headers/interfaces.h"
+#include "../headers/time.h"
 
 static void list_arguments(int argc, char** argv)
 {
@@ -38,9 +39,9 @@ int main(int argc, char** argv)
     GLFWwindow* window = get_window(title);
 
     glfwSetKeyCallback(window, physical_key_callback);
+
+    /* Vsync caps the FPS to the monitor's refresh rate. 0 to disable it. */
     glfwSwapInterval(1);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     if (!create_shader_program())
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -57,6 +58,10 @@ int main(int argc, char** argv)
 
     while (!glfwWindowShouldClose(window))
     {
+        /*
+        printf("FPS: %.2f\n", FPS);
+        */
+
         glClear(GL_COLOR_BUFFER_BIT);
         clear_drawing(TEX_MAIN);
         active_interface->draw();
