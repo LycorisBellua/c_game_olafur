@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 #endif
 
+#include "../headers/command_line.h"
 #include "../headers/windowing.h"
 #include "../headers/input.h"
 #include "../headers/shader_program.h"
@@ -21,27 +22,13 @@
 #include "../headers/interfaces.h"
 #include "../headers/time.h"
 
-static void list_arguments(int argc, char** argv)
-{
-    int i;
-    printf("Debug: %d arguments\n", argc - 1);
-    if (argc > 1)
-    {
-        for (i = 1; i < argc; ++i)
-            printf("%d. %s\n", i, argv[i]);
-    }
-    return;
-}
-
 int main(int argc, char** argv)
 {
     const char* title = "Cimmerian";
     GLFWwindow* window = get_window(title);
 
     glfwSetKeyCallback(window, physical_key_callback);
-
-    /* Vsync caps the FPS to the monitor's refresh rate. 0 to disable it. */
-    glfwSwapInterval(1);
+    enable_vsync(1);
 
     if (!create_shader_program())
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -54,6 +41,7 @@ int main(int argc, char** argv)
         initialize_interfaces();
 
         use_texture(TEX_MAIN);
+        execute_cli_options(argc, argv);
     }
 
     while (!glfwWindowShouldClose(window))
@@ -77,8 +65,6 @@ int main(int argc, char** argv)
     free_uniform();
     free_mesh();
     free_textures();
-
-    list_arguments(argc, argv);
     return EXIT_SUCCESS;
 }
 
