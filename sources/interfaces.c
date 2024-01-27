@@ -35,7 +35,7 @@ static void draw_main_menu(void)
     draw_test_gradient(TEX_MAIN);
     draw_test_shapes(TEX_MAIN);
     */
-    draw_8bit_rgb_palette(TEX_MAIN);
+    draw_palette(TEX_MAIN);
     return;
 }
 

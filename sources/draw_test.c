@@ -130,7 +130,7 @@ void draw_test_shapes(Texture* t)
 
     /* Convex (triangle) */
     Vertex v[3];
-    v[0].color = colors[0];
+    v[0].color = get_color_from_hex_code("#C41E3A");
     v[1].color = v[0].color;
     v[2].color = v[0].color;
 
@@ -169,9 +169,9 @@ void draw_test_shapes(Texture* t)
 void draw_test_gradient_line(Texture* t)
 {
     int i;
-    int dist = 200;
-    int half_dist = dist/2;
-    float perc = 0;
+    const int dist = 200;
+    const int half_dist = dist/2;
+    const float perc = 100.0f / dist;
     GLubyte first_color, second_color, color_change;
     Vector v;
     v.x = get_coord_x(t, 0.1f);
@@ -181,50 +181,42 @@ void draw_test_gradient_line(Texture* t)
     second_color = colors[COLOR_GREEN];
     color_change = 0;
 
-    if (first_color - second_color)
-    {
-        perc = 100.0f / dist;
-
-        set_red_channel(&color_change, (get_red_channel(second_color) 
-            - get_red_channel(first_color)) / 50.0f * perc);
-        set_green_channel(&color_change, (get_green_channel(second_color) 
-            - get_green_channel(first_color)) / 50.0f * perc);
-        set_blue_channel(&color_change, (get_blue_channel(second_color) 
-            - get_blue_channel(first_color)) / 50.0f * perc);
-    }
+    set_red_channel(&color_change, (get_red_channel(second_color) 
+        - get_red_channel(first_color)) / 2 * perc + 0.5f);
+    set_green_channel(&color_change, (get_green_channel(second_color) 
+        - get_green_channel(first_color)) / 2 * perc + 0.5f);
+    set_blue_channel(&color_change, (get_blue_channel(second_color) 
+        - get_blue_channel(first_color)) / 2 * perc + 0.5f);
     for (i = 0; i < half_dist; ++i)
     {
         draw_point(t, first_color, v.x, v.y);
         ++v.x;
 
         set_red_channel(&first_color, CLAMP(get_red_channel(first_color) 
-            + get_red_channel(color_change), 0, 255));
+            + get_red_channel(color_change), 0, MAX_RED));
         set_green_channel(&first_color, CLAMP(get_green_channel(first_color) 
-            + get_green_channel(color_change), 0, 255));
+            + get_green_channel(color_change), 0, MAX_GREEN));
         set_blue_channel(&first_color, CLAMP(get_blue_channel(first_color) 
-            + get_blue_channel(color_change), 0, 255));
+            + get_blue_channel(color_change), 0, MAX_BLUE));
     }
 
-    if (perc > 0)
-    {
-        set_red_channel(&color_change, (get_red_channel(first_color) 
-            - get_red_channel(second_color)) / 50.0f * perc);
-        set_green_channel(&color_change, (get_green_channel(first_color) 
-            - get_green_channel(second_color)) / 50.0f * perc);
-        set_blue_channel(&color_change, (get_blue_channel(first_color) 
-            - get_blue_channel(second_color)) / 50.0f * perc);
-    }
+    set_red_channel(&color_change, (get_red_channel(first_color) 
+        - get_red_channel(second_color)) / 2 * perc + 0.5f);
+    set_green_channel(&color_change, (get_green_channel(first_color) 
+        - get_green_channel(second_color)) / 2 * perc + 0.5f);
+    set_blue_channel(&color_change, (get_blue_channel(first_color) 
+        - get_blue_channel(second_color)) / 2 * perc + 0.5f);
     for (; i < dist; ++i)
     {
         draw_point(t, first_color, v.x, v.y);
         ++v.x;
 
         set_red_channel(&first_color, CLAMP(get_red_channel(first_color) 
-            - get_red_channel(color_change), 0, 255));
+            - get_red_channel(color_change), 0, MAX_RED));
         set_green_channel(&first_color, CLAMP(get_green_channel(first_color) 
-            - get_green_channel(color_change), 0, 255));
+            - get_green_channel(color_change), 0, MAX_GREEN));
         set_blue_channel(&first_color, CLAMP(get_blue_channel(first_color) 
-            - get_blue_channel(color_change), 0, 255));
+            - get_blue_channel(color_change), 0, MAX_BLUE));
     }
     return;
 }
@@ -234,91 +226,45 @@ void draw_test_gradient(Texture* t)
     Vertex v;
 
     v.color = 0;
-    set_blue_channel(&v.color, 255/2);
+    set_blue_channel(&v.color, MAX_BLUE/2);
 
     for (v.coords.y = 0; v.coords.y < t->height; ++v.coords.y)
     {
         for (v.coords.x = 0; v.coords.x < t->width; ++v.coords.x)
         {
-            set_red_channel(&v.color, v.coords.x * 255 / t->width);
-            set_green_channel(&v.color, v.coords.y * 255 / t->height);
+            set_red_channel(&v.color, v.coords.x * MAX_RED / t->width);
+            set_green_channel(&v.color, v.coords.y * MAX_GREEN / t->height);
             draw_point(t, v.color, v.coords.x, v.coords.y);
         }
     }
     return;
 }
 
-/* 256 colors */
-void draw_8bit_rgb_palette(Texture* t)
+void draw_palette(Texture* t)
 {
-    /*
-       RED AND GREEN
-       0 =   0 = 0x00
-       1 =  36 = 0x24
-       2 =  72 = 0x48
-       3 = 109 = 0x6D
-       4 = 145 = 0x91
-       5 = 182 = 0xB6
-       6 = 218 = 0xDA
-       7 = 255 = 0xFF
-
-       BLUE
-       0 =   0 = 0x00
-       1 =  85 = 0x55
-       2 = 170 = 0xAA
-       3 = 255 = 0xFF
-    */
-
-    const int root = 16;
+    const int root = 16; /* because 256 colors */
     const int square_size_x = t->width / root;
     const int square_size_y = t->height / root;
-    int col, row;
-
-    int i;
-    int r, g, b;
-
-    GLubyte c[256] = {0};
+    int i, col, row;
     Vertex v;
 
-    i = 0;
     col = 0;
     row = 0;
-    for (r = 0; r < 8; ++r)
+    for (i = 0; i < NBR_COLORS; ++i)
     {
-        for (g = 0; g < 8; ++g)
+        v.coords.x = col * square_size_x;
+        v.coords.y = row * square_size_y;
+        v.color = colors[i];
+        draw_rectangle(t, 1, v, square_size_x, square_size_y);
+
+        v.color = colors[COLOR_BLACK];
+        draw_rectangle(t, 0, v, square_size_x, square_size_y);
+
+        ++col;
+        if (!(col % root))
         {
-            for (b = 0; b < 4; ++b)
-            {
-                set_red_channel(&c[i], r);
-                set_green_channel(&c[i], g);
-                set_blue_channel(&c[i], b);
-
-                /**/
-                v.coords.x = col * square_size_x;
-                v.coords.y = row * square_size_y;
-                v.color = c[i];
-                draw_rectangle(t, 1, v, square_size_x, square_size_y);
-
-                v.color = colors[COLOR_WHITE];
-                draw_rectangle(t, 0, v, square_size_x, square_size_y);
-
-                ++col;
-                if (!(col % root))
-                {
-                    col = 0;
-                    ++row;
-                }
-                /**/
-
-                /*
-                printf("Color n°%d: (%d, %d, %d)\n", i+1, 
-                    get_red_channel(c[i]), 
-                    get_green_channel(c[i]), 
-                    get_blue_channel(c[i]));
-                */
-
-                ++i;
-            }
+            col = 0;
+            ++row;
         }
     }
     return;

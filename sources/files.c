@@ -49,28 +49,13 @@ char* read_file(const char* filepath)
     return ptr;
 }
 
-int char_is_digit(const char c)
-{
-    return c >= '0' && c <= '9';
-}
-
-int char_is_lowercase(const char c)
-{
-    return c >= 'a' && c <= 'z';
-}
-
-int char_is_uppercase(const char c)
-{
-    return c >= 'A' && c <= 'Z';
-}
-
 int hex_char_to_int(const char c)
 {
-    if (char_is_digit(c))
+    if (CHAR_IS_DIGIT(c))
         return c - '0';
-    else if (char_is_lowercase(c))
+    else if (CHAR_IS_LOWERCASE(c))
         return c > 'f' ? 0 : 10 + (c - 'a');
-    else if (char_is_uppercase(c))
+    else if (CHAR_IS_UPPERCASE(c))
         return c > 'F' ? 0 : 10 + (c - 'A');
     else
         return 0;

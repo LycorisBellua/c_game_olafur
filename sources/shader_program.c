@@ -123,7 +123,7 @@ static void set_glsl_version_in_shader(char* ptr_shader)
 
     for (i = 0; ptr_shader[i]; ++i)
     {
-        if (char_is_digit(ptr_shader[i]))
+        if (CHAR_IS_DIGIT(ptr_shader[i]))
         {
             ptr_shader[i + 2] = glsl % 10 + '0';
             glsl /= 10;
