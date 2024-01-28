@@ -12,9 +12,12 @@ struct Interface
 };
 
 extern Interface* active_interface;
+extern float global_x;
+extern float global_y;
 
 void initialize_interfaces(void);
 void set_active_interface(Interface* interface);
+void update_global_coordinates(void);
 
 #endif
 

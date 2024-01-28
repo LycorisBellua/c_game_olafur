@@ -21,6 +21,7 @@
 #include "../headers/textures.h"
 #include "../headers/interfaces.h"
 #include "../headers/time.h"
+#include "../headers/draw_test.h"
 
 int main(int argc, char** argv)
 {
@@ -46,8 +47,9 @@ int main(int argc, char** argv)
 
     while (!glfwWindowShouldClose(window))
     {
+        update_time_variables();
         /*
-        printf("FPS: %.2f\n", FPS);
+        printf("FPS: %.2f\n", fps_count);
         */
 
         glClear(GL_COLOR_BUFFER_BIT);
@@ -55,6 +57,9 @@ int main(int argc, char** argv)
         active_interface->draw();
         save_drawing(TEX_MAIN);
         render_mesh();
+
+        /* Input test */
+        update_global_coordinates();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

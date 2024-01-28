@@ -1,11 +1,16 @@
 #include "../headers/interfaces.h"
+#include "../headers/input.h"
 #include "../headers/textures.h"
 #include "../headers/draw_test.h"
+#include "../headers/time.h"
 
 Interface* active_interface = {0};
+float global_x;
+float global_y;
 static Interface main_menu_interface;
 static Interface game_interface;
 
+static void reset_global_coordinates(void);
 static void draw_main_menu(void);
 static void draw_game(void);
 
@@ -26,6 +31,21 @@ void initialize_interfaces(void)
 void set_active_interface(Interface* interface)
 {
     active_interface = interface;
+    reset_global_coordinates();
+    return;
+}
+
+void update_global_coordinates(void)
+{
+    const float speed = 50.0f;
+    global_x += movement_action[0] * speed * delta_time;
+    global_y += movement_action[2] * speed * delta_time;
+    return;
+}
+
+static void reset_global_coordinates(void)
+{
+    global_x = global_y = 0;
     return;
 }
 

@@ -13,9 +13,10 @@
 #include <GLFW/glfw3.h>
 #endif
 
-#define FPS (1/get_delta_time())
+extern float delta_time;
+extern float fps_count;
 
-float get_delta_time(void);
+void update_time_variables(void);
 
 #endif
 

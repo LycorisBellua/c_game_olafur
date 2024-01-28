@@ -1,12 +1,15 @@
 #include "../headers/time.h"
 
+float delta_time = 0.0f;
+float fps_count = 0.0f;
 static float last_time = 0.0f;
 
-float get_delta_time(void)
+void update_time_variables(void)
 {
     float current_time = glfwGetTime();
-    float delta_time = current_time - last_time;
+    delta_time = current_time - last_time;
     last_time = current_time;
-    return delta_time;
+    fps_count = 1/delta_time;
+    return;
 }
 
