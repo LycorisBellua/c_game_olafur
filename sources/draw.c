@@ -21,6 +21,16 @@ int get_coord_y(Texture* t, float normalized)
     return (t->height-1) * normalized;
 }
 
+float get_coord_x_norm(Texture* t, int coord)
+{
+    return (float)coord / (t->width-1);
+}
+
+float get_coord_y_norm(Texture* t, int coord)
+{
+    return (float)coord / (t->height-1);
+}
+
 int is_coord_out_of_bounds(int axis_length, int coord)
 {
     /*

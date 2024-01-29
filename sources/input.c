@@ -14,7 +14,7 @@ static void update_rotation_action(void);
 static int get_local_key(const int physical_key);
 */
 static void input_escape(GLFWwindow* window, const int action);
-static void input_enter(const int action);
+static void input_enter(GLFWwindow* window, const int action);
 
 static void input_up(const int action);
 static void input_down(const int action);
@@ -37,7 +37,7 @@ void physical_key_callback
         if (key == GLFW_KEY_ESCAPE)
             input_escape(window, action);
         else if (key == GLFW_KEY_ENTER)
-            input_enter(action);
+            input_enter(window, action);
         else if (key == GLFW_KEY_UP)
             input_up(action);
         else if (key == GLFW_KEY_DOWN)
@@ -116,19 +116,15 @@ static void input_escape(GLFWwindow* window, const int action)
 
     if (action != GLFW_PRESS)
         return;
-
-    if (!active_interface->previous)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    set_active_interface(active_interface->previous);
+    nav_ui_cancel(window);
     return;
 }
 
-static void input_enter(const int action)
+static void input_enter(GLFWwindow* window, const int action)
 {
-    if (action != GLFW_PRESS || !active_interface->next)
+    if (action != GLFW_PRESS)
         return;
-
-    set_active_interface(active_interface->next);
+    nav_ui_confirm(window);
     return;
 }
 
@@ -137,6 +133,7 @@ static void input_up(const int action)
     if (action == GLFW_PRESS)
     {
         movement_input[2] += 1;
+        nav_ui_vertical(1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -155,6 +152,7 @@ static void input_down(const int action)
     if (action == GLFW_PRESS)
     {
         movement_input[2] += -1;
+        nav_ui_vertical(-1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -173,6 +171,7 @@ static void input_right(const int action)
     if (action == GLFW_PRESS)
     {
         rotation_input += 1;
+        nav_ui_horizontal(1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -191,6 +190,7 @@ static void input_left(const int action)
     if (action == GLFW_PRESS)
     {
         rotation_input += -1;
+        nav_ui_horizontal(-1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -209,6 +209,7 @@ static void input_strafe_left(const int action)
     if (action == GLFW_PRESS)
     {
         movement_input[0] += -1;
+        nav_ui_horizontal(-1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -227,6 +228,7 @@ static void input_strafe_right(const int action)
     if (action == GLFW_PRESS)
     {
         movement_input[0] += 1;
+        nav_ui_horizontal(1);
     }
     else if (action == GLFW_REPEAT)
     {

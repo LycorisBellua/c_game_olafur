@@ -34,6 +34,8 @@ typedef struct
 
 int get_coord_x(Texture* t, float normalized);
 int get_coord_y(Texture* t, float normalized);
+float get_coord_x_norm(Texture* t, int coord);
+float get_coord_y_norm(Texture* t, int coord);
 int is_coord_out_of_bounds(int axis_length, int coord);
 Vector get_direction(Vector v1, Vector v2);
 
