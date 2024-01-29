@@ -3,7 +3,8 @@
 #include "../headers/maths.h"
 
 static int clamp_straight_axis(int max_length, int* length, int* coord);
-static int clamp_diagonal_line(Texture* t, Vector* p1, Vector* p2, Vector* dir);
+static void clamp_and_draw_diagonal_line(Texture* t, Vertex* p1, Vertex* p2, 
+    Vector dir);
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
 static void draw_circle_full(Texture* t, Vertex center, int radius);
@@ -114,9 +115,7 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     }
     else
     {
-        if (!clamp_diagonal_line(t, &v1.coords, &v2.coords, &dir))
-            return;
-        draw_line_diagonal_unsafe(t, v1, dir);
+        clamp_and_draw_diagonal_line(t, &v1, &v2, dir);
     }
     return;
 }
@@ -145,6 +144,28 @@ void draw_line_vertical(Texture* t, Vertex v, int last_y)
         if (!is_coord_out_of_bounds(t->height, v.coords.y))
             draw_point_unsafe(t, v.color, v.coords.x, v.coords.y);
         ++v.coords.y;
+    }
+    return;
+}
+
+void draw_line_diagonal(Texture* t, Vertex v, Vector dir)
+{
+    int steps;
+    VectorF coords, increment;
+
+    steps = MAX(ABS(dir.x), ABS(dir.y));
+    coords.x = v.coords.x;
+    coords.y = v.coords.y;
+    increment.x = dir.x / (float)steps;
+    increment.y = dir.y / (float)steps;
+
+    ++steps;
+
+    while (steps-- > 0)
+    {
+        draw_point(t, v.color, coords.x, coords.y);
+        coords.x += increment.x;
+        coords.y += increment.y;
     }
     return;
 }
@@ -253,64 +274,90 @@ static int clamp_straight_axis(int max_length, int* length, int* coord)
     return 1;
 }
 
-static int clamp_diagonal_line(Texture* t, Vector* p1, Vector* p2, Vector* dir)
+static void clamp_and_draw_diagonal_line(Texture* t, Vertex* p1, Vertex* p2, 
+    Vector dir)
 {
     int tmp;
     float slope;
     VectorF new_p1, new_p2;
     Vector p1_out_of_bounds, p2_out_of_bounds;
 
-    p1_out_of_bounds.x = is_coord_out_of_bounds(t->width, p1->x);
-    p1_out_of_bounds.y = is_coord_out_of_bounds(t->height, p1->y);
-    p2_out_of_bounds.x = is_coord_out_of_bounds(t->width, p2->x);
-    p2_out_of_bounds.y = is_coord_out_of_bounds(t->height, p2->y);
+    p1_out_of_bounds.x = is_coord_out_of_bounds(t->width, p1->coords.x);
+    p1_out_of_bounds.y = is_coord_out_of_bounds(t->height, p1->coords.y);
+    p2_out_of_bounds.x = is_coord_out_of_bounds(t->width, p2->coords.x);
+    p2_out_of_bounds.y = is_coord_out_of_bounds(t->height, p2->coords.y);
+
+    /* Line completely in bounds */
+    if (!p1_out_of_bounds.x && !p2_out_of_bounds.x && !p1_out_of_bounds.y 
+        && !p2_out_of_bounds.y)
+    {
+        draw_line_diagonal_unsafe(t, *p1, dir);
+        return;
+    }
 
     /* Line completely out of bounds */
     if (ABS(p1_out_of_bounds.x + p2_out_of_bounds.x) == 2 
             || ABS(p1_out_of_bounds.y + p2_out_of_bounds.y) == 2)
-        return 0;
+        return;
 
-    new_p1.x = p1->x;
-    new_p1.y = p1->y;
-    new_p2.x = p2->x;
-    new_p2.y = p2->y;
-    slope = dir->y / (float)dir->x;
+    new_p1.x = p1->coords.x;
+    new_p1.y = p1->coords.y;
+    new_p2.x = p2->coords.x;
+    new_p2.y = p2->coords.y;
+    slope = dir.y / (float)dir.x;
 
     if (p1_out_of_bounds.x)
     {
         tmp = p1_out_of_bounds.x == -1 ? 0 : t->width-1;
-        new_p1.y = p1->y - (p1->x - tmp) * slope;
+        new_p1.y = p1->coords.y - (p1->coords.x - tmp) * slope;
         new_p1.x = tmp;
     }
 
     if (p2_out_of_bounds.x)
     {
         tmp = p2_out_of_bounds.x == -1 ? 0 : t->width-1;
-        new_p2.y = p1->y + (tmp - p1->x) * slope;
+        new_p2.y = p1->coords.y + (tmp - p1->coords.x) * slope;
         new_p2.x = tmp;
     }
 
     if (p1_out_of_bounds.y)
     {
         tmp = p1_out_of_bounds.y == -1 ? 0 : t->height-1;
-        new_p1.x = p1->x - (p1->y - tmp) / slope;
+        new_p1.x = p1->coords.x - (p1->coords.y - tmp) / slope;
         new_p1.y = tmp;
     }
 
     if (p2_out_of_bounds.y)
     {
         tmp = p2_out_of_bounds.y == -1 ? 0 : t->height-1;
-        new_p2.x = p1->x + (tmp - p1->y) / slope;
+        new_p2.x = p1->coords.x + (tmp - p1->coords.y) / slope;
         new_p2.y = tmp;
     }
 
-    p1->x = CLAMP(new_p1.x, 0, t->width-1);
-    p1->y = CLAMP(new_p1.y, 0, t->height-1);
-    p2->x = CLAMP(new_p2.x, 0, t->width-1);
-    p2->y = CLAMP(new_p2.y, 0, t->height-1);
+    p1->coords.x = new_p1.x;
+    p1->coords.y = new_p1.y;
+    p2->coords.x = new_p2.x;
+    p2->coords.y = new_p2.y;
 
-    *dir = get_direction_unsafe(*p1, *p2);
-    return 1;
+    /*
+        When touching a corner, the new line coordinates can be out of bounds, 
+        although it visually looks nice. Check if anything is wrong, and if so 
+        then draw the line safely.
+    */
+    if (!is_coord_out_of_bounds(t->width, p1->coords.x) 
+        && !is_coord_out_of_bounds(t->height, p1->coords.y) 
+        && !is_coord_out_of_bounds(t->width, p2->coords.x) 
+        && !is_coord_out_of_bounds(t->height, p2->coords.y))
+    {
+        dir = get_direction_unsafe(p1->coords, p2->coords);
+        draw_line_diagonal_unsafe(t, *p1, dir);
+    }
+    else
+    {
+        dir = get_direction(p1->coords, p2->coords);
+        draw_line_diagonal(t, *p1, dir);
+    }
+    return;
 }
 
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height)
@@ -356,11 +403,10 @@ static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height)
         if (coords_out_of_bounds.x == last_coords_out_of_bounds.x)
             return;
         
-        /* Clamp X axis */
         v.coords.x = 0;
-        if (last_coords.x > t->width-1)
-            last_coords.x = t->width-1;
     }
+    if (last_coords_out_of_bounds.x)
+            last_coords.x = t->width-1;
 
     if (coords_out_of_bounds.y)
     {
@@ -368,11 +414,10 @@ static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height)
         if (coords_out_of_bounds.y == last_coords_out_of_bounds.y)
             return;
 
-        /* Clamp Y axis */
         v.coords.y = 0;
-        if (last_coords.y > t->height-1)
-            last_coords.y = t->height-1;
     }
+    if (last_coords_out_of_bounds.y)
+            last_coords.y = t->height-1;
 
     /* Draw bottom line */
     if (!coords_out_of_bounds.y)

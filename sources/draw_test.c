@@ -107,7 +107,6 @@ void draw_test_rectangles(Texture* t)
     v2.coords.y = get_coord_y(t, 0.33f) - 2 + global_y;
     v2.color = colors[COLOR_RED];
     draw_rectangle(t, 0, v2, 100, 100);
-
     return;
 }
 
