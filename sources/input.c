@@ -1,6 +1,6 @@
 #include "../headers/input.h"
 #include "../headers/windowing.h"
-#include "../headers/interfaces.h"
+#include "../headers/menu.h"
 
 int movement_action[3] = {0};
 static int movement_input[3] = {0};

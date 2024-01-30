@@ -11,26 +11,20 @@
 #include <GLFW/glfw3.h>
 #endif
 
-typedef void (*DrawFunction)(void);
-typedef void (*NavigationUI)(const int dir);
 typedef struct Interface Interface;
-
 struct Interface
 {
-    DrawFunction draw;
+    int nav_ui;
+    void (*draw)(void);
+    void (*reset_input)(void);
     Interface* previous;
     Interface* next;
 };
 
 extern Interface* active_interface;
-extern float global_x, global_y;
-extern NavigationUI nav_ui_horizontal, nav_ui_vertical;
 
 void initialize_interfaces(void);
 void set_active_interface(Interface* interface);
-void update_global_coordinates(void);
-void nav_ui_confirm(GLFWwindow* window);
-void nav_ui_cancel(GLFWwindow* window);
 
 #endif
 

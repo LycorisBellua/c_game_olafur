@@ -15,12 +15,14 @@ void draw_point_unsafe(Texture* t, GLubyte color, int x, int y)
 {
     int row;
 
+    /* TODO: Remove after development -------------- */
     if (is_coord_out_of_bounds(t->width, x) 
         || is_coord_out_of_bounds(t->height, y))
     {
         printf("draw_point_unsafe: (%d, %d)\n", x, y);
         return;
     }
+    /* --------------------------------------------- */
 
     x *= t->thickness;
     y *= t->thickness;

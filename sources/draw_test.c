@@ -2,7 +2,7 @@
 #include "../headers/draw.h"
 #include "../headers/colors.h"
 #include "../headers/maths.h"
-#include "../headers/interfaces.h"
+#include "../headers/game.h"
 
 void draw_test_corners(Texture* t)
 {

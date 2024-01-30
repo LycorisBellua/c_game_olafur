@@ -22,6 +22,7 @@
 #include "../headers/interfaces.h"
 #include "../headers/time.h"
 #include "../headers/draw_test.h"
+#include "../headers/game.h"
 
 int main(int argc, char** argv)
 {
