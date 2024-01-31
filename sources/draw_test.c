@@ -2,7 +2,6 @@
 #include "../headers/draw.h"
 #include "../headers/colors.h"
 #include "../headers/maths.h"
-#include "../headers/game.h"
 
 void draw_test_corners(Texture* t)
 {
@@ -71,8 +70,8 @@ void draw_test_lines(Texture* t)
     v1.color = colors[COLOR_GREEN];
     v2.color = colors[COLOR_GREEN];
 
-    v1.coords.x = get_coord_x(t, 0.5f) + 5 + global_x;
-    v1.coords.y = get_coord_y(t, 0.5f) + 5 + global_y;
+    v1.coords.x = get_coord_x(t, 0.5f) + 5;
+    v1.coords.y = get_coord_y(t, 0.5f) + 5;
     v2.coords.x = v1.coords.x + 200;
     v2.coords.y = v1.coords.y + 100;
     draw_line(t, v1, v2);
@@ -98,13 +97,13 @@ void draw_test_rectangles(Texture* t)
 {
     Vertex v1, v2;
 
-    v1.coords.x = get_coord_x(t, 0.1f) - 1 + global_x;
-    v1.coords.y = get_coord_y(t, 0.33f) - 1 + global_y;
+    v1.coords.x = get_coord_x(t, 0.1f) - 1;
+    v1.coords.y = get_coord_y(t, 0.33f) - 1;
     v1.color = colors[COLOR_WHITE];
     draw_rectangle(t, 1, v1, 100, 100);
 
-    v2.coords.x = get_coord_x(t, 0.1f) + global_x;
-    v2.coords.y = get_coord_y(t, 0.33f) - 2 + global_y;
+    v2.coords.x = get_coord_x(t, 0.1f);
+    v2.coords.y = get_coord_y(t, 0.33f) - 2;
     v2.color = colors[COLOR_RED];
     draw_rectangle(t, 0, v2, 100, 100);
     return;
@@ -115,8 +114,8 @@ void draw_test_circles(Texture* t)
     int radius = 100;
     Vertex v;
     v.color = colors[COLOR_BLUE];
-    v.coords.x = get_coord_x(t, 0.7f) + global_x;
-    v.coords.y = get_coord_y(t, 0.4f) + global_y;
+    v.coords.x = get_coord_x(t, 0.7f);
+    v.coords.y = get_coord_y(t, 0.4f);
     draw_circle(t, 1, v, radius);
 
     v.color = colors[COLOR_WHITE];
@@ -174,8 +173,8 @@ void draw_test_gradient_line(Texture* t)
     const float perc = 100.0f / dist;
     GLubyte first_color, second_color, color_change;
     Vector v;
-    v.x = get_coord_x(t, 0.1f) + global_x;
-    v.y = get_coord_x(t, 0.4f) + global_y;
+    v.x = get_coord_x(t, 0.1f);
+    v.y = get_coord_x(t, 0.4f);
 
     first_color = colors[COLOR_RED];
     second_color = colors[COLOR_GREEN];

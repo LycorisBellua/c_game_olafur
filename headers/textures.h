@@ -43,7 +43,7 @@ extern Texture* textures[NBR_TEXTURES];
 
 void create_textures(void);
 void use_texture(const Texture* t);
-void clear_drawing(Texture* t);
+void clear_drawing(Texture* t, GLubyte value);
 void save_drawing(const Texture* t);
 void free_textures(void);
 

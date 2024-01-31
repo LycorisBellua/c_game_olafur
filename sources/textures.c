@@ -20,9 +20,9 @@ void use_texture(const Texture* t)
     return;
 }
 
-void clear_drawing(Texture* t)
+void clear_drawing(Texture* t, GLubyte value)
 {
-    memset(t->buffer, 0, t->real_width * t->real_height * sizeof(GLubyte));
+    memset(t->buffer, value, t->real_width * t->real_height * sizeof(GLubyte));
     return;
 }
 

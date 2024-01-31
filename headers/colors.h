@@ -37,6 +37,9 @@ GLubyte get_color_from_rgb(const GLubyte r, const GLubyte g, const GLubyte b);
 GLubyte get_red_channel(const GLubyte color);
 GLubyte get_green_channel(const GLubyte color);
 GLubyte get_blue_channel(const GLubyte color);
+
+void set_color_from_rgb(GLubyte* color, const GLubyte r, const GLubyte g, 
+    const GLubyte b);
 void set_red_channel(GLubyte* color, const GLubyte value);
 void set_green_channel(GLubyte* color, const GLubyte value);
 void set_blue_channel(GLubyte* color, const GLubyte value);

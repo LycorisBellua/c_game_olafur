@@ -77,6 +77,13 @@ GLubyte get_blue_channel(const GLubyte color)
     return color & 0x03;
 }
 
+void set_color_from_rgb(GLubyte* color, const GLubyte r, const GLubyte g, 
+    const GLubyte b)
+{
+    *color = ((r & 0x07) << 5) | ((g & 0x07) << 2) | (b & 0x03);
+    return;
+}
+
 void set_red_channel(GLubyte* color, const GLubyte value)
 {
     *color = (*color & 0x1F) | ((value << 5) & 0xE0);

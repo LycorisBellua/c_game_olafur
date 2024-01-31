@@ -21,12 +21,13 @@
 #include "../headers/textures.h"
 #include "../headers/interfaces.h"
 #include "../headers/time.h"
-#include "../headers/draw_test.h"
 #include "../headers/game.h"
 
 int main(int argc, char** argv)
 {
     const char* title = "Cimmerian";
+    const GLubyte background_color = get_color_from_rgb(MAX_RED/3, MAX_GREEN/3, 
+        MAX_BLUE/3); /* Dark grey */
     GLFWwindow* window = get_window(title);
 
     glfwSetKeyCallback(window, physical_key_callback);
@@ -54,7 +55,7 @@ int main(int argc, char** argv)
         */
 
         glClear(GL_COLOR_BUFFER_BIT);
-        clear_drawing(TEX_MAIN);
+        clear_drawing(TEX_MAIN, background_color);
         active_interface->draw();
         save_drawing(TEX_MAIN);
         render_mesh();
