@@ -10,7 +10,9 @@ void draw_main_menu(void)
     const Vector btn_size = { 150, 50 };
     VectorF btn_size_norm;
     Vertex btn[3];
+    /*
     const char* btn_name[3] = { "Start Game", "Options", "Quit" };
+    */
     GLubyte color_default, color_selected;
 
     btn_size_norm.x = get_coord_x_norm(TEX_MAIN, btn_size.x-1);

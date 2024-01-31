@@ -4,7 +4,32 @@
 #include "../headers/time.h"
 #include "../headers/draw.h"
 
+/*
+    "mapX" is the amount of squares on the X axis
+    "mapY" is the amount of squares on the Y axis
+    It amounts to a 8x8 grid
+
+    "mapS" is the size of a square in pixels
+    He picked 64 for mapS, but I changed it to 45 because between my width 
+    and height, my height is smaller and it's 360, and 360/8=45.
+*/
+int mapX = 8, mapY = 8, mapS = 45;
+
+/* 1 is a wall, 0 is an empty space */
+int map[] = 
+{
+    1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 1, 0, 0, 0, 0, 1,
+    1, 0, 1, 0, 0, 0, 0, 1,
+    1, 0, 1, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 1, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1,
+};
+
 float px, py;
+const int player_size = 8;
 /*
     "px" is "player X position"
     "py" is "player Y position"
@@ -13,22 +38,20 @@ float px, py;
     Well, these floats turned into ints are the pixels.
 */
 
+static void draw_map_2d(void);
 static void draw_player(void);
 
 void draw_game(void)
 {
+    draw_map_2d();
     draw_player();
     return;
 }
 
 void reset_global_coordinates(void)
 {
-    /*
-        He picked 300 and 300 for the default coordinates. 
-        With his window dimensions it's at 29.29% of the window for X and 58.59% for Y.
-    */
-    px = get_coord_x(TEX_MAIN, 0.3f);
-    py = get_coord_y(TEX_MAIN, 0.6f);
+    px = get_coord_x(TEX_MAIN, 0.5f) - player_size/2;
+    py = get_coord_y(TEX_MAIN, 0.5f) - player_size/2;
     return;
 }
 
@@ -47,6 +70,37 @@ void update_global_coordinates(void)
     return;
 }
 
+static void draw_map_2d(void)
+{
+    /* This offset is to center the drawing */
+    const int x_offset = 140;
+    int x, y;
+    Vertex v;
+
+    for (y = 0; y < mapY; ++y)
+    {
+        for (x = 0; x < mapX; ++x)
+        {
+            if (map[(mapY-1-y) * mapX + x] == 1)
+            {
+                /* Set color to white for wall */
+                v.color = 0xFF;
+            }
+            else
+            {
+                /* Set color to black for empty space */
+                v.color = 0;
+            }
+
+            v.coords.x = x_offset + x * mapS;
+            v.coords.y = y * mapS;
+            /* Remove 1 pixel in order to see grid lines */
+            draw_rectangle(TEX_MAIN, 1, v, mapS-1, mapS-1);
+        }
+    }
+    return;
+}
+
 static void draw_player(void)
 {
     Vertex pos;
@@ -54,7 +108,7 @@ static void draw_player(void)
     pos.coords.y = py;
     /* Yellow (1, 1, 0): */
     set_color_from_rgb(&pos.color, MAX_RED, MAX_GREEN, 0);
-    draw_rectangle(TEX_MAIN, 1, pos, 8, 8);
+    draw_rectangle(TEX_MAIN, 1, pos, player_size, player_size);
     return;
 }
 
