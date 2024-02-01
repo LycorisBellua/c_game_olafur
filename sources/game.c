@@ -57,6 +57,7 @@ void reset_global_coordinates(void)
 {
     px = get_coord_x(TEX_MAIN, 0.5f) - player_size/2;
     py = get_coord_y(TEX_MAIN, 0.5f) - player_size/2;
+    pa = PI/2;
     pdx = f_cos(pa)*5;
     pdy = f_sin(pa)*5;
     return;
@@ -91,11 +92,13 @@ void update_global_coordinates(void)
         pdy = f_sin(pa)*5;
     }
 
-    /* Local UP and DOWN movement */
+    /* Movement along the forward axis */
     px += movement_action[2] * pdx * speed * delta_time;
     py += movement_action[2] * pdy * speed * delta_time;
 
-    /* Left and right strafes? */
+    /* Movement along the lateral axis */
+    px += movement_action[0] * pdy * speed * delta_time;
+    py += movement_action[0] * -pdx * speed * delta_time;
     return;
 }
 
