@@ -9,6 +9,8 @@
 #define P2 (PI/2)
 /* 270° */
 #define P3 (3*PI/2)
+/* one degree in radians */
+#define DR 0.0174533f
 
 /*
     "mapX" is the amount of squares on the X axis
@@ -176,14 +178,22 @@ static void draw_rays(void)
         "nTan" is "negative tangent"
     */
     float tan, aTan, nTan;
-    float disH, disV;
+    float disH, disV, disT;
     VectorF h, v;
     Vertex v1, v2;
+    const int pov = 60;
 
-    ra = pa;
-    tan = f_tan(ra);
-    for (r = 0; r < 1; ++r)
+    /* `ra = pa` for center */
+    ra = pa - pov/2*DR;
+    if (ra < 0)
+        ra += 2*PI;
+    else if (ra > 2*PI)
+        ra -= 2*PI;
+
+    for (r = 0; r < pov; ++r)
     {
+        tan = f_tan(ra);
+
         /* Check horizontal lines ------------------------------------------- */
         dof = 0;
         rx = 0;
@@ -291,11 +301,13 @@ static void draw_rays(void)
         {
             rx = v.x;
             ry = v.y;
+            disT = disV;
         }
         else
         {
             rx = h.x;
             ry = h.y;
+            disT = disH;
         }
 
         /* Draw the ray ----------------------------------------------------- */
@@ -306,8 +318,14 @@ static void draw_rays(void)
         v1.color = get_color_from_rgb(MAX_RED, 0, 0);
         v2.color = v1.color;
         draw_line(TEX_MAIN, v1, v2);
-    }
 
+        /* Go to next ray --------------------------------------------------- */
+        ra += DR;
+        if (ra < 0)
+            ra += 2*PI;
+        else if (ra > 2*PI)
+            ra -= 2*PI;
+    }
     return;
 }
 
