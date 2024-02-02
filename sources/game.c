@@ -183,7 +183,7 @@ static void draw_rays(void)
     VectorF h, v;
     Vertex v1, v2;
     const int pov = 60;
-    float lineH, lineO;
+    float ca, lineH, lineO;
     int lineW;
 
     /* `ra = pa` for center */
@@ -325,6 +325,14 @@ static void draw_rays(void)
         draw_line(TEX_MAIN, v1, v2);
 
         /* Draw 3D ---------------------------------------------------------- */
+        /* Fix fisheye effect */
+        ca = pa - ra;
+        if (ca < 0)
+            ca += 2*PI;
+        else if (ca > 2*PI)
+            ca -= 2*PI;
+        disT *= f_cos(ca);
+
         lineH = (TEX_MAIN->width/2 * mapS)/disT;
         if (lineH > TEX_MAIN->width/2)
             lineH = TEX_MAIN->width/2;
