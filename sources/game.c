@@ -48,7 +48,8 @@ const int player_size = 8;
 
 static void draw_map(void);
 static void draw_player(void);
-static void draw_rays(void);
+static void draw_floor_and_ceiling(void);
+static void raycasting(void);
 static float get_safe_angle(const float angle);
 static float dist(const VectorF a, const VectorF b);
 
@@ -56,7 +57,8 @@ void draw_game(void)
 {
     draw_map();
     draw_player();
-    draw_rays();
+    draw_floor_and_ceiling();
+    raycasting();
     return;
 }
 
@@ -157,7 +159,21 @@ static void draw_player(void)
     return;
 }
 
-static void draw_rays(void)
+static void draw_floor_and_ceiling(void)
+{
+    Vertex v;
+    v.coords.x = TEX_MAIN->width*0.52f;
+    v.coords.y = TEX_MAIN->height*0.05f;
+    v.color = get_color_from_rgb(3, 1, 2);
+    draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width*0.47f, TEX_MAIN->height*0.45f);
+
+    v.coords.y = TEX_MAIN->height*0.5f;
+    v.color = get_color_from_rgb(3, 1, 3);
+    draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width*0.47f, TEX_MAIN->height*0.445f);
+    return;
+}
+
+static void raycasting(void)
 {
     int r, mx, my, mp, dof;
     float rx, ry, ra, xo, yo;
@@ -307,12 +323,14 @@ static void draw_rays(void)
             rx = v.x;
             ry = v.y;
             disT = disV;
+            v2.color = get_color_from_rgb(MAX_RED*0.4f, MAX_GREEN*0.2f, MAX_BLUE*0.6f);
         }
         else
         {
             rx = h.x;
             ry = h.y;
             disT = disH;
+            v2.color = get_color_from_rgb(MAX_RED*0.5f, MAX_GREEN*0.2f, MAX_BLUE*0.6f);
         }
 
         /* Draw the ray ----------------------------------------------------- */
@@ -321,7 +339,6 @@ static void draw_rays(void)
         v2.coords.x = map_x_offset + rx;
         v2.coords.y = map_y_offset + ry;
         v1.color = get_color_from_rgb(MAX_RED, 0, 0);
-        v2.color = v1.color;
         draw_line(TEX_MAIN, v1, v2);
 
         /* Draw 3D ---------------------------------------------------------- */
@@ -333,12 +350,12 @@ static void draw_rays(void)
             ca -= 2*PI;
         disT *= f_cos(ca);
 
-        lineH = (TEX_MAIN->width/2 * mapS)/disT;
-        if (lineH > TEX_MAIN->width/2)
-            lineH = TEX_MAIN->width/2;
-        lineO = TEX_MAIN->width/4 - lineH/2;
+        lineH = (TEX_MAIN->width*0.5f * mapS)/disT;
+        if (lineH > TEX_MAIN->width*0.5f)
+            lineH = TEX_MAIN->width*0.5f;
+        lineO = TEX_MAIN->width*0.28f - lineH*0.5f;
 
-        v1.color = get_color_from_rgb(MAX_RED*0.4f, MAX_GREEN*0.2f, MAX_BLUE*0.6f);
+        v1.color = v2.color;
         v1.coords.x = TEX_MAIN->width*0.52f + (pov-r)*lineW;
         v1.coords.y = lineO;
         draw_rectangle(TEX_MAIN, 1, v1, lineW, lineH);

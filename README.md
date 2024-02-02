@@ -19,7 +19,7 @@ Language aside, I've gone with OpenGL for the graphics library, and it's not for
 
 What even is "pseudo 3D"? Any graphics library, even LÖVE (or Love2D) which is a Lua framework, can be used to develop a pseudo 3D game. It simply requires to draw pixels on the screen. Basically, we take a 2D map which indicates where walls and objects are, and we translate it into 3D. The walls are cubes, the objects are sprites (= flat images) instead of 3D... Through the power of math (mostly trigonometry), these pixels can emulate 3D.  
 
-![Raycasting](https://upload.wikimedia.org/wikipedia/commons/e/e7/Simple_raycasting_with_fisheye_correction.gif)
+![Raycasting](./screenshots/screenshot_raycasting.png)
 
 Going back to OpenGL, the "real 3D" detour taught me precious concepts. Precisely, when looking up raycasting tutorials which use OpenGL as an example, deprecated features are likely to be used, because the purpose is not to teach the library but the concept of raycasting. Thanks to this detour, I know that the "fixed function pipeline"/"immediate rendering mode" is deprecated, and that the "programmable pipeline"/"retained rendering mode" is the current way of doing things. It's about using shaders, and it's not only more efficient for the machine, it's the basics of modern graphics programming.  
 
@@ -27,5 +27,5 @@ In the intro, I've mentioned big pixels. Here is the explanation: All the window
 
 About the palette, modern technology can display what is commonly called "true color", which represents 16,777,216 different colors. Long story short, this diversity is possible because 3 bytes are used to store the color. However, I wanted to fit the whole color into 1 byte as a challenge (and as a fashion statement), which makes the possible combinations go from over 16 millions to 256. The name of this specific color format is RGB332, and here's a screenshot of the 256 colors.  
 
-![RGB332 Color Palette](./screenshot_palette.png)
+![RGB332 Color Palette](./screenshots/screenshot_palette.png)
 
