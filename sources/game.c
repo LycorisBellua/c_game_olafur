@@ -18,10 +18,8 @@
     It amounts to a 8x8 grid
 
     "mapS" is the size of a square in pixels
-    He picked 64 for mapS, but I changed it to 45 because between my width 
-    and height, my height is smaller and it's 360, and 360/8=45.
 */
-int mapX = 8, mapY = 8, mapS = 45;
+int mapX = 8, mapY = 8, mapS = 40;
 int map_x_offset, map_y_offset;
 
 /* 1 is a wall, 0 is an empty space */
@@ -64,7 +62,7 @@ void draw_game(void)
 
 void reset_global_coordinates(void)
 {
-    map_x_offset = (TEX_MAIN->width - mapX*mapS) / 2;
+    map_x_offset= TEX_MAIN->width*0.01f;
     map_y_offset = (TEX_MAIN->height - mapY*mapS) / 2;
     p.x = mapX*mapS/2;
     p.y = mapY*mapS/2;
@@ -176,21 +174,28 @@ static void draw_rays(void)
         "yo" is "Y offset": the next Y offset of the ray after the ray's first hit position
         "aTan" is "arc tangent"
         "nTan" is "negative tangent"
+        "lineH" is "line height" for pseudo 3D
+        "lineO" is "line offset" for pseudo 3D (to center the wall on the Y axis)
+        "lineW" is "line width" for pseudo 3D
     */
     float tan, aTan, nTan;
     float disH, disV, disT;
     VectorF h, v;
     Vertex v1, v2;
     const int pov = 60;
+    float lineH, lineO;
+    int lineW;
 
     /* `ra = pa` for center */
-    ra = pa - pov/2*DR;
+    ra = pa + pov/2*DR;
     if (ra < 0)
         ra += 2*PI;
     else if (ra > 2*PI)
         ra -= 2*PI;
 
-    for (r = 0; r < pov; ++r)
+    lineW = TEX_MAIN->width*0.5f / pov;
+
+    for (r = pov; r > 0; --r)
     {
         tan = f_tan(ra);
 
@@ -319,8 +324,19 @@ static void draw_rays(void)
         v2.color = v1.color;
         draw_line(TEX_MAIN, v1, v2);
 
+        /* Draw 3D ---------------------------------------------------------- */
+        lineH = (TEX_MAIN->width/2 * mapS)/disT;
+        if (lineH > TEX_MAIN->width/2)
+            lineH = TEX_MAIN->width/2;
+        lineO = TEX_MAIN->width/4 - lineH/2;
+
+        v1.color = get_color_from_rgb(MAX_RED*0.4f, MAX_GREEN*0.2f, MAX_BLUE*0.6f);
+        v1.coords.x = TEX_MAIN->width*0.52f + (pov-r)*lineW;
+        v1.coords.y = lineO;
+        draw_rectangle(TEX_MAIN, 1, v1, lineW, lineH);
+
         /* Go to next ray --------------------------------------------------- */
-        ra += DR;
+        ra -= DR;
         if (ra < 0)
             ra += 2*PI;
         else if (ra > 2*PI)
