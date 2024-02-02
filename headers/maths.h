@@ -23,9 +23,12 @@
 #define DEG2RAD(degrees)    ((degrees) * PI_OVER_180)
 #define RAD2DEG(radians)    ((radians) * PI_OVER_180_INVERSE)
 
-void swap(int* a, int* b);
 float f_sin(const float radians);
 float f_cos(const float radians);
+float f_tan(const float radians);
+void swap(int* a, int* b);
+int float_equality(float a, float b);
+float f_sqrt(float number);
 
 #endif
 

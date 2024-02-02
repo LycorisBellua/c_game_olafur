@@ -18,18 +18,6 @@
 
 static float factorial(const int n);
 static float power(const float base, const int exponent);
-/*
-static float f_tan(const float radians);
-static float clamp_euler_angle(float angle);
-*/
-
-void swap(int* a, int* b)
-{
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
-    return;
-}
 
 float f_sin(const float radians)
 {
@@ -63,6 +51,57 @@ float f_cos(const float radians)
     return result;
 }
 
+float f_tan(const float radians)
+{
+    float cos = f_cos(radians);
+
+    if (IS_CLOSE_TO_ZERO(cos))
+        return 0.0f;
+
+    return f_sin(radians) / cos;
+}
+
+void swap(int* a, int* b)
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+    return;
+}
+
+int float_equality(float a, float b)
+{
+    /* If different signs */
+    if ((a < 0 && b > 0) || (a > 0 && b < 0))
+        return 0;
+
+    /* Remove decimal part */
+    a -= (int)a;
+    b -= (int)b;
+
+    /* Check up to 7 digits after the floating point */
+    a *= power(10, 7);
+    b *= power(10, 7);
+    return (int)a == (int)b;
+}
+
+float f_sqrt(float number)
+{
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+    #pragma GCC diagnostic ignored "-Wuninitialized"
+    float x = number;
+    float xhalf = 0.5 * x;
+    int i = *(int*)&x;
+    i = 0x5f375a86 - (i >> 1);
+    x = *(float*)&i;
+    x = x * (1.5 - xhalf * x * x);
+    x = x * (1.5 - xhalf * x * x);
+    x = x * (1.5 - xhalf * x * x);
+    return x * number;
+    #pragma GCC diagnostic pop
+}
+
 static float factorial(const int n)
 {
     if (n == 0 || n == 1)
@@ -79,25 +118,4 @@ static float power(const float base, const int exponent)
         result *= base;
     return result;
 }
-
-/*
-static float f_tan(const float radians)
-{
-    float cos = f_cos(radians);
-
-    if (IS_CLOSE_TO_ZERO(cos))
-        return 0.0f;
-
-    return f_sin(radians) / cos;
-}
-
-static float clamp_euler_angle(float angle)
-{
-    if (angle < -360.0f)
-        angle += 360.0f;
-    else if (angle > 360.0f)
-        angle -= 360.0f;
-    return angle;
-}
-*/
 
