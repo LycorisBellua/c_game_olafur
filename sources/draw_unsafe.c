@@ -1,16 +1,6 @@
 #include "../headers/draw_unsafe.h"
 #include "../headers/maths.h"
 
-Vector get_direction_unsafe(Vector v1, Vector v2)
-{
-    Vector dir;
-
-    dir.x = v2.x - v1.x;
-    dir.y = v2.y - v1.y;
-
-    return dir;
-}
-
 void draw_point_unsafe(Texture* t, GLubyte color, int x, int y)
 {
     int row;

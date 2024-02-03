@@ -1,15 +1,27 @@
 #ifndef __MATHS_H__
 #define __MATHS_H__
 
-#define PI 3.1415926535
-#define PI_OVER_180 0.017453293
-#define PI_OVER_180_INVERSE 57.295779515
-#define PI_OVER_4 0.785398163
+#define PI 3.1415926535f
+#define PI_OVER_180 0.017453293f
+#define PI_OVER_180_INVERSE 57.295779515f
+
+#define   RAD_1 0.017453293f
+#define  RAD_45 0.785398163f
+#define  RAD_90 1.570796327f
+#define RAD_180 PI
+#define RAD_270 4.71238898f
+#define RAD_360 6.283185307f
 
 /*
     PI_OVER_180 = `PI/180`.
     PI_OVER_180_INVERSE = `180/PI`.
-    PI_OVER_4 = `PI/4` or `45° * PI_OVER_180`.
+
+      RAD_1 = PI*2/360
+     RAD_45 = PI/4
+     RAD_90 = PI/2
+    RAD_180 = PI
+    RAD_270 = PI/2*3
+    RAD_360 = PI*2
 */
 
 #define ABS(x)              ((x) < 0 ? -(x) : (x))
@@ -26,9 +38,10 @@
 float f_sin(const float radians);
 float f_cos(const float radians);
 float f_tan(const float radians);
+float f_sqrt(const float number);
 void swap(int* a, int* b);
 int float_equality(float a, float b);
-float f_sqrt(float number);
+float clamp_radians(const float angle);
 
 #endif
 

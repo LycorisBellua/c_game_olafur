@@ -8,36 +8,13 @@
 
 #include "textures.h"
 #include "colors.h"
-
-/* 
-    The origin of the coordinate system is in the bottom left hand corner.
-    The X axis range is [0, t->width] and the Y axis range is [0, t->height].
-*/
-
-typedef struct
-{
-    int x;
-    int y;
-} Vector;
-
-typedef struct
-{
-    float x;
-    float y;
-} VectorF;
+#include "coords.h"
 
 typedef struct
 {
     Vector coords;
     GLubyte color;
 } Vertex;
-
-int get_coord_x(Texture* t, float normalized);
-int get_coord_y(Texture* t, float normalized);
-float get_coord_x_norm(Texture* t, int coord);
-float get_coord_y_norm(Texture* t, int coord);
-int is_coord_out_of_bounds(int axis_length, int coord);
-Vector get_direction(Vector v1, Vector v2);
 
 void draw_point(Texture* t, GLubyte color, int x, int y);
 void draw_line(Texture* t, Vertex v1, Vertex v2);

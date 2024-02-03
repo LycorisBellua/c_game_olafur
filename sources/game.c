@@ -3,14 +3,8 @@
 #include "../headers/input.h"
 #include "../headers/time.h"
 #include "../headers/maths.h"
+#include "../headers/coords.h"
 #include "../headers/draw.h"
-
-/* 90° */
-#define P2 (PI/2)
-/* 270° */
-#define P3 (3*PI/2)
-/* one degree in radians */
-#define DR 0.0174533f
 
 /*
     "mapX" is the amount of squares on the X axis
@@ -51,7 +45,6 @@ static void draw_player(void);
 static void draw_floor_and_ceiling(void);
 static void raycasting(void);
 static float get_safe_angle(const float angle);
-static float dist(const VectorF a, const VectorF b);
 
 void draw_game(void)
 {
@@ -64,12 +57,12 @@ void draw_game(void)
 
 void reset_global_coordinates(void)
 {
-    map_x_offset= TEX_MAIN->width*0.01f;
+    map_x_offset = TEX_MAIN->width*0.01f;
     map_y_offset = (TEX_MAIN->height - mapY*mapS) / 2;
     p.x = mapX*mapS/2;
     p.y = mapY*mapS/2;
 
-    pa = get_safe_angle(PI/2);
+    pa = get_safe_angle(RAD_90);
     pdx = f_cos(pa)*5;
     pdy = f_sin(pa)*5;
     return;
@@ -77,42 +70,30 @@ void reset_global_coordinates(void)
 
 void update_global_coordinates(void)
 {
-    const float speed = 20.0f;
-    const float min_rad = 0.0f;
-    const float max_rad = 2*PI;
+    const float movement_speed = 10.0f;
+    const float rotation_speed = 40.0f;
 
-    /*
-        Angles are in radians instead of degrees. While degrees go from 
-        0 to 360, radians go from 0 to 2PI which amounts to 6.28. This 
-        is the reason why such a small value (0.1f) is used here.
-
-        The values returned by the sine and cosine operations are very 
-        small, so multiply them by 5.
-    */
-
-    pa += rotation_action * 0.1f * speed * delta_time;
+    pa += rotation_action * RAD_1 * rotation_speed * delta_time;
     if (rotation_action)
     {
+        pa = clamp_radians(pa);
         pa = get_safe_angle(pa);
 
-        /* Turning left */
-        if (pa < min_rad && rotation_action < 0)
-            pa += max_rad;
-        /* Turning right */
-        else if (pa > max_rad && rotation_action > 0)
-            pa -= max_rad;
-
+        /*
+            The values returned by the sine and cosine operations are 
+            very small, so multiply them by 5.
+        */
         pdx = f_cos(pa)*5;
         pdy = f_sin(pa)*5;
     }
 
     /* Movement along the forward axis */
-    p.x += movement_action[2] * pdx * speed * delta_time;
-    p.y += movement_action[2] * pdy * speed * delta_time;
+    p.x += movement_action[2] * pdx * movement_speed * delta_time;
+    p.y += movement_action[2] * pdy * movement_speed * delta_time;
 
     /* Movement along the lateral axis */
-    p.x += movement_action[0] * pdy * speed * delta_time;
-    p.y += movement_action[0] * -pdx * speed * delta_time;
+    p.x += movement_action[0] * pdy * movement_speed * delta_time;
+    p.y += movement_action[0] * -pdx * movement_speed * delta_time;
     return;
 }
 
@@ -203,11 +184,8 @@ static void raycasting(void)
     int lineW;
 
     /* `ra = pa` for center */
-    ra = pa + pov/2*DR;
-    if (ra < 0)
-        ra += 2*PI;
-    else if (ra > 2*PI)
-        ra -= 2*PI;
+    ra = pa + pov/2 * RAD_1;
+    ra = clamp_radians(ra);
 
     lineW = TEX_MAIN->width*0.5f / pov;
 
@@ -224,7 +202,7 @@ static void raycasting(void)
         aTan = -1/tan;
 
         /* If ray is looking down */
-        if (ra > PI)
+        if (ra > RAD_180)
         {
             ry = (int)(p.y/mapS) * mapS;
             rx = (p.y - ry) * aTan + p.x;
@@ -233,7 +211,7 @@ static void raycasting(void)
         }
 
         /* If ray is looking up */
-        else if (ra < PI)
+        else if (ra < RAD_180)
         {
             ry = (int)((p.y+mapS)/mapS) * mapS;
             rx = (p.y - ry) * aTan + p.x;
@@ -249,13 +227,13 @@ static void raycasting(void)
         {
             mx = (int)(rx/mapS);
             my = mapY - (int)(ry/mapS);
-            if (ra < PI) --my;
+            if (ra < RAD_180) --my;
             mp = my*mapX+mx;
             if (mp >= 0 && mp < mapX*mapY && map[mp] == 1)
             {
                 h.x = rx;
                 h.y = ry;
-                disH = dist(p,h);
+                disH = get_distance(p,h);
                 dof = 8;
             }
             else
@@ -275,7 +253,7 @@ static void raycasting(void)
         nTan = -tan;
 
         /* If ray is looking left */
-        if (ra > P2 && ra < P3)
+        if (ra > RAD_90 && ra < RAD_270)
         {
             rx = (int)(p.x/mapS) * mapS;
             ry = (p.x - rx) * nTan + p.y;
@@ -284,7 +262,7 @@ static void raycasting(void)
         }
 
         /* If ray is looking right */
-        else if (ra < P2 || ra > P3)
+        else if (ra < RAD_90 || ra > RAD_270)
         {
             rx = (int)((p.x+mapS)/mapS) * mapS;
             ry = (p.x - rx) * nTan + p.y;
@@ -300,13 +278,13 @@ static void raycasting(void)
         {
             mx = (int)(rx/mapS);
             my = mapY-1 - (int)(ry/mapS);
-            if (ra > P2 && ra < P3) --mx;
+            if (ra > RAD_90 && ra < RAD_270) --mx;
             mp = my*mapX+mx;
             if (mp >= 0 && mp < mapX*mapY && map[mp] == 1)
             {
                 v.x = rx;
                 v.y = ry;
-                disV = dist(p,v);
+                disV = get_distance(p,v);
                 dof = 8;
             }
             else
@@ -344,10 +322,7 @@ static void raycasting(void)
         /* Draw 3D ---------------------------------------------------------- */
         /* Fix fisheye effect */
         ca = pa - ra;
-        if (ca < 0)
-            ca += 2*PI;
-        else if (ca > 2*PI)
-            ca -= 2*PI;
+        ca = clamp_radians(ca);
         disT *= f_cos(ca);
 
         lineH = (TEX_MAIN->width*0.5f * mapS)/disT;
@@ -361,11 +336,8 @@ static void raycasting(void)
         draw_rectangle(TEX_MAIN, 1, v1, lineW, lineH);
 
         /* Go to next ray --------------------------------------------------- */
-        ra -= DR;
-        if (ra < 0)
-            ra += 2*PI;
-        else if (ra > 2*PI)
-            ra -= 2*PI;
+        ra -= RAD_1;
+        ra = clamp_radians(ra);
     }
     return;
 }
@@ -374,24 +346,18 @@ static float get_safe_angle(const float angle)
 {
     /* The function is to prevent errors with f_tan in the raycasting */
 
-    if (angle == 0)
+    if (angle <= 0)
         return 0.0001f;
 
-    if (float_equality(PI/2, angle))
+    if (float_equality(RAD_90, angle))
         return angle - 0.0001f;
     
-    if (float_equality(PI, angle))
+    if (float_equality(RAD_180, angle))
         return angle - 0.0001f;
     
-    if (float_equality(PI*1.5f, angle))
+    if (float_equality(RAD_270, angle))
         return angle - 0.0001f;
     
     return angle;
-}
-
-static float dist (const VectorF a, const VectorF b)
-{
-    /* Hypotenuse, therefore Pythagorean theorem */
-    return f_sqrt((b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y));
 }
 
