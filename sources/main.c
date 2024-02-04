@@ -21,6 +21,7 @@
 #include "../headers/textures.h"
 #include "../headers/interfaces.h"
 #include "../headers/time.h"
+#include "../headers/maps.h"
 #include "../headers/game.h"
 
 int main(int argc, char** argv)
@@ -42,6 +43,7 @@ int main(int argc, char** argv)
         create_color_palette();
         create_textures();
         initialize_interfaces();
+        map_test = create_map();
 
         use_texture(TEX_MAIN);
         execute_cli_options(argc, argv);
@@ -72,6 +74,7 @@ int main(int argc, char** argv)
     free_uniform();
     free_mesh();
     free_textures();
+    free_map(&map_test);
     return EXIT_SUCCESS;
 }
 
