@@ -21,6 +21,7 @@ extern int rotation_action;
 
 void physical_key_callback(GLFWwindow* window, const int key, 
     const int scancode, const int action, const int mods);
+void scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
 
 #endif
 

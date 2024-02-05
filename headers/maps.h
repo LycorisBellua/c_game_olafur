@@ -7,7 +7,8 @@ typedef struct
 {
     int width;
     int height;
-    int cell;
+    VectorF start_pos;
+    float start_angle;
     int* data;
 } Map;
 
@@ -18,12 +19,18 @@ typedef struct
     float angle;
 } Player;
 
+#define MINIMAP_ZOOM_MIN 1
+#define MINIMAP_ZOOM_MAX 5
+
 extern Map* map_test;
 extern Player player;
+extern int minimap_zoom;
+extern const int cell_len;
 
-Map* create_map(void);
+void initialize_maps(void);
+void set_minimap_display(const double zoom_level);
 void draw_minimap(const Map* map);
-void free_map(Map** map);
+void free_maps(void);
 
 #endif
 

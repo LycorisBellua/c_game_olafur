@@ -32,6 +32,7 @@ int main(int argc, char** argv)
     GLFWwindow* window = get_window(title);
 
     glfwSetKeyCallback(window, physical_key_callback);
+    glfwSetScrollCallback(window, scroll_callback);
     enable_vsync(1);
 
     if (!create_shader_program())
@@ -43,7 +44,7 @@ int main(int argc, char** argv)
         create_color_palette();
         create_textures();
         initialize_interfaces();
-        map_test = create_map();
+        initialize_maps();
 
         use_texture(TEX_MAIN);
         execute_cli_options(argc, argv);
@@ -74,7 +75,7 @@ int main(int argc, char** argv)
     free_uniform();
     free_mesh();
     free_textures();
-    free_map(&map_test);
+    free_maps();
     return EXIT_SUCCESS;
 }
 

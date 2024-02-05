@@ -1,6 +1,8 @@
 #include "../headers/input.h"
 #include "../headers/windowing.h"
 #include "../headers/menu.h"
+#include "../headers/maps.h"
+#include "../headers/maths.h"
 
 int movement_action[3] = {0};
 static int movement_input[3] = {0};
@@ -64,6 +66,19 @@ void physical_key_callback
         else if (key == GLFW_KEY_E)
             input_strafe_right(action);
     }
+    return;
+}
+
+void scroll_callback
+(
+    __attribute__((unused))GLFWwindow* window, 
+    __attribute__((unused))double x_offset, 
+    double y_offset
+)
+{
+    minimap_zoom = CLAMP(minimap_zoom - y_offset, 
+        MINIMAP_ZOOM_MIN, MINIMAP_ZOOM_MAX);
+    set_minimap_display(minimap_zoom);
     return;
 }
 

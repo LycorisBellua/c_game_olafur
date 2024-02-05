@@ -21,9 +21,9 @@ void draw_game(void)
 
 void reset_global_coordinates(void)
 {
-    player.pos.x = map_test->width * map_test->cell/2;
-    player.pos.y = map_test->height * map_test->cell/2;
-    player.angle = get_safe_angle(RAD_90);
+    player.pos.x = map_test->start_pos.x;
+    player.pos.y = map_test->start_pos.y;
+    player.angle = get_safe_angle(map_test->start_angle);
     player.delta.x = f_cos(player.angle)*5;
     player.delta.y = f_sin(player.angle)*5;
     return;
@@ -31,7 +31,7 @@ void reset_global_coordinates(void)
 
 void update_global_coordinates(void)
 {
-    const float movement_speed = map_test->cell/4.0f;
+    const float movement_speed = 20.0f;
     const float rotation_speed = 40.0f;
 
     player.angle += rotation_action * RAD_1 * rotation_speed * delta_time;
@@ -127,18 +127,18 @@ static void raycasting(Map* m)
         /* If ray is looking down */
         if (ra > RAD_180)
         {
-            ry = (int)(player.pos.y/m->cell) * m->cell;
+            ry = (int)(player.pos.y/cell_len) * cell_len;
             rx = (player.pos.y - ry) * aTan + player.pos.x;
-            yo = -m->cell;
+            yo = -cell_len;
             xo = -yo*aTan;
         }
 
         /* If ray is looking up */
         else if (ra < RAD_180)
         {
-            ry = (int)((player.pos.y+m->cell)/m->cell) * m->cell;
+            ry = (int)((player.pos.y+cell_len)/cell_len) * cell_len;
             rx = (player.pos.y - ry) * aTan + player.pos.x;
-            yo = m->cell;
+            yo = cell_len;
             xo = -yo*aTan;
         }
 
@@ -148,8 +148,8 @@ static void raycasting(Map* m)
         disH = 1000000;
         while (dof < 8)
         {
-            mx = (int)(rx/m->cell);
-            my = m->height - (int)(ry/m->cell);
+            mx = (int)(rx/cell_len);
+            my = m->height - (int)(ry/cell_len);
             if (ra < RAD_180) --my;
             mp = my*m->width+mx;
             if (mp >= 0 && mp < m->width*m->height && m->data[mp] == 1)
@@ -178,18 +178,18 @@ static void raycasting(Map* m)
         /* If ray is looking left */
         if (ra > RAD_90 && ra < RAD_270)
         {
-            rx = (int)(player.pos.x/m->cell) * m->cell;
+            rx = (int)(player.pos.x/cell_len) * cell_len;
             ry = (player.pos.x - rx) * nTan + player.pos.y;
-            xo = -m->cell;
+            xo = -cell_len;
             yo = -xo*nTan;
         }
 
         /* If ray is looking right */
         else if (ra < RAD_90 || ra > RAD_270)
         {
-            rx = (int)((player.pos.x+m->cell)/m->cell) * m->cell;
+            rx = (int)((player.pos.x+cell_len)/cell_len) * cell_len;
             ry = (player.pos.x - rx) * nTan + player.pos.y;
-            xo = m->cell;
+            xo = cell_len;
             yo = -xo*nTan;
         }
 
@@ -199,8 +199,8 @@ static void raycasting(Map* m)
         disV = 1000000;
         while (dof < 8)
         {
-            mx = (int)(rx/m->cell);
-            my = m->height-1 - (int)(ry/m->cell);
+            mx = (int)(rx/cell_len);
+            my = m->height-1 - (int)(ry/cell_len);
             if (ra > RAD_90 && ra < RAD_270) --mx;
             mp = my*m->width+mx;
             if (mp >= 0 && mp < m->width*m->height && m->data[mp] == 1)
@@ -240,7 +240,7 @@ static void raycasting(Map* m)
         ca = clamp_radians(ca);
         disT *= f_cos(ca);
 
-        lineH = (TEX_MAIN->width*0.5f * m->cell)/disT;
+        lineH = (TEX_MAIN->width*0.5f * cell_len)/disT;
         if (lineH > TEX_MAIN->width*0.5f)
             lineH = TEX_MAIN->width*0.5f;
         lineO = TEX_MAIN->width*0.28f - lineH*0.5f;
