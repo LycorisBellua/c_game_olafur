@@ -1,18 +1,20 @@
 #include "../headers/maps.h"
 #include "../headers/maths.h"
 #include "../headers/draw.h"
+#include "../headers/player.h"
+
+#define MINIMAP_FACTOR_MIN 1
+#define MINIMAP_FACTOR_MAX 5
 
 Map* map_test = {0};
-Player player = {0};
-int minimap_zoom = MINIMAP_ZOOM_MAX;
-const int cell_len = 64;
+static int minimap_factor = MINIMAP_FACTOR_MAX;
 static Vector display_offset = {0};
 
 static Map* create_map(void);
 static void free_map(Map** map);
 static void draw_map(const Map* m);
 static void draw_player(void);
-static float get_minimap_zoom_offset(const int zoom);
+static float get_minimap_factor_offset(const int factor);
 
 /* 1 is a wall, 0 is an empty space */
 static int map_default[] = 
@@ -30,13 +32,21 @@ static int map_default[] =
 void initialize_maps(void)
 {
     map_test = create_map();
-    set_minimap_display(5);
+    set_minimap_display(0);
     return;
 }
 
-void set_minimap_display(const double zoom_level)
+void set_minimap_display(const int remove_from_factor)
 {
-    const int cell = cell_len/zoom_level;
+    int cell;
+
+    if (!remove_from_factor)
+        minimap_factor = MINIMAP_FACTOR_MAX;
+    else
+        minimap_factor = CLAMP(minimap_factor - remove_from_factor, 
+            MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
+
+    cell = MAP_CELL_LEN/minimap_factor;
     display_offset.x = TEX_MAIN->width - cell * map_test->width;
     display_offset.y = TEX_MAIN->height - cell * map_test->height;
     return;
@@ -64,8 +74,8 @@ static Map* create_map(void)
 
     map->width = 8;
     map->height = 8;
-    map->start_pos.x = map->width * cell_len / 2 - 1;
-    map->start_pos.y = map->height * cell_len / 2 - 1;
+    map->start_pos.x = map->width * MAP_CELL_LEN / 2 - 1;
+    map->start_pos.y = map->height * MAP_CELL_LEN / 2 - 1;
     map->start_angle = RAD_90;
 
     map->data = malloc(map->width * map->height * sizeof(int));
@@ -92,7 +102,7 @@ static void free_map(Map** map)
 
 static void draw_map(const Map* m)
 {
-    const int len = cell_len/minimap_zoom;
+    const int len = MAP_CELL_LEN/minimap_factor;
     int x, y;
     Vertex v;
 
@@ -116,13 +126,13 @@ static void draw_map(const Map* m)
 
 static void draw_player(void)
 {
-    const int player_size = MAX(1, cell_len/4.0f/minimap_zoom);
-    const int forward_vector_len = MAX(2, cell_len/8.0f/minimap_zoom);
-    const float offset = get_minimap_zoom_offset(minimap_zoom);
+    const int player_size = MAX(1, MAP_CELL_LEN/4.0f/minimap_factor);
+    const int forward_vector_len = MAX(2, MAP_CELL_LEN/8.0f/minimap_factor);
+    const float offset = get_minimap_factor_offset(minimap_factor);
     Vertex pos, end;
 
-    pos.coords.x = player.pos.x / minimap_zoom + display_offset.x - offset;
-    pos.coords.y = player.pos.y / minimap_zoom + display_offset.y - offset;
+    pos.coords.x = player.pos.x / minimap_factor + display_offset.x - offset;
+    pos.coords.y = player.pos.y / minimap_factor + display_offset.y - offset;
     pos.color = get_color_from_rgb(MAX_RED, MAX_GREEN, 0);
 
     end.coords.x = pos.coords.x + player.delta.x * forward_vector_len;
@@ -141,15 +151,15 @@ static void draw_player(void)
     return;
 }
 
-static float get_minimap_zoom_offset(const int zoom)
+static float get_minimap_factor_offset(const int factor)
 {
     float offset = 0;
     float quotient, modulus;
 
-    if (zoom > 1 && zoom % 2)
+    if (factor > 1 && factor % 2)
     {
-        quotient = zoom/2.0f;
-        modulus = zoom % 2;
+        quotient = factor/2.0f;
+        modulus = factor % 2;
         offset = quotient + modulus + (quotient-modulus) - 1;
     }
     return offset;

@@ -1,15 +1,15 @@
 #include "../headers/game.h"
-#include "../headers/textures.h"
-#include "../headers/input.h"
-#include "../headers/time.h"
-#include "../headers/maths.h"
-#include "../headers/coords.h"
-#include "../headers/draw.h"
 #include "../headers/maps.h"
+#include "../headers/player.h"
+#include "../headers/maths.h"
+#include "../headers/textures.h"
+#include "../headers/draw.h"
+
+#define FOV 60
+static float dist_proj_plane = 554;
 
 static void draw_floor_and_ceiling(void);
-static void raycasting(Map* m);
-static float get_safe_angle(const float angle);
+static void raycasting(const Map* m);
 
 void draw_game(void)
 {
@@ -21,62 +21,28 @@ void draw_game(void)
 
 void reset_global_coordinates(void)
 {
-    player.pos.x = map_test->start_pos.x;
-    player.pos.y = map_test->start_pos.y;
-    player.angle = get_safe_angle(map_test->start_angle);
-    player.delta.x = f_cos(player.angle)*5;
-    player.delta.y = f_sin(player.angle)*5;
-    return;
-}
-
-void update_global_coordinates(void)
-{
-    const float movement_speed = 20.0f;
-    const float rotation_speed = 40.0f;
-
-    player.angle += rotation_action * RAD_1 * rotation_speed * delta_time;
-    if (rotation_action)
-    {
-        player.angle = clamp_radians(player.angle);
-        player.angle = get_safe_angle(player.angle);
-
-        /*
-            The values returned by the sine and cosine operations are 
-            very small, so multiply them by 5.
-        */
-        player.delta.x = f_cos(player.angle)*5;
-        player.delta.y = f_sin(player.angle)*5;
-    }
-
-    /* Movement along the forward axis */
-    player.pos.x += movement_action[2] * player.delta.x * movement_speed * 
-        delta_time;
-    player.pos.y += movement_action[2] * player.delta.y * movement_speed * 
-        delta_time;
-
-    /* Movement along the lateral axis */
-    player.pos.x += movement_action[0] * player.delta.y * movement_speed * 
-        delta_time;
-    player.pos.y += movement_action[0] * -player.delta.x * movement_speed * 
-        delta_time;
+    set_minimap_display(0);
+    reset_player_transform(map_test);
+    dist_proj_plane = TEX_MAIN->width / (2.0f * f_tan(DEG2RAD(FOV)/2));
     return;
 }
 
 static void draw_floor_and_ceiling(void)
 {
     Vertex v;
-    v.coords.x = TEX_MAIN->width*0.52f;
-    v.coords.y = TEX_MAIN->height*0.05f;
+
+    v.coords.x = 0;
+    v.coords.y = 0;
     v.color = get_color_from_rgb(3, 1, 2);
-    draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width*0.47f, TEX_MAIN->height*0.45f);
+    draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width, TEX_MAIN->height*0.5f);
 
     v.coords.y = TEX_MAIN->height*0.5f;
     v.color = get_color_from_rgb(3, 1, 3);
-    draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width*0.47f, TEX_MAIN->height*0.445f);
+    draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width, TEX_MAIN->height*0.5f);
     return;
 }
 
-static void raycasting(Map* m)
+static void raycasting(const Map* m)
 {
     int r, mx, my, mp, dof;
     float rx, ry, ra, xo, yo;
@@ -94,25 +60,19 @@ static void raycasting(Map* m)
         "aTan" is "arc tangent"
         "nTan" is "negative tangent"
         "lineH" is "line height" for pseudo 3D
-        "lineO" is "line offset" for pseudo 3D (to center the wall on the Y axis)
         "lineW" is "line width" for pseudo 3D
     */
     float tan, aTan, nTan;
     float disH, disV, disT;
     VectorF h, v;
     Vertex v1, v2;
-    const int pov = 60;
-    float ca, lineH, lineO;
-    int lineW, screen_width;
+    float ca, lineH;
 
     /* `ra = pa` for center */
-    ra = player.angle + pov/2 * RAD_1;
+    ra = player.angle + FOV/2.0f * RAD_1;
     ra = clamp_radians(ra);
 
-    lineW = 1;
-    screen_width = TEX_MAIN->width*0.47f;
-
-    for (r = screen_width; r > 0; --r)
+    for (r = TEX_MAIN->width; r > 0; --r)
     {
         tan = f_tan(ra);
 
@@ -127,18 +87,18 @@ static void raycasting(Map* m)
         /* If ray is looking down */
         if (ra > RAD_180)
         {
-            ry = (int)(player.pos.y/cell_len) * cell_len;
+            ry = (int)(player.pos.y/MAP_CELL_LEN) * MAP_CELL_LEN;
             rx = (player.pos.y - ry) * aTan + player.pos.x;
-            yo = -cell_len;
+            yo = -MAP_CELL_LEN;
             xo = -yo*aTan;
         }
 
         /* If ray is looking up */
         else if (ra < RAD_180)
         {
-            ry = (int)((player.pos.y+cell_len)/cell_len) * cell_len;
+            ry = (int)((player.pos.y+MAP_CELL_LEN)/MAP_CELL_LEN) * MAP_CELL_LEN;
             rx = (player.pos.y - ry) * aTan + player.pos.x;
-            yo = cell_len;
+            yo = MAP_CELL_LEN;
             xo = -yo*aTan;
         }
 
@@ -148,8 +108,8 @@ static void raycasting(Map* m)
         disH = 1000000;
         while (dof < 8)
         {
-            mx = (int)(rx/cell_len);
-            my = m->height - (int)(ry/cell_len);
+            mx = (int)(rx/MAP_CELL_LEN);
+            my = m->height - (int)(ry/MAP_CELL_LEN);
             if (ra < RAD_180) --my;
             mp = my*m->width+mx;
             if (mp >= 0 && mp < m->width*m->height && m->data[mp] == 1)
@@ -178,18 +138,18 @@ static void raycasting(Map* m)
         /* If ray is looking left */
         if (ra > RAD_90 && ra < RAD_270)
         {
-            rx = (int)(player.pos.x/cell_len) * cell_len;
+            rx = (int)(player.pos.x/MAP_CELL_LEN) * MAP_CELL_LEN;
             ry = (player.pos.x - rx) * nTan + player.pos.y;
-            xo = -cell_len;
+            xo = -MAP_CELL_LEN;
             yo = -xo*nTan;
         }
 
         /* If ray is looking right */
         else if (ra < RAD_90 || ra > RAD_270)
         {
-            rx = (int)((player.pos.x+cell_len)/cell_len) * cell_len;
+            rx = (int)((player.pos.x+MAP_CELL_LEN)/MAP_CELL_LEN) * MAP_CELL_LEN;
             ry = (player.pos.x - rx) * nTan + player.pos.y;
-            xo = cell_len;
+            xo = MAP_CELL_LEN;
             yo = -xo*nTan;
         }
 
@@ -199,8 +159,8 @@ static void raycasting(Map* m)
         disV = 1000000;
         while (dof < 8)
         {
-            mx = (int)(rx/cell_len);
-            my = m->height-1 - (int)(ry/cell_len);
+            mx = (int)(rx/MAP_CELL_LEN);
+            my = m->height-1 - (int)(ry/MAP_CELL_LEN);
             if (ra > RAD_90 && ra < RAD_270) --mx;
             mp = my*m->width+mx;
             if (mp >= 0 && mp < m->width*m->height && m->data[mp] == 1)
@@ -240,44 +200,16 @@ static void raycasting(Map* m)
         ca = clamp_radians(ca);
         disT *= f_cos(ca);
 
-        lineH = (TEX_MAIN->width*0.5f * cell_len)/disT;
-        if (lineH > TEX_MAIN->width*0.5f)
-            lineH = TEX_MAIN->width*0.5f;
-        lineO = TEX_MAIN->width*0.28f - lineH*0.5f;
-
+        lineH = (MAP_CELL_LEN / disT) * dist_proj_plane;
+        v1.coords.x = TEX_MAIN->width - r;
+        v1.coords.y = (TEX_MAIN->height - lineH) / 2;
         v1.color = v2.color;
-        v1.coords.x = TEX_MAIN->width*0.52f + (screen_width-r)*lineW;
-        v1.coords.y = lineO;
-        draw_rectangle(TEX_MAIN, 1, v1, lineW, lineH);
+        draw_line_vertical(TEX_MAIN, v1, (TEX_MAIN->height + lineH) / 2);
 
         /* Go to next ray --------------------------------------------------- */
-        ra -= RAD_1/(screen_width/pov);
+        ra -= RAD_1/(TEX_MAIN->width/FOV);
         ra = clamp_radians(ra);
     }
-
-    v1.coords.x = TEX_MAIN->width*0.52f;
-    v1.coords.y = TEX_MAIN->height*0.05f;
-    v1.color = 0;
-    draw_rectangle(TEX_MAIN, 0, v1, TEX_MAIN->width*0.47f, TEX_MAIN->height*0.895f);
     return;
-}
-
-static float get_safe_angle(const float angle)
-{
-    /* The function is to prevent errors with f_tan in the raycasting */
-
-    if (angle <= 0)
-        return 0.0001f;
-
-    if (float_equality(RAD_90, angle))
-        return angle - 0.0001f;
-    
-    if (float_equality(RAD_180, angle))
-        return angle - 0.0001f;
-    
-    if (float_equality(RAD_270, angle))
-        return angle - 0.0001f;
-    
-    return angle;
 }
 

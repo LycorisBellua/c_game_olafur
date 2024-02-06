@@ -22,7 +22,7 @@
 #include "../headers/interfaces.h"
 #include "../headers/time.h"
 #include "../headers/maps.h"
-#include "../headers/game.h"
+#include "../headers/player.h"
 
 int main(int argc, char** argv)
 {
@@ -57,14 +57,15 @@ int main(int argc, char** argv)
         printf("FPS: %.2f\n", fps_count);
         */
 
+        /* Rendering */
         glClear(GL_COLOR_BUFFER_BIT);
         clear_drawing(TEX_MAIN, background_color);
         active_interface->draw();
         save_drawing(TEX_MAIN);
         render_mesh();
 
-        /* Input test */
-        update_global_coordinates();
+        /* Input */
+        update_player_transform();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

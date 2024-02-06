@@ -76,9 +76,7 @@ void scroll_callback
     double y_offset
 )
 {
-    minimap_zoom = CLAMP(minimap_zoom - y_offset, 
-        MINIMAP_ZOOM_MIN, MINIMAP_ZOOM_MAX);
-    set_minimap_display(minimap_zoom);
+    set_minimap_display(y_offset);
     return;
 }
 

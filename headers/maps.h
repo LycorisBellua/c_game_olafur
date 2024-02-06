@@ -12,23 +12,12 @@ typedef struct
     int* data;
 } Map;
 
-typedef struct
-{
-    VectorF pos;
-    VectorF delta;
-    float angle;
-} Player;
-
-#define MINIMAP_ZOOM_MIN 1
-#define MINIMAP_ZOOM_MAX 5
+#define MAP_CELL_LEN     64
 
 extern Map* map_test;
-extern Player player;
-extern int minimap_zoom;
-extern const int cell_len;
 
 void initialize_maps(void);
-void set_minimap_display(const double zoom_level);
+void set_minimap_display(const int remove_from_factor);
 void draw_minimap(const Map* map);
 void free_maps(void);
 
