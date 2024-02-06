@@ -6,15 +6,33 @@
 #include "../headers/draw.h"
 
 #define FOV 60
-static float dist_proj_plane = 554;
+#define WALL_HEIGHT 35456
+/*
+    Logic for WALL_HEIGHT is `MAP_CELL_LEN * dist_proj_plane`.
+    Second value is `TEX_MAIN->width / (2.0f * f_tan(DEG2RAD(FOV)/2))`.
+    In other words: `WALL_HEIGHT = 64 * 554`.
+*/
+
+static const GLubyte color_floor = 102;
+static const GLubyte color_ceiling = 103;
+static const GLubyte color_vertical_wall = 69;
+static const GLubyte color_horizontal_wall = 101;
 
 static void draw_floor_and_ceiling(void);
+static int is_player_out_of_bounds(const VectorF pos, const Map* m);
 static void raycasting(const Map* m);
+static float get_horizontal_distance(const Map* m, const int map_val, 
+    const float tan, const float ray_angle);
+static float get_vertical_distance(const Map* m, const int map_val, 
+    const float tan, const float ray_angle);
+static void fix_fisheye_effect(float* distance, const float ray_angle);
+static void draw_wall(const GLubyte color, const float distance, const int ray);
 
 void draw_game(void)
 {
     draw_floor_and_ceiling();
-    raycasting(map_test);
+    if (!is_player_out_of_bounds(player.pos, map_test))
+        raycasting(map_test);
     draw_minimap(map_test);
     return;
 }
@@ -23,7 +41,6 @@ void reset_global_coordinates(void)
 {
     set_minimap_display(0);
     reset_player_transform(map_test);
-    dist_proj_plane = TEX_MAIN->width / (2.0f * f_tan(DEG2RAD(FOV)/2));
     return;
 }
 
@@ -33,183 +50,179 @@ static void draw_floor_and_ceiling(void)
 
     v.coords.x = 0;
     v.coords.y = 0;
-    v.color = get_color_from_rgb(3, 1, 2);
+    v.color = color_floor;
     draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width, TEX_MAIN->height*0.5f);
 
     v.coords.y = TEX_MAIN->height*0.5f;
-    v.color = get_color_from_rgb(3, 1, 3);
+    v.color = color_ceiling;
     draw_rectangle(TEX_MAIN, 1, v, TEX_MAIN->width, TEX_MAIN->height*0.5f);
     return;
 }
 
+static int is_player_out_of_bounds(const VectorF pos, const Map* m)
+{
+    if (pos.x < 0 || pos.x > m->width * MAP_CELL_LEN)
+        return 1;
+    else if (pos.y < 0 || pos.y > m->height * MAP_CELL_LEN)
+        return 1;
+    return 0;
+}
+
 static void raycasting(const Map* m)
 {
-    int r, mx, my, mp, dof;
-    float rx, ry, ra, xo, yo;
-    /*
-        "r" is "ray"
-        "mx" is "x max"
-        "my" is "y max"
-        "mp" is "map position"
-        "dof" is "depth of field"
-        "rx" is "ray X": the X value where the ray first hits the closest horizontal line
-        "ry" is "ray Y": the Y value where the ray first hits the closest horizontal line
-        "ra" is "ray angle"
-        "xo" is "X offset": the next X offset of the ray after the ray's first hit position
-        "yo" is "Y offset": the next Y offset of the ray after the ray's first hit position
-        "aTan" is "arc tangent"
-        "nTan" is "negative tangent"
-        "lineH" is "line height" for pseudo 3D
-        "lineW" is "line width" for pseudo 3D
-    */
-    float tan, aTan, nTan;
-    float disH, disV, disT;
-    VectorF h, v;
-    Vertex v1, v2;
-    float ca, lineH;
+    const float ray_increment = RAD_1/(TEX_MAIN->width/FOV);
+    /* `ray_angle = player.angle` for center */
+    float ray_angle = clamp_radians(player.angle + FOV/2.0f * RAD_1);
+    float tan, horizontal, vertical, distance;
+    int ray, color;
 
-    /* `ra = pa` for center */
-    ra = player.angle + FOV/2.0f * RAD_1;
-    ra = clamp_radians(ra);
-
-    for (r = TEX_MAIN->width; r > 0; --r)
+    for (ray = TEX_MAIN->width; ray > 0; --ray)
     {
-        tan = f_tan(ra);
+        tan = f_tan(ray_angle);
+        horizontal = get_horizontal_distance(m, 1, tan, ray_angle);
+        vertical = get_vertical_distance(m, 1, tan, ray_angle);
 
-        /* Check horizontal lines ------------------------------------------- */
-        dof = 0;
-        rx = 0;
-        ry = 0;
-        xo = 0;
-        yo = 0;
-        aTan = -1/tan;
-
-        /* If ray is looking down */
-        if (ra > RAD_180)
+        if (vertical <= horizontal)
         {
-            ry = (int)(player.pos.y/MAP_CELL_LEN) * MAP_CELL_LEN;
-            rx = (player.pos.y - ry) * aTan + player.pos.x;
-            yo = -MAP_CELL_LEN;
-            xo = -yo*aTan;
-        }
-
-        /* If ray is looking up */
-        else if (ra < RAD_180)
-        {
-            ry = (int)((player.pos.y+MAP_CELL_LEN)/MAP_CELL_LEN) * MAP_CELL_LEN;
-            rx = (player.pos.y - ry) * aTan + player.pos.x;
-            yo = MAP_CELL_LEN;
-            xo = -yo*aTan;
-        }
-
-        /* From ray to map array index */
-        h.x = player.pos.x;
-        h.y = player.pos.y;
-        disH = 1000000;
-        while (dof < 8)
-        {
-            mx = (int)(rx/MAP_CELL_LEN);
-            my = m->height - (int)(ry/MAP_CELL_LEN);
-            if (ra < RAD_180) --my;
-            mp = my*m->width+mx;
-            if (mp >= 0 && mp < m->width*m->height && m->data[mp] == 1)
-            {
-                h.x = rx;
-                h.y = ry;
-                disH = get_distance(player.pos,h);
-                dof = 8;
-            }
-            else
-            {
-                rx += xo;
-                ry += yo;
-                ++dof;
-            }
-        }
-
-        /* Check vertical lines ------------------------------------------- */
-        dof = 0;
-        rx = 0;
-        ry = 0;
-        xo = 0;
-        yo = 0;
-        nTan = -tan;
-
-        /* If ray is looking left */
-        if (ra > RAD_90 && ra < RAD_270)
-        {
-            rx = (int)(player.pos.x/MAP_CELL_LEN) * MAP_CELL_LEN;
-            ry = (player.pos.x - rx) * nTan + player.pos.y;
-            xo = -MAP_CELL_LEN;
-            yo = -xo*nTan;
-        }
-
-        /* If ray is looking right */
-        else if (ra < RAD_90 || ra > RAD_270)
-        {
-            rx = (int)((player.pos.x+MAP_CELL_LEN)/MAP_CELL_LEN) * MAP_CELL_LEN;
-            ry = (player.pos.x - rx) * nTan + player.pos.y;
-            xo = MAP_CELL_LEN;
-            yo = -xo*nTan;
-        }
-
-        /* From ray to map array index */
-        v.x = player.pos.x;
-        v.y = player.pos.y;
-        disV = 1000000;
-        while (dof < 8)
-        {
-            mx = (int)(rx/MAP_CELL_LEN);
-            my = m->height-1 - (int)(ry/MAP_CELL_LEN);
-            if (ra > RAD_90 && ra < RAD_270) --mx;
-            mp = my*m->width+mx;
-            if (mp >= 0 && mp < m->width*m->height && m->data[mp] == 1)
-            {
-                v.x = rx;
-                v.y = ry;
-                disV = get_distance(player.pos,v);
-                dof = 8;
-            }
-            else
-            {
-                rx += xo;
-                ry += yo;
-                ++dof;
-            }
-        }
-
-        /* Select the shortest ray ------------------------------------------ */
-        if (disV <= disH)
-        {
-            rx = v.x;
-            ry = v.y;
-            disT = disV;
-            v2.color = get_color_from_rgb(MAX_RED*0.4f, MAX_GREEN*0.2f, MAX_BLUE*0.6f);
+            distance = vertical;
+            color = color_vertical_wall;
         }
         else
         {
-            rx = h.x;
-            ry = h.y;
-            disT = disH;
-            v2.color = get_color_from_rgb(MAX_RED*0.5f, MAX_GREEN*0.2f, MAX_BLUE*0.6f);
+            distance = horizontal;
+            color = color_horizontal_wall;
         }
 
-        /* Draw 3D ---------------------------------------------------------- */
-        /* Fix fisheye effect */
-        ca = player.angle - ra;
-        ca = clamp_radians(ca);
-        disT *= f_cos(ca);
+        fix_fisheye_effect(&distance, ray_angle);
+        draw_wall(color, distance, ray);
 
-        lineH = (MAP_CELL_LEN / disT) * dist_proj_plane;
-        v1.coords.x = TEX_MAIN->width - r;
-        v1.coords.y = (TEX_MAIN->height - lineH) / 2;
-        v1.color = v2.color;
-        draw_line_vertical(TEX_MAIN, v1, (TEX_MAIN->height + lineH) / 2);
-
-        /* Go to next ray --------------------------------------------------- */
-        ra -= RAD_1/(TEX_MAIN->width/FOV);
-        ra = clamp_radians(ra);
+        ray_angle = clamp_radians(ray_angle - ray_increment);
     }
+    return;
+}
+
+static float get_horizontal_distance(const Map* m, const int map_val, 
+    const float tan, const float ray_angle)
+{
+    const float atan = -1/tan;
+    float distance = 1000000;
+    int depth_of_field = 0;
+    int map_index;
+    VectorF hit, offset;
+    Vector max;
+
+    /* If ray is looking down */
+    if (ray_angle > RAD_180)
+    {
+        hit.y = (int)(player.pos.y/MAP_CELL_LEN) * MAP_CELL_LEN;
+        hit.x = (player.pos.y - hit.y) * atan + player.pos.x;
+        offset.y = -MAP_CELL_LEN;
+        offset.x = -offset.y*atan;
+    }
+    /* If ray is looking up */
+    else if (ray_angle < RAD_180)
+    {
+        hit.y = (int)((player.pos.y+MAP_CELL_LEN)/MAP_CELL_LEN) * MAP_CELL_LEN;
+        hit.x = (player.pos.y - hit.y) * atan + player.pos.x;
+        offset.y = MAP_CELL_LEN;
+        offset.x = -offset.y*atan;
+    }
+    else
+    {
+        depth_of_field = 8;
+    }
+
+    /* From ray to map array index */
+    while (depth_of_field < 8)
+    {
+        max.x = (int)(hit.x/MAP_CELL_LEN);
+        max.y = m->height - (int)(hit.y/MAP_CELL_LEN);
+        if (ray_angle < RAD_180) --max.y;
+        map_index = max.y*m->width+max.x;
+        if (map_index >= 0 && map_index < m->width*m->height 
+            && m->data[map_index] == map_val)
+        {
+            distance = get_distance(player.pos, hit);
+            depth_of_field = 8;
+        }
+        else
+        {
+            hit.x += offset.x;
+            hit.y += offset.y;
+            ++depth_of_field;
+        }
+    }
+    return distance;
+}
+
+static float get_vertical_distance(const Map* m, const int map_val, 
+    const float tan, const float ray_angle)
+{
+    const float ntan = -tan;
+    float distance = 1000000;
+    int depth_of_field = 0;
+    int map_index;
+    VectorF hit, offset;
+    Vector max;
+
+    /* If ray is looking left */
+    if (ray_angle > RAD_90 && ray_angle < RAD_270)
+    {
+        hit.x = (int)(player.pos.x/MAP_CELL_LEN) * MAP_CELL_LEN;
+        hit.y = (player.pos.x - hit.x) * ntan + player.pos.y;
+        offset.x = -MAP_CELL_LEN;
+        offset.y = -offset.x*ntan;
+    }
+    /* If ray is looking right */
+    else if (ray_angle < RAD_90 || ray_angle > RAD_270)
+    {
+        hit.x = (int)((player.pos.x+MAP_CELL_LEN)/MAP_CELL_LEN) * MAP_CELL_LEN;
+        hit.y = (player.pos.x - hit.x) * ntan + player.pos.y;
+        offset.x = MAP_CELL_LEN;
+        offset.y = -offset.x*ntan;
+    }
+    else
+    {
+        depth_of_field = 8;
+    }
+
+    /* From ray to map array index */
+    while (depth_of_field < 8)
+    {
+        max.x = (int)(hit.x/MAP_CELL_LEN);
+        max.y = m->height-1 - (int)(hit.y/MAP_CELL_LEN);
+        if (ray_angle > RAD_90 && ray_angle < RAD_270) --max.x;
+        map_index = max.y*m->width+max.x;
+        if (map_index >= 0 && map_index < m->width*m->height 
+            && m->data[map_index] == map_val)
+        {
+            distance = get_distance(player.pos, hit);
+            depth_of_field = 8;
+        }
+        else
+        {
+            hit.x += offset.x;
+            hit.y += offset.y;
+            ++depth_of_field;
+        }
+    }
+    return distance;
+}
+
+static void fix_fisheye_effect(float* distance, const float ray_angle)
+{
+    *distance *= f_cos(clamp_radians(player.angle - ray_angle));
+    return;
+}
+
+static void draw_wall(const GLubyte color, const float distance, const int ray)
+{
+    const float height = WALL_HEIGHT / distance;
+    Vertex v;
+    v.coords.x = TEX_MAIN->width - ray;
+    v.coords.y = (TEX_MAIN->height - height) / 2;
+    v.color = color;
+    draw_line_vertical(TEX_MAIN, v, (TEX_MAIN->height + height) / 2);
     return;
 }
 

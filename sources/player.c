@@ -19,8 +19,8 @@ void reset_player_transform(const Map* m)
 
 void update_player_transform(void)
 {
-    const float movement_speed = 20.0f;
-    const float rotation_speed = 40.0f;
+    const float movement_speed = 15.0f;
+    const float rotation_speed = 30.0f;
 
     player.angle += rotation_action * RAD_1 * rotation_speed * delta_time;
     if (rotation_action)
