@@ -14,7 +14,7 @@ typedef struct
 extern Player player;
 
 void reset_player_transform(const Map* m);
-void update_player_transform(void);
+void update_player_transform(const Map* m);
 
 #endif
 

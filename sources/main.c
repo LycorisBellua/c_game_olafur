@@ -65,7 +65,7 @@ int main(int argc, char** argv)
         render_mesh();
 
         /* Input */
-        update_player_transform();
+        update_player_transform(map_test);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

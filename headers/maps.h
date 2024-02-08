@@ -12,7 +12,7 @@ typedef struct
     int* data;
 } Map;
 
-#define MAP_CELL_LEN     64
+#define MAP_CELL_LEN 64
 
 extern Map* map_test;
 
