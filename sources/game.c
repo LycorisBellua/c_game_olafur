@@ -12,6 +12,8 @@
     Second value is `TEX_MAIN->width / (2.0f * f_tan(DEG2RAD(FOV)/2))`.
     In other words: `WALL_HEIGHT = 64 * 554`.
 */
+#define MAX_DISTANCE 512
+/* MAX_DISTANCE = MAP_CELL_LEN * max_depth_of_field = 64 * 8 */
 
 static const GLubyte color_floor = 102;
 static const GLubyte color_ceiling = 103;
@@ -26,7 +28,7 @@ static float get_horizontal_distance(const Map* m, const int map_val,
 static float get_vertical_distance(const Map* m, const int map_val, 
     const float tan, const float ray_angle);
 static void fix_fisheye_effect(float* distance, const float ray_angle);
-static void draw_wall(const GLubyte color, const float distance, const int ray);
+static void draw_wall(GLubyte color, float distance, const int ray);
 
 void draw_game(void)
 {
@@ -215,10 +217,18 @@ static void fix_fisheye_effect(float* distance, const float ray_angle)
     return;
 }
 
-static void draw_wall(const GLubyte color, const float distance, const int ray)
+static void draw_wall(GLubyte color, float distance, const int ray)
 {
-    const float height = WALL_HEIGHT / distance;
+    float height;
     Vertex v;
+
+    if (distance > MAX_DISTANCE)
+    {
+        distance = MAX_DISTANCE;
+        color = 0;
+    }
+    height = WALL_HEIGHT / distance;
+
     v.coords.x = TEX_MAIN->width - ray;
     v.coords.y = (TEX_MAIN->height - height) / 2;
     v.color = color;
