@@ -6,14 +6,13 @@
 #include "../headers/draw.h"
 
 #define FOV 60
+#define MAX_DEPTH_OF_FIELD 8
 #define WALL_HEIGHT 35456
 /*
     Logic for WALL_HEIGHT is `MAP_CELL_LEN * dist_proj_plane`.
     Second value is `TEX_MAIN->width / (2.0f * f_tan(DEG2RAD(FOV)/2))`.
     In other words: `WALL_HEIGHT = 64 * 554`.
 */
-#define MAX_DISTANCE 512
-/* MAX_DISTANCE = MAP_CELL_LEN * max_depth_of_field = 64 * 8 */
 
 static const GLubyte color_floor = 102;
 static const GLubyte color_ceiling = 103;
@@ -28,7 +27,7 @@ static float get_horizontal_distance(const Map* m, const int map_val,
 static float get_vertical_distance(const Map* m, const int map_val, 
     const float tan, const float ray_angle);
 static void fix_fisheye_effect(float* distance, const float ray_angle);
-static void draw_wall(GLubyte color, float distance, const int ray);
+static void draw_wall(const GLubyte color, const float distance, const int ray);
 
 void draw_game(void)
 {
@@ -73,6 +72,7 @@ static int is_player_out_of_bounds(const VectorF pos, const Map* m)
 static void raycasting(const Map* m)
 {
     const float ray_increment = RAD_1/(TEX_MAIN->width/FOV);
+    const int max_distance = MAP_CELL_LEN * MAX_DEPTH_OF_FIELD;
     /* `ray_angle = player.angle` for center */
     float ray_angle = clamp_radians(player.angle + FOV/2.0f * RAD_1);
     float tan, horizontal, vertical, distance;
@@ -95,6 +95,11 @@ static void raycasting(const Map* m)
             color = color_horizontal_wall;
         }
 
+        if (distance > max_distance)
+        {
+            distance = max_distance;
+            color = 0;
+        }
         fix_fisheye_effect(&distance, ray_angle);
         draw_wall(color, distance, ray);
 
@@ -131,11 +136,11 @@ static float get_horizontal_distance(const Map* m, const int map_val,
     }
     else
     {
-        depth_of_field = 8;
+        depth_of_field = MAX_DEPTH_OF_FIELD;
     }
 
     /* From ray to map array index */
-    while (depth_of_field < 8)
+    while (depth_of_field < MAX_DEPTH_OF_FIELD)
     {
         max.x = (int)(hit.x/MAP_CELL_LEN);
         max.y = m->height - (int)(hit.y/MAP_CELL_LEN);
@@ -145,7 +150,7 @@ static float get_horizontal_distance(const Map* m, const int map_val,
             && m->data[map_index] == map_val)
         {
             distance = get_distance(player.pos, hit);
-            depth_of_field = 8;
+            depth_of_field = MAX_DEPTH_OF_FIELD;
         }
         else
         {
@@ -185,11 +190,11 @@ static float get_vertical_distance(const Map* m, const int map_val,
     }
     else
     {
-        depth_of_field = 8;
+        depth_of_field = MAX_DEPTH_OF_FIELD;
     }
 
     /* From ray to map array index */
-    while (depth_of_field < 8)
+    while (depth_of_field < MAX_DEPTH_OF_FIELD)
     {
         max.x = (int)(hit.x/MAP_CELL_LEN);
         max.y = m->height-1 - (int)(hit.y/MAP_CELL_LEN);
@@ -199,7 +204,7 @@ static float get_vertical_distance(const Map* m, const int map_val,
             && m->data[map_index] == map_val)
         {
             distance = get_distance(player.pos, hit);
-            depth_of_field = 8;
+            depth_of_field = MAX_DEPTH_OF_FIELD;
         }
         else
         {
@@ -217,18 +222,10 @@ static void fix_fisheye_effect(float* distance, const float ray_angle)
     return;
 }
 
-static void draw_wall(GLubyte color, float distance, const int ray)
+static void draw_wall(const GLubyte color, const float distance, const int ray)
 {
-    float height;
+    const float height = WALL_HEIGHT / distance;
     Vertex v;
-
-    if (distance > MAX_DISTANCE)
-    {
-        distance = MAX_DISTANCE;
-        color = 0;
-    }
-    height = WALL_HEIGHT / distance;
-
     v.coords.x = TEX_MAIN->width - ray;
     v.coords.y = (TEX_MAIN->height - height) / 2;
     v.color = color;
