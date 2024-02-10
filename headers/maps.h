@@ -13,6 +13,7 @@ typedef struct
 } Map;
 
 #define MAP_CELL_LEN 64
+#define MAX_CELL_AMOUNT 8
 
 extern Map* map_test;
 

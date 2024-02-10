@@ -66,8 +66,8 @@ void set_minimap_display(const int remove_from_factor)
             MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
 
     cell = MAP_CELL_LEN/minimap_factor;
-    display_offset.x = TEX_MAIN->width - cell * map_test->width;
-    display_offset.y = TEX_MAIN->height - cell * map_test->height;
+    display_offset.x = TEX_MAIN->width - cell * MAX_CELL_AMOUNT;
+    display_offset.y = TEX_MAIN->height - cell * MAX_CELL_AMOUNT;
     return;
 }
 
@@ -121,24 +121,44 @@ static void free_map(Map** map)
 
 static void draw_map(const Map* m)
 {
-    const int len = MAP_CELL_LEN/minimap_factor;
+    const int max_len = MAP_CELL_LEN/minimap_factor;
+    int len;
     int x, y;
     Vertex v;
+    VectorF pos;
+    pos.x = player.pos.x/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
+    pos.y = player.pos.y/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
 
-    for (y = 0; y < m->height; ++y)
+    /**/len = max_len;
+
+    v.coords.y = display_offset.y;
+    for (y = pos.y; y < m->height; ++y)
     {
-        for (x = 0; x < m->width; ++x)
+        if (y < 0)
         {
-            if (m->data[(m->height-1-y) * m->width + x] == 1)
+            v.coords.y += len;
+            continue;
+        }
+
+        v.coords.x = display_offset.x;
+        for (x = pos.x; x < m->width; ++x)
+        {
+            if (x < 0)
+            {
+                v.coords.x += len;
+                continue;
+            }
+            else if (m->data[(m->height-1-y) * m->width + x] == 1)
                 v.color = 0xFF;
             else
                 v.color = 0;
-
-            v.coords.x = display_offset.x + x * len;
-            v.coords.y = display_offset.y + y * len;
+            
             /* Remove 1 pixel in order to see grid lines */
             draw_rectangle(TEX_MAIN, 1, v, len-1, len-1);
+            v.coords.x += len;
         }
+
+        v.coords.y += len;
     }
     return;
 }
@@ -147,11 +167,12 @@ static void draw_player(void)
 {
     const int player_size = MAX(1, MAP_CELL_LEN/4.0f/minimap_factor);
     const int forward_vector_len = MAX(2, MAP_CELL_LEN/8.0f/minimap_factor);
+    const float map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
     const float offset = get_minimap_factor_offset(minimap_factor);
     Vertex pos, end;
 
-    pos.coords.x = player.pos.x / minimap_factor + display_offset.x - offset;
-    pos.coords.y = player.pos.y / minimap_factor + display_offset.y - offset;
+    pos.coords.x = map_center + display_offset.x - offset;
+    pos.coords.y = map_center + display_offset.y - offset;
     pos.color = get_color_from_rgb(MAX_RED, MAX_GREEN, 0);
 
     end.coords.x = pos.coords.x + player.delta.x * forward_vector_len;

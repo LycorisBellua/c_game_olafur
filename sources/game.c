@@ -6,7 +6,6 @@
 #include "../headers/draw.h"
 
 #define FOV 60
-#define MAX_DEPTH_OF_FIELD 8
 #define WALL_HEIGHT 35456
 /*
     Logic for WALL_HEIGHT is `MAP_CELL_LEN * dist_proj_plane`.
@@ -72,7 +71,7 @@ static int is_player_out_of_bounds(const VectorF pos, const Map* m)
 static void raycasting(const Map* m)
 {
     const float ray_increment = RAD_1/(TEX_MAIN->width/FOV);
-    const int max_distance = MAP_CELL_LEN * MAX_DEPTH_OF_FIELD;
+    const int max_distance = MAP_CELL_LEN * MAX_CELL_AMOUNT;
     /* `ray_angle = player.angle` for center */
     float ray_angle = clamp_radians(player.angle + FOV/2.0f * RAD_1);
     float tan, horizontal, vertical, distance;
@@ -136,11 +135,11 @@ static float get_horizontal_distance(const Map* m, const int map_val,
     }
     else
     {
-        depth_of_field = MAX_DEPTH_OF_FIELD;
+        depth_of_field = MAX_CELL_AMOUNT;
     }
 
     /* From ray to map array index */
-    while (depth_of_field < MAX_DEPTH_OF_FIELD)
+    while (depth_of_field < MAX_CELL_AMOUNT)
     {
         max.x = (int)(hit.x/MAP_CELL_LEN);
         max.y = m->height - (int)(hit.y/MAP_CELL_LEN);
@@ -150,7 +149,7 @@ static float get_horizontal_distance(const Map* m, const int map_val,
             && m->data[map_index] == map_val)
         {
             distance = get_distance(player.pos, hit);
-            depth_of_field = MAX_DEPTH_OF_FIELD;
+            depth_of_field = MAX_CELL_AMOUNT;
         }
         else
         {
@@ -190,11 +189,11 @@ static float get_vertical_distance(const Map* m, const int map_val,
     }
     else
     {
-        depth_of_field = MAX_DEPTH_OF_FIELD;
+        depth_of_field = MAX_CELL_AMOUNT;
     }
 
     /* From ray to map array index */
-    while (depth_of_field < MAX_DEPTH_OF_FIELD)
+    while (depth_of_field < MAX_CELL_AMOUNT)
     {
         max.x = (int)(hit.x/MAP_CELL_LEN);
         max.y = m->height-1 - (int)(hit.y/MAP_CELL_LEN);
@@ -204,7 +203,7 @@ static float get_vertical_distance(const Map* m, const int map_val,
             && m->data[map_index] == map_val)
         {
             distance = get_distance(player.pos, hit);
-            depth_of_field = MAX_DEPTH_OF_FIELD;
+            depth_of_field = MAX_CELL_AMOUNT;
         }
         else
         {

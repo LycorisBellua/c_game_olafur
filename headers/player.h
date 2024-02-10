@@ -9,6 +9,7 @@ typedef struct
     VectorF pos;
     VectorF delta;
     float angle;
+    int map_index;
 } Player;
 
 extern Player player;
