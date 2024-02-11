@@ -66,8 +66,8 @@ void set_minimap_display(const int remove_from_factor)
             MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
 
     cell = MAP_CELL_LEN/minimap_factor;
-    display_offset.x = TEX_MAIN->width - cell * MAX_CELL_AMOUNT;
-    display_offset.y = TEX_MAIN->height - cell * MAX_CELL_AMOUNT;
+    display_offset.x = TEX_MAIN->width - cell * MAX_CELL_AMOUNT - 50;
+    display_offset.y = TEX_MAIN->height - cell * MAX_CELL_AMOUNT - 50;
     return;
 }
 
@@ -121,44 +121,80 @@ static void free_map(Map** map)
 
 static void draw_map(const Map* m)
 {
-    const int max_len = MAP_CELL_LEN/minimap_factor;
-    int len;
+    const int max_len_cell = MAP_CELL_LEN/minimap_factor;
+    const int max_len_map = max_len_cell * MAX_CELL_AMOUNT;
+    Vector len;
+    VectorF pos;
     int x, y;
     Vertex v;
-    VectorF pos;
+
+    v.coords.x = display_offset.x;
+    v.coords.y = display_offset.y;
+    v.color = get_color_from_rgb(MAX_RED, 0, 0);
+    draw_rectangle(TEX_MAIN, 0, v, max_len_map, max_len_map);
+
+    /*
+        SMALLEST MAP
+        - MAX LEN FOR THE MAP: 96
+        - DISPLAY OFFSET (544, 264)
+    */
+
+    len.x = max_len_cell;
+    len.y = max_len_cell;
     pos.x = player.pos.x/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
     pos.y = player.pos.y/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
-
-    /**/len = max_len;
 
     v.coords.y = display_offset.y;
     for (y = pos.y; y < m->height; ++y)
     {
+        if (y == (int)pos.y)
+            len.y = max_len_cell - (pos.y - (int)pos.y) * max_len_cell;
+
         if (y < 0)
         {
-            v.coords.y += len;
+            v.coords.y += len.y;
+            len.y = max_len_cell;
             continue;
+        }
+        else if (y == 0 && len.y > max_len_cell)
+        {
+            v.coords.y += len.y - max_len_cell;
+            len.y = max_len_cell;
         }
 
         v.coords.x = display_offset.x;
         for (x = pos.x; x < m->width; ++x)
         {
+            if (x == (int)pos.x)
+                len.x = max_len_cell - (pos.x - (int)pos.x) * max_len_cell;
+
             if (x < 0)
             {
-                v.coords.x += len;
+                v.coords.x += len.x;
+                len.x = max_len_cell;
                 continue;
             }
-            else if (m->data[(m->height-1-y) * m->width + x] == 1)
+            else if (x == 0 && len.x > max_len_cell)
+            {
+                v.coords.x += len.x - max_len_cell;
+                len.x = max_len_cell;
+            }
+
+            if (m->data[(m->height-1-y) * m->width + x] == 1)
                 v.color = 0xFF;
             else
                 v.color = 0;
-            
+
             /* Remove 1 pixel in order to see grid lines */
-            draw_rectangle(TEX_MAIN, 1, v, len-1, len-1);
-            v.coords.x += len;
+            draw_rectangle(TEX_MAIN, 1, v, len.x-1, len.y-1);
+            v.coords.x += len.x;
+            len.x = max_len_cell;
+            if (v.coords.x > display_offset.x + max_len_map)
+                len.x -= v.coords.x - (display_offset.x + max_len_map);
         }
 
-        v.coords.y += len;
+        v.coords.y += len.y;
+        len.y = max_len_cell;
     }
     return;
 }
