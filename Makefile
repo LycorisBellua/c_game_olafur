@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -ansi -pedantic -Wall -Wextra -O2 
+CFLAGS = -Wall -Wextra -ansi -pedantic -O2
 LDFLAGS = -lGLEW -lglfw -lGL
 
 NAME = Cimmerian
@@ -8,12 +8,12 @@ DIR_OBJ = $(DIR_BUILD)/unix/objects
 
 EXECUTABLE = $(DIR_BUILD)/unix/$(NAME)
 
-SOURCE_FILES = $(wildcard sources/*.c)
-OBJ_FILES = $(patsubst sources/%.c, $(DIR_OBJ)/%.o, $(SOURCE_FILES))
+SRC = $(wildcard sources/*.c)
+OBJ = $(patsubst sources/%.c, $(DIR_OBJ)/%.o, $(SRC))
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJ_FILES)
+$(EXECUTABLE): $(OBJ)
 	@$(CC) $^ -o $@ $(LDFLAGS)
 
 $(DIR_OBJ)/%.o: sources/%.c
@@ -40,9 +40,9 @@ win32:
 .PHONY: clean-win64
 .PHONY: clean-win32
 clean:
-	@make -s clean-unix
-	@make -s clean-win64
-	@make -s clean-win32
+	@$(MAKE) -s clean-unix
+	@$(MAKE) -s clean-win64
+	@$(MAKE) -s clean-win32
 clean-unix:
 	@rm -rf builds/unix/
 clean-win64:
