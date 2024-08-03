@@ -5,7 +5,6 @@
 The libraries used are:
 - naturally the C standard library,
 - OpenGL (Open Graphics Library) for the graphics,
-- GLEW (OpenGL Extension Wrangler Library) to encourage the use of the latest OpenGL version available on the machine,
 - GLFW (OpenGL Framework) for the windowing (= GUI & input handling),
 - and OpenAL (Open Audio Library) for the audio.
 

@@ -1,25 +1,24 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -ansi -pedantic -O2
-LDFLAGS = -lGLEW -lglfw -lGL
+CFLAGS = -Wall -Wextra -ansi -pedantic
+LDFLAGS = -lglfw -lGL
 
 NAME = Cimmerian
 DIR_BUILD = builds
 DIR_OBJ = $(DIR_BUILD)/unix/objects
 
-EXECUTABLE = $(DIR_BUILD)/unix/$(NAME)
+EXE = $(DIR_BUILD)/unix/$(NAME)
 
-SRC = $(wildcard sources/*.c)
-OBJ = $(patsubst sources/%.c, $(DIR_OBJ)/%.o, $(SRC))
+SRC = $(wildcard src/*.c)
+OBJ = $(patsubst src/%.c, $(DIR_OBJ)/%.o, $(SRC))
 
-all: $(EXECUTABLE)
+all: $(EXE)
 
-$(EXECUTABLE): $(OBJ)
+$(EXE): $(OBJ)
 	@$(CC) $^ -o $@ $(LDFLAGS)
 
-$(DIR_OBJ)/%.o: sources/%.c
+$(DIR_OBJ)/%.o: src/%.c
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $< -o $@
--include $(DIR_OBJ)/%.d
 
 # Package: gcc-mingw-w64
 .PHONY: win64
@@ -28,12 +27,12 @@ win64:
 	@$(MAKE) -s all \
 	CC=x86_64-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win64/objects \
-	EXECUTABLE=$(DIR_BUILD)/win64/$(NAME)-64bit.exe
+	EXE=$(DIR_BUILD)/win64/$(NAME)-64bit.exe
 win32:
 	@$(MAKE) -s all \
 	CC=i686-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win32/objects \
-	EXECUTABLE=$(DIR_BUILD)/win32/$(NAME)-32bit.exe
+	EXE=$(DIR_BUILD)/win32/$(NAME)-32bit.exe
 
 .PHONY: clean
 .PHONY: clean-unix
