@@ -7,10 +7,10 @@ static GLuint EBO; /* Element Buffer Object */
 static GLfloat vertex_data[] =
 {
      /* Pos */       /* Tex Coord */
-    -1.0f, -1.0f,    0.0f, 0.0f, 
-     1.0f, -1.0f,    1.0f, 0.0f, 
-     1.0f,  1.0f,    1.0f, 1.0f, 
-    -1.0f,  1.0f,    0.0f, 1.0f, 
+    -1.0f, -1.0f,    0.0f, 1.0f,
+     1.0f, -1.0f,    1.0f, 1.0f,
+     1.0f,  1.0f,    1.0f, 0.0f,
+    -1.0f,  1.0f,    0.0f, 0.0f,
 };
 static GLuint indices[] = 
 {
