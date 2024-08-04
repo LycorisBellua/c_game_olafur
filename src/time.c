@@ -1,4 +1,4 @@
-#include "../hdr/time.h"
+#include "cimmerian.h"
 
 float delta_time = 0.0f;
 float fps_count = 0.0f;
@@ -12,4 +12,3 @@ void update_time_variables(void)
     fps_count = 1/delta_time;
     return;
 }
-

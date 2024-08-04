@@ -1,7 +1,4 @@
-#include "../hdr/menu.h"
-#include "../hdr/draw.h"
-#include "../hdr/draw_test.h"
-#include "../hdr/interfaces.h"
+#include "cimmerian.h"
 
 static int index_btn_selected = 0;
 
@@ -139,4 +136,3 @@ void nav_ui_cancel(GLFWwindow* window)
     set_active_interface(active_interface->previous);
     return;
 }
-

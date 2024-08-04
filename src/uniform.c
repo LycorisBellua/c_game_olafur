@@ -1,6 +1,4 @@
-#include "../hdr/uniform.h"
-#include "../hdr/shader_program.h"
-#include "../hdr/gl_functions.h"
+#include "cimmerian.h"
 
 static GLint loc = 0;
 
@@ -25,4 +23,3 @@ void free_uniform(void)
     loc = 0;
     return;
 }
-

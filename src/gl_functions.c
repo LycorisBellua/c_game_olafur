@@ -1,57 +1,89 @@
-#include "../hdr/gl_functions.h"
+#include "gl_functions.h"
 
-GL_ATTACHSHADER glAttachShader;
-GL_BINDBUFFER glBindBuffer;
-GL_BINDVERTEXARRAY glBindVertexArray;
-GL_BUFFERDATA glBufferData;
-GL_COMPILESHADER glCompileShader;
-GL_CREATEPROGRAM glCreateProgram;
-GL_CREATESHADER glCreateShader;
-GL_DELETEBUFFERS glDeleteBuffers;
-GL_DELETEPROGRAM glDeleteProgram;
-GL_DELETESHADER glDeleteShader;
-GL_DELETEVERTEXARRAYS glDeleteVertexArrays;
-GL_ENABLEVERTEXARRAYATTRIB glEnableVertexArrayAttrib;
-GL_GENBUFFERS glGenBuffers;
-GL_GENVERTEXARRAYS glGenVertexArrays;
-GL_GETUNIFORMLOCATION glGetUniformLocation;
-GL_GETVERTEXATTRIBIUIV glGetVertexAttribIuiv;
-GL_LINKPROGRAM glLinkProgram;
-GL_SHADERSOURCE glShaderSource;
-GL_UNIFORM1I glUniform1i;
-GL_USEPROGRAM glUseProgram;
-GL_VERTEXATTRIBPOINTER glVertexAttribPointer;
+static int init_gl_functions_for_shaders(void);
+static int init_gl_functions_for_buffers(void);
+static int init_gl_functions_for_programs(void);
+static int init_gl_functions_for_vertices(void);
+
+GL_AS   glAttachShader;
+GL_BB   glBindBuffer;
+GL_BVA  glBindVertexArray;
+GL_BD   glBufferData;
+GL_COS  glCompileShader;
+GL_CP   glCreateProgram;
+GL_CS   glCreateShader;
+GL_DB   glDeleteBuffers;
+GL_DP   glDeleteProgram;
+GL_DS   glDeleteShader;
+GL_DVA  glDeleteVertexArrays;
+GL_EVAA glEnableVertexArrayAttrib;
+GL_GB   glGenBuffers;
+GL_GVA  glGenVertexArrays;
+GL_GUL  glGetUniformLocation;
+GL_GVAI glGetVertexAttribIuiv;
+GL_LP   glLinkProgram;
+GL_SS   glShaderSource;
+GL_U1I  glUniform1i;
+GL_UP   glUseProgram;
+GL_VAP  glVertexAttribPointer;
 
 int init_gl_functions(void)
 {
-	glAttachShader = (GL_ATTACHSHADER)glfwGetProcAddress("glAttachShader");
-	glBindBuffer = (GL_BINDBUFFER)glfwGetProcAddress("glBindBuffer");
-	glBindVertexArray = (GL_BINDVERTEXARRAY)glfwGetProcAddress("glBindVertexArray");
-	glBufferData = (GL_BUFFERDATA)glfwGetProcAddress("glBufferData");
-	glCompileShader = (GL_COMPILESHADER)glfwGetProcAddress("glCompileShader");
-	glCreateProgram = (GL_CREATEPROGRAM)glfwGetProcAddress("glCreateProgram");
-	glCreateShader = (GL_CREATESHADER)glfwGetProcAddress("glCreateShader");
-	glDeleteBuffers = (GL_DELETEBUFFERS)glfwGetProcAddress("glDeleteBuffers");
-	glDeleteProgram = (GL_DELETEPROGRAM)glfwGetProcAddress("glDeleteProgram");
-	glDeleteShader = (GL_DELETESHADER)glfwGetProcAddress("glDeleteShader");
-	glDeleteVertexArrays = (GL_DELETEVERTEXARRAYS)glfwGetProcAddress("glDeleteVertexArrays");
-	glEnableVertexArrayAttrib = (GL_ENABLEVERTEXARRAYATTRIB)glfwGetProcAddress("glEnableVertexArrayAttrib");
-	glGenBuffers = (GL_GENBUFFERS)glfwGetProcAddress("glGenBuffers");
-	glGenVertexArrays = (GL_GENVERTEXARRAYS)glfwGetProcAddress("glGenVertexArrays");
-	glGetUniformLocation = (GL_GETUNIFORMLOCATION)glfwGetProcAddress("glGetUniformLocation");
-	glGetVertexAttribIuiv = (GL_GETVERTEXATTRIBIUIV)glfwGetProcAddress("glGetVertexAttribIuiv");
-	glLinkProgram = (GL_LINKPROGRAM)glfwGetProcAddress("glLinkProgram");
-	glShaderSource = (GL_SHADERSOURCE)glfwGetProcAddress("glShaderSource");
-	glUniform1i = (GL_UNIFORM1I)glfwGetProcAddress("glUniform1i");
-	glUseProgram = (GL_USEPROGRAM)glfwGetProcAddress("glUseProgram");
-	glVertexAttribPointer = (GL_VERTEXATTRIBPOINTER)glfwGetProcAddress("glVertexAttribPointer");
-
-	return glAttachShader && glBindBuffer && glBindVertexArray && glBufferData 
-		&& glCompileShader && glCreateProgram && glCreateShader 
-		&& glDeleteBuffers && glDeleteProgram && glDeleteShader 
-		&& glDeleteVertexArrays && glEnableVertexArrayAttrib && glGenBuffers 
-		&& glGenVertexArrays && glGetUniformLocation && glGetVertexAttribIuiv 
-		&& glLinkProgram && glShaderSource && glUniform1i && glUseProgram 
-		&& glVertexAttribPointer;
+    return init_gl_functions_for_shaders() 
+        && init_gl_functions_for_buffers() 
+        && init_gl_functions_for_programs() 
+        && init_gl_functions_for_vertices();
 }
 
+static int init_gl_functions_for_shaders(void)
+{
+    glAttachShader = (GL_AS)glfwGetProcAddress("glAttachShader");
+    glCompileShader = (GL_COS)glfwGetProcAddress("glCompileShader");
+    glCreateShader = (GL_CS)glfwGetProcAddress("glCreateShader");
+    glDeleteShader = (GL_DS)glfwGetProcAddress("glDeleteShader");
+    glShaderSource = (GL_SS)glfwGetProcAddress("glShaderSource");
+
+    return glAttachShader && glCompileShader && glCreateShader && 
+        glDeleteShader && glShaderSource;
+}
+
+static int init_gl_functions_for_buffers(void)
+{
+    glBindBuffer = (GL_BB)glfwGetProcAddress("glBindBuffer");
+    glBufferData = (GL_BD)glfwGetProcAddress("glBufferData");
+    glDeleteBuffers = (GL_DB)glfwGetProcAddress("glDeleteBuffers");
+    glGenBuffers = (GL_GB)glfwGetProcAddress("glGenBuffers");
+
+    return glBindBuffer && glBufferData && glDeleteBuffers && glGenBuffers;
+}
+
+static int init_gl_functions_for_programs(void)
+{
+    glCreateProgram = (GL_CP)glfwGetProcAddress("glCreateProgram");
+    glDeleteProgram = (GL_DP)glfwGetProcAddress("glDeleteProgram");
+    glLinkProgram = (GL_LP)glfwGetProcAddress("glLinkProgram");
+    glUseProgram = (GL_UP)glfwGetProcAddress("glUseProgram");
+
+    return glCreateProgram && glDeleteProgram && glLinkProgram && glUseProgram;
+}
+
+static int init_gl_functions_for_vertices(void)
+{
+    glBindVertexArray = (GL_BVA)glfwGetProcAddress("glBindVertexArray");
+    glDeleteVertexArrays = (GL_DVA)glfwGetProcAddress("glDeleteVertexArrays");
+    glEnableVertexArrayAttrib = 
+        (GL_EVAA)glfwGetProcAddress("glEnableVertexArrayAttrib");
+    glGenVertexArrays = (GL_GVA)glfwGetProcAddress("glGenVertexArrays");
+
+    glGetVertexAttribIuiv = 
+        (GL_GVAI)glfwGetProcAddress("glGetVertexAttribIuiv");
+    glVertexAttribPointer = (GL_VAP)glfwGetProcAddress("glVertexAttribPointer");
+
+    glGetUniformLocation = (GL_GUL)glfwGetProcAddress("glGetUniformLocation");
+    glUniform1i = (GL_U1I)glfwGetProcAddress("glUniform1i");
+
+    return glBindVertexArray && glDeleteVertexArrays 
+        && glEnableVertexArrayAttrib && glGenVertexArrays 
+        && glGetVertexAttribIuiv && glVertexAttribPointer 
+        && glGetUniformLocation && glUniform1i;
+}

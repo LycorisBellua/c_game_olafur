@@ -1,9 +1,4 @@
-#include "../hdr/game.h"
-#include "../hdr/maps.h"
-#include "../hdr/player.h"
-#include "../hdr/maths.h"
-#include "../hdr/textures.h"
-#include "../hdr/draw.h"
+#include "cimmerian.h"
 
 #define FOV 60
 #define WALL_HEIGHT 35456
@@ -73,7 +68,7 @@ static void raycasting(const Map* m)
     const float ray_increment = RAD_1/(TEX_MAIN->width/FOV);
     const int max_distance = MAP_CELL_LEN * MAX_CELL_AMOUNT;
     /* `ray_angle = player.angle` for center */
-    float ray_angle = clamp_radians(player.angle + FOV/2.0f * RAD_1);
+    float ray_angle = clamp_rad(player.angle + FOV/2.0f * RAD_1);
     float tan, horizontal, vertical, distance;
     int ray, color;
 
@@ -102,7 +97,7 @@ static void raycasting(const Map* m)
         fix_fisheye_effect(&distance, ray_angle);
         draw_wall(color, distance, ray);
 
-        ray_angle = clamp_radians(ray_angle - ray_increment);
+        ray_angle = clamp_rad(ray_angle - ray_increment);
     }
     return;
 }
@@ -217,7 +212,7 @@ static float get_vertical_distance(const Map* m, const int map_val,
 
 static void fix_fisheye_effect(float* distance, const float ray_angle)
 {
-    *distance *= f_cos(clamp_radians(player.angle - ray_angle));
+    *distance *= f_cos(clamp_rad(player.angle - ray_angle));
     return;
 }
 
@@ -231,4 +226,3 @@ static void draw_wall(const GLubyte color, const float distance, const int ray)
     draw_line_vertical(TEX_MAIN, v, (TEX_MAIN->height + height) / 2);
     return;
 }
-

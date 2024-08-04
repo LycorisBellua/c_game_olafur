@@ -1,6 +1,4 @@
-#include "../hdr/shader_program.h"
-#include "../hdr/files.h"
-#include "../hdr/gl_functions.h"
+#include "cimmerian.h"
 
 GLuint shader_program = 0;
 static int app_glsl_version = 0;
@@ -124,7 +122,7 @@ static void set_glsl_version_in_shader(char* ptr_shader)
 
     for (i = 0; ptr_shader[i]; ++i)
     {
-        if (CHAR_IS_DIGIT(ptr_shader[i]))
+        if (is_digit(ptr_shader[i]))
         {
             ptr_shader[i + 2] = glsl % 10 + '0';
             glsl /= 10;
@@ -150,4 +148,3 @@ static void free_shader(GLuint* id)
     *id = 0;
     return;
 }
-

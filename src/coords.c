@@ -1,5 +1,4 @@
-#include "../hdr/coords.h"
-#include "../hdr/maths.h"
+#include "cimmerian.h"
 
 int get_coord_x(Texture* t, float normalized)
 {
@@ -46,8 +45,8 @@ Vector get_direction(Vector v1, Vector v2)
 {
     Vector dir;
 
-    dir.x = v1.x < 0 && v2.x < 0 ? ABS(v1.x) + v2.x : v2.x - v1.x;
-    dir.y = v1.y < 0 && v2.y < 0 ? ABS(v1.y) + v2.y : v2.y - v1.y;
+    dir.x = v1.x < 0 && v2.x < 0 ? abs(v1.x) + v2.x : v2.x - v1.x;
+    dir.y = v1.y < 0 && v2.y < 0 ? abs(v1.y) + v2.y : v2.y - v1.y;
 
     return dir;
 }
@@ -66,8 +65,8 @@ VectorF get_direction_float(VectorF v1, VectorF v2)
 {
     VectorF dir;
 
-    dir.x = v1.x < 0 && v2.x < 0 ? ABS(v1.x) + v2.x : v2.x - v1.x;
-    dir.y = v1.y < 0 && v2.y < 0 ? ABS(v1.y) + v2.y : v2.y - v1.y;
+    dir.x = v1.x < 0 && v2.x < 0 ? f_abs(v1.x) + v2.x : v2.x - v1.x;
+    dir.y = v1.y < 0 && v2.y < 0 ? f_abs(v1.y) + v2.y : v2.y - v1.y;
 
     return dir;
 }
@@ -78,4 +77,3 @@ float get_distance(const VectorF a, const VectorF b)
     VectorF dir = get_direction_float(a, b);
     return f_sqrt(dir.x * dir.x + dir.y * dir.y);
 }
-

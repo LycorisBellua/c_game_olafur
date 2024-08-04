@@ -1,8 +1,4 @@
-#include "../hdr/input.h"
-#include "../hdr/windowing.h"
-#include "../hdr/menu.h"
-#include "../hdr/maps.h"
-#include "../hdr/maths.h"
+#include "cimmerian.h"
 
 int movement_action[3] = {0};
 static int movement_input[3] = {0};
@@ -254,4 +250,3 @@ static void input_strafe_right(const int action)
     update_movement_action(0);
     return;
 }
-

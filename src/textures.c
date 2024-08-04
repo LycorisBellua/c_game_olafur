@@ -1,6 +1,4 @@
-#include "../hdr/textures.h"
-#include "../hdr/windowing.h"
-#include "../hdr/colors.h"
+#include "cimmerian.h"
 
 Texture* textures[NBR_TEXTURES] = {0};
 
@@ -106,4 +104,3 @@ static void free_texture(Texture** t)
     *t = 0;
     return;
 }
-

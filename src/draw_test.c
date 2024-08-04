@@ -1,7 +1,4 @@
-#include "../hdr/draw_test.h"
-#include "../hdr/draw.h"
-#include "../hdr/colors.h"
-#include "../hdr/maths.h"
+#include "cimmerian.h"
 
 void draw_test_corners(Texture* t)
 {
@@ -79,14 +76,14 @@ void draw_test_lines(Texture* t)
     v1.color = colors[COLOR_RED];
     v2.color = colors[COLOR_RED];
 
-    v1.coords.x -= NORMALIZE(v2.coords.x - v1.coords.x)*2;
-    v1.coords.y -= NORMALIZE(v2.coords.y - v1.coords.y)*2;
+    v1.coords.x -= normalize(v2.coords.x - v1.coords.x)*2;
+    v1.coords.y -= normalize(v2.coords.y - v1.coords.y)*2;
     if (!is_coord_out_of_bounds(t->width, v1.coords.x) 
         && !is_coord_out_of_bounds(t->height, v1.coords.y))
         draw_point(t, v1.color, v1.coords.x, v1.coords.y);
 
-    v2.coords.x -= NORMALIZE(v1.coords.x - v2.coords.x)*2;
-    v2.coords.y -= NORMALIZE(v1.coords.y - v2.coords.y)*2;
+    v2.coords.x -= normalize(v1.coords.x - v2.coords.x)*2;
+    v2.coords.y -= normalize(v1.coords.y - v2.coords.y)*2;
     if (!is_coord_out_of_bounds(t->width, v2.coords.x) 
         && !is_coord_out_of_bounds(t->height, v2.coords.y))
         draw_point(t, v2.color, v2.coords.x, v2.coords.y);
@@ -191,11 +188,11 @@ void draw_test_gradient_line(Texture* t)
         draw_point(t, first_color, v.x, v.y);
         ++v.x;
 
-        set_red_channel(&first_color, CLAMP(get_red_channel(first_color) 
+        set_red_channel(&first_color, clamp(get_red_channel(first_color) 
             + get_red_channel(color_change), 0, MAX_RED));
-        set_green_channel(&first_color, CLAMP(get_green_channel(first_color) 
+        set_green_channel(&first_color, clamp(get_green_channel(first_color) 
             + get_green_channel(color_change), 0, MAX_GREEN));
-        set_blue_channel(&first_color, CLAMP(get_blue_channel(first_color) 
+        set_blue_channel(&first_color, clamp(get_blue_channel(first_color) 
             + get_blue_channel(color_change), 0, MAX_BLUE));
     }
 
@@ -210,11 +207,11 @@ void draw_test_gradient_line(Texture* t)
         draw_point(t, first_color, v.x, v.y);
         ++v.x;
 
-        set_red_channel(&first_color, CLAMP(get_red_channel(first_color) 
+        set_red_channel(&first_color, clamp(get_red_channel(first_color) 
             - get_red_channel(color_change), 0, MAX_RED));
-        set_green_channel(&first_color, CLAMP(get_green_channel(first_color) 
+        set_green_channel(&first_color, clamp(get_green_channel(first_color) 
             - get_green_channel(color_change), 0, MAX_GREEN));
-        set_blue_channel(&first_color, CLAMP(get_blue_channel(first_color) 
+        set_blue_channel(&first_color, clamp(get_blue_channel(first_color) 
             - get_blue_channel(color_change), 0, MAX_BLUE));
     }
     return;
@@ -268,4 +265,3 @@ void draw_palette(Texture* t)
     }
     return;
 }
-

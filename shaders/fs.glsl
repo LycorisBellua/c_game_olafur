@@ -13,4 +13,3 @@ void main()
     vec3 colors = texture(frame_texture, frag_tex_coord).rgb;
     frag_color = vec4(colors, 1.0);
 }
-

@@ -1,6 +1,4 @@
-#include "../hdr/windowing.h"
-#include "../hdr/maths.h"
-#include "../hdr/gl_functions.h"
+#include "cimmerian.h"
 
 Resolution res = {0};
 
@@ -100,8 +98,8 @@ static void set_resolution(const GLFWvidmode* vid_mode)
         res.monitor_width = res.monitor_height * res.aspect_ratio;
     }
 
-    res.window_width_default = MIN(640, res.monitor_width);
-    res.window_height_default = MIN(640/res.aspect_ratio, res.monitor_height);
+    res.window_width_default = min(640, res.monitor_width);
+    res.window_height_default = min(640/res.aspect_ratio, res.monitor_height);
     res.window_width = res.window_width_default;
     res.window_height = res.window_height_default;
 
@@ -167,4 +165,3 @@ static void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
     }
     return;
 }
-

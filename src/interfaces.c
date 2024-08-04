@@ -1,6 +1,4 @@
-#include "../hdr/interfaces.h"
-#include "../hdr/menu.h"
-#include "../hdr/game.h"
+#include "cimmerian.h"
 
 Interface* active_interface = {0};
 static Interface main_menu_interface;
@@ -31,4 +29,3 @@ void set_active_interface(Interface* interface)
     active_interface = interface;
     return;
 }
-

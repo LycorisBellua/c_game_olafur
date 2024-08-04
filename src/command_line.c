@@ -1,4 +1,4 @@
-#include "../hdr/command_line.h"
+#include "cimmerian.h"
 
 void execute_cli_options(int argc, char** argv)
 {
@@ -44,4 +44,3 @@ void enable_vsync(const int enable)
     glfwSwapInterval(enable != 0);
     return;
 }
-

@@ -1,5 +1,4 @@
-#include "../hdr/colors.h"
-#include "../hdr/files.h"
+#include "cimmerian.h"
 
 GLubyte colors[NBR_COLORS] = {0};
 
@@ -99,4 +98,3 @@ void set_blue_channel(GLubyte* color, const GLubyte value)
     *color = (*color & 0xFC) | (value & 0x03);
     return;
 }
-

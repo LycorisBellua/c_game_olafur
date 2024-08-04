@@ -1,7 +1,4 @@
-#include "../hdr/maps.h"
-#include "../hdr/maths.h"
-#include "../hdr/draw.h"
-#include "../hdr/player.h"
+#include "cimmerian.h"
 
 #define MINIMAP_FACTOR_MIN 1
 #define MINIMAP_FACTOR_MAX 5
@@ -62,7 +59,7 @@ void set_minimap_display(const int remove_from_factor)
     if (!remove_from_factor)
         minimap_factor = MINIMAP_FACTOR_MAX;
     else
-        minimap_factor = CLAMP(minimap_factor - remove_from_factor, 
+        minimap_factor = clamp(minimap_factor - remove_from_factor, 
             MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
 
     cell = MAP_CELL_LEN/minimap_factor;
@@ -201,8 +198,8 @@ static void draw_map(const Map* m)
 
 static void draw_player(void)
 {
-    const int player_size = MAX(1, MAP_CELL_LEN/4.0f/minimap_factor);
-    const int forward_vector_len = MAX(2, MAP_CELL_LEN/8.0f/minimap_factor);
+    const int player_size = max(1, MAP_CELL_LEN/4.0f/minimap_factor);
+    const int forward_vector_len = max(2, MAP_CELL_LEN/8.0f/minimap_factor);
     const float map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
     const float offset = get_minimap_factor_offset(minimap_factor);
     Vertex pos, end;
@@ -240,4 +237,3 @@ static float get_minimap_factor_offset(const int factor)
     }
     return offset;
 }
-

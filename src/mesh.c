@@ -1,5 +1,4 @@
-#include "../hdr/mesh.h"
-#include "../hdr/gl_functions.h"
+#include "cimmerian.h"
 
 static GLuint VBO; /* Vertex Buffer Object */
 static GLuint VAO; /* Vertex Array Object */
@@ -92,4 +91,3 @@ void free_mesh(void)
     glDeleteVertexArrays(1, &VAO);
     return;
 }
-

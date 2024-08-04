@@ -1,60 +1,57 @@
-#ifndef __GL_FUNCTIONS_H__
-#define __GL_FUNCTIONS_H__
+#ifndef GL_FUNCTIONS_H
+#define GL_FUNCTIONS_H
 
-#ifndef __GL_H__
-#define __GL_H__
 #include <GL/gl.h>
-#endif
-
-#ifndef __GLFW_H__
-#define __GLFW_H__
 #include <GLFW/glfw3.h>
-#endif
-
-typedef void (*GL_ATTACHSHADER)(GLuint program, GLuint shader);
-typedef void (*GL_BINDBUFFER)(GLenum target, GLuint buffer);
-typedef void (*GL_BINDVERTEXARRAY)(GLuint array);
-typedef void (*GL_BUFFERDATA)(GLenum target, GLsizeiptr size, const void* data, GLenum usage);
-typedef void (*GL_COMPILESHADER)(GLuint shader);
-typedef GLuint (*GL_CREATEPROGRAM)(void);
-typedef GLuint (*GL_CREATESHADER)(GLenum shaderType);
-typedef void (*GL_DELETEBUFFERS)(GLsizei n, const GLuint* buffers);
-typedef void (*GL_DELETEPROGRAM)(GLuint program);
-typedef void (*GL_DELETESHADER)(GLuint shader);
-typedef void (*GL_DELETEVERTEXARRAYS)(GLsizei n, const GLuint* arrays);
-typedef void (*GL_ENABLEVERTEXARRAYATTRIB)(GLuint vaobj, GLuint index);
-typedef void (*GL_GENBUFFERS)(GLsizei n, GLuint* buffers);
-typedef void (*GL_GENVERTEXARRAYS)(GLsizei n, GLuint* arrays);
-typedef GLint (*GL_GETUNIFORMLOCATION)(GLuint program, const GLchar* name);
-typedef void (*GL_GETVERTEXATTRIBIUIV)(GLuint index, GLenum pname, GLuint* params);
-typedef void (*GL_LINKPROGRAM)(GLuint program);
-typedef void (*GL_SHADERSOURCE)(GLuint shader, GLsizei count, const GLchar** string, const GLint* length);
-typedef void (*GL_UNIFORM1I)(GLint location, GLint v0);
-typedef void (*GL_USEPROGRAM)(GLuint program);
-typedef void (*GL_VERTEXATTRIBPOINTER)(	GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer);
-
-extern GL_ATTACHSHADER glAttachShader;
-extern GL_BINDBUFFER glBindBuffer;
-extern GL_BINDVERTEXARRAY glBindVertexArray;
-extern GL_BUFFERDATA glBufferData;
-extern GL_COMPILESHADER glCompileShader;
-extern GL_CREATEPROGRAM glCreateProgram;
-extern GL_CREATESHADER glCreateShader;
-extern GL_DELETEBUFFERS glDeleteBuffers;
-extern GL_DELETEPROGRAM glDeleteProgram;
-extern GL_DELETESHADER glDeleteShader;
-extern GL_DELETEVERTEXARRAYS glDeleteVertexArrays;
-extern GL_ENABLEVERTEXARRAYATTRIB glEnableVertexArrayAttrib;
-extern GL_GENBUFFERS glGenBuffers;
-extern GL_GENVERTEXARRAYS glGenVertexArrays;
-extern GL_GETUNIFORMLOCATION glGetUniformLocation;
-extern GL_GETVERTEXATTRIBIUIV glGetVertexAttribIuiv;
-extern GL_LINKPROGRAM glLinkProgram;
-extern GL_SHADERSOURCE glShaderSource;
-extern GL_UNIFORM1I glUniform1i;
-extern GL_USEPROGRAM glUseProgram;
-extern GL_VERTEXATTRIBPOINTER glVertexAttribPointer;
 
 int init_gl_functions(void);
+
+typedef void   (*GL_AS)(GLuint program, GLuint shader);
+typedef void   (*GL_BB)(GLenum target, GLuint buffer);
+typedef void   (*GL_BVA)(GLuint array);
+typedef void   (*GL_BD)(GLenum target, GLsizeiptr size, const void* data, 
+                        GLenum usage);
+typedef void   (*GL_COS)(GLuint shader);
+typedef GLuint (*GL_CP)(void);
+typedef GLuint (*GL_CS)(GLenum shaderType);
+typedef void   (*GL_DB)(GLsizei n, const GLuint* buffers);
+typedef void   (*GL_DP)(GLuint program);
+typedef void   (*GL_DS)(GLuint shader);
+typedef void   (*GL_DVA)(GLsizei n, const GLuint* arrays);
+typedef void   (*GL_EVAA)(GLuint vaobj, GLuint index);
+typedef void   (*GL_GB)(GLsizei n, GLuint* buffers);
+typedef void   (*GL_GVA)(GLsizei n, GLuint* arrays);
+typedef GLint  (*GL_GUL)(GLuint program, const GLchar* name);
+typedef void   (*GL_GVAI)(GLuint index, GLenum pname, GLuint* params);
+typedef void   (*GL_LP)(GLuint program);
+typedef void   (*GL_SS)(GLuint shader, GLsizei count, const GLchar** string, 
+                        const GLint* length);
+typedef void   (*GL_U1I)(GLint location, GLint v0);
+typedef void   (*GL_UP)(GLuint program);
+typedef void   (*GL_VAP)(GLuint index, GLint size, GLenum type, 
+                         GLboolean normalized, GLsizei stride, 
+                         const void* pointer);
+
+extern GL_AS   glAttachShader;
+extern GL_BB   glBindBuffer;
+extern GL_BVA  glBindVertexArray;
+extern GL_BD   glBufferData;
+extern GL_COS  glCompileShader;
+extern GL_CP   glCreateProgram;
+extern GL_CS   glCreateShader;
+extern GL_DB   glDeleteBuffers;
+extern GL_DP   glDeleteProgram;
+extern GL_DS   glDeleteShader;
+extern GL_DVA  glDeleteVertexArrays;
+extern GL_EVAA glEnableVertexArrayAttrib;
+extern GL_GB   glGenBuffers;
+extern GL_GVA  glGenVertexArrays;
+extern GL_GUL  glGetUniformLocation;
+extern GL_GVAI glGetVertexAttribIuiv;
+extern GL_LP   glLinkProgram;
+extern GL_SS   glShaderSource;
+extern GL_U1I  glUniform1i;
+extern GL_UP   glUseProgram;
+extern GL_VAP  glVertexAttribPointer;
 
 #endif

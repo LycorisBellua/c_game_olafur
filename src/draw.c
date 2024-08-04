@@ -1,5 +1,4 @@
-#include "../hdr/draw.h"
-#include "../hdr/maths.h"
+#include "cimmerian.h"
 
 static void draw_rectangle_full(Texture* t, Vertex v, int width, int height);
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height);
@@ -75,8 +74,8 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
 
         if (dir.y < 0)
             swap(&v1.coords.y, &v2.coords.y);
-        v1.coords.y = CLAMP_MIN(v1.coords.y, 0);
-        v2.coords.y = CLAMP_MAX(v2.coords.y, t->height-1);
+        v1.coords.y = clamp_min(v1.coords.y, 0);
+        v2.coords.y = clamp_max(v2.coords.y, t->height-1);
 
         draw_line_vertical_unsafe(t, v1, v2.coords.y);
     }
@@ -87,8 +86,8 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
 
         if (dir.x < 0)
             swap(&v1.coords.x, &v2.coords.x);
-        v1.coords.x = CLAMP_MIN(v1.coords.x, 0);
-        v2.coords.x = CLAMP_MAX(v2.coords.x, t->width-1);
+        v1.coords.x = clamp_min(v1.coords.x, 0);
+        v2.coords.x = clamp_max(v2.coords.x, t->width-1);
 
         draw_line_horizontal_unsafe(t, v1, v2.coords.x);
     }
@@ -186,7 +185,7 @@ void draw_line_diagonal(Texture* t, Vertex v, Vector dir)
     int steps;
     VectorF coords, increment;
 
-    steps = MAX(ABS(dir.x), ABS(dir.y));
+    steps = max(abs(dir.x), abs(dir.y));
     coords.x = v.coords.x;
     coords.y = v.coords.y;
     increment.x = dir.x / (float)steps;
@@ -208,7 +207,7 @@ void draw_line_diagonal_unsafe(Texture* t, Vertex v, Vector dir)
     int steps;
     VectorF coords, increment;
 
-    steps = MAX(ABS(dir.x), ABS(dir.y));
+    steps = max(abs(dir.x), abs(dir.y));
     coords.x = v.coords.x;
     coords.y = v.coords.y;
     increment.x = dir.x / (float)steps;
@@ -874,8 +873,8 @@ static void clamp_and_draw_diagonal_line(Texture* t, Vertex* p1, Vertex* p2,
     }
 
     /* Line completely out of bounds */
-    if (ABS(p1_out_of_bounds.x + p2_out_of_bounds.x) == 2 
-            || ABS(p1_out_of_bounds.y + p2_out_of_bounds.y) == 2)
+    if (abs(p1_out_of_bounds.x + p2_out_of_bounds.x) == 2 
+            || abs(p1_out_of_bounds.y + p2_out_of_bounds.y) == 2)
         return;
 
     new_p1.x = p1->coords.x;
@@ -937,4 +936,3 @@ static void clamp_and_draw_diagonal_line(Texture* t, Vertex* p1, Vertex* p2,
     }
     return;
 }
-

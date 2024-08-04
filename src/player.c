@@ -1,7 +1,4 @@
-#include "../hdr/player.h"
-#include "../hdr/input.h"
-#include "../hdr/time.h"
-#include "../hdr/maths.h"
+#include "cimmerian.h"
 
 Player player = {0};
 
@@ -52,7 +49,7 @@ static void update_rotation(void)
     if (rotation_action)
     {
         player.angle += rotation_action * RAD_1 * speed * delta_time;
-        player.angle = get_safe_angle(clamp_radians(player.angle));
+        player.angle = get_safe_angle(clamp_rad(player.angle));
 
         /*
             The values returned by the sine and cosine operations are 
@@ -102,4 +99,3 @@ static void update_position(const Map* m)
     player.pos = pos;
     return;
 }
-
