@@ -219,10 +219,13 @@ static void fix_fisheye_effect(float* distance, const float ray_angle)
 static void draw_wall(const GLubyte color, const float distance, const int ray)
 {
     const float height = WALL_HEIGHT / distance;
-    Vertex v;
-    v.coords.x = TEX_MAIN->width - ray;
-    v.coords.y = (TEX_MAIN->height - height) / 2;
-    v.color = color;
-    draw_line_vertical(TEX_MAIN, v, (TEX_MAIN->height + height) / 2);
+    Vertex v1, v2;
+    v1.coords.x = TEX_MAIN->width - ray;
+    v1.coords.y = (TEX_MAIN->height - height) / 2;
+    v1.color = color;
+    v2.coords.x = v1.coords.x;
+    v2.coords.y = v1.coords.y + (TEX_MAIN->height + height) / 2;
+    v2.color = color;
+    draw_line(TEX_MAIN, v1, v2);
     return;
 }

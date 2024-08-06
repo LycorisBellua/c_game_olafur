@@ -1,18 +1,47 @@
 #include "cimmerian.h"
 
-int main(int argc, char** argv)
+static GLFWwindow* init(const char* title);
+static void draw(void);
+static void deinit(void);
+
+int main(void)
 {
     const char* title = "Cimmerian";
-    const GLubyte background_color = get_color_from_rgb(MAX_RED/3, MAX_GREEN/3, 
-        MAX_BLUE/3); /* Dark grey */
-    GLFWwindow* window = get_window(title);
+    GLFWwindow* window = init(title);
+    
+    if (!window)
+        return EXIT_FAILURE;
 
     glfwSetKeyCallback(window, physical_key_callback);
     glfwSetScrollCallback(window, scroll_callback);
-    enable_vsync(1);
 
+    while (!glfwWindowShouldClose(window))
+    {
+        update_time_variables();
+        /* printf("FPS: %.2f\n", fps_count); */
+
+        clear_drawing(TEX_MAIN);
+        draw();
+
+        update_player_transform(map_test);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    deinit();
+    return EXIT_SUCCESS;
+}
+
+static GLFWwindow* init(const char* title)
+{
+    GLFWwindow* window;
+
+    window = get_window(title);
     if (!create_shader_program())
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+        return 0;
+    }
     else
     {
         create_uniform();
@@ -21,37 +50,26 @@ int main(int argc, char** argv)
         create_textures();
         initialize_interfaces();
         initialize_maps();
-
         use_texture(TEX_MAIN);
-        execute_cli_options(argc, argv);
     }
+    return window;
+}
 
-    while (!glfwWindowShouldClose(window))
-    {
-        update_time_variables();
-        /*
-        printf("FPS: %.2f\n", fps_count);
-        */
+static void draw(void)
+{
+    active_interface->draw();
+    save_drawing(TEX_MAIN);
+    render_mesh();
+    return;
+}
 
-        /* Rendering */
-        glClear(GL_COLOR_BUFFER_BIT);
-        clear_drawing(TEX_MAIN, background_color);
-        active_interface->draw();
-        save_drawing(TEX_MAIN);
-        render_mesh();
-
-        /* Input */
-        update_player_transform(map_test);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
+static void deinit(void)
+{
     glfwTerminate();
     free_shader_program();
     free_uniform();
     free_mesh();
     free_textures();
     free_maps();
-    return EXIT_SUCCESS;
+    return;
 }

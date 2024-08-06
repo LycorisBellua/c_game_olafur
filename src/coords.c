@@ -51,16 +51,6 @@ Vector get_direction(Vector v1, Vector v2)
     return dir;
 }
 
-Vector get_direction_unsafe(Vector v1, Vector v2)
-{
-    Vector dir;
-
-    dir.x = v2.x - v1.x;
-    dir.y = v2.y - v1.y;
-
-    return dir;
-}
-
 VectorF get_direction_float(VectorF v1, VectorF v2)
 {
     VectorF dir;

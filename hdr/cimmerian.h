@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include "gl_functions.h"
@@ -151,11 +152,6 @@ void set_red_channel(GLubyte* color, const GLubyte value);
 void set_green_channel(GLubyte* color, const GLubyte value);
 void set_blue_channel(GLubyte* color, const GLubyte value);
 
-/* Command Line ------------------------------------------------------------- */
-
-void execute_cli_options(int argc, char** argv);
-void enable_vsync(const int enable);
-
 /* Coords ------------------------------------------------------------------- */
 
 int get_coord_x(Texture* t, float normalized);
@@ -164,34 +160,16 @@ float get_coord_x_norm(Texture* t, int coord);
 float get_coord_y_norm(Texture* t, int coord);
 int is_coord_out_of_bounds(int axis_length, int coord);
 Vector get_direction(Vector v1, Vector v2);
-Vector get_direction_unsafe(Vector v1, Vector v2);
 VectorF get_direction_float(VectorF v1, VectorF v2);
 float get_distance(const VectorF a, const VectorF b);
 
 /* Draw --------------------------------------------------------------------- */
 
 void draw_point(Texture* t, GLubyte color, int x, int y);
-void draw_point_unsafe(Texture* t, GLubyte color, int x, int y);
 void draw_line(Texture* t, Vertex v1, Vertex v2);
-void draw_line_unsafe(Texture* t, Vertex v1, Vertex v2);
-void draw_line_horizontal(Texture* t, Vertex v, int last_x);
-void draw_line_horizontal_unsafe(Texture* t, Vertex v, int last_x);
-void draw_line_vertical(Texture* t, Vertex v, int last_y);
-void draw_line_vertical_unsafe(Texture* t, Vertex v, int last_y);
-void draw_line_diagonal(Texture* t, Vertex v, Vector dir);
-void draw_line_diagonal_unsafe(Texture* t, Vertex v, Vector dir);
 void draw_rectangle(Texture* t, int full, Vertex v, int width, int height);
-void draw_rectangle_unsafe(Texture* t, int full, Vertex v, int width, 
-    int height);
-void draw_rectangle_full_unsafe(Texture* t, Vertex v, int width, int height);
-void draw_rectangle_empty_unsafe(Texture* t, Vertex v, int width, int height);
 void draw_circle(Texture* t, int full, Vertex v, int radius);
-void draw_circle_unsafe(Texture* t, int full, Vertex v, int radius);
-void draw_circle_full_unsafe(Texture* t, Vertex center, int radius);
-void draw_circle_empty_unsafe(Texture* t, Vertex center, int radius);
 void draw_shape(Texture* t, int full, Vertex arr[], int len);
-void draw_shape_unsafe(Texture* t, int full, Vertex arr[], int len);
-void draw_shape_full_unsafe(Texture* t, Vertex arr[], int len);
 
 void draw_test_corners(Texture* t);
 void draw_test_center(Texture* t);
@@ -268,7 +246,7 @@ void free_shader_program(void);
 
 void create_textures(void);
 void use_texture(const Texture* t);
-void clear_drawing(Texture* t, GLubyte value);
+void clear_drawing(Texture* t);
 void save_drawing(const Texture* t);
 void free_textures(void);
 
