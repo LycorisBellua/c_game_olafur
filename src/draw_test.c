@@ -1,30 +1,36 @@
 #include "cimmerian.h"
 
+void draw_test(void)
+{
+    draw_test_shapes(TEX_MAIN);
+    return ;
+}
+
 void draw_test_corners(Texture* t)
 {
     Vertex v;
 
-    /* Bottom left */
+    /* Top left */
     v.coords.x = 0;
     v.coords.y = 0;
     v.color = colors[COLOR_WHITE];
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
-    /* Top left */
-    v.coords.x = 0;
-    v.coords.y = get_coord_y(t, 1);
+    /* Top right */
+    v.coords.x = get_coord_x(t, 1);
+    v.coords.y = 0;
     v.color = colors[COLOR_RED];
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
-    /* Top right */
+    /* Bottom right */
     v.coords.x = get_coord_x(t, 1);
     v.coords.y = get_coord_y(t, 1);
     v.color = colors[COLOR_GREEN];
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
-    /* Bottom right */
-    v.coords.x = get_coord_x(t, 1);
-    v.coords.y = 0;
+    /* Bottom left */
+    v.coords.x = 0;
+    v.coords.y = get_coord_y(t, 1);
     v.color = colors[COLOR_BLUE];
     draw_point(t, v.color, v.coords.x, v.coords.y);
     return;
@@ -34,27 +40,27 @@ void draw_test_center(Texture* t)
 {
     Vertex v;
 
-    /* Bottom left */
+    /* Top left */
     v.coords.x = get_coord_x(t, 0.5f);
     v.coords.y = get_coord_y(t, 0.5f);
     v.color = colors[COLOR_WHITE];
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
-    /* Top left */
-    v.coords.x = get_coord_x(t, 0.5f);
-    v.coords.y = get_coord_y(t, 0.5f) + 1;
+    /* Top right */
+    v.coords.x = get_coord_x(t, 0.5f) + 1;
+    v.coords.y = get_coord_y(t, 0.5f);
     v.color = colors[COLOR_RED];
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
-    /* Top right */
+    /* Bottom right */
     v.coords.x = get_coord_x(t, 0.5f) + 1;
     v.coords.y = get_coord_y(t, 0.5f) + 1;
     v.color = colors[COLOR_GREEN];
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
-    /* Bottom right */
-    v.coords.x = get_coord_x(t, 0.5f) + 1;
-    v.coords.y = get_coord_y(t, 0.5f);
+    /* Bottom left */
+    v.coords.x = get_coord_x(t, 0.5f);
+    v.coords.y = get_coord_y(t, 0.5f) + 1;
     v.color = colors[COLOR_BLUE];
     draw_point(t, v.color, v.coords.x, v.coords.y);
     return;
@@ -78,15 +84,11 @@ void draw_test_lines(Texture* t)
 
     v1.coords.x -= normalize(v2.coords.x - v1.coords.x)*2;
     v1.coords.y -= normalize(v2.coords.y - v1.coords.y)*2;
-    if (!is_coord_out_of_bounds(t->width, v1.coords.x) 
-        && !is_coord_out_of_bounds(t->height, v1.coords.y))
-        draw_point(t, v1.color, v1.coords.x, v1.coords.y);
+    draw_point(t, v1.color, v1.coords.x, v1.coords.y);
 
     v2.coords.x -= normalize(v1.coords.x - v2.coords.x)*2;
     v2.coords.y -= normalize(v1.coords.y - v2.coords.y)*2;
-    if (!is_coord_out_of_bounds(t->width, v2.coords.x) 
-        && !is_coord_out_of_bounds(t->height, v2.coords.y))
-        draw_point(t, v2.color, v2.coords.x, v2.coords.y);
+    draw_point(t, v2.color, v2.coords.x, v2.coords.y);
     return;
 }
 
@@ -94,13 +96,13 @@ void draw_test_rectangles(Texture* t)
 {
     Vertex v1, v2;
 
-    v1.coords.x = get_coord_x(t, 0.1f) - 1;
-    v1.coords.y = get_coord_y(t, 0.33f) - 1;
+    v1.coords.x = get_coord_x(t, 0.1f);
+    v1.coords.y = get_coord_y(t, 0.33f);
     v1.color = colors[COLOR_WHITE];
     draw_rectangle(t, 1, v1, 100, 100);
 
-    v2.coords.x = get_coord_x(t, 0.1f);
-    v2.coords.y = get_coord_y(t, 0.33f) - 2;
+    v2.coords.x = get_coord_x(t, 0.1f) + 2;
+    v2.coords.y = get_coord_y(t, 0.33f) + 2;
     v2.color = colors[COLOR_RED];
     draw_rectangle(t, 0, v2, 100, 100);
     return;
@@ -130,12 +132,12 @@ void draw_test_shapes(Texture* t)
     v[1].color = v[0].color;
     v[2].color = v[0].color;
 
-    v[0].coords.x = get_coord_x(t, 0.25f);
+    v[0].coords.x = get_coord_x(t, 0.50f);
     v[0].coords.y = get_coord_y(t, 0.25f);
-    v[1].coords.x = get_coord_x(t, 0.50f);
+    v[1].coords.x = get_coord_x(t, 0.75f);
     v[1].coords.y = get_coord_y(t, 0.75f);
-    v[2].coords.x = get_coord_x(t, 0.75f);
-    v[2].coords.y = get_coord_y(t, 0.25f);
+    v[2].coords.x = get_coord_x(t, 0.25f);
+    v[2].coords.y = get_coord_y(t, 0.75f);
 
     /* Concave and self-intercepting */
     /*
@@ -167,7 +169,7 @@ void draw_test_gradient_line(Texture* t)
     int i;
     const int dist = 200;
     const int half_dist = dist/2;
-    const float perc = 100.0f / dist;
+    const double perc = 100.0f / dist;
     GLubyte first_color, second_color, color_change;
     Vector v;
     v.x = get_coord_x(t, 0.1f);
@@ -228,8 +230,8 @@ void draw_test_gradient(Texture* t)
     {
         for (v.coords.x = 0; v.coords.x < t->width; ++v.coords.x)
         {
-            set_red_channel(&v.color, v.coords.x * MAX_RED / t->width);
-            set_green_channel(&v.color, v.coords.y * MAX_GREEN / t->height);
+            set_red_channel(&v.color, v.coords.y * MAX_RED / t->height);
+            set_green_channel(&v.color, v.coords.x * MAX_GREEN / t->width);
             draw_point(t, v.color, v.coords.x, v.coords.y);
         }
     }

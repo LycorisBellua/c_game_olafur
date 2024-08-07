@@ -23,7 +23,7 @@ int main(void)
         clear_drawing(TEX_MAIN);
         draw();
 
-        update_player_transform(map_test);
+        /* update_player_transform(map_test); */
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -16,12 +16,12 @@ static const GLubyte color_horizontal_wall = 101;
 static void draw_floor_and_ceiling(void);
 static int is_player_out_of_bounds(const VectorF pos, const Map* m);
 static void raycasting(const Map* m);
-static float get_horizontal_distance(const Map* m, const int map_val, 
-    const float tan, const float ray_angle);
-static float get_vertical_distance(const Map* m, const int map_val, 
-    const float tan, const float ray_angle);
-static void fix_fisheye_effect(float* distance, const float ray_angle);
-static void draw_wall(const GLubyte color, const float distance, const int ray);
+static double get_horizontal_distance(const Map* m, const int map_val, 
+    const double tan, const double ray_angle);
+static double get_vertical_distance(const Map* m, const int map_val, 
+    const double tan, const double ray_angle);
+static void fix_fisheye_effect(double* distance, const double ray_angle);
+static void draw_wall(const GLubyte color, const double distance, const int ray);
 
 void draw_game(void)
 {
@@ -65,11 +65,11 @@ static int is_player_out_of_bounds(const VectorF pos, const Map* m)
 
 static void raycasting(const Map* m)
 {
-    const float ray_increment = RAD_1/(TEX_MAIN->width/FOV);
+    const double ray_increment = RAD_1/(TEX_MAIN->width/FOV);
     const int max_distance = MAP_CELL_LEN * MAX_CELL_AMOUNT;
     /* `ray_angle = player.angle` for center */
-    float ray_angle = clamp_rad(player.angle + FOV/2.0f * RAD_1);
-    float tan, horizontal, vertical, distance;
+    double ray_angle = clamp_rad(player.angle + FOV/2.0f * RAD_1);
+    double tan, horizontal, vertical, distance;
     int ray, color;
 
     for (ray = TEX_MAIN->width; ray > 0; --ray)
@@ -102,11 +102,11 @@ static void raycasting(const Map* m)
     return;
 }
 
-static float get_horizontal_distance(const Map* m, const int map_val, 
-    const float tan, const float ray_angle)
+static double get_horizontal_distance(const Map* m, const int map_val, 
+    const double tan, const double ray_angle)
 {
-    const float atan = -1/tan;
-    float distance = 1000000;
+    const double atan = -1/tan;
+    double distance = 1000000;
     int depth_of_field = 0;
     int map_index;
     VectorF hit, offset;
@@ -156,11 +156,11 @@ static float get_horizontal_distance(const Map* m, const int map_val,
     return distance;
 }
 
-static float get_vertical_distance(const Map* m, const int map_val, 
-    const float tan, const float ray_angle)
+static double get_vertical_distance(const Map* m, const int map_val, 
+    const double tan, const double ray_angle)
 {
-    const float ntan = -tan;
-    float distance = 1000000;
+    const double ntan = -tan;
+    double distance = 1000000;
     int depth_of_field = 0;
     int map_index;
     VectorF hit, offset;
@@ -210,15 +210,15 @@ static float get_vertical_distance(const Map* m, const int map_val,
     return distance;
 }
 
-static void fix_fisheye_effect(float* distance, const float ray_angle)
+static void fix_fisheye_effect(double* distance, const double ray_angle)
 {
     *distance *= f_cos(clamp_rad(player.angle - ray_angle));
     return;
 }
 
-static void draw_wall(const GLubyte color, const float distance, const int ray)
+static void draw_wall(const GLubyte color, const double distance, const int ray)
 {
-    const float height = WALL_HEIGHT / distance;
+    const double height = WALL_HEIGHT / distance;
     Vertex v1, v2;
     v1.coords.x = TEX_MAIN->width - ray;
     v1.coords.y = (TEX_MAIN->height - height) / 2;

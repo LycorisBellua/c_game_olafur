@@ -51,8 +51,8 @@ typedef struct
 
 typedef struct
 {
-    float x;
-    float y;
+    double x;
+    double y;
 } VectorF;
 
 typedef struct
@@ -76,7 +76,7 @@ typedef struct
     int width;
     int height;
     VectorF start_pos;
-    float start_angle;
+    double start_angle;
     int* data;
 } Map;
 
@@ -84,7 +84,7 @@ typedef struct
 {
     VectorF pos;
     VectorF delta;
-    float angle;
+    double angle;
     int map_index;
 } Player;
 
@@ -103,7 +103,7 @@ typedef struct
 {
     int monitor_width;
     int monitor_height;
-    float aspect_ratio;
+    double aspect_ratio;
 
     int window_width_default;
     int window_height_default;
@@ -131,8 +131,8 @@ extern GLuint shader_program;
 /* Textures */
 extern Texture* textures[NBR_TEXTURES];
 /* Time */
-extern float delta_time;
-extern float fps_count;
+extern double delta_time;
+extern double fps_count;
 /* Windowing */
 extern Resolution res;
 
@@ -154,14 +154,14 @@ void set_blue_channel(GLubyte* color, const GLubyte value);
 
 /* Coords ------------------------------------------------------------------- */
 
-int get_coord_x(Texture* t, float normalized);
-int get_coord_y(Texture* t, float normalized);
-float get_coord_x_norm(Texture* t, int coord);
-float get_coord_y_norm(Texture* t, int coord);
+int get_coord_x(Texture* t, double normalized);
+int get_coord_y(Texture* t, double normalized);
+double get_coord_x_norm(Texture* t, int coord);
+double get_coord_y_norm(Texture* t, int coord);
 int is_coord_out_of_bounds(int axis_length, int coord);
 Vector get_direction(Vector v1, Vector v2);
-VectorF get_direction_float(VectorF v1, VectorF v2);
-float get_distance(const VectorF a, const VectorF b);
+VectorF get_direction_double(VectorF v1, VectorF v2);
+double get_distance(const VectorF a, const VectorF b);
 
 /* Draw --------------------------------------------------------------------- */
 
@@ -171,6 +171,7 @@ void draw_rectangle(Texture* t, int full, Vertex v, int width, int height);
 void draw_circle(Texture* t, int full, Vertex v, int radius);
 void draw_shape(Texture* t, int full, Vertex arr[], int len);
 
+void draw_test(void);
 void draw_test_corners(Texture* t);
 void draw_test_center(Texture* t);
 void draw_test_lines(Texture* t);

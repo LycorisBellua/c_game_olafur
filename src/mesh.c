@@ -4,7 +4,7 @@ static GLuint VBO; /* Vertex Buffer Object */
 static GLuint VAO; /* Vertex Array Object */
 static GLuint EBO; /* Element Buffer Object */
 
-static GLfloat vertex_data[] =
+static GLdouble vertex_data[] =
 {
      /* Pos */       /* Tex Coord */
     -1.0f, -1.0f,    0.0f, 1.0f,
@@ -45,16 +45,16 @@ void create_mesh(void)
 
         - `attr_nbr` is the number of attributes (pos and tex coord).
         - `attr_len` being 2 means vertex_data is organized in vec2.
-        - `attr_nbr * attr_len * sizeof(GLfloat)` is the stride, aka how 
+        - `attr_nbr * attr_len * sizeof(GLdouble)` is the stride, aka how 
         many bytes a vertex is made of in total.
         - Last arg is, in the stride, a pointer to the attribute.
     */
     for (i = 0; i < attr_nbr; ++i)
     {
         glEnableVertexArrayAttrib(VAO, i);
-        glVertexAttribPointer(i, attr_nbr, GL_FLOAT, GL_FALSE, 
-            attr_nbr * attr_len * sizeof(GLfloat), 
-            (const void*)(attr_len * i * sizeof(GLfloat)));
+        glVertexAttribPointer(i, attr_nbr, GL_DOUBLE, GL_FALSE, 
+            attr_nbr * attr_len * sizeof(GLdouble), 
+            (const void*)(attr_len * i * sizeof(GLdouble)));
     }
     return;
 }

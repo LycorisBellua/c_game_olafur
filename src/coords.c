@@ -1,23 +1,23 @@
 #include "cimmerian.h"
 
-int get_coord_x(Texture* t, float normalized)
+int get_coord_x(Texture* t, double normalized)
 {
     return (t->width-1) * normalized;
 }
 
-int get_coord_y(Texture* t, float normalized)
+int get_coord_y(Texture* t, double normalized)
 {
     return (t->height-1) * normalized;
 }
 
-float get_coord_x_norm(Texture* t, int coord)
+double get_coord_x_norm(Texture* t, int coord)
 {
-    return (float)coord / (t->width-1);
+    return (double)coord / (t->width-1);
 }
 
-float get_coord_y_norm(Texture* t, int coord)
+double get_coord_y_norm(Texture* t, int coord)
 {
-    return (float)coord / (t->height-1);
+    return (double)coord / (t->height-1);
 }
 
 int is_coord_out_of_bounds(int axis_length, int coord)
@@ -51,7 +51,7 @@ Vector get_direction(Vector v1, Vector v2)
     return dir;
 }
 
-VectorF get_direction_float(VectorF v1, VectorF v2)
+VectorF get_direction_double(VectorF v1, VectorF v2)
 {
     VectorF dir;
 
@@ -61,9 +61,9 @@ VectorF get_direction_float(VectorF v1, VectorF v2)
     return dir;
 }
 
-float get_distance(const VectorF a, const VectorF b)
+double get_distance(const VectorF a, const VectorF b)
 {
     /* Hypotenuse, therefore Pythagorean theorem */
-    VectorF dir = get_direction_float(a, b);
+    VectorF dir = get_direction_double(a, b);
     return f_sqrt(dir.x * dir.x + dir.y * dir.y);
 }

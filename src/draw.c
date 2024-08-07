@@ -8,9 +8,9 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len);
 
 /*
     The coordinate parameters are individual ints and not a vector, so 
-    that either a Vector or VectorF can be used. Of course, float coords 
+    that either a Vector or VectorF can be used. Of course, double coords 
     are converted into integers through being passed as arguments to this 
-    function. Float coords are needed for drawing diagonal lines.
+    function. double coords are needed for drawing diagonal lines.
 
     As a bonus, being able to pass values directly into draw_point() 
     instead of declaring a vector variable is neat. May be useful.
@@ -35,27 +35,19 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
 {
     Vector dir;
     int steps;
-    int half_steps;
     VectorF coords, increment;
 
     dir = get_direction(v1.coords, v2.coords);
     steps = max(abs(dir.x), abs(dir.y));
-    half_steps = steps / 2;
     coords.x = v1.coords.x;
     coords.y = v1.coords.y;
-    increment.x = dir.x / (float)steps;
-    increment.y = dir.y / (float)steps;
+    increment.x = dir.x / (double)steps;
+    increment.y = dir.y / (double)steps;
     ++steps;
 
-    while (steps-- > half_steps)
-    {
-        draw_point(t, v1.color, coords.x, coords.y);
-        coords.x += increment.x;
-        coords.y += increment.y;
-    }
     while (steps-- > 0)
     {
-        draw_point(t, v2.color, coords.x, coords.y);
+        draw_point(t, v1.color, coords.x, coords.y);
         coords.x += increment.x;
         coords.y += increment.y;
     }
@@ -119,27 +111,31 @@ static void draw_rectangle_full(Texture* t, Vertex v, int width, int height)
 static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height)
 {
     Vertex v2;
-    v2.color = v.color;
+    Vertex v3;
+    Vertex v4;
 
-    /* Top */
+    v2.color = v.color;
+    v3.color = v.color;
+    v4.color = v.color;
+
     v2.coords.x = v.coords.x + width-1;
     v2.coords.y = v.coords.y;
-    draw_line(t, v, v2);
+    v3.coords.x = v.coords.x;
+    v3.coords.y = v.coords.y + height-1;
+    v4.coords.x = v.coords.x + width-1;
+    v4.coords.y = v.coords.y + height-1;
 
-    /* Bottom */
-    v2.coords.y += height-1;
-    v.coords.y = v2.coords.y;
-    draw_line(t, v, v2);
-
-    /* Left */
-    v.coords.y -= height-1;
-    v2.coords.x -= width-1;
+    /* Top */
     draw_line(t, v, v2);
 
     /* Right */
-    v.coords.x += width-1;
-    v2.coords.x += width-1;
-    draw_line(t, v, v2);
+    draw_line(t, v2, v4);
+
+    /* Bottom */
+    draw_line(t, v3, v4);
+
+    /* Left */
+    draw_line(t, v, v3);
     return;
 }
 

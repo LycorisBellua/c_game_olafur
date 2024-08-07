@@ -21,7 +21,7 @@ void draw_main_menu(void)
 
     /* "Start Game" --------------------------------------------------------- */
     btn[0].coords.x = get_coord_x(TEX_MAIN, 0.5f - btn_size_norm.x/2) + 1;
-    btn[0].coords.y = get_coord_y(TEX_MAIN, 0.65f - btn_size_norm.y/2) - 1;
+    btn[0].coords.y = get_coord_y(TEX_MAIN, 0.2f - btn_size_norm.y/2) + 1;
 
     if (index_btn_selected == 0)
     {
@@ -33,7 +33,7 @@ void draw_main_menu(void)
         btn[0].color = color_default;
 
     --btn[0].coords.x;
-    ++btn[0].coords.y;
+    --btn[0].coords.y;
     draw_rectangle(TEX_MAIN, 1, btn[0], btn_size.x, btn_size.y);
 
     btn[0].color = 0;
@@ -41,7 +41,7 @@ void draw_main_menu(void)
 
     /* "Options" ------------------------------------------------------------ */
     btn[1].coords.x = get_coord_x(TEX_MAIN, 0.5f - btn_size_norm.x/2) + 1;
-    btn[1].coords.y = get_coord_y(TEX_MAIN, 0.4f - btn_size_norm.y/2) - 1;
+    btn[1].coords.y = get_coord_y(TEX_MAIN, 0.45f - btn_size_norm.y/2) + 1;
 
     if (index_btn_selected == 1)
     {
@@ -53,7 +53,7 @@ void draw_main_menu(void)
         btn[1].color = color_default;
 
     --btn[1].coords.x;
-    ++btn[1].coords.y;
+    --btn[1].coords.y;
     draw_rectangle(TEX_MAIN, 1, btn[1], btn_size.x, btn_size.y);
 
     btn[1].color = 0;
@@ -61,7 +61,7 @@ void draw_main_menu(void)
 
     /* "Quit" --------------------------------------------------------------- */
     btn[2].coords.x = get_coord_x(TEX_MAIN, 0.5f - btn_size_norm.x/2) + 1;
-    btn[2].coords.y = get_coord_y(TEX_MAIN, 0.15f - btn_size_norm.y/2) - 1;
+    btn[2].coords.y = get_coord_y(TEX_MAIN, 0.70f - btn_size_norm.y/2) + 1;
 
     if (index_btn_selected == 2)
     {
@@ -73,7 +73,7 @@ void draw_main_menu(void)
         btn[2].color = color_default;
 
     --btn[2].coords.x;
-    ++btn[2].coords.y;
+    --btn[2].coords.y;
     draw_rectangle(TEX_MAIN, 1, btn[2], btn_size.x, btn_size.y);
 
     btn[2].color = 0;

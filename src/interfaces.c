@@ -13,7 +13,8 @@ void initialize_interfaces(void)
     main_menu_interface.next = &game_interface;
 
     game_interface.nav_ui = 0;
-    game_interface.draw = draw_game;
+    /* game_interface.draw = draw_game; */
+    game_interface.draw = draw_test;
     game_interface.reset_input = reset_global_coordinates;
     game_interface.previous = &main_menu_interface;
     game_interface.next = 0;

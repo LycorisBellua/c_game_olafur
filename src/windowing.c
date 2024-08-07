@@ -89,7 +89,7 @@ static void set_resolution(const GLFWvidmode* vid_mode)
 {
     res.monitor_width = vid_mode->width;
     res.monitor_height = vid_mode->height;
-    res.aspect_ratio = (float)res.monitor_width / res.monitor_height;
+    res.aspect_ratio = (double)res.monitor_width / res.monitor_height;
 
     /* For monitors that are horizontally very long */
     if (res.aspect_ratio > 16.0/9)

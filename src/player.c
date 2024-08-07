@@ -2,7 +2,7 @@
 
 Player player = {0};
 
-static float get_safe_angle(const float angle);
+static double get_safe_angle(const double angle);
 static void update_rotation(void);
 static void update_position(const Map* m);
 
@@ -23,20 +23,20 @@ void update_player_transform(const Map* m)
     return;
 }
 
-static float get_safe_angle(const float angle)
+static double get_safe_angle(const double angle)
 {
     /* The function is to prevent errors with f_tan in the raycasting */
 
     if (angle <= 0)
         return 0.0001f;
 
-    if (float_equality(RAD_90, angle))
+    if (double_equality(RAD_90, angle))
         return angle - 0.0001f;
     
-    if (float_equality(RAD_180, angle))
+    if (double_equality(RAD_180, angle))
         return angle - 0.0001f;
     
-    if (float_equality(RAD_270, angle))
+    if (double_equality(RAD_270, angle))
         return angle - 0.0001f;
     
     return angle;
@@ -44,7 +44,7 @@ static float get_safe_angle(const float angle)
 
 static void update_rotation(void)
 {
-    const float speed = 30.0f;
+    const double speed = 30.0f;
 
     if (rotation_action)
     {
@@ -63,7 +63,7 @@ static void update_rotation(void)
 
 static void update_position(const Map* m)
 {
-    const float speed = 15.0f;
+    const double speed = 15.0f;
     VectorF pos, size;
     int index;
 

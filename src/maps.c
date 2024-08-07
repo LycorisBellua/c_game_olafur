@@ -11,7 +11,7 @@ static Map* create_map(void);
 static void free_map(Map** map);
 static void draw_map(const Map* m);
 static void draw_player(void);
-static float get_minimap_factor_offset(const int factor);
+static double get_minimap_factor_offset(const int factor);
 
 /* 1 is a wall, 0 is an empty space */
 static int map_default[] = 
@@ -200,8 +200,8 @@ static void draw_player(void)
 {
     const int player_size = max(1, MAP_CELL_LEN/4.0f/minimap_factor);
     const int forward_vector_len = max(2, MAP_CELL_LEN/8.0f/minimap_factor);
-    const float map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
-    const float offset = get_minimap_factor_offset(minimap_factor);
+    const double map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
+    const double offset = get_minimap_factor_offset(minimap_factor);
     Vertex pos, end;
 
     pos.coords.x = map_center + display_offset.x - offset;
@@ -224,10 +224,10 @@ static void draw_player(void)
     return;
 }
 
-static float get_minimap_factor_offset(const int factor)
+static double get_minimap_factor_offset(const int factor)
 {
-    float offset = 0;
-    float quotient, modulus;
+    double offset = 0;
+    double quotient, modulus;
 
     if (factor > 1 && factor % 2)
     {

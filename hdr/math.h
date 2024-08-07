@@ -20,22 +20,22 @@
 #define RAD_360 6.283185307f
 
 int   abs(const int n);
-float f_abs(const float n);
+double f_abs(const double n);
 int   min(const int a, const int b);
 int   max(const int a, const int b);
 int   normalize(const int n);
 int   clamp(const int n, const int min, const int max);
 int   clamp_min(const int n, const int min);
 int   clamp_max(const int n, const int max);
-float deg2rad(const float deg);
-float rad2deg(const float rad);
-float f_sin(const float rad);
-float f_cos(const float rad);
-float f_tan(const float rad);
-float f_sqrt(const float n);
+double deg2rad(const double deg);
+double rad2deg(const double rad);
+double f_sin(const double rad);
+double f_cos(const double rad);
+double f_tan(const double rad);
+double f_sqrt(const double n);
 void  swap(int* a, int* b);
-int   float_equality(float a, float b);
-float clamp_rad(const float rad);
+int   double_equality(double a, double b);
+double clamp_rad(const double rad);
 int	  rng_minmax(int *seed, int min, int max);
 
 #endif
