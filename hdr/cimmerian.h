@@ -10,38 +10,11 @@
 #include "gl_functions.h"
 #include "math.h"
 
-#define NBR_COLORS 256
-#define MAX_RED    7
-#define MAX_GREEN  7
-#define MAX_BLUE   3
-
 #define MAP_CELL_LEN 64
 #define MAX_CELL_AMOUNT 8
 
 #define NBR_TEXTURES 2
 #define TEX_MAIN (textures[0])
-
-/*
-    The color format is RGB332. This means only one byte, composed of 3 bits 
-    for the red channel, 3 bits for the green one, and 2 bits for blue. It 
-    makes for a limited palette in comparison to using 4 bytes per pixel, but 
-    it remains pleasant looking and it's a nice challenge.
-
-    If you want the default color, which is white, do `colors[0]`.
-*/
-/* 
-    The origin of the coordinate system is in the bottom left hand corner.
-    The X axis range is [0, t->width] and the Y axis range is [0, t->height].
-*/
-
-typedef enum
-{
-    COLOR_WHITE = 0,
-    COLOR_RED = 31,
-    COLOR_GREEN = 227,
-    COLOR_BLUE = 252,
-    COLOR_BLACK = 255
-} ColorName;
 
 typedef struct
 {
@@ -57,8 +30,16 @@ typedef struct
 
 typedef struct
 {
+    GLubyte r;
+    GLubyte g;
+    GLubyte b;
+    GLubyte a;
+} Color;
+
+typedef struct
+{
     Vector coords;
-    GLubyte color;
+    Color color;
 } Vertex;
 
 typedef struct Interface Interface;
@@ -115,8 +96,6 @@ typedef struct
     int fullscreen_y;
 } Resolution;
 
-/* Colors */
-extern GLubyte colors[NBR_COLORS];
 /* Input */
 extern int movement_action[3];
 extern int rotation_action;
@@ -138,19 +117,8 @@ extern Resolution res;
 
 /* Colors ------------------------------------------------------------------- */
 
-void create_color_palette(void);
-
-GLubyte get_color_from_hex_code(const char* str);
-GLubyte get_color_from_rgb(const GLubyte r, const GLubyte g, const GLubyte b);
-GLubyte get_red_channel(const GLubyte color);
-GLubyte get_green_channel(const GLubyte color);
-GLubyte get_blue_channel(const GLubyte color);
-
-void set_color_from_rgb(GLubyte* color, const GLubyte r, const GLubyte g, 
-    const GLubyte b);
-void set_red_channel(GLubyte* color, const GLubyte value);
-void set_green_channel(GLubyte* color, const GLubyte value);
-void set_blue_channel(GLubyte* color, const GLubyte value);
+Color get_color_from_hex_code(const char* str);
+Color get_color(const GLubyte r, const GLubyte g, const GLubyte b);
 
 /* Coords ------------------------------------------------------------------- */
 
@@ -165,7 +133,7 @@ double get_distance(const VectorF a, const VectorF b);
 
 /* Draw --------------------------------------------------------------------- */
 
-void draw_point(Texture* t, GLubyte color, int x, int y);
+void draw_point(Texture* t, Color color, int x, int y);
 void draw_line(Texture* t, Vertex v1, Vertex v2);
 void draw_rectangle(Texture* t, int full, Vertex v, int width, int height);
 void draw_circle(Texture* t, int full, Vertex v, int radius);
@@ -180,7 +148,6 @@ void draw_test_circles(Texture* t);
 void draw_test_shapes(Texture* t);
 void draw_test_gradient_line(Texture* t);
 void draw_test_gradient(Texture* t);
-void draw_palette(Texture* t);
 
 /* Files -------------------------------------------------------------------- */
 

@@ -1,6 +1,6 @@
 # Cimmerian
 
-*Cimmerian* is a pseudo 3D game written in C89 and similar to the likes of Wolfenstein 3D. Since *Cimmerian* is of retro inspiration, I pushed the idea for the art style, and went for big pixels and for a limited color palette.  
+*Cimmerian* is a pseudo 3D game written in C89 and similar to the likes of Wolfenstein 3D.  
 
 The libraries used are:
 - naturally the C standard library,
@@ -21,10 +21,4 @@ What even is "pseudo 3D"? Any graphics library, even LÖVE (or Love2D) which is 
 ![Raycasting](./screenshots/screenshot_raycasting.png)
 
 Going back to OpenGL, the "real 3D" detour taught me precious concepts. Precisely, when looking up raycasting tutorials which use OpenGL as an example, deprecated features are likely to be used, because the purpose is not to teach the library but the concept of raycasting. Thanks to this detour, I know that the "fixed function pipeline"/"immediate rendering mode" is deprecated, and that the "programmable pipeline"/"retained rendering mode" is the current way of doing things. It's about using shaders, and it's not only more efficient for the machine, it's the basics of modern graphics programming.  
-
-In the intro, I've mentioned big pixels. Here is the explanation: All the window contains is a texture, and I've made it so the game can be displayed in fullscreen mode, which means that if the texture resolution is less than the screen's, the pixels would appear blurry. Therefore, in order to keep the image sharp, the texture has the same amount of pixels as the screen can display. The pixels are not big, but it's simpler to word it this way. In actuality, I just work with "points" instead of pixels. There's always 640x360 points in the texture, no matter the screen resolution, which for a 1920x1080 screen means that a point will be of a size of 3x3 pixels. This is what I meant by "big pixels".  
-
-About the palette, modern technology can display what is commonly called "true color", which represents 16,777,216 different colors. Long story short, this diversity is possible because 3 bytes are used to store the color. However, I wanted to fit the whole color into 1 byte as a challenge (and as a fashion statement), which makes the possible combinations go from over 16 millions to 256. The name of this specific color format is RGB332, and here's a screenshot of the 256 colors.  
-
-![RGB332 Color Palette](./screenshots/screenshot_palette.png)
 

@@ -15,9 +15,10 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len);
     As a bonus, being able to pass values directly into draw_point() 
     instead of declaring a vector variable is neat. May be useful.
 */
-void draw_point(Texture* t, GLubyte color, int x, int y)
+void draw_point(Texture* t, Color color, int x, int y)
 {
     int row;
+    int col;
 
     if (is_coord_out_of_bounds(t->width, x) 
         || is_coord_out_of_bounds(t->height, y))
@@ -27,7 +28,15 @@ void draw_point(Texture* t, GLubyte color, int x, int y)
     y *= t->thickness;
     
     for (row = 0; row < t->thickness; ++row)
-        memset(t->buffer + ((y+row) * t->real_width + x), color, t->thickness);
+    {
+        for (col = 0; col < t->thickness; ++col)
+        {
+            GLubyte *p = t->buffer + 4 * ((y+row) * t->real_width + (x+col));
+            p[0] = color.r;
+            p[1] = color.g;
+            p[2] = color.b;
+        }
+    }
     return;
 }
 

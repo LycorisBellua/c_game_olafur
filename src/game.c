@@ -8,10 +8,10 @@
     In other words: `WALL_HEIGHT = 64 * 554`.
 */
 
-static const GLubyte color_floor = 102;
-static const GLubyte color_ceiling = 103;
-static const GLubyte color_vertical_wall = 69;
-static const GLubyte color_horizontal_wall = 101;
+static const Color color_floor = {109, 101, 98, 255};
+static const Color color_ceiling = {59, 92, 169, 255};
+static const Color color_vertical_wall = {109, 101, 189, 255};
+static const Color color_horizontal_wall = {128, 101, 164, 255};
 
 static void draw_floor_and_ceiling(void);
 static int is_player_out_of_bounds(const VectorF pos, const Map* m);
@@ -21,7 +21,7 @@ static double get_horizontal_distance(const Map* m, const int map_val,
 static double get_vertical_distance(const Map* m, const int map_val, 
     const double tan, const double ray_angle);
 static void fix_fisheye_effect(double* distance, const double ray_angle);
-static void draw_wall(const GLubyte color, const double distance, const int ray);
+static void draw_wall(const Color color, const double distance, const int ray);
 
 void draw_game(void)
 {
@@ -70,7 +70,8 @@ static void raycasting(const Map* m)
     /* `ray_angle = player.angle` for center */
     double ray_angle = clamp_rad(player.angle + FOV/2.0f * RAD_1);
     double tan, horizontal, vertical, distance;
-    int ray, color;
+    int ray;
+    Color color;
 
     for (ray = TEX_MAIN->width; ray > 0; --ray)
     {
@@ -92,7 +93,9 @@ static void raycasting(const Map* m)
         if (distance > max_distance)
         {
             distance = max_distance;
-            color = 0;
+            color.r = 0;
+            color.g = 0;
+            color.b = 0;
         }
         fix_fisheye_effect(&distance, ray_angle);
         draw_wall(color, distance, ray);
@@ -216,7 +219,7 @@ static void fix_fisheye_effect(double* distance, const double ray_angle)
     return;
 }
 
-static void draw_wall(const GLubyte color, const double distance, const int ray)
+static void draw_wall(const Color color, const double distance, const int ray)
 {
     const double height = WALL_HEIGHT / distance;
     Vertex v1, v2;

@@ -10,12 +10,12 @@ void draw_main_menu(void)
     /*
     const char* btn_name[3] = { "Start Game", "Options", "Quit" };
     */
-    GLubyte color_default, color_selected;
+    Color color_default, color_selected;
 
     btn_size_norm.x = get_coord_x_norm(TEX_MAIN, btn_size.x-1);
     btn_size_norm.y = get_coord_x_norm(TEX_MAIN, btn_size.y-1);
-    color_default = colors[40];
-    color_selected = colors[9];
+    color_default = get_color(73, 59, 76);
+    color_selected = get_color(89, 83, 58);
 
     draw_test_gradient(TEX_MAIN);
 
@@ -25,7 +25,9 @@ void draw_main_menu(void)
 
     if (index_btn_selected == 0)
     {
-        btn[0].color = 0xFF;
+        btn[0].color.r = 0xFF;
+        btn[0].color.g = 0xFF;
+        btn[0].color.b = 0xFF;
         draw_rectangle(TEX_MAIN, 0, btn[0], btn_size.x, btn_size.y);
         btn[0].color = color_selected;
     }
@@ -36,7 +38,9 @@ void draw_main_menu(void)
     --btn[0].coords.y;
     draw_rectangle(TEX_MAIN, 1, btn[0], btn_size.x, btn_size.y);
 
-    btn[0].color = 0;
+    btn[0].color.r = 0;
+    btn[0].color.g = 0;
+    btn[0].color.b = 0;
     draw_rectangle(TEX_MAIN, 0, btn[0], btn_size.x, btn_size.y);
 
     /* "Options" ------------------------------------------------------------ */
@@ -45,7 +49,9 @@ void draw_main_menu(void)
 
     if (index_btn_selected == 1)
     {
-        btn[1].color = 0xFF;
+        btn[1].color.r = 0xFF;
+        btn[1].color.g = 0xFF;
+        btn[1].color.b = 0xFF;
         draw_rectangle(TEX_MAIN, 0, btn[1], btn_size.x, btn_size.y);
         btn[1].color = color_selected;
     }
@@ -56,7 +62,9 @@ void draw_main_menu(void)
     --btn[1].coords.y;
     draw_rectangle(TEX_MAIN, 1, btn[1], btn_size.x, btn_size.y);
 
-    btn[1].color = 0;
+    btn[1].color.r = 0;
+    btn[1].color.g = 0;
+    btn[1].color.b = 0;
     draw_rectangle(TEX_MAIN, 0, btn[1], btn_size.x, btn_size.y);
 
     /* "Quit" --------------------------------------------------------------- */
@@ -65,7 +73,9 @@ void draw_main_menu(void)
 
     if (index_btn_selected == 2)
     {
-        btn[2].color = 0xFF;
+        btn[2].color.r = 0xFF;
+        btn[2].color.g = 0xFF;
+        btn[2].color.b = 0xFF;
         draw_rectangle(TEX_MAIN, 0, btn[2], btn_size.x, btn_size.y);
         btn[2].color = color_selected;
     }
@@ -76,7 +86,9 @@ void draw_main_menu(void)
     --btn[2].coords.y;
     draw_rectangle(TEX_MAIN, 1, btn[2], btn_size.x, btn_size.y);
 
-    btn[2].color = 0;
+    btn[2].color.r = 0;
+    btn[2].color.g = 0;
+    btn[2].color.b = 0;
     draw_rectangle(TEX_MAIN, 0, btn[2], btn_size.x, btn_size.y);
     return;
 }

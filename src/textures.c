@@ -20,14 +20,14 @@ void use_texture(const Texture* t)
 
 void clear_drawing(Texture* t)
 {
-    bzero(t->buffer, t->real_width * t->real_height * sizeof(GLubyte));
+    bzero(t->buffer, t->real_width * t->real_height * 4 * sizeof(GLubyte));
     return;
 }
 
 void save_drawing(const Texture* t)
 {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, t->real_width, t->real_height, 0, 
-        GL_RGB, GL_UNSIGNED_BYTE_3_3_2, t->buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, t->real_width, t->real_height, 0, 
+        GL_RGBA, GL_UNSIGNED_BYTE, t->buffer);
     return;
 }
 
@@ -63,7 +63,7 @@ static Texture* create_texture(void)
     t->width = t->real_width / t->thickness;
     t->height = t->real_height / t->thickness;
 
-    buffer_length = t->real_width * t->real_height * sizeof(GLubyte);
+    buffer_length = t->real_width * t->real_height * 4 * sizeof(GLubyte);
     t->buffer = malloc(buffer_length);
     if (!t->buffer)
     {

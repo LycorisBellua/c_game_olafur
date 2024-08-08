@@ -127,7 +127,7 @@ static void draw_map(const Map* m)
 
     v.coords.x = display_offset.x;
     v.coords.y = display_offset.y;
-    v.color = get_color_from_rgb(MAX_RED, 0, 0);
+    v.color = get_color(255, 0, 0);
     draw_rectangle(TEX_MAIN, 0, v, max_len_map, max_len_map);
 
     /*
@@ -178,9 +178,17 @@ static void draw_map(const Map* m)
             }
 
             if (m->data[(m->height-1-y) * m->width + x] == 1)
-                v.color = 0xFF;
+            {
+                v.color.r = 0xFF;
+                v.color.g = 0xFF;
+                v.color.b = 0xFF;
+            }
             else
-                v.color = 0;
+            {
+                v.color.r = 0;
+                v.color.g = 0;
+                v.color.b = 0;
+            }
 
             /* Remove 1 pixel in order to see grid lines */
             draw_rectangle(TEX_MAIN, 1, v, len.x-1, len.y-1);
@@ -206,7 +214,7 @@ static void draw_player(void)
 
     pos.coords.x = map_center + display_offset.x - offset;
     pos.coords.y = map_center + display_offset.y - offset;
-    pos.color = get_color_from_rgb(MAX_RED, MAX_GREEN, 0);
+    pos.color = get_color(255, 255, 0);
 
     end.coords.x = pos.coords.x + player.delta.x * forward_vector_len;
     end.coords.y = pos.coords.y + player.delta.y * forward_vector_len;
@@ -217,7 +225,7 @@ static void draw_player(void)
 
     pos.coords.x -= player_size/2;
     pos.coords.y -= player_size/2;
-    pos.color = get_color_from_rgb(MAX_RED, 0, 0);
+    pos.color = get_color(255, 0, 0);
 
     /* Position */
     draw_rectangle(TEX_MAIN, 1, pos, player_size, player_size);

@@ -46,7 +46,6 @@ static GLFWwindow* init(const char* title)
     {
         create_uniform();
         create_mesh();
-        create_color_palette();
         create_textures();
         initialize_interfaces();
         initialize_maps();
