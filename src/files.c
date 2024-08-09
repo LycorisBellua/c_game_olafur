@@ -1,8 +1,5 @@
 #include "cimmerian.h"
 
-static int is_lower(const int c);
-static int is_upper(const int c);
-
 char* read_file(const char* filepath)
 {
     char* ptr = 0;
@@ -50,31 +47,4 @@ char* read_file(const char* filepath)
 
     fclose(file);
     return ptr;
-}
-
-int hex_char_to_int(const char c)
-{
-    if (is_digit(c))
-        return c - '0';
-    else if (is_lower(c))
-        return c > 'f' ? 0 : 10 + (c - 'a');
-    else if (is_upper(c))
-        return c > 'F' ? 0 : 10 + (c - 'A');
-    else
-        return 0;
-}
-
-int is_digit(const int c)
-{
-    return c >= '0' && c <= '9';
-}
-
-static int is_lower(const int c)
-{
-    return c >= 'a' && c <= 'b';
-}
-
-static int is_upper(const int c)
-{
-    return c >= 'A' && c <= 'B';
 }

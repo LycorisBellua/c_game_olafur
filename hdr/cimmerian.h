@@ -117,9 +117,10 @@ extern Resolution res;
 
 /* Colors ------------------------------------------------------------------- */
 
-Color get_color_from_hex_code(const char* str);
-Color get_color(const GLubyte r, const GLubyte g, const GLubyte b,
+Color get_color_rgba(const GLubyte r, const GLubyte g, const GLubyte b,
     const GLubyte a);
+Color get_color_hex(const char* str);
+int is_digit(const int c);
 
 /* Coords ------------------------------------------------------------------- */
 
@@ -153,8 +154,6 @@ void draw_test_gradient(Texture* t);
 /* Files -------------------------------------------------------------------- */
 
 char* read_file(const char* filepath);
-int is_digit(const int c);
-int hex_char_to_int(const char c);
 
 /* Game --------------------------------------------------------------------- */
 

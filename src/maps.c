@@ -127,7 +127,7 @@ static void draw_map(const Map* m)
 
     v.coords.x = display_offset.x;
     v.coords.y = display_offset.y;
-    v.color = get_color(255, 0, 0, 255);
+    v.color = get_color_rgba(255, 0, 0, 255);
     draw_rectangle(TEX_MAIN, 0, v, max_len_map, max_len_map);
 
     /*
@@ -214,7 +214,7 @@ static void draw_player(void)
 
     pos.coords.x = map_center + display_offset.x - offset;
     pos.coords.y = map_center + display_offset.y - offset;
-    pos.color = get_color(255, 255, 0, 255);
+    pos.color = get_color_rgba(255, 255, 0, 255);
 
     end.coords.x = pos.coords.x + player.delta.x * forward_vector_len;
     end.coords.y = pos.coords.y + player.delta.y * forward_vector_len;
@@ -225,7 +225,7 @@ static void draw_player(void)
 
     pos.coords.x -= player_size/2;
     pos.coords.y -= player_size/2;
-    pos.color = get_color(255, 0, 0, 255);
+    pos.color = get_color_rgba(255, 0, 0, 255);
 
     /* Position */
     draw_rectangle(TEX_MAIN, 1, pos, player_size, player_size);
