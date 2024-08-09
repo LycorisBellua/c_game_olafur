@@ -12,12 +12,14 @@ Color get_color_from_hex_code(const char* str)
     return color;
 }
 
-Color get_color(const GLubyte r, const GLubyte g, const GLubyte b)
+Color get_color(const GLubyte r, const GLubyte g, const GLubyte b,
+    const GLubyte a)
 {
     Color c;
 
     c.r = r;
     c.g = g;
     c.b = b;
+    c.a = a;
     return c;
 }

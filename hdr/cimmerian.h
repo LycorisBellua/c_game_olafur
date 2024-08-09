@@ -118,7 +118,8 @@ extern Resolution res;
 /* Colors ------------------------------------------------------------------- */
 
 Color get_color_from_hex_code(const char* str);
-Color get_color(const GLubyte r, const GLubyte g, const GLubyte b);
+Color get_color(const GLubyte r, const GLubyte g, const GLubyte b,
+    const GLubyte a);
 
 /* Coords ------------------------------------------------------------------- */
 

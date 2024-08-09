@@ -13,25 +13,25 @@ void draw_test_corners(Texture* t)
     /* Top left */
     v.coords.x = 0;
     v.coords.y = 0;
-    v.color = get_color(255, 255, 255);
+    v.color = get_color(255, 255, 255, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Top right */
     v.coords.x = get_coord_x(t, 1);
     v.coords.y = 0;
-    v.color = get_color(255, 0, 0);
+    v.color = get_color(255, 0, 0, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Bottom right */
     v.coords.x = get_coord_x(t, 1);
     v.coords.y = get_coord_y(t, 1);
-    v.color = get_color(0, 255, 0);
+    v.color = get_color(0, 255, 0, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Bottom left */
     v.coords.x = 0;
     v.coords.y = get_coord_y(t, 1);
-    v.color = get_color(0, 0, 255);
+    v.color = get_color(0, 0, 255, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
     return;
 }
@@ -43,25 +43,25 @@ void draw_test_center(Texture* t)
     /* Top left */
     v.coords.x = get_coord_x(t, 0.5f);
     v.coords.y = get_coord_y(t, 0.5f);
-    v.color = get_color(255, 255, 255);
+    v.color = get_color(255, 255, 255, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Top right */
     v.coords.x = get_coord_x(t, 0.5f) + 1;
     v.coords.y = get_coord_y(t, 0.5f);
-    v.color = get_color(255, 0, 0);
+    v.color = get_color(255, 0, 0, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Bottom right */
     v.coords.x = get_coord_x(t, 0.5f) + 1;
     v.coords.y = get_coord_y(t, 0.5f) + 1;
-    v.color = get_color(0, 255, 0);
+    v.color = get_color(0, 255, 0, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
 
     /* Bottom left */
     v.coords.x = get_coord_x(t, 0.5f);
     v.coords.y = get_coord_y(t, 0.5f) + 1;
-    v.color = get_color(0, 0, 255);
+    v.color = get_color(0, 0, 255, 255);
     draw_point(t, v.color, v.coords.x, v.coords.y);
     return;
 }
@@ -70,8 +70,8 @@ void draw_test_lines(Texture* t)
 {
     Vertex v1, v2;
 
-    v1.color = get_color(0, 255, 0);
-    v2.color = get_color(0, 255, 0);
+    v1.color = get_color(0, 255, 0, 255);
+    v2.color = get_color(0, 255, 0, 255);
 
     v1.coords.x = get_coord_x(t, 0.5f) + 5;
     v1.coords.y = get_coord_y(t, 0.5f) + 5;
@@ -79,8 +79,8 @@ void draw_test_lines(Texture* t)
     v2.coords.y = v1.coords.y + 100;
     draw_line(t, v1, v2);
 
-    v1.color = get_color(255, 0, 0);
-    v2.color = get_color(255, 0, 0);
+    v1.color = get_color(255, 0, 0, 255);
+    v2.color = get_color(255, 0, 0, 255);
 
     v1.coords.x -= normalize(v2.coords.x - v1.coords.x)*2;
     v1.coords.y -= normalize(v2.coords.y - v1.coords.y)*2;
@@ -98,12 +98,12 @@ void draw_test_rectangles(Texture* t)
 
     v1.coords.x = get_coord_x(t, 0.1f);
     v1.coords.y = get_coord_y(t, 0.33f);
-    v1.color = get_color(255, 255, 255);
+    v1.color = get_color(255, 255, 255, 255);
     draw_rectangle(t, 1, v1, 100, 100);
 
     v2.coords.x = get_coord_x(t, 0.1f) + 2;
     v2.coords.y = get_coord_y(t, 0.33f) + 2;
-    v2.color = get_color(255, 0, 0);
+    v2.color = get_color(255, 0, 0, 255);
     draw_rectangle(t, 0, v2, 100, 100);
     return;
 }
@@ -112,12 +112,12 @@ void draw_test_circles(Texture* t)
 {
     int radius = 100;
     Vertex v;
-    v.color = get_color(0, 0, 255);
+    v.color = get_color(0, 0, 255, 255);
     v.coords.x = get_coord_x(t, 0.7f);
     v.coords.y = get_coord_y(t, 0.4f);
     draw_circle(t, 1, v, radius);
 
-    v.color = get_color(255, 255, 255);
+    v.color = get_color(255, 255, 255, 255);
     draw_circle(t, 0, v, radius);
     return;
 }
@@ -128,7 +128,7 @@ void draw_test_shapes(Texture* t)
 
     /* Convex (triangle) */
     Vertex v[3];
-    v[0].color = get_color(138, 79, 240);
+    v[0].color = get_color(138, 79, 240, 255);
     v[1].color = v[0].color;
     v[2].color = v[0].color;
 
@@ -142,7 +142,7 @@ void draw_test_shapes(Texture* t)
     /* Concave and self-intercepting */
     /*
     Vertex v[5];
-    v[0].color = get_color(255, 255, 255);
+    v[0].color = get_color(255, 255, 255, 255);
     v[1].color = v[0].color;
     v[2].color = v[0].color;
     v[3].color = v[0].color;
@@ -175,9 +175,9 @@ void draw_test_gradient_line(Texture* t)
     v.x = get_coord_x(t, 0.1f);
     v.y = get_coord_x(t, 0.4f);
 
-    first_color = get_color(255, 0, 0);
-    second_color = get_color(0, 255, 0);
-    color_change = get_color(0, 0, 0);
+    first_color = get_color(255, 0, 0, 255);
+    second_color = get_color(0, 255, 0, 255);
+    color_change = get_color(0, 0, 0, 255);
 
     color_change.r = (second_color.r - first_color.r) / 2 * perc + 0.5f;
     color_change.g = (second_color.g - first_color.g) / 2 * perc + 0.5f;
@@ -212,6 +212,7 @@ void draw_test_gradient(Texture* t)
     Vertex v;
 
     v.color.b = 255/2;
+    v.color.a = 255;
 
     for (v.coords.y = 0; v.coords.y < t->height; ++v.coords.y)
     {

@@ -35,6 +35,7 @@ void draw_point(Texture* t, Color color, int x, int y)
             p[0] = color.r;
             p[1] = color.g;
             p[2] = color.b;
+            p[3] = color.a;
         }
     }
     return;

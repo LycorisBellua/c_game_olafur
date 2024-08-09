@@ -14,8 +14,8 @@ void draw_main_menu(void)
 
     btn_size_norm.x = get_coord_x_norm(TEX_MAIN, btn_size.x-1);
     btn_size_norm.y = get_coord_x_norm(TEX_MAIN, btn_size.y-1);
-    color_default = get_color(73, 59, 76);
-    color_selected = get_color(89, 83, 58);
+    color_default = get_color(73, 59, 76, 255);
+    color_selected = get_color(245, 155, 145, 255);
 
     draw_test_gradient(TEX_MAIN);
 
