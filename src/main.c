@@ -23,9 +23,15 @@ int main(void)
         update_time_variables();
         /* printf("FPS: %.2f\n", fps_count); */
 
+        /* Keep using glClear for when the window is resized */
+        glClear(GL_COLOR_BUFFER_BIT);
         clear_drawing(man.tex[man.curr_tex]);
         draw();
 
+        /*
+            Keep using glfwSwapBuffers or the viewport remains black.
+            It's the equivalent to mlx_put_image_to_window
+        */
         man.curr_tex = (man.curr_tex + 1) % 2;
         glfwSwapBuffers(window);
 

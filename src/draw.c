@@ -47,7 +47,7 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     int steps, total_steps;
     VectorF coords, increment;
     Color color;
-    double perc_v1, perc_v2;
+    double t_factor;
 
     dir = get_direction(v1.coords, v2.coords);
     steps = max(abs(dir.x), abs(dir.y));
@@ -57,18 +57,13 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     increment.y = dir.y / (double)steps;
     ++steps;
     total_steps = steps;
-    color = v1.color;
     while (steps-- > 0)
     {
-        if (total_steps - 1 > 0)
-        {
-            perc_v1 = 1.0 - steps / (total_steps-1);
-            perc_v2 = 1.0 - perc_v1;
-            color.r = v1.color.r * perc_v1 + v2.color.r * perc_v2;
-            color.g = v1.color.g * perc_v1 + v2.color.g * perc_v2;
-            color.b = v1.color.b * perc_v1 + v2.color.b * perc_v2;
-            color.a = v1.color.a * perc_v1 + v2.color.a * perc_v2;
-        }
+        t_factor = (double)(total_steps - steps - 1) / (total_steps - 1);
+        color.r = (GLubyte)(v1.color.r * (1.0 - t_factor) + v2.color.r * t_factor);
+        color.g = (GLubyte)(v1.color.g * (1.0 - t_factor) + v2.color.g * t_factor);
+        color.b = (GLubyte)(v1.color.b * (1.0 - t_factor) + v2.color.b * t_factor);
+        color.a = (GLubyte)(v1.color.a * (1.0 - t_factor) + v2.color.a * t_factor);
         draw_point(t, color, coords.x, coords.y);
         coords.x += increment.x;
         coords.y += increment.y;
@@ -273,6 +268,7 @@ static void draw_circle_empty(Texture* t, Vertex center, int radius)
 }
 
 /* Scanline Fill algorithm */
+/*
 static void draw_shape_full(Texture* t, Vertex arr[], int len)
 {
     int i, j;
@@ -331,4 +327,229 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len)
         ++y;
     }
     return;
+}
+*/
+/*
+Color interpolate_color_barycentric(const Vertex* v0, const Vertex* v1, const Vertex* v2, float w0, float w1, float w2)
+{
+    Color color;
+    color.r = (GLubyte)(v0->color.r * w0 + v1->color.r * w1 + v2->color.r * w2);
+    color.g = (GLubyte)(v0->color.g * w0 + v1->color.g * w1 + v2->color.g * w2);
+    color.b = (GLubyte)(v0->color.b * w0 + v1->color.b * w1 + v2->color.b * w2);
+    color.a = (GLubyte)(v0->color.a * w0 + v1->color.a * w1 + v2->color.a * w2);
+    return color;
+}
+
+void calculate_barycentric_weights(Vector p, const Vector* p0, const Vector* p1, const Vector* p2, float* w0, float* w1, float* w2)
+{
+    int denominator = (p1->y - p2->y) * (p0->x - p2->x) + (p2->x - p1->x) * (p0->y - p2->y);
+    *w0 = (float)((p1->y - p2->y) * (p.x - p2->x) + (p2->x - p1->x) * (p.y - p2->y)) / denominator;
+    *w1 = (float)((p2->y - p0->y) * (p.x - p2->x) + (p0->x - p2->x) * (p.y - p2->y)) / denominator;
+    *w2 = 1.0f - *w0 - *w1;
+}
+
+static void draw_shape_full(Texture* t, Vertex arr[], int len)
+{
+    int i, j, x;
+    int y, x1, x2, x_intersection;
+    int ymin, ymax;
+    float w0, w1, w2;
+    Color color;
+    Vector p;
+
+    ymin = arr[0].coords.y;
+    ymax = arr[0].coords.y;
+    for (i = 1; i < len; i++) {
+        if (arr[i].coords.y < ymin)
+            ymin = arr[i].coords.y;
+        if (arr[i].coords.y > ymax)
+            ymax = arr[i].coords.y;
+    }
+
+    for (y = ymin; y <= ymax; y++) {
+        x1 = t->width - 1;
+        x2 = 0;
+
+        for (i = 0; i < len; i++) {
+            j = (i + 1) % len;
+            if ((arr[i].coords.y <= y && arr[j].coords.y > y) || (arr[j].coords.y <= y && arr[i].coords.y > y)) {
+                x_intersection = arr[i].coords.x + (y - arr[i].coords.y) * (arr[j].coords.x - arr[i].coords.x) / (arr[j].coords.y - arr[i].coords.y);
+
+                if (x_intersection < x1)
+                    x1 = x_intersection;
+                if (x_intersection > x2)
+                    x2 = x_intersection;
+            }
+        }
+
+        if (x1 <= x2) {
+            for (x = x1; x <= x2; x++) {
+                p.x = x;
+                p.y = y;
+                calculate_barycentric_weights(p, &arr[0].coords, &arr[1].coords, &arr[2].coords, &w0, &w1, &w2);
+
+                color = interpolate_color_barycentric(&arr[0], &arr[1], &arr[2], w0, w1, w2);
+
+                draw_point(t, color, x, y);
+            }
+        }
+    }
+}
+*/
+Color interpolate_color_barycentric(const Vertex* v0, const Vertex* v1, const Vertex* v2, float w0, float w1, float w2)
+{
+    Color color;
+    color.r = (GLubyte)(v0->color.r * w0 + v1->color.r * w1 + v2->color.r * w2);
+    color.g = (GLubyte)(v0->color.g * w0 + v1->color.g * w1 + v2->color.g * w2);
+    color.b = (GLubyte)(v0->color.b * w0 + v1->color.b * w1 + v2->color.b * w2);
+    color.a = (GLubyte)(v0->color.a * w0 + v1->color.a * w1 + v2->color.a * w2);
+    return color;
+}
+
+void calculate_barycentric_weights(Vector p, const Vector* p0, const Vector* p1, const Vector* p2, float* w0, float* w1, float* w2)
+{
+    int denominator = (p1->y - p2->y) * (p0->x - p2->x) + (p2->x - p1->x) * (p0->y - p2->y);
+    *w0 = (float)((p1->y - p2->y) * (p.x - p2->x) + (p2->x - p1->x) * (p.y - p2->y)) / denominator;
+    *w1 = (float)((p2->y - p0->y) * (p.x - p2->x) + (p0->x - p2->x) * (p.y - p2->y)) / denominator;
+    *w2 = 1.0f - *w0 - *w1;
+}
+
+int is_point_in_triangle(Vector p, Vector v1, Vector v2, Vector v3)
+{
+    float d1, d2, d3;
+    int has_neg, has_pos;
+
+    d1 = (p.x - v2.x) * (v1.y - v2.y) - (v1.x - v2.x) * (p.y - v2.y);
+    d2 = (p.x - v3.x) * (v2.y - v3.y) - (v2.x - v3.x) * (p.y - v3.y);
+    d3 = (p.x - v1.x) * (v3.y - v1.y) - (v3.x - v1.x) * (p.y - v1.y);
+
+    has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+    return !(has_neg && has_pos);
+}
+
+int is_ear(const Vertex* polygon, int num_vertices, int v0, int v1, int v2)
+{
+    Vector p0 = polygon[v0].coords;
+    Vector p1 = polygon[v1].coords;
+    Vector p2 = polygon[v2].coords;
+    Vector pi;
+    int i;
+
+    /* Check if the triangle is valid and does not have collinear vertices */
+    if (p0.x == p1.x && p0.y == p1.y) return 0;
+    if (p1.x == p2.x && p1.y == p2.y) return 0;
+    if (p2.x == p0.x && p2.y == p0.y) return 0;
+
+    for (i = 0; i < num_vertices; i++)
+    {
+        if (i == v0 || i == v1 || i == v2) continue;
+        pi = polygon[i].coords;
+        if (is_point_in_triangle(pi, p0, p1, p2))
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void ear_clip_triangulate(Texture* texture, Vertex* polygon, int num_vertices)
+{
+    int* indices = malloc(num_vertices * sizeof(int));
+    int i, j, remaining_vertices, prev, curr, next, y, x1, x2, x;
+    int ear_found;
+    Vertex v0, v1, v2;
+    Vector p;
+    float w0, w1, w2;
+    Color color;
+
+    for (i = 0; i < num_vertices; i++)
+    {
+        indices[i] = i;
+    }
+
+    remaining_vertices = num_vertices;
+    while (remaining_vertices > 3)
+    {
+        ear_found = 0;
+        for (i = 0; i < remaining_vertices; i++)
+        {
+            prev = (i - 1 + remaining_vertices) % remaining_vertices;
+            curr = i;
+            next = (i + 1) % remaining_vertices;
+
+            if (is_ear(polygon, remaining_vertices, indices[prev], indices[curr], indices[next]))
+            {
+                /* Draw the triangle */
+                v0 = polygon[indices[prev]];
+                v1 = polygon[indices[curr]];
+                v2 = polygon[indices[next]];
+
+                for (y = min(min(v0.coords.y, v1.coords.y), v2.coords.y); y <= max(max(v0.coords.y, v1.coords.y), v2.coords.y); y++)
+                {
+                    x1 = min(min(v0.coords.x, v1.coords.x), v2.coords.x);
+                    x2 = max(max(v0.coords.x, v1.coords.x), v2.coords.x);
+                    for (x = x1; x <= x2; x++)
+                    {
+                        p.x = x;
+                        p.y = y;
+                        if (is_point_in_triangle(p, v0.coords, v1.coords, v2.coords))
+                        {
+                            calculate_barycentric_weights(p, &v0.coords, &v1.coords, &v2.coords, &w0, &w1, &w2);
+                            color = interpolate_color_barycentric(&v0, &v1, &v2, w0, w1, w2);
+                            draw_point(texture, color, x, y);
+                        }
+                    }
+                }
+
+                /* Remove the ear vertex */
+                for (j = curr; j < remaining_vertices - 1; j++)
+                {
+                    indices[j] = indices[j + 1];
+                }
+                remaining_vertices--;
+
+                ear_found = 1;
+                break;
+            }
+        }
+
+        if (!ear_found)
+        {
+            fprintf(stderr, "Failed to find an ear. The polygon might be complex or self-intersecting.\n");
+            free(indices);
+            return;
+        }
+    }
+
+    /* Draw the last remaining triangle */
+    v0 = polygon[indices[0]];
+    v1 = polygon[indices[1]];
+    v2 = polygon[indices[2]];
+
+    for (y = min(min(v0.coords.y, v1.coords.y), v2.coords.y); y <= max(max(v0.coords.y, v1.coords.y), v2.coords.y); y++)
+    {
+        x1 = min(min(v0.coords.x, v1.coords.x), v2.coords.x);
+        x2 = max(max(v0.coords.x, v1.coords.x), v2.coords.x);
+        for (x = x1; x <= x2; x++)
+        {
+            p.x = x;
+            p.y = y;
+            if (is_point_in_triangle(p, v0.coords, v1.coords, v2.coords))
+            {
+                calculate_barycentric_weights(p, &v0.coords, &v1.coords, &v2.coords, &w0, &w1, &w2);
+                color = interpolate_color_barycentric(&v0, &v1, &v2, w0, w1, w2);
+                draw_point(texture, color, x, y);
+            }
+        }
+    }
+
+    free(indices);
+}
+
+static void draw_shape_full(Texture* t, Vertex arr[], int len)
+{
+    /* Draw the shape by triangulating and then filling each triangle */
+    ear_clip_triangulate(t, arr, len);
 }

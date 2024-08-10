@@ -124,7 +124,7 @@ void draw_test_circles(Texture* t)
 
 void draw_test_shapes(Texture* t)
 {
-    int full = 0;
+    int full = 1;
 
     /* Convex (triangle) */
     Vertex v[3];
@@ -139,14 +139,32 @@ void draw_test_shapes(Texture* t)
     v[2].coords.x = get_coord_x(t, 0.25f);
     v[2].coords.y = get_coord_y(t, 0.75f);
 
+    /* Rectangle */
+    /*
+    Vertex v[4];
+    v[0].color = get_color_rgba(255, 0, 0, 255);
+    v[1].color = get_color_rgba(0, 255, 0, 255);
+    v[2].color = get_color_rgba(0, 0, 255, 255);
+    v[3].color = get_color_rgba(255, 255, 0, 255);
+
+    v[0].coords.x = get_coord_x(t, 0.25f);
+    v[0].coords.y = get_coord_y(t, 0.25f);
+    v[1].coords.x = get_coord_x(t, 0.75f);
+    v[1].coords.y = get_coord_y(t, 0.25f);
+    v[2].coords.x = get_coord_x(t, 0.75f);
+    v[2].coords.y = get_coord_y(t, 0.75f);
+    v[3].coords.x = get_coord_x(t, 0.25f);
+    v[3].coords.y = get_coord_y(t, 0.75f);
+    */
+
     /* Concave and self-intercepting */
     /*
     Vertex v[5];
     v[0].color = get_color_rgba(255, 255, 255, 255);
-    v[1].color = v[0].color;
-    v[2].color = v[0].color;
-    v[3].color = v[0].color;
-    v[4].color = v[0].color;
+    v[1].color = get_color_rgba(255, 0, 0, 255);
+    v[2].color = get_color_rgba(0, 255, 0, 255);
+    v[3].color = get_color_rgba(0, 0, 255, 255);
+    v[4].color = get_color_rgba(255, 255, 0, 255);
 
     v[0].coords.x = get_coord_x(t, 0.25f);
     v[0].coords.y = get_coord_y(t, 0.25f);
