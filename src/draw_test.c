@@ -124,13 +124,13 @@ void draw_test_circles(Texture* t)
 
 void draw_test_shapes(Texture* t)
 {
-    int full = 1;
+    int full = 0;
 
     /* Convex (triangle) */
     Vertex v[3];
-    v[0].color = get_color_rgba(138, 79, 240, 255);
-    v[1].color = v[0].color;
-    v[2].color = v[0].color;
+    v[0].color = get_color_rgba(255, 0, 0, 255);
+    v[1].color = get_color_rgba(0, 255, 0, 255);
+    v[2].color = get_color_rgba(0, 0, 255, 255);
 
     v[0].coords.x = get_coord_x(t, 0.50f);
     v[0].coords.y = get_coord_y(t, 0.25f);
@@ -161,50 +161,6 @@ void draw_test_shapes(Texture* t)
     */
 
     draw_shape(t, full, v, sizeof(v)/sizeof(v[0]));
-    return;
-}
-
-void draw_test_gradient_line(Texture* t)
-{
-    int i;
-    const int dist = 200;
-    const int half_dist = dist/2;
-    const double perc = 100.0f / dist;
-    Color first_color, second_color, color_change;
-    Vector v;
-    v.x = get_coord_x(t, 0.1f);
-    v.y = get_coord_x(t, 0.4f);
-
-    first_color = get_color_rgba(255, 0, 0, 255);
-    second_color = get_color_rgba(0, 255, 0, 255);
-    color_change = get_color_rgba(0, 0, 0, 255);
-
-    color_change.r = (second_color.r - first_color.r) / 2 * perc + 0.5f;
-    color_change.g = (second_color.g - first_color.g) / 2 * perc + 0.5f;
-    color_change.b = (second_color.b - first_color.b) / 2 * perc + 0.5f;
-    i = 0;
-    while (i < half_dist)
-    {
-        draw_point(t, first_color, v.x, v.y);
-        ++v.x;
-        first_color.r = clamp(first_color.r + color_change.r, 0, 255);
-        first_color.g = clamp(first_color.g + color_change.g, 0, 255);
-        first_color.b = clamp(first_color.b + color_change.b, 0, 255);
-        ++i;
-    }
-
-    color_change.r = (first_color.r - second_color.r) / 2 * perc + 0.5f;
-    color_change.g = (first_color.g - second_color.g) / 2 * perc + 0.5f;
-    color_change.b = (first_color.b - second_color.b) / 2 * perc + 0.5f;
-    while (i < dist)
-    {
-        draw_point(t, first_color, v.x, v.y);
-        ++v.x;
-        first_color.r = clamp(first_color.r - color_change.r, 0, 255);
-        first_color.g = clamp(first_color.g - color_change.g, 0, 255);
-        first_color.b = clamp(first_color.b - color_change.b, 0, 255);
-        ++i;
-    }
     return;
 }
 

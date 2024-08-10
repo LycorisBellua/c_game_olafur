@@ -44,8 +44,10 @@ void draw_point(Texture* t, Color c, int x, int y)
 void draw_line(Texture* t, Vertex v1, Vertex v2)
 {
     Vector dir;
-    int steps;
+    int steps, total_steps;
     VectorF coords, increment;
+    Color color;
+    double perc_v1, perc_v2;
 
     dir = get_direction(v1.coords, v2.coords);
     steps = max(abs(dir.x), abs(dir.y));
@@ -54,10 +56,20 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     increment.x = dir.x / (double)steps;
     increment.y = dir.y / (double)steps;
     ++steps;
-
+    total_steps = steps;
+    color = v1.color;
     while (steps-- > 0)
     {
-        draw_point(t, v1.color, coords.x, coords.y);
+        if (total_steps - 1 > 0)
+        {
+            perc_v1 = 1.0 - steps / (total_steps-1);
+            perc_v2 = 1.0 - perc_v1;
+            color.r = v1.color.r * perc_v1 + v2.color.r * perc_v2;
+            color.g = v1.color.g * perc_v1 + v2.color.g * perc_v2;
+            color.b = v1.color.b * perc_v1 + v2.color.b * perc_v2;
+            color.a = v1.color.a * perc_v1 + v2.color.a * perc_v2;
+        }
+        draw_point(t, color, coords.x, coords.y);
         coords.x += increment.x;
         coords.y += increment.y;
     }
