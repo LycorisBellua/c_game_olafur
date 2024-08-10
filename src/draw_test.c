@@ -2,7 +2,7 @@
 
 void draw_test(void)
 {
-    draw_test_shapes(TEX_MAIN);
+    draw_test_shapes(man.tex[man.curr_tex]);
     return ;
 }
 

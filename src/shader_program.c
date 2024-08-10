@@ -1,6 +1,5 @@
 #include "cimmerian.h"
 
-GLuint shader_program = 0;
 static int app_glsl_version = 0;
 
 static GLuint compile_shader(const GLenum type, const char* filepath);
@@ -14,6 +13,7 @@ int create_shader_program(void)
     const char* fs_filepath = "shaders/fs.glsl";
     GLuint vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
     GLuint fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
+    int shader_program;
 
     if (!vs || !fs)
     {
@@ -42,16 +42,16 @@ int create_shader_program(void)
     */
     free_shader(&vs);
     free_shader(&fs);
-    return 1;
+    return shader_program;
 }
 
 void free_shader_program(void)
 {
     glUseProgram(0);
-    glDeleteProgram(shader_program);
+    glDeleteProgram(man.shader_program);
 
     /* Nullify the reference to prevent a double free */
-    shader_program = 0;
+    man.shader_program = 0;
     return;
 }
 

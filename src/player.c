@@ -1,18 +1,16 @@
 #include "cimmerian.h"
 
-Player player = {0};
-
 static double get_safe_angle(const double angle);
 static void update_rotation(void);
 static void update_position(const Map* m);
 
 void reset_player_transform(const Map* m)
 {
-    player.pos.x = m->start_pos.x;
-    player.pos.y = m->start_pos.y;
-    player.angle = get_safe_angle(m->start_angle);
-    player.delta.x = f_cos(player.angle)*5;
-    player.delta.y = f_sin(player.angle)*5;
+    man.player.pos.x = m->start_pos.x;
+    man.player.pos.y = m->start_pos.y;
+    man.player.angle = get_safe_angle(m->start_angle);
+    man.player.delta.x = f_cos(man.player.angle) * 5;
+    man.player.delta.y = f_sin(man.player.angle) * 5;
     return;
 }
 
@@ -46,17 +44,17 @@ static void update_rotation(void)
 {
     const double speed = 30.0f;
 
-    if (rotation_action)
+    if (man.rotation_action)
     {
-        player.angle += rotation_action * RAD_1 * speed * delta_time;
-        player.angle = get_safe_angle(clamp_rad(player.angle));
+        man.player.angle += man.rotation_action * RAD_1 * speed * man.delta_time;
+        man.player.angle = get_safe_angle(clamp_rad(man.player.angle));
 
         /*
             The values returned by the sine and cosine operations are 
             very small, so multiply them by 5.
         */
-        player.delta.x = f_cos(player.angle)*5;
-        player.delta.y = f_sin(player.angle)*5;
+        man.player.delta.x = f_cos(man.player.angle) * 5;
+        man.player.delta.y = f_sin(man.player.angle) * 5;
     }
     return;
 }
@@ -67,35 +65,35 @@ static void update_position(const Map* m)
     VectorF pos, size;
     int index;
 
-    if (movement_action[2] + movement_action[0] == 0)
+    if (man.movement_action[2] + man.movement_action[0] == 0)
         return;
 
-    pos = player.pos;
-    size.x = player.delta.x < 0 ? -20 : 20;
-    size.y = player.delta.y < 0 ? -20 : 20;
+    pos = man.player.pos;
+    size.x = man.player.delta.x < 0 ? -20 : 20;
+    size.y = man.player.delta.y < 0 ? -20 : 20;
 
     /* Movement along the forward axis */
     index = (int)(m->height - pos.y/MAP_CELL_LEN)*m->width 
-            + (int)((pos.x+movement_action[2]*size.x)/MAP_CELL_LEN);
+            + (int)((pos.x+man.movement_action[2]*size.x)/MAP_CELL_LEN);
     if (m->data[index] == 0)
-        pos.x += movement_action[2] * player.delta.x * speed * delta_time;
+        pos.x += man.movement_action[2] * man.player.delta.x * speed * man.delta_time;
 
-    index = (int)(m->height - (pos.y+movement_action[2]*size.y)/MAP_CELL_LEN) 
+    index = (int)(m->height - (pos.y+man.movement_action[2]*size.y)/MAP_CELL_LEN) 
             * m->width + (int)(pos.x/MAP_CELL_LEN);
     if (m->data[index] == 0)
-        pos.y += movement_action[2] * player.delta.y * speed * delta_time;
+        pos.y += man.movement_action[2] * man.player.delta.y * speed * man.delta_time;
 
     /* Movement along the lateral axis */
     index = (int)(m->height - pos.y/MAP_CELL_LEN)*m->width 
-            + (int)((pos.x + movement_action[0]*size.y)/MAP_CELL_LEN);
+            + (int)((pos.x + man.movement_action[0]*size.y)/MAP_CELL_LEN);
     if (m->data[index] == 0)
-        pos.x += movement_action[0] * player.delta.y * speed * delta_time;
+        pos.x += man.movement_action[0] * man.player.delta.y * speed * man.delta_time;
 
-    index = (int)(m->height - (pos.y+movement_action[0]*-size.x)/MAP_CELL_LEN) 
+    index = (int)(m->height - (pos.y+man.movement_action[0]*-size.x)/MAP_CELL_LEN) 
             * m->width + (int)(pos.x/MAP_CELL_LEN);
     if (m->data[index] == 0)
-        pos.y += movement_action[0] * -player.delta.x * speed * delta_time;
+        pos.y += man.movement_action[0] * -man.player.delta.x * speed * man.delta_time;
 
-    player.pos = pos;
+    man.player.pos = pos;
     return;
 }

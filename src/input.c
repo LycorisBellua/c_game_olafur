@@ -1,16 +1,11 @@
 #include "cimmerian.h"
 
-int movement_action[3] = {0};
 static int movement_input[3] = {0};
-static void update_movement_action(const int axis);
-
-int rotation_action = 0;
 static int rotation_input = 0;
-static void update_rotation_action(void);
 
-/*
-static int get_local_key(const int physical_key);
-*/
+static void update_movement_action(const int axis);
+static void update_rotation_action(void);
+/* static int get_local_key(const int physical_key); */
 static void input_escape(GLFWwindow* window, const int action);
 static void input_enter(GLFWwindow* window, const int action);
 
@@ -81,22 +76,22 @@ static void update_movement_action(const int axis)
     int input = movement_input[axis];
 
     if (input < 0)
-        movement_action[axis] = -1;
+        man.movement_action[axis] = -1;
     else if (input > 0)
-        movement_action[axis] = 1;
+        man.movement_action[axis] = 1;
     else
-        movement_action[axis] = 0;
+        man.movement_action[axis] = 0;
     return;
 }
 
 static void update_rotation_action(void)
 {
     if (rotation_input < 0)
-        rotation_action = -1;
+        man.rotation_action = -1;
     else if (rotation_input > 0)
-        rotation_action = 1;
+        man.rotation_action = 1;
     else
-        rotation_action = 0;
+        man.rotation_action = 0;
     return;
 }
 

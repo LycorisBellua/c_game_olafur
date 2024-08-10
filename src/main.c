@@ -1,6 +1,9 @@
 #include "cimmerian.h"
 
+Manager man;
+
 static GLFWwindow* init(const char* title);
+static void update_time_variables(void);
 static void draw(void);
 static void deinit(void);
 
@@ -20,13 +23,14 @@ int main(void)
         update_time_variables();
         /* printf("FPS: %.2f\n", fps_count); */
 
-        clear_drawing(TEX_MAIN);
+        clear_drawing(man.tex[man.curr_tex]);
         draw();
 
-        /* update_player_transform(map_test); */
-
+        man.curr_tex = (man.curr_tex + 1) % 2;
         glfwSwapBuffers(window);
+
         glfwPollEvents();
+        /* update_player_transform(map_test); */
     }
     deinit();
     return EXIT_SUCCESS;
@@ -37,7 +41,8 @@ static GLFWwindow* init(const char* title)
     GLFWwindow* window;
 
     window = get_window(title);
-    if (!create_shader_program())
+    man.shader_program = create_shader_program();
+    if (!man.shader_program)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
         return 0;
@@ -49,15 +54,27 @@ static GLFWwindow* init(const char* title)
         create_textures();
         initialize_interfaces();
         initialize_maps();
-        use_texture(TEX_MAIN);
+        use_texture(man.tex[man.curr_tex]);
     }
     return window;
 }
 
+static void update_time_variables(void)
+{
+    static double last_time;
+    double current_time;
+
+    current_time = glfwGetTime();
+    man.delta_time = current_time - last_time;
+    last_time = current_time;
+    man.fps_count = 1 / man.delta_time;
+    return;
+}
+
 static void draw(void)
 {
-    active_interface->draw();
-    save_drawing(TEX_MAIN);
+    man.active_interface->draw();
+    save_drawing(man.tex[man.curr_tex]);
     render_mesh();
     return;
 }

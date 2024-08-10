@@ -12,9 +12,7 @@
 
 #define MAP_CELL_LEN 64
 #define MAX_CELL_AMOUNT 8
-
-#define NBR_TEXTURES 2
-#define TEX_MAIN (textures[0])
+#define NBR_TEXTURES 3
 
 typedef struct
 {
@@ -43,6 +41,7 @@ typedef struct
 } Vertex;
 
 typedef struct Interface Interface;
+typedef struct Manager Manager;
 struct Interface
 {
     int nav_ui;
@@ -96,24 +95,24 @@ typedef struct
     int fullscreen_y;
 } Resolution;
 
-/* Input */
-extern int movement_action[3];
-extern int rotation_action;
-/* Interfaces */
-extern Interface* active_interface;
-/* Maps */
-extern Map* map_test;
-/* Player */
-extern Player player;
-/* Shader Program */
-extern GLuint shader_program;
-/* Textures */
-extern Texture* textures[NBR_TEXTURES];
-/* Time */
-extern double delta_time;
-extern double fps_count;
-/* Windowing */
-extern Resolution res;
+struct Manager
+{
+    GLuint shader_program;
+    double delta_time;
+    double fps_count;
+    Resolution res;
+    Texture* tex[NBR_TEXTURES + 1];
+    int curr_tex;
+    Interface* active_interface;
+    Interface main_menu_interface;
+    Interface game_interface;
+    Map* map;
+    Player player;
+    int movement_action[3];
+    int rotation_action;
+};
+
+extern Manager man;
 
 /* Colors ------------------------------------------------------------------- */
 
@@ -218,10 +217,6 @@ void use_texture(const Texture* t);
 void clear_drawing(Texture* t);
 void save_drawing(const Texture* t);
 void free_textures(void);
-
-/* Time --------------------------------------------------------------------- */
-
-void update_time_variables(void);
 
 /* Uniform ------------------------------------------------------------------ */
 

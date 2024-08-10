@@ -1,7 +1,5 @@
 #include "cimmerian.h"
 
-Resolution res = {0};
-
 static void set_resolution(const GLFWvidmode* vid_mode);
 static void set_viewport(const int width, const int height);
 static void set_initial_viewport(GLFWwindow* window);
@@ -29,8 +27,8 @@ GLFWwindow* get_window(const char* title)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     #endif
 
-    window = glfwCreateWindow(res.window_width, res.window_height, title, 
-        NULL, NULL);
+    window = glfwCreateWindow(man.res.window_width, man.res.window_height,
+        title, NULL, NULL);
     if (!window)
     {
         fprintf(stderr, "Error: The window failed to create (the issue may "
@@ -41,8 +39,8 @@ GLFWwindow* get_window(const char* title)
     }
 
     glfwSetWindowSizeLimits(window, 
-        /* min */ res.window_width, res.window_height, 
-        /* max */ res.monitor_width, res.monitor_height);
+        /* min */ man.res.window_width, man.res.window_height, 
+        /* max */ man.res.monitor_width, man.res.monitor_height);
     glfwMakeContextCurrent(window);
     set_initial_viewport(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -68,16 +66,16 @@ void toggle_fullscreen(GLFWwindow* window)
     {
         /* Switch to windowed mode */
         glfwSetWindowMonitor(window, NULL, 
-            res.window_position_x, res.window_position_y, 
-            res.window_width, res.window_height, GLFW_DONT_CARE);
+            man.res.window_position_x, man.res.window_position_y, 
+            man.res.window_width, man.res.window_height, GLFW_DONT_CARE);
     }
     else
     {
         /* Switch to fullscreen */
         monitor = glfwGetPrimaryMonitor();
         mode = glfwGetVideoMode(monitor);
-        glfwSetWindowMonitor(window, monitor, res.fullscreen_x, 
-            res.fullscreen_y, res.monitor_width, res.monitor_height, 
+        glfwSetWindowMonitor(window, monitor, man.res.fullscreen_x, 
+            man.res.fullscreen_y, man.res.monitor_width, man.res.monitor_height, 
             mode->refreshRate);
     }
 
@@ -87,39 +85,39 @@ void toggle_fullscreen(GLFWwindow* window)
 
 static void set_resolution(const GLFWvidmode* vid_mode)
 {
-    res.monitor_width = vid_mode->width;
-    res.monitor_height = vid_mode->height;
-    res.aspect_ratio = (double)res.monitor_width / res.monitor_height;
+    man.res.monitor_width = vid_mode->width;
+    man.res.monitor_height = vid_mode->height;
+    man.res.aspect_ratio = (double)man.res.monitor_width / man.res.monitor_height;
 
     /* For monitors that are horizontally very long */
-    if (res.aspect_ratio > 16.0/9)
+    if (man.res.aspect_ratio > 16.0/9)
     {
-        res.aspect_ratio = 16.0/9;
-        res.monitor_width = res.monitor_height * res.aspect_ratio;
+        man.res.aspect_ratio = 16.0/9;
+        man.res.monitor_width = man.res.monitor_height * man.res.aspect_ratio;
     }
 
-    res.window_width_default = min(640, res.monitor_width);
-    res.window_height_default = min(640/res.aspect_ratio, res.monitor_height);
-    res.window_width = res.window_width_default;
-    res.window_height = res.window_height_default;
+    man.res.window_width_default = min(640, man.res.monitor_width);
+    man.res.window_height_default = min(640/man.res.aspect_ratio, man.res.monitor_height);
+    man.res.window_width = man.res.window_width_default;
+    man.res.window_height = man.res.window_height_default;
 
-    res.window_position_x = 0;
-    res.window_position_y = 0;
-    res.fullscreen_x = (vid_mode->width - res.monitor_width) / 2;
-    res.fullscreen_y = (vid_mode->height - res.monitor_height) / 2;
+    man.res.window_position_x = 0;
+    man.res.window_position_y = 0;
+    man.res.fullscreen_x = (vid_mode->width - man.res.monitor_width) / 2;
+    man.res.fullscreen_y = (vid_mode->height - man.res.monitor_height) / 2;
     return;
 }
 
 static void set_viewport(const int width, const int height)
 {
     int new_width = width;
-    int new_height = width / res.aspect_ratio;
+    int new_height = width / man.res.aspect_ratio;
     int x_offset, y_offset;
 
     if (new_height > height)
     {
         new_height = height;
-        new_width = height * res.aspect_ratio;
+        new_width = height * man.res.aspect_ratio;
     }
 
     x_offset = (width - new_width) / 2;
@@ -149,8 +147,8 @@ static void framebuffer_size_callback
     /* for toggle_fullscreen() */
     if (glfwGetWindowAttrib(window, GLFW_DECORATED))
     {
-        res.window_width = width;
-        res.window_height = height;
+        man.res.window_width = width;
+        man.res.window_height = height;
     }
     return;
 }
@@ -160,8 +158,8 @@ static void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
     /* for toggle_fullscreen() */
     if (glfwGetWindowAttrib(window, GLFW_DECORATED))
     {
-        res.window_position_x = xpos;
-        res.window_position_y = ypos;
+        man.res.window_position_x = xpos;
+        man.res.window_position_y = ypos;
     }
     return;
 }

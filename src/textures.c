@@ -1,14 +1,20 @@
 #include "cimmerian.h"
 
-Texture* textures[NBR_TEXTURES] = {0};
-
 static Texture* create_texture(void);
 static void free_texture(Texture** t);
 
 void create_textures(void)
 {
-    TEX_MAIN = create_texture();
-    textures[NBR_TEXTURES - 1] = 0;
+    int i;
+
+    man.curr_tex = 0;
+    i = 0;
+    while (i < NBR_TEXTURES)
+    {
+        man.tex[i] = create_texture();
+        ++i;
+    }
+    man.tex[i] = 0;
     return;
 }
 
@@ -38,11 +44,9 @@ void free_textures(void)
     use_texture(0);
 
     i = 0;
-    while (i < sizeof(textures)/sizeof(Texture*))
+    while (i < NBR_TEXTURES)
     {
-        if (!textures[i])
-            break;
-        free_texture(&textures[i]);
+        free_texture(&man.tex[i]);
         ++i;
     }
     return;
@@ -59,9 +63,9 @@ static Texture* create_texture(void)
     }
 
     t->id = -1;
-    t->real_width = res.monitor_width;
-    t->real_height = res.monitor_height;
-    t->thickness = t->real_width/res.window_width_default;
+    t->real_width = man.res.monitor_width;
+    t->real_height = man.res.monitor_height;
+    t->thickness = t->real_width/man.res.window_width_default;
     t->width = t->real_width / t->thickness;
     t->height = t->real_height / t->thickness;
 

@@ -3,7 +3,6 @@
 #define MINIMAP_FACTOR_MIN 1
 #define MINIMAP_FACTOR_MAX 5
 
-Map* map_test = {0};
 static int minimap_factor = MINIMAP_FACTOR_MAX;
 static Vector display_offset = {0};
 
@@ -47,7 +46,7 @@ static int map_default[] =
 
 void initialize_maps(void)
 {
-    map_test = create_map();
+    man.map = create_map();
     set_minimap_display(0);
     return;
 }
@@ -55,16 +54,17 @@ void initialize_maps(void)
 void set_minimap_display(const int remove_from_factor)
 {
     int cell;
+    Texture *t;
 
     if (!remove_from_factor)
         minimap_factor = MINIMAP_FACTOR_MAX;
     else
         minimap_factor = clamp(minimap_factor - remove_from_factor, 
             MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
-
+    t = man.tex[man.curr_tex];
     cell = MAP_CELL_LEN/minimap_factor;
-    display_offset.x = TEX_MAIN->width - cell * MAX_CELL_AMOUNT - 50;
-    display_offset.y = TEX_MAIN->height - cell * MAX_CELL_AMOUNT - 50;
+    display_offset.x = t->width - cell * MAX_CELL_AMOUNT - 50;
+    display_offset.y = t->height - cell * MAX_CELL_AMOUNT - 50;
     return;
 }
 
@@ -77,7 +77,7 @@ void draw_minimap(const Map* map)
 
 void free_maps(void)
 {
-    free_map(&map_test);
+    free_map(&man.map);
     return;
 }
 
@@ -131,7 +131,7 @@ static void draw_map(const Map* m)
     v.coords.x = display_offset.x;
     v.coords.y = display_offset.y;
     v.color = get_color_rgba(255, 0, 0, 255);
-    draw_rectangle(TEX_MAIN, 0, v, max_len_map, max_len_map);
+    draw_rectangle(man.tex[man.curr_tex], 0, v, max_len_map, max_len_map);
 
     /*
         SMALLEST MAP
@@ -141,8 +141,8 @@ static void draw_map(const Map* m)
 
     len.x = max_len_cell;
     len.y = max_len_cell;
-    pos.x = player.pos.x/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
-    pos.y = player.pos.y/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
+    pos.x = man.player.pos.x/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
+    pos.y = man.player.pos.y/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
 
     v.coords.y = display_offset.y;
     y = pos.y;
@@ -188,7 +188,7 @@ static void draw_map(const Map* m)
                 v.color = get_color_rgba(0, 0, 0, 0);
 
             /* Remove 1 pixel in order to see grid lines */
-            draw_rectangle(TEX_MAIN, 1, v, len.x-1, len.y-1);
+            draw_rectangle(man.tex[man.curr_tex], 1, v, len.x-1, len.y-1);
             v.coords.x += len.x;
             len.x = max_len_cell;
             if (v.coords.x > display_offset.x + max_len_map)
@@ -216,19 +216,19 @@ static void draw_player(void)
     pos.coords.y = map_center + display_offset.y - offset;
     pos.color = get_color_rgba(255, 255, 0, 255);
 
-    end.coords.x = pos.coords.x + player.delta.x * forward_vector_len;
-    end.coords.y = pos.coords.y + player.delta.y * forward_vector_len;
+    end.coords.x = pos.coords.x + man.player.delta.x * forward_vector_len;
+    end.coords.y = pos.coords.y + man.player.delta.y * forward_vector_len;
     end.color = pos.color;
 
     /* Forward vector */
-    draw_line(TEX_MAIN, pos, end);
+    draw_line(man.tex[man.curr_tex], pos, end);
 
     pos.coords.x -= player_size/2;
     pos.coords.y -= player_size/2;
     pos.color = get_color_rgba(255, 0, 0, 255);
 
     /* Position */
-    draw_rectangle(TEX_MAIN, 1, pos, player_size, player_size);
+    draw_rectangle(man.tex[man.curr_tex], 1, pos, player_size, player_size);
     return;
 }
 
