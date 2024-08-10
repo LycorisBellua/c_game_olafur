@@ -182,27 +182,28 @@ void draw_test_gradient_line(Texture* t)
     color_change.r = (second_color.r - first_color.r) / 2 * perc + 0.5f;
     color_change.g = (second_color.g - first_color.g) / 2 * perc + 0.5f;
     color_change.b = (second_color.b - first_color.b) / 2 * perc + 0.5f;
-    for (i = 0; i < half_dist; ++i)
+    i = 0;
+    while (i < half_dist)
     {
         draw_point(t, first_color, v.x, v.y);
         ++v.x;
-
         first_color.r = clamp(first_color.r + color_change.r, 0, 255);
         first_color.g = clamp(first_color.g + color_change.g, 0, 255);
         first_color.b = clamp(first_color.b + color_change.b, 0, 255);
+        ++i;
     }
 
     color_change.r = (first_color.r - second_color.r) / 2 * perc + 0.5f;
     color_change.g = (first_color.g - second_color.g) / 2 * perc + 0.5f;
     color_change.b = (first_color.b - second_color.b) / 2 * perc + 0.5f;
-    for (; i < dist; ++i)
+    while (i < dist)
     {
         draw_point(t, first_color, v.x, v.y);
         ++v.x;
-
         first_color.r = clamp(first_color.r - color_change.r, 0, 255);
         first_color.g = clamp(first_color.g - color_change.g, 0, 255);
         first_color.b = clamp(first_color.b - color_change.b, 0, 255);
+        ++i;
     }
     return;
 }
@@ -213,15 +214,18 @@ void draw_test_gradient(Texture* t)
 
     v.color.b = 255/2;
     v.color.a = 255;
-
-    for (v.coords.y = 0; v.coords.y < t->height; ++v.coords.y)
+    v.coords.y = 0;
+    while (v.coords.y < t->height)
     {
-        for (v.coords.x = 0; v.coords.x < t->width; ++v.coords.x)
+        v.coords.x = 0;
+        while (v.coords.x < t->width)
         {
             v.color.r = 255 * v.coords.y / t->height;
             v.color.g = 255 * v.coords.x / t->width;
             draw_point(t, v.color, v.coords.x, v.coords.y);
+            ++v.coords.x;
         }
+        ++v.coords.y;
     }
     return;
 }

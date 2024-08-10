@@ -120,7 +120,8 @@ static void set_glsl_version_in_shader(char* ptr_shader)
 
     /* The first line of a shader is something like: "#version 400 core\n" */
 
-    for (i = 0; ptr_shader[i]; ++i)
+    i = 0;
+    while (ptr_shader[i])
     {
         if (is_digit(ptr_shader[i]))
         {
@@ -136,6 +137,7 @@ static void set_glsl_version_in_shader(char* ptr_shader)
         }
         else if (ptr_shader[i] == '\n')
             break;
+        ++i;
     }
     return;
 }

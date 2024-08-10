@@ -16,16 +16,30 @@ Color get_color_rgba(const GLubyte r, const GLubyte g, const GLubyte b,
     return c;
 }
 
-Color get_color_hex(const char* str)
+Color get_color_hex(const char* str, const GLubyte alpha)
 {
-    const int i = str[0] == '#';
-    Color color;
+    int i;
+    Color c;
 
-    color.r = hex_char_to_int(str[i+0])*16 + hex_char_to_int(str[i+1]);
-    color.g = hex_char_to_int(str[i+2])*16 + hex_char_to_int(str[i+3]);
-    color.b = hex_char_to_int(str[i+4])*16 + hex_char_to_int(str[i+5]);
-    color.a = 255;
-    return color;
+    i = str[0] == '#';
+    c.r = hex_char_to_int(str[i + 0]) * 16 + hex_char_to_int(str[i + 1]);
+    c.g = hex_char_to_int(str[i + 2]) * 16 + hex_char_to_int(str[i + 3]);
+    c.b = hex_char_to_int(str[i + 4]) * 16 + hex_char_to_int(str[i + 5]);
+    c.a = alpha;
+    return c;
+}
+
+Color get_alpha_blended_color(Color prev, Color new)
+{
+    Color blend;
+
+    blend.a = new.a + (255 - new.a) * prev.a / 255;
+    if (!blend.a)
+        return get_color_rgba(0, 0, 0, 0);
+    blend.r = (new.a * new.r + (255 - new.a) * prev.a * prev.r / 255) / blend.a;
+    blend.g = (new.a * new.g + (255 - new.a) * prev.a * prev.g / 255) / blend.a;
+    blend.b = (new.a * new.b + (255 - new.a) * prev.a * prev.b / 255) / blend.a;
+    return blend;
 }
 
 int is_digit(const int c)
@@ -51,6 +65,5 @@ static int hex_char_to_int(const char c)
         return c > 'f' ? 0 : 10 + (c - 'a');
     else if (is_upper(c))
         return c > 'F' ? 0 : 10 + (c - 'A');
-    else
-        return 0;
+    return 0;
 }

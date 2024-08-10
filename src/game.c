@@ -73,7 +73,8 @@ static void raycasting(const Map* m)
     int ray;
     Color color;
 
-    for (ray = TEX_MAIN->width; ray > 0; --ray)
+    ray = TEX_MAIN->width;
+    while (ray > 0)
     {
         tan = f_tan(ray_angle);
         horizontal = get_horizontal_distance(m, 1, tan, ray_angle);
@@ -101,6 +102,8 @@ static void raycasting(const Map* m)
         draw_wall(color, distance, ray);
 
         ray_angle = clamp_rad(ray_angle - ray_increment);
+
+        --ray;
     }
     return;
 }

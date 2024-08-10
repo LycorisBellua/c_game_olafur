@@ -100,9 +100,12 @@ static Map* create_map(void)
         free(map);
         return 0;
     }
-    for (i = 0; i < map->width * map->height; ++i)
+    i = 0;
+    while (i < map->width * map->height)
+    {
         map->data[i] = map_default[i];
-
+        ++i;
+    }
     return map;
 }
 
@@ -142,7 +145,8 @@ static void draw_map(const Map* m)
     pos.y = player.pos.y/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
 
     v.coords.y = display_offset.y;
-    for (y = pos.y; y < m->height; ++y)
+    y = pos.y;
+    while (y < m->height)
     {
         if (y == (int)pos.y)
             len.y = max_len_cell - (pos.y - (int)pos.y) * max_len_cell;
@@ -160,7 +164,8 @@ static void draw_map(const Map* m)
         }
 
         v.coords.x = display_offset.x;
-        for (x = pos.x; x < m->width; ++x)
+        x = pos.x;
+        while (x < m->width)
         {
             if (x == (int)pos.x)
                 len.x = max_len_cell - (pos.x - (int)pos.x) * max_len_cell;
@@ -178,17 +183,9 @@ static void draw_map(const Map* m)
             }
 
             if (m->data[(m->height-1-y) * m->width + x] == 1)
-            {
-                v.color.r = 0xFF;
-                v.color.g = 0xFF;
-                v.color.b = 0xFF;
-            }
+                v.color = get_color_rgba(255, 255, 255, 255);
             else
-            {
-                v.color.r = 0;
-                v.color.g = 0;
-                v.color.b = 0;
-            }
+                v.color = get_color_rgba(0, 0, 0, 0);
 
             /* Remove 1 pixel in order to see grid lines */
             draw_rectangle(TEX_MAIN, 1, v, len.x-1, len.y-1);
@@ -196,10 +193,13 @@ static void draw_map(const Map* m)
             len.x = max_len_cell;
             if (v.coords.x > display_offset.x + max_len_map)
                 len.x -= v.coords.x - (display_offset.x + max_len_map);
+
+            ++x;
         }
 
         v.coords.y += len.y;
         len.y = max_len_cell;
+        ++y;
     }
     return;
 }

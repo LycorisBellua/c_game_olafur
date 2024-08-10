@@ -37,11 +37,13 @@ void free_textures(void)
 
     use_texture(0);
 
-    for (i = 0; i < sizeof(textures)/sizeof(Texture*); ++i)
+    i = 0;
+    while (i < sizeof(textures)/sizeof(Texture*))
     {
         if (!textures[i])
             break;
         free_texture(&textures[i]);
+        ++i;
     }
     return;
 }

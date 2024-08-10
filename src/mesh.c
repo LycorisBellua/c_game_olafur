@@ -49,12 +49,14 @@ void create_mesh(void)
         many bytes a vertex is made of in total.
         - Last arg is, in the stride, a pointer to the attribute.
     */
-    for (i = 0; i < attr_nbr; ++i)
+    i = 0;
+    while (i < attr_nbr)
     {
         glEnableVertexArrayAttrib(VAO, i);
         glVertexAttribPointer(i, attr_nbr, GL_DOUBLE, GL_FALSE, 
             attr_nbr * attr_len * sizeof(GLdouble), 
             (const void*)(attr_len * i * sizeof(GLdouble)));
+        ++i;
     }
     return;
 }
@@ -79,12 +81,14 @@ void free_mesh(void)
     /* Free the VBOs related to the VAO */
     glBindVertexArray(VAO);
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &len);
-    for (i = 0; i < len; ++i)
+    i = 0;
+    while (i < len)
     {
         VBO = 0;
         glGetVertexAttribIuiv(i, GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, &VBO);
         if (VBO)
             glDeleteBuffers(1, &VBO);
+        ++i;
     }
 
     /* Free the VAO */

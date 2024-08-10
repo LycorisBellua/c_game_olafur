@@ -15,7 +15,7 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len);
     As a bonus, being able to pass values directly into draw_point() 
     instead of declaring a vector variable is neat. May be useful.
 */
-void draw_point(Texture* t, Color color, int x, int y)
+void draw_point(Texture* t, Color c, int x, int y)
 {
     int row;
     int col;
@@ -23,20 +23,20 @@ void draw_point(Texture* t, Color color, int x, int y)
     if (is_coord_out_of_bounds(t->width, x) 
         || is_coord_out_of_bounds(t->height, y))
         return;
-
     x *= t->thickness;
     y *= t->thickness;
-    
-    for (row = 0; row < t->thickness; ++row)
+    c = get_alpha_blended_color(*((Color*)t->buffer + (y * t->real_width + x)),
+        c);
+    row = 0;
+    while (row < t->thickness)
     {
-        for (col = 0; col < t->thickness; ++col)
+        col = 0;
+        while (col < t->thickness)
         {
-            GLubyte *p = t->buffer + 4 * ((y+row) * t->real_width + (x+col));
-            p[0] = color.r;
-            p[1] = color.g;
-            p[2] = color.b;
-            p[3] = color.a;
+            *((Color*)t->buffer + ((y + row) * t->real_width + (x + col))) = c;
+            ++col;
         }
+        ++row;
     }
     return;
 }
@@ -88,13 +88,16 @@ void draw_shape(Texture* t, int full, Vertex arr[], int len)
 
     if (len < 3)
         return;
-
     if (full)
         draw_shape_full(t, arr, len);
     else
     {
-        for (i = 0; i < len; ++i)
+        i = 0;
+        while (i < len)
+        {
             draw_line(t, arr[i], arr[(i + 1) % len]);
+            ++i;
+        }
     }
     return;
 }
@@ -108,7 +111,6 @@ static void draw_rectangle_full(Texture* t, Vertex v, int width, int height)
     v2.coords.x = v.coords.x + width-1;
     v2.coords.y = v.coords.y;
     v2.color = v.color;
-
     while (v.coords.y <= target_y)
     {
         draw_line(t, v, v2);
@@ -139,12 +141,16 @@ static void draw_rectangle_empty(Texture* t, Vertex v, int width, int height)
     draw_line(t, v, v2);
 
     /* Right */
+    ++v2.coords.y;
     draw_line(t, v2, v4);
 
     /* Bottom */
+    --v4.coords.x;
     draw_line(t, v3, v4);
 
     /* Left */
+    ++v.coords.y;
+    --v3.coords.y;
     draw_line(t, v, v3);
     return;
 }
@@ -267,20 +273,24 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len)
 
     ymin = arr[0].coords.y;
     ymax = arr[0].coords.y;
-    for (i = 1; i < len; ++i)
+    i = 1;
+    while (i < len)
     {
         if (arr[i].coords.y < ymin)
             ymin = arr[i].coords.y;
         if (arr[i].coords.y > ymax)
             ymax = arr[i].coords.y;
+        ++i;
     }
 
-    for (y = ymin; y <= ymax; ++y)
+    y = ymin;
+    while (y <= ymax)
     {
         x1 = t->width-1;
         x2 = 0;
 
-        for (i = 0; i < len; ++i)
+        i = 0;
+        while (i < len)
         {
             j = (i + 1) % len;
             if ((arr[i].coords.y <= y && arr[j].coords.y > y) 
@@ -295,6 +305,7 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len)
                 if (x_intersection > x2)
                     x2 = x_intersection;
             }
+            ++i;
         }
 
         if (x1 <= x2)
@@ -305,6 +316,7 @@ static void draw_shape_full(Texture* t, Vertex arr[], int len)
             v2.coords.y = y;
             draw_line(t, v1, v2);
         }
+        ++y;
     }
     return;
 }

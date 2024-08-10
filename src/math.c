@@ -77,13 +77,17 @@ double rad2deg(const double rad)
 double f_sin(const double rad)
 {
     int n;
-    double result = 0.0f;
+    double result;
     double fact;
-    for (n = 0; n < 10; ++n)
+
+    n = 0;
+    result = 0.0f;
+    while (n < 10)
     {
         fact = factorial(2 * n + 1);
         if (!is_close_to_zero(fact))
             result += power(-1, n) * power(rad, 2 * n + 1) / fact;
+        ++n;
     }
     return result;
 }
@@ -91,47 +95,53 @@ double f_sin(const double rad)
 double f_cos(const double rad)
 {
     int n;
-    double result = 0.0f;
+    double result;
     double fact;
-    for (n = 0; n < 10; ++n)
+
+    n = 0;
+    result = 0.0f;
+    while (n < 10)
     {
         fact = factorial(2 * n);
         if (!is_close_to_zero(fact))
             result += power(-1, n) * power(rad, 2 * n) / fact;
+        ++n;
     }
     return result;
 }
 
 double f_tan(const double rad)
 {
-    double cos = f_cos(rad);
+    double cos;
 
+    cos = f_cos(rad);
     if (is_close_to_zero(cos))
         return 0.0f;
-
     return f_sin(rad) / cos;
 }
 
 double f_sqrt(const double n)
 {
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wstrict-aliasing"
-    #pragma GCC diagnostic ignored "-Wuninitialized"
-    double x = n;
-    double xhalf = 0.5 * x;
-    int i = *(int*)&x;
+    double x;
+    double xhalf;
+    int i;
+
+    x = n;
+    xhalf = 0.5 * x;
+    i = *(int*)&x;
     i = 0x5f375a86 - (i >> 1);
     x = *(double*)&i;
     x = x * (1.5 - xhalf * x * x);
     x = x * (1.5 - xhalf * x * x);
     x = x * (1.5 - xhalf * x * x);
     return x * n;
-    #pragma GCC diagnostic pop
 }
 
 void swap(int* a, int* b)
 {
-    int tmp = *a;
+    int tmp;
+
+    tmp = *a;
     *a = *b;
     *b = tmp;
     return;
@@ -184,17 +194,22 @@ static double is_close_to_zero(const double n)
 
 static double factorial(const int n)
 {
-    if (n == 0 || n == 1)
+    if (n < 2)
         return 1.0f;
-    else
-        return n * factorial(n - 1);
+    return n * factorial(n - 1);
 }
 
 static double power(const double base, const int exponent)
 {
     int i;
-    double result = 1.0f;
-    for (i = 0; i < exponent; ++i)
+    double result;
+
+    i = 0;
+    result = 1.0f;
+    while (i < exponent)
+    {
         result *= base;
+        ++i;
+    }
     return result;
 }

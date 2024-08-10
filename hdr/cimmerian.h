@@ -119,7 +119,8 @@ extern Resolution res;
 
 Color get_color_rgba(const GLubyte r, const GLubyte g, const GLubyte b,
     const GLubyte a);
-Color get_color_hex(const char* str);
+Color get_color_hex(const char* str, const GLubyte alpha);
+Color get_alpha_blended_color(Color prev, Color new);
 int is_digit(const int c);
 
 /* Coords ------------------------------------------------------------------- */
