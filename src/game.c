@@ -37,6 +37,7 @@ void reset_global_coordinates(void)
 static void draw_floor_and_ceiling(void)
 {
     Vertex v;
+    Vector size;
     Texture *t;
 
     t = man.tex[man.curr_tex];
@@ -44,11 +45,13 @@ static void draw_floor_and_ceiling(void)
     v.coords.x = 0;
     v.coords.y = 0;
     v.color = get_color_rgba(109, 101, 98, 255);
-    draw_rectangle(t, 1, v, t->width, t->height*0.5f);
+    size.x = t->width;
+    size.y = t->height * 0.5f;
+    draw_rectangle_full(t, v, size);
 
     v.coords.y = t->height*0.5f;
     v.color = get_color_rgba(59, 92, 169, 255);
-    draw_rectangle(t, 1, v, t->width, t->height*0.5f);
+    draw_rectangle_full(t, v, size);
     return;
 }
 

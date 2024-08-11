@@ -137,9 +137,13 @@ double get_distance(const VectorF a, const VectorF b);
 
 void draw_point(Texture* t, Color color, int x, int y);
 void draw_line(Texture* t, Vertex v1, Vertex v2);
-void draw_rectangle(Texture* t, int full, Vertex v, int width, int height);
-void draw_circle(Texture* t, int full, Vertex v, int radius);
-void draw_shape(Texture* t, int full, Vertex arr[], int len);
+void draw_rectangle(Texture* t, Vertex v, Vector size);
+void draw_rectangle_full(Texture* t, Vertex v, Vector size);
+void draw_circle(Texture* t, Vertex center, int radius);
+void draw_circle_full(Texture* t, Vertex center, int radius);
+void draw_circle_full_grad(Texture* t, Vertex center, int radius, Color edge);
+void draw_shape(Texture* t, Vertex arr[], int len);
+void draw_shape_full(Texture* t, Vertex arr[], int len);
 
 void draw_test(void);
 void draw_test_corners(Texture* t);

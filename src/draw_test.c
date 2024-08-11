@@ -95,38 +95,42 @@ void draw_test_lines(Texture* t)
 void draw_test_rectangles(Texture* t)
 {
     Vertex v1, v2;
+    Vector size;
 
     v1.coords.x = get_coord_x(t, 0.1f);
     v1.coords.y = get_coord_y(t, 0.33f);
     v1.color = get_color_rgba(255, 255, 255, 255);
-    draw_rectangle(t, 1, v1, 100, 100);
+    size.x = 100;
+    size.y = 100;
+    draw_rectangle_full(t, v1, size);
 
-    v2.coords.x = get_coord_x(t, 0.1f) + 2;
-    v2.coords.y = get_coord_y(t, 0.33f) + 2;
+    v2.coords.x = get_coord_x(t, 0.1f) + 1;
+    v2.coords.y = get_coord_y(t, 0.33f) + 1;
     v2.color = get_color_rgba(255, 0, 0, 255);
-    draw_rectangle(t, 0, v2, 100, 100);
+    draw_rectangle(t, v2, size);
     return;
 }
 
 void draw_test_circles(Texture* t)
 {
     int radius = 100;
+    Color edge_color = get_color_rgba(0, 0, 0, 255);
     Vertex v;
     v.color = get_color_rgba(0, 0, 255, 255);
-    v.coords.x = get_coord_x(t, 0.7f);
-    v.coords.y = get_coord_y(t, 0.4f);
-    draw_circle(t, 1, v, radius);
+    v.coords.x = get_coord_x(t, 0.75f);
+    v.coords.y = get_coord_y(t, 0.5f);
+    draw_circle_full_grad(t, v, radius, edge_color);
 
-    v.color = get_color_rgba(255, 255, 255, 255);
-    draw_circle(t, 0, v, radius);
+    v.color = get_color_rgba(148, 53, 170, 255);
+    v.coords.x = get_coord_x(t, 0.25f);
+    draw_circle_full_grad(t, v, radius, edge_color);
     return;
 }
 
 void draw_test_shapes(Texture* t)
 {
-    int full = 1;
-
     /* Convex (triangle) */
+    /*
     Vertex v[3];
     v[0].color = get_color_rgba(255, 0, 0, 255);
     v[1].color = get_color_rgba(0, 255, 0, 255);
@@ -138,6 +142,7 @@ void draw_test_shapes(Texture* t)
     v[1].coords.y = get_coord_y(t, 0.75f);
     v[2].coords.x = get_coord_x(t, 0.25f);
     v[2].coords.y = get_coord_y(t, 0.75f);
+    */
 
     /* Rectangle */
     /*
@@ -158,7 +163,6 @@ void draw_test_shapes(Texture* t)
     */
 
     /* Concave and self-intercepting */
-    /*
     Vertex v[5];
     v[0].color = get_color_rgba(255, 255, 255, 255);
     v[1].color = get_color_rgba(255, 0, 0, 255);
@@ -176,9 +180,15 @@ void draw_test_shapes(Texture* t)
     v[3].coords.y = get_coord_y(t, 0.25f);
     v[4].coords.x = get_coord_x(t, 0.50f);
     v[4].coords.y = get_coord_y(t, 0.10f);
-    */
 
-    draw_shape(t, full, v, sizeof(v)/sizeof(v[0]));
+    draw_shape(t, v, sizeof(v)/sizeof(v[0]));
+    /*
+    Vertex intersection;
+    intersection.coords.x = get_coord_x(t, 0.337f);
+    intersection.coords.y = get_coord_y(t, 0.424f);
+    intersection.color = get_color_rgba(127, 255, 127, 255);
+    draw_point(t, intersection.color, intersection.coords.x, intersection.coords.y);
+    */
     return;
 }
 

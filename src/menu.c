@@ -25,7 +25,7 @@ void draw_main_menu(void)
     if (index_btn_selected == 0)
     {
         btn[0].color = get_color_rgba(0xFF, 0xFF, 0xFF, 0xFF);
-        draw_rectangle(t, 0, btn[0], btn_size.x, btn_size.y);
+        draw_rectangle(t, btn[0], btn_size);
         btn[0].color = color_selected;
     }
     else
@@ -33,10 +33,10 @@ void draw_main_menu(void)
 
     --btn[0].coords.x;
     --btn[0].coords.y;
-    draw_rectangle(t, 1, btn[0], btn_size.x, btn_size.y);
+    draw_rectangle_full(t, btn[0], btn_size);
 
     btn[0].color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
-    draw_rectangle(t, 0, btn[0], btn_size.x, btn_size.y);
+    draw_rectangle(t, btn[0], btn_size);
 
     /* "Options" ------------------------------------------------------------ */
     btn[1].coords.x = get_coord_x(t, 0.5f - btn_size_norm.x/2) + 1;
@@ -45,7 +45,7 @@ void draw_main_menu(void)
     if (index_btn_selected == 1)
     {
         btn[1].color = get_color_rgba(0xFF, 0xFF, 0xFF, 50);
-        draw_rectangle(t, 0, btn[1], btn_size.x, btn_size.y);
+        draw_rectangle(t, btn[1], btn_size);
         btn[1].color = color_selected;
     }
     else
@@ -54,10 +54,10 @@ void draw_main_menu(void)
 
     --btn[1].coords.x;
     --btn[1].coords.y;
-    draw_rectangle(t, 1, btn[1], btn_size.x, btn_size.y);
+    draw_rectangle_full(t, btn[1], btn_size);
 
     btn[1].color = get_color_rgba(0x00, 0x00, 0x00, 50);
-    draw_rectangle(t, 0, btn[1], btn_size.x, btn_size.y);
+    draw_rectangle(t, btn[1], btn_size);
 
     /* "Quit" --------------------------------------------------------------- */
     btn[2].coords.x = get_coord_x(t, 0.5f - btn_size_norm.x/2) + 1;
@@ -66,7 +66,7 @@ void draw_main_menu(void)
     if (index_btn_selected == 2)
     {
         btn[2].color = get_color_rgba(0xFF, 0xFF, 0xFF, 0xFF);
-        draw_rectangle(t, 0, btn[2], btn_size.x, btn_size.y);
+        draw_rectangle(t, btn[2], btn_size);
         btn[2].color = color_selected;
     }
     else
@@ -74,10 +74,10 @@ void draw_main_menu(void)
 
     --btn[2].coords.x;
     --btn[2].coords.y;
-    draw_rectangle(t, 1, btn[2], btn_size.x, btn_size.y);
+    draw_rectangle_full(t, btn[2], btn_size);
 
     btn[2].color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
-    draw_rectangle(t, 0, btn[2], btn_size.x, btn_size.y);
+    draw_rectangle(t, btn[2], btn_size);
     return;
 }
 

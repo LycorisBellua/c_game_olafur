@@ -124,6 +124,7 @@ static void draw_map(const Map* m)
     const int max_len_cell = MAP_CELL_LEN/minimap_factor;
     const int max_len_map = max_len_cell * MAX_CELL_AMOUNT;
     Vector len;
+    Vector rect_size;
     VectorF pos;
     int x, y;
     Vertex v;
@@ -131,7 +132,9 @@ static void draw_map(const Map* m)
     v.coords.x = display_offset.x;
     v.coords.y = display_offset.y;
     v.color = get_color_rgba(255, 0, 0, 255);
-    draw_rectangle(man.tex[man.curr_tex], 0, v, max_len_map, max_len_map);
+    rect_size.x = max_len_map;
+    rect_size.y = max_len_map;
+    draw_rectangle(man.tex[man.curr_tex], v, rect_size);
 
     /*
         SMALLEST MAP
@@ -188,7 +191,9 @@ static void draw_map(const Map* m)
                 v.color = get_color_rgba(0, 0, 0, 0);
 
             /* Remove 1 pixel in order to see grid lines */
-            draw_rectangle(man.tex[man.curr_tex], 1, v, len.x-1, len.y-1);
+            rect_size.x = len.x - 1;
+            rect_size.y = len.y - 1;
+            draw_rectangle_full(man.tex[man.curr_tex], v, rect_size);
             v.coords.x += len.x;
             len.x = max_len_cell;
             if (v.coords.x > display_offset.x + max_len_map)
@@ -211,6 +216,7 @@ static void draw_player(void)
     const double map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
     const double offset = get_minimap_factor_offset(minimap_factor);
     Vertex pos, end;
+    Vector rect_size;
 
     pos.coords.x = map_center + display_offset.x - offset;
     pos.coords.y = map_center + display_offset.y - offset;
@@ -228,7 +234,9 @@ static void draw_player(void)
     pos.color = get_color_rgba(255, 0, 0, 255);
 
     /* Position */
-    draw_rectangle(man.tex[man.curr_tex], 1, pos, player_size, player_size);
+    rect_size.x = player_size;
+    rect_size.y = player_size;
+    draw_rectangle_full(man.tex[man.curr_tex], pos, rect_size);
     return;
 }
 

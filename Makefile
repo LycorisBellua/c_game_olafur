@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -ansi -pedantic -Ihdr
+CFLAGS = -Ihdr -Wall -Wextra #-ansi -pedantic
 LDFLAGS = -lGL -lglfw -lm
 
 NAME = Cimmerian
