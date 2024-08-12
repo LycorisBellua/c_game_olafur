@@ -33,9 +33,9 @@ static Color get_lerp_color(Color c1, Color c2, int steps, int total_steps)
     Color color;
     double factor;
 
-    if (total_steps < 2)
+    if (total_steps < 1)
         return (c1);
-    factor = (double)(total_steps - steps - 1) / (total_steps - 1);
+    factor = (double)steps / total_steps;
     color.r = c1.r * (1.0 - factor) + c2.r * factor;
     color.g = c1.g * (1.0 - factor) + c2.g * factor;
     color.b = c1.b * (1.0 - factor) + c2.b * factor;
