@@ -22,7 +22,9 @@
 int   abs(const int n);
 double f_abs(const double n);
 int   min(const int a, const int b);
+int   f_min(const double a, const double b);
 int   max(const int a, const int b);
+int   f_max(const double a, const double b);
 int   normalize(const int n);
 int   clamp(const int n, const int min, const int max);
 int   clamp_min(const int n, const int min);

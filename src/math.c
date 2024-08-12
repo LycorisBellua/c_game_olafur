@@ -25,7 +25,21 @@ int min(const int a, const int b)
     return b;
 }
 
+int f_min(const double a, const double b)
+{
+    if (a < b)
+        return a;
+    return b;
+}
+
 int max(const int a, const int b)
+{
+    if (a > b)
+        return a;
+    return b;
+}
+
+int f_max(const double a, const double b)
 {
     if (a > b)
         return a;
