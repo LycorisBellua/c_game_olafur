@@ -116,13 +116,18 @@ void draw_test_circles(Texture* t)
     int radius = 100;
     Color edge_color = get_color_rgba(0, 0, 0, 255);
     Vertex v;
-    v.color = get_color_rgba(0, 0, 255, 255);
-    v.coords.x = get_coord_x(t, 0.75f);
     v.coords.y = get_coord_y(t, 0.5f);
+
+    v.color = get_color_rgba(255, 0, 0, 255);
+    v.coords.x = get_coord_x(t, 0.25f);
     draw_circle_full_grad(t, v, radius, edge_color);
 
-    v.color = get_color_rgba(148, 53, 170, 255);
-    v.coords.x = get_coord_x(t, 0.25f);
+    v.color = get_color_rgba(0, 0, 255, 255);
+    v.coords.x = get_coord_x(t, 0.5f);
+    draw_circle_full_grad(t, v, radius, edge_color);
+
+    v.color = get_color_rgba(0, 255, 0, 255);
+    v.coords.x = get_coord_x(t, 0.75f);
     draw_circle_full_grad(t, v, radius, edge_color);
     return;
 }
@@ -130,7 +135,6 @@ void draw_test_circles(Texture* t)
 void draw_test_shapes(Texture* t)
 {
     /* Convex (triangle) */
-    /*
     Vertex v[3];
     v[0].color = get_color_rgba(255, 0, 0, 255);
     v[1].color = get_color_rgba(0, 255, 0, 255);
@@ -142,9 +146,8 @@ void draw_test_shapes(Texture* t)
     v[1].coords.y = get_coord_y(t, 0.75f);
     v[2].coords.x = get_coord_x(t, 0.25f);
     v[2].coords.y = get_coord_y(t, 0.75f);
-    */
 
-    /* Rectangle */
+    /* Convex (rectangle) */
     /*
     Vertex v[4];
     v[0].color = get_color_rgba(255, 0, 0, 255);
@@ -162,49 +165,51 @@ void draw_test_shapes(Texture* t)
     v[3].coords.y = get_coord_y(t, 0.75f);
     */
 
-    /* Concave */
-    /* Star Shape */
+    /* Concave (star) */
+    /*
     Vertex v[10];
-    v[0].color = get_color_rgba(255, 255, 255, 255); // White
-    v[1].color = get_color_rgba(255, 0, 0, 255);     // Red
-    v[2].color = get_color_rgba(0, 255, 0, 255);     // Green
-    v[3].color = get_color_rgba(0, 0, 255, 255);     // Blue
-    v[4].color = get_color_rgba(255, 255, 0, 255);   // Yellow
-    v[5].color = get_color_rgba(0, 255, 255, 255);   // Cyan
-    v[6].color = get_color_rgba(255, 0, 255, 255);   // Magenta
-    v[7].color = get_color_rgba(128, 128, 128, 255); // Gray
-    v[8].color = get_color_rgba(255, 165, 0, 255);   // Orange
-    v[9].color = get_color_rgba(75, 0, 130, 255);    // Indigo
+    v[0].color = get_color_rgba(255, 255, 255, 255);
+    v[1].color = get_color_rgba(255, 0, 0, 255);
+    v[2].color = get_color_rgba(0, 255, 0, 255);
+    v[3].color = get_color_rgba(0, 0, 255, 255);
+    v[4].color = get_color_rgba(255, 255, 0, 255);
+    v[5].color = get_color_rgba(0, 255, 255, 255);
+    v[6].color = get_color_rgba(255, 0, 255, 255);
+    v[7].color = get_color_rgba(128, 128, 128, 255);
+    v[8].color = get_color_rgba(255, 165, 0, 255);
+    v[9].color = get_color_rgba(75, 0, 130, 255);
 
-    v[0].coords.x = get_coord_x(t, 0.50f);  // Top point (outer)
+    // Top point (outer)
+    v[0].coords.x = get_coord_x(t, 0.50f);
     v[0].coords.y = get_coord_y(t, 0.10f);
-
-    v[1].coords.x = get_coord_x(t, 0.60f);  // Right inner point
+    // Right inner point
+    v[1].coords.x = get_coord_x(t, 0.60f);
     v[1].coords.y = get_coord_y(t, 0.30f);
-
-    v[2].coords.x = get_coord_x(t, 0.80f);  // Right outer point
+    // Right outer point
+    v[2].coords.x = get_coord_x(t, 0.80f);
     v[2].coords.y = get_coord_y(t, 0.35f);
-
-    v[3].coords.x = get_coord_x(t, 0.65f);  // Bottom right inner point
+    // Bottom right inner point
+    v[3].coords.x = get_coord_x(t, 0.65f);
     v[3].coords.y = get_coord_y(t, 0.55f);
-
-    v[4].coords.x = get_coord_x(t, 0.75f);  // Bottom right outer point
+    // Bottom right outer point
+    v[4].coords.x = get_coord_x(t, 0.75f);
     v[4].coords.y = get_coord_y(t, 0.80f);
-
-    v[5].coords.x = get_coord_x(t, 0.50f);  // Bottom point (outer)
+    // Bottom point (outer)
+    v[5].coords.x = get_coord_x(t, 0.50f);
     v[5].coords.y = get_coord_y(t, 0.65f);
-
-    v[6].coords.x = get_coord_x(t, 0.25f);  // Bottom left outer point
+    // Bottom left outer point
+    v[6].coords.x = get_coord_x(t, 0.25f);
     v[6].coords.y = get_coord_y(t, 0.80f);
-
-    v[7].coords.x = get_coord_x(t, 0.35f);  // Bottom left inner point
+    // Bottom left inner point
+    v[7].coords.x = get_coord_x(t, 0.35f);
     v[7].coords.y = get_coord_y(t, 0.55f);
-
-    v[8].coords.x = get_coord_x(t, 0.20f);  // Left outer point
+    // Left outer point
+    v[8].coords.x = get_coord_x(t, 0.20f);
     v[8].coords.y = get_coord_y(t, 0.35f);
-
-    v[9].coords.x = get_coord_x(t, 0.40f);  // Left inner point
+    // Left inner point
+    v[9].coords.x = get_coord_x(t, 0.40f);
     v[9].coords.y = get_coord_y(t, 0.30f);
+    */
 
     /* Concave and self-intercepting */
     /*
@@ -228,13 +233,6 @@ void draw_test_shapes(Texture* t)
     */
 
     draw_shape_full(t, v, sizeof(v)/sizeof(v[0]));
-    /*
-    Vertex intersection;
-    intersection.coords.x = get_coord_x(t, 0.337f);
-    intersection.coords.y = get_coord_y(t, 0.424f);
-    intersection.color = get_color_rgba(127, 255, 127, 255);
-    draw_point(t, intersection.color, intersection.coords.x, intersection.coords.y);
-    */
     return;
 }
 
