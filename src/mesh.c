@@ -21,8 +21,11 @@ static GLuint indices[] =
 void create_mesh(void)
 {
     int i;
-    const int attr_nbr = 2;
-    const int attr_len = 2;
+    int attr_nbr;
+    int attr_len;
+
+    attr_nbr = 2;
+    attr_len = 2;
 
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -55,7 +58,7 @@ void create_mesh(void)
         glEnableVertexArrayAttrib(VAO, i);
         glVertexAttribPointer(i, attr_nbr, GL_DOUBLE, GL_FALSE, 
             attr_nbr * attr_len * sizeof(GLdouble), 
-            (const void*)(attr_len * i * sizeof(GLdouble)));
+            (void*)(attr_len * i * sizeof(GLdouble)));
         ++i;
     }
     return;
@@ -72,8 +75,11 @@ void render_mesh(void)
 
 void free_mesh(void)
 {
-    int i = 0;
-    GLint len = 0;
+    int i;
+    GLint len;
+
+    i = 0;
+    len = 0;
 
     /* Free the EBO */
     glDeleteBuffers(1, &EBO);

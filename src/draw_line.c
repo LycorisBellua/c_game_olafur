@@ -1,19 +1,19 @@
 #include "cimmerian.h"
 
-static Color get_lerp_color(Color c1, Color c2, int steps, int total_steps);
+static t_color get_lerp_color(t_color c1, t_color c2, int steps, int total_steps);
 
-void draw_line(Texture* t, Vertex v1, Vertex v2)
+void draw_line(t_tex* t, t_vert v1, t_vert v2)
 {
     int steps;
     int total_steps;
-    Vector dir;
-    VectorF coords;
-    VectorF increment;
+    t_ivec2 dir;
+    t_vec2 coord;
+    t_vec2 increment;
 
-    dir = get_direction(v1.coords, v2.coords);
+    dir = get_direction(v1.coord, v2.coord);
     steps = max(abs(dir.x), abs(dir.y));
-    coords.x = v1.coords.x;
-    coords.y = v1.coords.y;
+    coord.x = v1.coord.x;
+    coord.y = v1.coord.y;
     increment.x = dir.x / (double)steps;
     increment.y = dir.y / (double)steps;
     ++steps;
@@ -21,16 +21,16 @@ void draw_line(Texture* t, Vertex v1, Vertex v2)
     while (steps-- > 0)
     {
         draw_point(t, get_lerp_color(v1.color, v2.color, steps, total_steps),
-            coords.x, coords.y);
-        coords.x += increment.x;
-        coords.y += increment.y;
+            coord.x, coord.y);
+        coord.x += increment.x;
+        coord.y += increment.y;
     }
     return;
 }
 
-static Color get_lerp_color(Color c1, Color c2, int steps, int total_steps)
+static t_color get_lerp_color(t_color c1, t_color c2, int steps, int total_steps)
 {
-    Color color;
+    t_color color;
     double factor;
 
     if (total_steps < 1)

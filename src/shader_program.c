@@ -2,18 +2,23 @@
 
 static int app_glsl_version = 0;
 
-static GLuint compile_shader(const GLenum type, const char* filepath);
+static GLuint compile_shader(GLenum type, char* filepath);
 static int get_app_glsl_version(void);
 static void set_glsl_version_in_shader(char* ptr_shader);
 static void free_shader(GLuint* id);
 
 int create_shader_program(void)
 {
-    const char* vs_filepath = "shaders/vs.glsl";
-    const char* fs_filepath = "shaders/fs.glsl";
-    GLuint vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
-    GLuint fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
+    char* vs_filepath;
+    char* fs_filepath;
+    GLuint vs;
+    GLuint fs;
     int shader_program;
+
+    vs_filepath = "shaders/vs.glsl";
+    fs_filepath = "shaders/fs.glsl";
+    vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
+    fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
 
     if (!vs || !fs)
     {
@@ -55,11 +60,12 @@ void free_shader_program(void)
     return;
 }
 
-static GLuint compile_shader(const GLenum type, const char* filepath)
+static GLuint compile_shader(GLenum type, char* filepath)
 {
     GLuint id_shader;
-    char* ptr = read_file(filepath);
+    char* ptr;
 
+    ptr = read_file(filepath);
     if (!ptr)
         return 0;
     else if (type != GL_VERTEX_SHADER && type != GL_FRAGMENT_SHADER)
@@ -73,7 +79,7 @@ static GLuint compile_shader(const GLenum type, const char* filepath)
     set_glsl_version_in_shader(ptr);
 
     id_shader = glCreateShader(type);
-    glShaderSource(id_shader, 1, (const GLchar**)&ptr, 0);
+    glShaderSource(id_shader, 1, (GLchar**)&ptr, 0);
     glCompileShader(id_shader);
     free(ptr);
     return id_shader;
@@ -116,11 +122,12 @@ static int get_app_glsl_version(void)
 static void set_glsl_version_in_shader(char* ptr_shader)
 {
     int i;
-    int glsl = app_glsl_version;
+    int glsl;
 
     /* The first line of a shader is something like: "#version 400 core\n" */
 
     i = 0;
+    glsl = app_glsl_version;
     while (ptr_shader[i])
     {
         if (is_digit(ptr_shader[i]))

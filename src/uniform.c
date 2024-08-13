@@ -4,8 +4,9 @@ static GLint loc = 0;
 
 void create_uniform(void)
 {
-    const char* name = "frame_texture";
+    char* name;
 
+    name = "frame_texture";
     loc = glGetUniformLocation(man.shader_program, name);
     if (loc < 0)
     {
@@ -13,7 +14,6 @@ void create_uniform(void)
             "unused in shader program ID°%d\n", name, man.shader_program);
         exit(EXIT_FAILURE);
     }
-
     glUniform1i(loc, 0);
     return;
 }

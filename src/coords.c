@@ -1,69 +1,48 @@
 #include "cimmerian.h"
 
-int get_coord_x(Texture* t, double normalized)
+int get_coord_x(t_tex* t, double normalized)
 {
-    return (t->width-1) * normalized;
+    return (t->size.x - 1) * normalized;
 }
 
-int get_coord_y(Texture* t, double normalized)
+int get_coord_y(t_tex* t, double normalized)
 {
-    return (t->height-1) * normalized;
+    return (t->size.y - 1) * normalized;
 }
 
-double get_coord_x_norm(Texture* t, int coord)
+double get_coord_x_norm(t_tex* t, int coord)
 {
-    return (double)coord / (t->width-1);
+    return (double)coord / (t->size.x - 1);
 }
 
-double get_coord_y_norm(Texture* t, int coord)
+double get_coord_y_norm(t_tex* t, int coord)
 {
-    return (double)coord / (t->height-1);
+    return (double)coord / (t->size.y - 1);
 }
 
-int is_coord_out_of_bounds(int axis_length, int coord)
+t_ivec2 get_direction(t_ivec2 v1, t_ivec2 v2)
 {
-    /*
-        If coord is `x`, it's out of bounds to the left of the texture.
-        If coord is `y`, it's out of bounds to the bottom of the texture.
-    */
-    if (coord < 0)
-        return -1;
-
-    /*
-        If coord is `x`, it's out of bounds to the right of the texture.
-        If coord is `y`, it's out of bounds to the top of the texture.
-    */
-    else if (coord >= axis_length)
-        return 1;
-
-    /* This coordinate is legal */
-    else
-        return 0;
-}
-
-Vector get_direction(Vector v1, Vector v2)
-{
-    Vector dir;
+    t_ivec2 dir;
 
     dir.x = v1.x < 0 && v2.x < 0 ? abs(v1.x) + v2.x : v2.x - v1.x;
     dir.y = v1.y < 0 && v2.y < 0 ? abs(v1.y) + v2.y : v2.y - v1.y;
-
     return dir;
 }
 
-VectorF get_direction_double(VectorF v1, VectorF v2)
+t_vec2 get_direction_double(t_vec2 v1, t_vec2 v2)
 {
-    VectorF dir;
+    t_vec2 dir;
 
     dir.x = v1.x < 0 && v2.x < 0 ? f_abs(v1.x) + v2.x : v2.x - v1.x;
     dir.y = v1.y < 0 && v2.y < 0 ? f_abs(v1.y) + v2.y : v2.y - v1.y;
-
     return dir;
 }
 
-double get_distance(const VectorF a, const VectorF b)
+/* Hypotenuse, therefore Pythagorean theorem */
+double get_distance(t_vec2 a, t_vec2 b)
 {
-    /* Hypotenuse, therefore Pythagorean theorem */
-    VectorF dir = get_direction_double(a, b);
+    t_vec2 dir;
+
+    dir = get_direction_double(a, b);
     return f_sqrt(dir.x * dir.x + dir.y * dir.y);
 }

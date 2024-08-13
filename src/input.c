@@ -3,26 +3,26 @@
 static int movement_input[3] = {0};
 static int rotation_input = 0;
 
-static void update_movement_action(const int axis);
+static void update_movement_action(int axis);
 static void update_rotation_action(void);
-/* static int get_local_key(const int physical_key); */
-static void input_escape(GLFWwindow* window, const int action);
-static void input_enter(GLFWwindow* window, const int action);
+/* static int get_local_key(int physical_key); */
+static void input_escape(GLFWwindow* window, int action);
+static void input_enter(GLFWwindow* window, int action);
 
-static void input_up(const int action);
-static void input_down(const int action);
-static void input_right(const int action);
-static void input_left(const int action);
-static void input_strafe_left(const int action);
-static void input_strafe_right(const int action);
+static void input_up(int action);
+static void input_down(int action);
+static void input_right(int action);
+static void input_left(int action);
+static void input_strafe_left(int action);
+static void input_strafe_right(int action);
 
 void physical_key_callback
 (
     GLFWwindow* window, 
-    const int key, 
-    __attribute__((unused))const int scancode, 
-    const int action, 
-    __attribute__((unused))const int mods
+    int key, 
+    __attribute__((unused)) int scancode, 
+     int action, 
+    __attribute__((unused)) int mods
 )
 {
     if (key > 255)
@@ -71,7 +71,7 @@ void scroll_callback
     return;
 }
 
-static void update_movement_action(const int axis)
+static void update_movement_action(int axis)
 {
     int input = movement_input[axis];
 
@@ -96,15 +96,15 @@ static void update_rotation_action(void)
 }
 
 /*
-static int get_local_key(const int physical_key)
+static int get_local_key(int physical_key)
 {
     // It will be in lowercase, so -32 for uppercase
-    const char* key_name = glfwGetKeyName(physical_key, 0);
+     char* key_name = glfwGetKeyName(physical_key, 0);
     return key_name[0] - 32;
 }
 */
 
-static void input_escape(GLFWwindow* window, const int action)
+static void input_escape(GLFWwindow* window, int action)
 {
     /* 
        By default, the window closing event is triggered by the cross 
@@ -124,7 +124,7 @@ static void input_escape(GLFWwindow* window, const int action)
     return;
 }
 
-static void input_enter(GLFWwindow* window, const int action)
+static void input_enter(GLFWwindow* window, int action)
 {
     if (action != GLFW_PRESS)
         return;
@@ -132,7 +132,7 @@ static void input_enter(GLFWwindow* window, const int action)
     return;
 }
 
-static void input_up(const int action)
+static void input_up(int action)
 {
     if (action == GLFW_PRESS)
     {
@@ -151,7 +151,7 @@ static void input_up(const int action)
     return;
 }
 
-static void input_down(const int action)
+static void input_down(int action)
 {
     if (action == GLFW_PRESS)
     {
@@ -170,7 +170,7 @@ static void input_down(const int action)
     return;
 }
 
-static void input_right(const int action)
+static void input_right(int action)
 {
     if (action == GLFW_PRESS)
     {
@@ -189,7 +189,7 @@ static void input_right(const int action)
     return;
 }
 
-static void input_left(const int action)
+static void input_left(int action)
 {
     if (action == GLFW_PRESS)
     {
@@ -208,7 +208,7 @@ static void input_left(const int action)
     return;
 }
 
-static void input_strafe_left(const int action)
+static void input_strafe_left(int action)
 {
     if (action == GLFW_PRESS)
     {
@@ -227,7 +227,7 @@ static void input_strafe_left(const int action)
     return;
 }
 
-static void input_strafe_right(const int action)
+static void input_strafe_right(int action)
 {
     if (action == GLFW_PRESS)
     {

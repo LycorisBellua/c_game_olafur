@@ -1,24 +1,25 @@
 #include "cimmerian.h"
 
-void draw_point(Texture* t, Color c, int x, int y)
+void draw_point(t_tex* t, t_color c, int x, int y)
 {
     int row;
     int col;
+    t_color* buf;
 
-    if (is_coord_out_of_bounds(t->width, x) 
-        || is_coord_out_of_bounds(t->height, y))
+    if (x < 0 || y < 0 || x >= t->size.x || y >= t->size.y)
         return;
     x *= t->thickness;
     y *= t->thickness;
-    c = get_alpha_blended_color(*((Color*)t->buffer + (y * t->real_width + x)),
-        c);
+    buf = (t_color*)t->buf + (y * t->real_size.x + x);
+    c = get_alpha_blended_color(*buf, c);
     row = 0;
     while (row < t->thickness)
     {
         col = 0;
         while (col < t->thickness)
         {
-            *((Color*)t->buffer + ((y + row) * t->real_width + (x + col))) = c;
+            buf = (t_color*)t->buf + ((y + row) * t->real_size.x + (x + col));
+            *buf = c;
             ++col;
         }
         ++row;

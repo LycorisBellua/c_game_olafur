@@ -14,149 +14,139 @@
 #define MAX_CELL_AMOUNT 8
 #define NBR_TEXTURES 3
 
-typedef struct
+typedef struct s_ivec2
 {
     int x;
     int y;
-} Vector;
+} t_ivec2;
 
-typedef struct
+typedef struct s_vec2
 {
     double x;
     double y;
-} VectorF;
+} t_vec2;
 
-typedef struct
+typedef struct s_color
 {
     GLubyte r;
     GLubyte g;
     GLubyte b;
     GLubyte a;
-} Color;
+} t_color;
 
-typedef struct
+typedef struct s_vert
 {
-    Vector coords;
-    Color color;
-} Vertex;
+    t_ivec2 coord;
+    t_color color;
+} t_vert;
 
-typedef struct Interface Interface;
-typedef struct Manager Manager;
-struct Interface
+typedef struct s_ui t_ui;
+typedef struct s_manager t_manager;
+struct s_ui
 {
     int nav_ui;
     void (*draw)(void);
     void (*reset_input)(void);
-    Interface* previous;
-    Interface* next;
+    t_ui* previous;
+    t_ui* next;
 };
 
-typedef struct
+typedef struct s_map
 {
-    int width;
-    int height;
-    VectorF start_pos;
+    t_ivec2 size;
+    t_vec2 start_pos;
     double start_angle;
     int* data;
-} Map;
+} t_map;
 
-typedef struct
+typedef struct s_player
 {
-    VectorF pos;
-    VectorF delta;
+    t_vec2 pos;
+    t_vec2 delta;
     double angle;
     int map_index;
-} Player;
+} t_player;
 
-typedef struct
+typedef struct s_tex
 {
     GLuint id;
-    int real_width;
-    int real_height;
+    t_ivec2 size;
+    t_ivec2 real_size;
     int thickness;
-    int width;
-    int height;
-    GLubyte* buffer;
-} Texture;
+    GLubyte* buf;
+} t_tex;
 
-typedef struct
+typedef struct s_res
 {
-    int monitor_width;
-    int monitor_height;
+    t_ivec2 monitor_size;
     double aspect_ratio;
 
-    int window_width_default;
-    int window_height_default;
-    int window_width;
-    int window_height;
-    int window_position_x;
-    int window_position_y;
-    int fullscreen_x;
-    int fullscreen_y;
-} Resolution;
+    t_ivec2 window_size_default;
+    t_ivec2 window_size;
+    t_ivec2 window_position;
+    t_ivec2 fullscreen;
+} t_res;
 
-struct Manager
+struct s_manager
 {
     GLuint shader_program;
     double delta_time;
     double fps_count;
-    Resolution res;
-    Texture* tex[NBR_TEXTURES + 1];
+    t_res res;
+    t_tex* tex[NBR_TEXTURES + 1];
     int curr_tex;
-    Interface* active_interface;
-    Interface main_menu_interface;
-    Interface game_interface;
-    Map* map;
-    Player player;
+    t_ui* active_interface;
+    t_ui main_menu_interface;
+    t_ui game_interface;
+    t_map* map;
+    t_player player;
     int movement_action[3];
     int rotation_action;
 };
 
-extern Manager man;
+extern t_manager man;
 
 /* Colors ------------------------------------------------------------------- */
 
-Color get_color_rgba(const GLubyte r, const GLubyte g, const GLubyte b,
-    const GLubyte a);
-Color get_color_hex(const char* str, const GLubyte alpha);
-Color get_alpha_blended_color(Color prev, Color new);
-int is_digit(const int c);
+t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
+t_color get_color_hex(char* str, GLubyte alpha);
+t_color get_alpha_blended_color(t_color prev, t_color new);
 
 /* Coords ------------------------------------------------------------------- */
 
-int get_coord_x(Texture* t, double normalized);
-int get_coord_y(Texture* t, double normalized);
-double get_coord_x_norm(Texture* t, int coord);
-double get_coord_y_norm(Texture* t, int coord);
-int is_coord_out_of_bounds(int axis_length, int coord);
-Vector get_direction(Vector v1, Vector v2);
-VectorF get_direction_double(VectorF v1, VectorF v2);
-double get_distance(const VectorF a, const VectorF b);
+int get_coord_x(t_tex* t, double normalized);
+int get_coord_y(t_tex* t, double normalized);
+double get_coord_x_norm(t_tex* t, int coord);
+double get_coord_y_norm(t_tex* t, int coord);
+t_ivec2 get_direction(t_ivec2 v1, t_ivec2 v2);
+t_vec2 get_direction_double(t_vec2 v1, t_vec2 v2);
+double get_distance(t_vec2 a, t_vec2 b);
 
 /* Draw --------------------------------------------------------------------- */
 
-void draw_point(Texture* t, Color color, int x, int y);
-void draw_line(Texture* t, Vertex v1, Vertex v2);
-void draw_rectangle(Texture* t, Vertex v, Vector size);
-void draw_rectangle_full(Texture* t, Vertex v, Vector size);
-void draw_circle(Texture* t, Vertex center, int radius);
-void draw_circle_full(Texture* t, Vertex center, int radius);
-void draw_circle_full_grad(Texture* t, Vertex center, int radius, Color edge);
-void draw_shape(Texture* t, Vertex arr[], int len);
-void draw_shape_full(Texture* t, Vertex arr[], int len);
+void draw_point(t_tex* t, t_color color, int x, int y);
+void draw_line(t_tex* t, t_vert v1, t_vert v2);
+void draw_rectangle(t_tex* t, t_vert v, t_ivec2 size);
+void draw_rectangle_full(t_tex* t, t_vert v, t_ivec2 size);
+void draw_circle(t_tex* t, t_vert center, int radius);
+void draw_circle_full(t_tex* t, t_vert center, int radius);
+void draw_circle_full_grad(t_tex* t, t_vert center, int radius, t_color edge);
+void draw_shape(t_tex* t, t_vert arr[], int len);
+void draw_shape_full(t_tex* t, t_vert arr[], int len);
 
 void draw_test(void);
-void draw_test_corners(Texture* t);
-void draw_test_center(Texture* t);
-void draw_test_lines(Texture* t);
-void draw_test_rectangles(Texture* t);
-void draw_test_circles(Texture* t);
-void draw_test_shapes(Texture* t);
-void draw_test_gradient(Texture* t);
+void draw_test_corners(t_tex* t);
+void draw_test_center(t_tex* t);
+void draw_test_lines(t_tex* t);
+void draw_test_rectangles(t_tex* t);
+void draw_test_circles(t_tex* t);
+void draw_test_shapes(t_tex* t);
+void draw_test_gradient(t_tex* t);
 
 /* Files -------------------------------------------------------------------- */
 
-char* read_file(const char* filepath);
+int is_digit(int c);
+char* read_file(char* filepath);
 
 /* Game --------------------------------------------------------------------- */
 
@@ -169,20 +159,20 @@ void update_global_coordinates(void);
 
 /* Input -------------------------------------------------------------------- */
 
-void physical_key_callback(GLFWwindow* window, const int key, 
-    const int scancode, const int action, const int mods);
+void physical_key_callback(GLFWwindow* window, int key, int scancode, 
+    int action, int mods);
 void scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
 
 /* Interfaces --------------------------------------------------------------- */
 
 void initialize_interfaces(void);
-void set_active_interface(Interface* interface);
+void set_active_interface(t_ui* interface);
 
 /* Maps --------------------------------------------------------------------- */
 
 void initialize_maps(void);
-void set_minimap_display(const int remove_from_factor);
-void draw_minimap(const Map* map);
+void set_minimap_display(int remove_from_factor);
+void draw_minimap(t_map* map);
 void free_maps(void);
 
 /* Menu --------------------------------------------------------------------- */
@@ -192,8 +182,8 @@ void draw_main_menu(void);
 void reset_menu_button_selection(void);
 
 /* Events called from input.c */
-void nav_ui_horizontal(const int dir);
-void nav_ui_vertical(const int dir);
+void nav_ui_horizontal(int dir);
+void nav_ui_vertical(int dir);
 void nav_ui_confirm(GLFWwindow* window);
 void nav_ui_cancel(GLFWwindow* window);
 
@@ -205,8 +195,8 @@ void free_mesh(void);
 
 /* Player ------------------------------------------------------------------- */
 
-void reset_player_transform(const Map* m);
-void update_player_transform(const Map* m);
+void reset_player_transform(t_map* m);
+void update_player_transform(t_map* m);
 
 /* Shader Program ----------------------------------------------------------- */
 
@@ -216,9 +206,9 @@ void free_shader_program(void);
 /* Textures ----------------------------------------------------------------- */
 
 void create_textures(void);
-void use_texture(const Texture* t);
-void clear_drawing(Texture* t);
-void save_drawing(const Texture* t);
+void use_texture(t_tex* t);
+void clear_drawing(t_tex* t);
+void save_drawing(t_tex* t);
 void free_textures(void);
 
 /* Uniform ------------------------------------------------------------------ */
@@ -228,7 +218,7 @@ void free_uniform(void);
 
 /* Windowing ---------------------------------------------------------------- */
 
-GLFWwindow* get_window(const char* title);
+GLFWwindow* get_window(char* title);
 void toggle_fullscreen(GLFWwindow* window);
 
 #endif

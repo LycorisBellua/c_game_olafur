@@ -18,7 +18,7 @@ void initialize_interfaces(void)
     return;
 }
 
-void set_active_interface(Interface* interface)
+void set_active_interface(t_ui* interface)
 {
     if (interface)
         interface->reset_input();

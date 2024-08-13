@@ -1,39 +1,39 @@
 #include "cimmerian.h"
 
-static Color interpolate_color(Color start, Color end, double ratio);
+static t_color interpolate_color(t_color start, t_color end, double ratio);
 
 /* Bresenham/Midpoint Circle Drawing algorithm */
-void draw_circle(Texture* t, Vertex center, int radius)
+void draw_circle(t_tex* t, t_vert center, int radius)
 {
     int x;
     int y;
     int decision;
-    Vector point;
+    t_ivec2 point;
 
     x = radius;
     y = 0;
     decision = 1 - radius;
     while (y <= x)
     {
-        point.y = center.coords.y - y;
-        point.x = center.coords.x - x;
+        point.y = center.coord.y - y;
+        point.x = center.coord.x - x;
         draw_point(t, center.color, point.x, point.y);
-        point.x = center.coords.x + x;
+        point.x = center.coord.x + x;
         draw_point(t, center.color, point.x, point.y);
-        point.y = center.coords.y + y;
-        point.x = center.coords.x - x;
+        point.y = center.coord.y + y;
+        point.x = center.coord.x - x;
         draw_point(t, center.color, point.x, point.y);
-        point.x = center.coords.x + x;
+        point.x = center.coord.x + x;
         draw_point(t, center.color, point.x, point.y);
-        point.y = center.coords.y - x;
-        point.x = center.coords.x - y;
+        point.y = center.coord.y - x;
+        point.x = center.coord.x - y;
         draw_point(t, center.color, point.x, point.y);
-        point.x = center.coords.x + y;
+        point.x = center.coord.x + y;
         draw_point(t, center.color, point.x, point.y);
-        point.y = center.coords.y + x;
-        point.x = center.coords.x - y;
+        point.y = center.coord.y + x;
+        point.x = center.coord.x - y;
         draw_point(t, center.color, point.x, point.y);
-        point.x = center.coords.x + y;
+        point.x = center.coord.x + y;
         draw_point(t, center.color, point.x, point.y);
         if (decision <= 0)
             decision += 2 * ++y + 1;
@@ -44,13 +44,13 @@ void draw_circle(Texture* t, Vertex center, int radius)
 }
 
 /* Bresenham/Midpoint Circle Drawing algorithm */
-void draw_circle_full(Texture* t, Vertex center, int radius)
+void draw_circle_full(t_tex* t, t_vert center, int radius)
 {
     int x;
     int y;
     int decision;
-    Vertex v1;
-    Vertex v2;
+    t_vert v1;
+    t_vert v2;
 
     x = radius;
     y = 0;
@@ -59,21 +59,21 @@ void draw_circle_full(Texture* t, Vertex center, int radius)
     v2.color = v1.color;
     while (y <= x)
     {
-        v1.coords.x = center.coords.x - x;
-        v2.coords.x = center.coords.x + x;
-        v1.coords.y = center.coords.y - y;
-        v2.coords.y = v1.coords.y;
+        v1.coord.x = center.coord.x - x;
+        v2.coord.x = center.coord.x + x;
+        v1.coord.y = center.coord.y - y;
+        v2.coord.y = v1.coord.y;
         draw_line(t, v1, v2);
-        v1.coords.y = center.coords.y + y;
-        v2.coords.y = v1.coords.y;
+        v1.coord.y = center.coord.y + y;
+        v2.coord.y = v1.coord.y;
         draw_line(t, v1, v2);
-        v1.coords.x = center.coords.x - y;
-        v2.coords.x = center.coords.x + y;
-        v1.coords.y = center.coords.y - x;
-        v2.coords.y = v1.coords.y;
+        v1.coord.x = center.coord.x - y;
+        v2.coord.x = center.coord.x + y;
+        v1.coord.y = center.coord.y - x;
+        v2.coord.y = v1.coord.y;
         draw_line(t, v1, v2);
-        v1.coords.y = center.coords.y + x;
-        v2.coords.y = v1.coords.y;
+        v1.coord.y = center.coord.y + x;
+        v2.coord.y = v1.coord.y;
         draw_line(t, v1, v2);
         if (decision <= 0)
             decision += 2 * ++y + 1;
@@ -83,7 +83,7 @@ void draw_circle_full(Texture* t, Vertex center, int radius)
     return;
 }
 
-void draw_circle_full_grad(Texture* t, Vertex center, int radius, Color edge)
+void draw_circle_full_grad(t_tex* t, t_vert center, int radius, t_color edge)
 {
     int x;
     int y;
@@ -91,7 +91,7 @@ void draw_circle_full_grad(Texture* t, Vertex center, int radius, Color edge)
     double distance;
     double linear_ratio;
     double adjusted_ratio;
-    Color current_color;
+    t_color curr_c;
 
     y = -radius;
     while (y <= radius)
@@ -105,8 +105,8 @@ void draw_circle_full_grad(Texture* t, Vertex center, int radius, Color edge)
                 distance = f_sqrt((double)distance_squared);
                 linear_ratio = distance / (double)radius;
                 adjusted_ratio = linear_ratio * linear_ratio;
-                current_color = interpolate_color(center.color, edge, adjusted_ratio);
-                draw_point(t, current_color, center.coords.x + x, center.coords.y + y);
+                curr_c = interpolate_color(center.color, edge, adjusted_ratio);
+                draw_point(t, curr_c, center.coord.x + x, center.coord.y + y);
             }
             ++x;
         }
@@ -114,9 +114,9 @@ void draw_circle_full_grad(Texture* t, Vertex center, int radius, Color edge)
     }
 }
 
-static Color interpolate_color(Color start, Color end, double ratio)
+static t_color interpolate_color(t_color start, t_color end, double ratio)
 {
-    Color result;
+    t_color result;
 
     result.r = (1 - ratio) * start.r + ratio * end.r;
     result.g = (1 - ratio) * start.g + ratio * end.g;

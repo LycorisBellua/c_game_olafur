@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
-static Texture* create_texture(void);
-static void free_texture(Texture** t);
+static t_tex* create_texture(void);
+static void free_texture(t_tex** t);
 
 void create_textures(void)
 {
@@ -18,22 +18,22 @@ void create_textures(void)
     return;
 }
 
-void use_texture(const Texture* t)
+void use_texture(t_tex* t)
 {
     glBindTexture(GL_TEXTURE_2D, t ? t->id : 0);
     return;
 }
 
-void clear_drawing(Texture* t)
+void clear_drawing(t_tex* t)
 {
-    bzero(t->buffer, t->real_width * t->real_height * 4 * sizeof(GLubyte));
+    bzero(t->buf, t->real_size.x * t->real_size.y * 4 * sizeof(GLubyte));
     return;
 }
 
-void save_drawing(const Texture* t)
+void save_drawing(t_tex* t)
 {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, t->real_width, t->real_height, 0, 
-        GL_RGBA, GL_UNSIGNED_BYTE, t->buffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, t->real_size.x, t->real_size.y, 0, 
+        GL_RGBA, GL_UNSIGNED_BYTE, t->buf);
     return;
 }
 
@@ -52,10 +52,12 @@ void free_textures(void)
     return;
 }
 
-static Texture* create_texture(void)
+static t_tex* create_texture(void)
 {
-    Texture* t = malloc(sizeof(Texture));
-    long buffer_length;
+    t_tex* t;
+    long buf_length;
+
+    t = malloc(sizeof(t_tex));
     if (!t)
     {
         fprintf(stderr, "Error: Couldn't allocate memory for texture");
@@ -63,19 +65,19 @@ static Texture* create_texture(void)
     }
 
     t->id = -1;
-    t->real_width = man.res.monitor_width;
-    t->real_height = man.res.monitor_height;
-    t->thickness = t->real_width/man.res.window_width_default;
-    t->width = t->real_width / t->thickness;
-    t->height = t->real_height / t->thickness;
+    t->real_size.x = man.res.monitor_size.x;
+    t->real_size.y = man.res.monitor_size.y;
+    t->thickness = t->real_size.x/man.res.window_size_default.x;
+    t->size.x = t->real_size.x / t->thickness;
+    t->size.y = t->real_size.y / t->thickness;
 
-    buffer_length = t->real_width * t->real_height * 4 * sizeof(GLubyte);
-    t->buffer = malloc(buffer_length);
-    if (!t->buffer)
+    buf_length = t->real_size.x * t->real_size.y * 4 * sizeof(GLubyte);
+    t->buf = malloc(buf_length);
+    if (!t->buf)
     {
         fprintf(stderr, "Error: Couldn't allocate enough memory for a texture "
             "(= %ld bytes for texture of a %dx%d resolution)\n", 
-            buffer_length, t->real_width, t->real_height);
+            buf_length, t->real_size.x, t->real_size.y);
         free(t);
         return 0;
     }
@@ -92,18 +94,18 @@ static Texture* create_texture(void)
     return t;
 }
 
-static void free_texture(Texture** t)
+static void free_texture(t_tex** t)
 {
     /*
         Check whether the pointer is null. If it is, it means it doesn't 
-        reference any struct, which therefore means that `buffer` is not a 
+        reference any struct, which therefore means that `buf` is not a 
         pointer to a legal address.
     */
     if (!t)
         return;
 
     glDeleteTextures(1, &(*t)->id);
-    free((*t)->buffer);
+    free((*t)->buf);
     free(*t);
 
     /* Nullify the reference to prevent a double free */

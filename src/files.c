@@ -1,12 +1,18 @@
 #include "cimmerian.h"
 
-char* read_file(const char* filepath)
+int is_digit(int c)
 {
-    char* ptr = 0;
+    return c >= '0' && c <= '9';
+}
+
+char* read_file(char* filepath)
+{
+    char* ptr;
     long file_length;
     size_t items_read;
     FILE* file;
 
+    ptr = 0;
     file = fopen(filepath, "r");
     if (!file)
     {

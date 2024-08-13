@@ -1,15 +1,15 @@
 #include "cimmerian.h"
 
-Manager man;
+t_manager man;
 
-static GLFWwindow* init(const char* title);
+static GLFWwindow* init(char* title);
 static void update_time_variables(void);
 static void draw(void);
 static void deinit(void);
 
 int main(void)
 {
-    const char* title = "Cimmerian";
+    char* title = "Cimmerian";
     GLFWwindow* window = init(title);
     
     if (!window)
@@ -42,7 +42,7 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-static GLFWwindow* init(const char* title)
+static GLFWwindow* init(char* title)
 {
     GLFWwindow* window;
 

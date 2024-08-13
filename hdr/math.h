@@ -19,25 +19,25 @@
 #define RAD_270 4.71238898f
 #define RAD_360 6.283185307f
 
-int   abs(const int n);
-double f_abs(const double n);
-int   min(const int a, const int b);
-int   f_min(const double a, const double b);
-int   max(const int a, const int b);
-int   f_max(const double a, const double b);
-int   normalize(const int n);
-int   clamp(const int n, const int min, const int max);
-int   clamp_min(const int n, const int min);
-int   clamp_max(const int n, const int max);
-double deg2rad(const double deg);
-double rad2deg(const double rad);
-double f_sin(const double rad);
-double f_cos(const double rad);
-double f_tan(const double rad);
-double f_sqrt(const double n);
-void  swap(int* a, int* b);
-int   double_equality(double a, double b);
-double clamp_rad(const double rad);
-int	  rng_minmax(int *seed, int min, int max);
+int    abs(int n);
+double f_abs(double n);
+int    min(int a, int b);
+int    f_min(double a, double b);
+int    max(int a, int b);
+int    f_max(double a, double b);
+int    normalize(int n);
+int    clamp(int n, int min, int max);
+int    clamp_min(int n, int min);
+int    clamp_max(int n, int max);
+double deg2rad(double deg);
+double rad2deg(double rad);
+double f_sin(double rad);
+double f_cos(double rad);
+double f_tan(double rad);
+double f_sqrt(double n);
+void   swap(int* a, int* b);
+int    double_equality(double a, double b);
+double clamp_rad(double rad);
+int	   rng_minmax(int *seed, int min, int max);
 
 #endif

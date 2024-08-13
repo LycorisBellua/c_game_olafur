@@ -4,19 +4,17 @@
 #define WALL_HEIGHT 35456
 /*
     Logic for WALL_HEIGHT is `MAP_CELL_LEN * dist_proj_plane`.
-    Second value is `man.tex[man.curr_tex]->width / (2.0f * f_tan(DEG2RAD(FOV)/2))`.
+    Second value is `man.tex[man.curr_tex]->size.x / (2.0f * f_tan(DEG2RAD(FOV)/2))`.
     In other words: `WALL_HEIGHT = 64 * 554`.
 */
 
 static void draw_floor_and_ceiling(void);
-static int is_player_out_of_bounds(const VectorF pos, const Map* m);
-static void raycasting(const Map* m);
-static double get_horizontal_distance(const Map* m, const int map_val, 
-    const double tan, const double ray_angle);
-static double get_vertical_distance(const Map* m, const int map_val, 
-    const double tan, const double ray_angle);
-static void fix_fisheye_effect(double* distance, const double ray_angle);
-static void draw_wall(const Color color, const double distance, const int ray);
+static int is_player_out_of_bounds(t_vec2 pos, t_map* m);
+static void raycasting(t_map* m);
+static double get_horizontal_distance(t_map* m, int map_val, double tan, double ray_angle);
+static double get_vertical_distance(t_map* m, int map_val, double tan, double ray_angle);
+static void fix_fisheye_effect(double* distance, double ray_angle);
+static void draw_wall(t_color color, double distance, int ray);
 
 void draw_game(void)
 {
@@ -36,46 +34,53 @@ void reset_global_coordinates(void)
 
 static void draw_floor_and_ceiling(void)
 {
-    Vertex v;
-    Vector size;
-    Texture *t;
+    t_vert v;
+    t_ivec2 size;
+    t_tex* t;
 
     t = man.tex[man.curr_tex];
 
-    v.coords.x = 0;
-    v.coords.y = 0;
+    v.coord.x = 0;
+    v.coord.y = 0;
     v.color = get_color_rgba(109, 101, 98, 255);
-    size.x = t->width;
-    size.y = t->height * 0.5f;
+    size.x = t->size.x;
+    size.y = t->size.y * 0.5f;
     draw_rectangle_full(t, v, size);
 
-    v.coords.y = t->height*0.5f;
+    v.coord.y = t->size.y*0.5f;
     v.color = get_color_rgba(59, 92, 169, 255);
     draw_rectangle_full(t, v, size);
     return;
 }
 
-static int is_player_out_of_bounds(const VectorF pos, const Map* m)
+static int is_player_out_of_bounds(t_vec2 pos, t_map* m)
 {
-    if (pos.x < 0 || pos.x > m->width * MAP_CELL_LEN)
+    if (pos.x < 0 || pos.x > m->size.x * MAP_CELL_LEN)
         return 1;
-    else if (pos.y < 0 || pos.y > m->height * MAP_CELL_LEN)
+    else if (pos.y < 0 || pos.y > m->size.y * MAP_CELL_LEN)
         return 1;
     return 0;
 }
 
-static void raycasting(const Map* m)
+static void raycasting(t_map* m)
 {
-    Texture *t = man.tex[man.curr_tex];
-    const double ray_increment = RAD_1/(t->width/FOV);
-    const int max_distance = MAP_CELL_LEN * MAX_CELL_AMOUNT;
-    /* `ray_angle = man.player.angle` for center */
-    double ray_angle = clamp_rad(man.player.angle + FOV/2.0f * RAD_1);
-    double tan, horizontal, vertical, distance;
+    t_tex* t;
+    double ray_increment;
+    int max_distance;
+    double ray_angle;
+    double tan;
+    double horizontal;
+    double vertical;
+    double distance;
     int ray;
-    Color color;
+    t_color color;
 
-    ray = t->width;
+    t = man.tex[man.curr_tex];
+    ray_increment = RAD_1/(t->size.x/FOV);
+    max_distance = MAP_CELL_LEN * MAX_CELL_AMOUNT;
+    /* `ray_angle = man.player.angle` for center */
+    ray_angle = clamp_rad(man.player.angle + FOV/2.0f * RAD_1);
+    ray = t->size.x;
     while (ray > 0)
     {
         tan = f_tan(ray_angle);
@@ -108,16 +113,19 @@ static void raycasting(const Map* m)
     return;
 }
 
-static double get_horizontal_distance(const Map* m, const int map_val, 
-    const double tan, const double ray_angle)
+static double get_horizontal_distance(t_map* m, int map_val, double tan, double ray_angle)
 {
-    const double atan = -1/tan;
-    double distance = 1000000;
-    int depth_of_field = 0;
+    double atan;
+    double distance;
+    int depth_of_field;
     int map_index;
-    VectorF hit, offset;
-    Vector max;
+    t_vec2 hit;
+    t_vec2 offset;
+    t_ivec2 max;
 
+    atan = -1/tan;
+    distance = 1000000;
+    depth_of_field = 0;
     /* If ray is looking down */
     if (ray_angle > RAD_180)
     {
@@ -143,10 +151,10 @@ static double get_horizontal_distance(const Map* m, const int map_val,
     while (depth_of_field < MAX_CELL_AMOUNT)
     {
         max.x = (int)(hit.x/MAP_CELL_LEN);
-        max.y = m->height - (int)(hit.y/MAP_CELL_LEN);
+        max.y = m->size.y - (int)(hit.y/MAP_CELL_LEN);
         if (ray_angle < RAD_180) --max.y;
-        map_index = max.y*m->width+max.x;
-        if (map_index >= 0 && map_index < m->width*m->height 
+        map_index = max.y*m->size.x+max.x;
+        if (map_index >= 0 && map_index < m->size.x*m->size.y 
             && m->data[map_index] == map_val)
         {
             distance = get_distance(man.player.pos, hit);
@@ -162,16 +170,19 @@ static double get_horizontal_distance(const Map* m, const int map_val,
     return distance;
 }
 
-static double get_vertical_distance(const Map* m, const int map_val, 
-    const double tan, const double ray_angle)
+static double get_vertical_distance(t_map* m, int map_val, double tan, double ray_angle)
 {
-    const double ntan = -tan;
-    double distance = 1000000;
-    int depth_of_field = 0;
+    double ntan;
+    double distance;
+    int depth_of_field;
     int map_index;
-    VectorF hit, offset;
-    Vector max;
+    t_vec2 hit;
+    t_vec2 offset;
+    t_ivec2 max;
 
+    ntan = -tan;
+    distance = 1000000;
+    depth_of_field = 0;
     /* If ray is looking left */
     if (ray_angle > RAD_90 && ray_angle < RAD_270)
     {
@@ -197,10 +208,10 @@ static double get_vertical_distance(const Map* m, const int map_val,
     while (depth_of_field < MAX_CELL_AMOUNT)
     {
         max.x = (int)(hit.x/MAP_CELL_LEN);
-        max.y = m->height-1 - (int)(hit.y/MAP_CELL_LEN);
+        max.y = m->size.y-1 - (int)(hit.y/MAP_CELL_LEN);
         if (ray_angle > RAD_90 && ray_angle < RAD_270) --max.x;
-        map_index = max.y*m->width+max.x;
-        if (map_index >= 0 && map_index < m->width*m->height 
+        map_index = max.y*m->size.x+max.x;
+        if (map_index >= 0 && map_index < m->size.x*m->size.y 
             && m->data[map_index] == map_val)
         {
             distance = get_distance(man.player.pos, hit);
@@ -216,22 +227,26 @@ static double get_vertical_distance(const Map* m, const int map_val,
     return distance;
 }
 
-static void fix_fisheye_effect(double* distance, const double ray_angle)
+static void fix_fisheye_effect(double* distance, double ray_angle)
 {
     *distance *= f_cos(clamp_rad(man.player.angle - ray_angle));
     return;
 }
 
-static void draw_wall(const Color color, const double distance, const int ray)
+static void draw_wall(t_color color, double distance, int ray)
 {
-    Texture* t = man.tex[man.curr_tex];
-    const double height = WALL_HEIGHT / distance;
-    Vertex v1, v2;
-    v1.coords.x = t->width - ray;
-    v1.coords.y = (t->height - height) / 2;
+    t_tex* t;
+    double height;
+    t_vert v1;
+    t_vert v2;
+
+    t = man.tex[man.curr_tex];
+    height = WALL_HEIGHT / distance;
+    v1.coord.x = t->size.x - ray;
+    v1.coord.y = (t->size.y - height) / 2;
     v1.color = color;
-    v2.coords.x = v1.coords.x;
-    v2.coords.y = v1.coords.y + (t->height + height) / 2;
+    v2.coord.x = v1.coord.x;
+    v2.coord.y = v1.coord.y + (t->size.y + height) / 2;
     v2.color = color;
     draw_line(t, v1, v2);
     return;

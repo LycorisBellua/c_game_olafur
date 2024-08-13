@@ -1,45 +1,45 @@
 #include "cimmerian.h"
 
-void draw_rectangle(Texture* t, Vertex v, Vector size)
+void draw_rectangle(t_tex* t, t_vert v, t_ivec2 size)
 {
-    Vertex v2;
-    Vertex v3;
-    Vertex v4;
+    t_vert v2;
+    t_vert v3;
+    t_vert v4;
 
     v2.color = v.color;
     v3.color = v.color;
     v4.color = v.color;
-    v2.coords.x = v.coords.x + size.x - 1;
-    v2.coords.y = v.coords.y;
-    v3.coords.x = v.coords.x;
-    v3.coords.y = v.coords.y + size.y - 1;
-    v4.coords.x = v.coords.x + size.x - 1;
-    v4.coords.y = v.coords.y + size.y - 1;
+    v2.coord.x = v.coord.x + size.x - 1;
+    v2.coord.y = v.coord.y;
+    v3.coord.x = v.coord.x;
+    v3.coord.y = v.coord.y + size.y - 1;
+    v4.coord.x = v.coord.x + size.x - 1;
+    v4.coord.y = v.coord.y + size.y - 1;
     draw_line(t, v, v2);
-    ++v2.coords.y;
+    ++v2.coord.y;
     draw_line(t, v2, v4);
-    --v4.coords.x;
+    --v4.coord.x;
     draw_line(t, v3, v4);
-    ++v.coords.y;
-    --v3.coords.y;
+    ++v.coord.y;
+    --v3.coord.y;
     draw_line(t, v, v3);
     return;
 }
 
-void draw_rectangle_full(Texture* t, Vertex v, Vector size)
+void draw_rectangle_full(t_tex* t, t_vert v, t_ivec2 size)
 {
     int target_y;
-    Vertex v2;
+    t_vert v2;
 
-    target_y = v.coords.y + size.y - 1;
-    v2.coords.x = v.coords.x + size.x - 1;
-    v2.coords.y = v.coords.y;
+    target_y = v.coord.y + size.y - 1;
+    v2.coord.x = v.coord.x + size.x - 1;
+    v2.coord.y = v.coord.y;
     v2.color = v.color;
-    while (v.coords.y <= target_y)
+    while (v.coord.y <= target_y)
     {
         draw_line(t, v, v2);
-        ++v.coords.y;
-        ++v2.coords.y;
+        ++v.coord.y;
+        ++v2.coord.y;
     }
     return;
 }

@@ -1,13 +1,10 @@
 #include "cimmerian.h"
 
-static int is_lower(const int c);
-static int is_upper(const int c);
-static int hex_char_to_int(const char c);
+static int hex_char_to_int(char c);
 
-Color get_color_rgba(const GLubyte r, const GLubyte g, const GLubyte b,
-    const GLubyte a)
+t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
 {
-    Color c;
+    t_color c;
 
     c.r = r;
     c.g = g;
@@ -16,10 +13,10 @@ Color get_color_rgba(const GLubyte r, const GLubyte g, const GLubyte b,
     return c;
 }
 
-Color get_color_hex(const char* str, const GLubyte alpha)
+t_color get_color_hex(char* str, GLubyte alpha)
 {
     int i;
-    Color c;
+    t_color c;
 
     i = str[0] == '#';
     c.r = hex_char_to_int(str[i + 0]) * 16 + hex_char_to_int(str[i + 1]);
@@ -29,9 +26,9 @@ Color get_color_hex(const char* str, const GLubyte alpha)
     return c;
 }
 
-Color get_alpha_blended_color(Color prev, Color new)
+t_color get_alpha_blended_color(t_color prev, t_color new)
 {
-    Color blend;
+    t_color blend;
 
     blend.a = new.a + (255 - new.a) * prev.a / 255;
     if (!blend.a)
@@ -42,28 +39,13 @@ Color get_alpha_blended_color(Color prev, Color new)
     return blend;
 }
 
-int is_digit(const int c)
-{
-    return c >= '0' && c <= '9';
-}
-
-static int is_lower(const int c)
-{
-    return c >= 'a' && c <= 'z';
-}
-
-static int is_upper(const int c)
-{
-    return c >= 'A' && c <= 'Z';
-}
-
-static int hex_char_to_int(const char c)
+static int hex_char_to_int(char c)
 {
     if (is_digit(c))
         return c - '0';
-    else if (is_lower(c))
-        return c > 'f' ? 0 : 10 + (c - 'a');
-    else if (is_upper(c))
-        return c > 'F' ? 0 : 10 + (c - 'A');
+    else if (c >= 'a' && c <= 'f')
+        return 10 + (c - 'a');
+    else if (c >= 'A' && c <= 'F')
+        return 10 + (c - 'A');
     return 0;
 }
