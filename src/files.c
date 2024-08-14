@@ -1,4 +1,5 @@
 #include "cimmerian.h"
+#include "lodepng.h"
 
 int is_digit(int c)
 {
@@ -53,4 +54,29 @@ char* read_file(char* filepath)
 
     fclose(file);
     return ptr;
+}
+
+t_spr* load_sprite(char* png_path)
+{
+    t_spr* s;
+    unsigned int err;
+    
+    s = malloc(sizeof(t_spr));
+    if (!s)
+        return 0;
+    err = lodepng_decode32_file(&s->buf, &s->size.x, &s->size.y, png_path);
+    if (err)
+    {
+        fprintf(stderr, "Error: %s (Lodepng lib - error n°%u)\n", 
+            lodepng_error_text(err), err);
+        return 0;
+    }
+    return s;
+}
+
+void free_sprite(t_spr* s)
+{
+    free(s->buf);
+    free(s);
+    return;
 }

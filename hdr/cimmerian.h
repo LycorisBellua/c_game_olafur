@@ -14,17 +14,23 @@
 #define MAX_CELL_AMOUNT 8
 #define NBR_TEXTURES 3
 
+typedef struct s_vec2
+{
+    double x;
+    double y;
+} t_vec2;
+
 typedef struct s_ivec2
 {
     int x;
     int y;
 } t_ivec2;
 
-typedef struct s_vec2
+typedef struct s_uivec2
 {
-    double x;
-    double y;
-} t_vec2;
+    unsigned int x;
+    unsigned int y;
+} t_uivec2;
 
 typedef struct s_color
 {
@@ -76,6 +82,12 @@ typedef struct s_tex
     GLubyte* buf;
 } t_tex;
 
+typedef struct s_spr
+{
+    GLubyte* buf;
+    t_uivec2 size;
+} t_spr;
+
 typedef struct s_res
 {
     t_ivec2 monitor_size;
@@ -102,6 +114,8 @@ struct s_manager
     t_player player;
     int movement_action[3];
     int rotation_action;
+    t_spr* font_default;
+    t_spr* font_title;
 };
 
 extern t_manager man;
@@ -133,6 +147,7 @@ void draw_circle_full(t_tex* t, t_vert center, int radius);
 void draw_circle_full_grad(t_tex* t, t_vert center, int radius, t_color edge);
 void draw_shape(t_tex* t, t_vert arr[], int len);
 void draw_shape_full(t_tex* t, t_vert arr[], int len);
+void draw_sprite(t_tex* t, t_spr* s);
 
 void draw_test(void);
 void draw_test_corners(t_tex* t);
@@ -147,6 +162,8 @@ void draw_test_gradient(t_tex* t);
 
 int is_digit(int c);
 char* read_file(char* filepath);
+t_spr* load_sprite(char* png_path);
+void free_sprite(t_spr* sprite);
 
 /* Game --------------------------------------------------------------------- */
 

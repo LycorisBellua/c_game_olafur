@@ -18,6 +18,9 @@ int main(void)
     glfwSetKeyCallback(window, physical_key_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
+    man.font_default = load_sprite("assets/font_peaberry_white_outline.png");
+    man.font_title = load_sprite("assets/font_peaberry_shiny.png");
+
     while (!glfwWindowShouldClose(window))
     {
         update_time_variables();
@@ -93,5 +96,7 @@ static void deinit(void)
     free_mesh();
     free_textures();
     free_maps();
+    free_sprite(man.font_default);
+    free_sprite(man.font_title);
     return;
 }

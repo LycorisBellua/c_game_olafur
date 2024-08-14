@@ -26,7 +26,17 @@ void use_texture(t_tex* t)
 
 void clear_drawing(t_tex* t)
 {
-    bzero(t->buf, t->real_size.x * t->real_size.y * 4 * sizeof(GLubyte));
+    size_t i;
+    size_t len;
+
+    len = t->real_size.x * t->real_size.y;
+    bzero(t->buf, len * 4 * sizeof(GLubyte));
+    i = 0;
+    while (i < len)
+    {
+        t->buf[i * 4 + 3] = 255;
+        ++i;
+    }
     return;
 }
 

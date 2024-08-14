@@ -3,6 +3,7 @@
 void draw_test(void)
 {
     draw_test_shapes(man.tex[man.curr_tex]);
+    draw_sprite(man.tex[man.curr_tex], man.font_default);
     return;
 }
 

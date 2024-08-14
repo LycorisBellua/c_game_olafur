@@ -81,6 +81,7 @@ void draw_main_menu(void)
 
     btn[2].color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
     draw_rectangle(t, btn[2], btn_size);
+    draw_sprite(man.tex[man.curr_tex], man.font_title);
     return;
 }
 
