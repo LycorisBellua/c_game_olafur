@@ -2,9 +2,25 @@
 
 static void draw_gradient(t_tex* t);
 
+/*
+    (float) px  -> (double) man.player.pos.x
+    (float) py  -> (double) man.player.pos.y
+    (float) pdx -> (double) man.player.delta.x
+    (float) pdy -> (double) man.player.delta.y
+    (float) pa  -> (double) man.player.angle
+*/
+
 void draw_game(void)
 {
     draw_gradient(man.tex[man.curr_tex]);
+    update_player_transform(man.map);
+
+    /*
+        - Fix minimap.
+        - Fix lateral movement in `update_position()`.
+    */
+
+    draw_minimap(man.map);
     return;
 }
 

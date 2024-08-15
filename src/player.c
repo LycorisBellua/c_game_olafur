@@ -76,24 +76,24 @@ static void update_position(t_map* m)
     size.y = man.player.delta.y < 0 ? -20 : 20;
 
     /* Movement along the forward axis */
-    index = (int)(m->size.y - pos.y/MAP_CELL_LEN)*m->size.x 
-        + (int)((pos.x+man.movement_action[2]*size.x)/MAP_CELL_LEN);
+    index = (int)(m->size.y - pos.y / MAP_CELL_LEN) * m->size.x 
+        + (int)((pos.x + man.movement_action[2] * size.x) / MAP_CELL_LEN);
     if (m->data[index] == 0)
         pos.x += man.movement_action[2] * man.player.delta.x * speed * man.delta_time;
 
-    index = (int)(m->size.y - (pos.y+man.movement_action[2]*size.y)/MAP_CELL_LEN) 
-        * m->size.x + (int)(pos.x/MAP_CELL_LEN);
+    index = (int)(m->size.y - (pos.y + man.movement_action[2] * size.y) / MAP_CELL_LEN) 
+        * m->size.x + (int)(pos.x / MAP_CELL_LEN);
     if (m->data[index] == 0)
         pos.y += man.movement_action[2] * man.player.delta.y * speed * man.delta_time;
 
     /* Movement along the lateral axis */
-    index = (int)(m->size.y - pos.y/MAP_CELL_LEN)*m->size.x 
-        + (int)((pos.x + man.movement_action[0]*size.y)/MAP_CELL_LEN);
+    index = (int)(m->size.y - pos.y / MAP_CELL_LEN) * m->size.x 
+        + (int)((pos.x + man.movement_action[0] * size.y) / MAP_CELL_LEN);
     if (m->data[index] == 0)
         pos.x += man.movement_action[0] * man.player.delta.y * speed * man.delta_time;
 
-    index = (int)(m->size.y - (pos.y+man.movement_action[0]*-size.x)/MAP_CELL_LEN) 
-        * m->size.x + (int)(pos.x/MAP_CELL_LEN);
+    index = (int)(m->size.y - (pos.y + man.movement_action[0] * -size.y) / MAP_CELL_LEN) 
+        * m->size.x + (int)(pos.x / MAP_CELL_LEN);
     if (m->data[index] == 0)
         pos.y += man.movement_action[0] * -man.player.delta.x * speed * man.delta_time;
 

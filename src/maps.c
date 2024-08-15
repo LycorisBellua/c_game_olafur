@@ -190,7 +190,7 @@ static void draw_map(t_map* m)
                 len.x = max_len_cell;
             }
 
-            if (m->data[(m->size.y-1-y) * m->size.x + x] == 1)
+            if (m->data[y * m->size.x + x] == 1)
                 v.color = get_color_rgba(255, 255, 255, 255);
             else
                 v.color = get_color_rgba(0, 0, 0, 0);

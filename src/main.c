@@ -20,6 +20,7 @@ int main(void)
     glfwSetKeyCallback(window, physical_key_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
+    reset_player_transform(man.map);
     while (!glfwWindowShouldClose(window))
     {
         update_time_variables();
@@ -30,7 +31,7 @@ int main(void)
         swap_buffer(window);
 
         glfwPollEvents();
-        /* update_player_transform(map_test); */
+        /* update_player_transform(man.map); */
     }
     deinit();
     return EXIT_SUCCESS;
