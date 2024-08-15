@@ -46,17 +46,6 @@ typedef struct s_vert
     t_color color;
 } t_vert;
 
-typedef struct s_ui t_ui;
-typedef struct s_manager t_manager;
-struct s_ui
-{
-    int nav_ui;
-    void (*draw)(void);
-    void (*reset_input)(void);
-    t_ui* previous;
-    t_ui* next;
-};
-
 typedef struct s_map
 {
     t_ivec2 size;
@@ -99,7 +88,7 @@ typedef struct s_res
     t_ivec2 fullscreen;
 } t_res;
 
-struct s_manager
+typedef struct s_manager
 {
     GLuint shader_program;
     double delta_time;
@@ -107,16 +96,11 @@ struct s_manager
     t_res res;
     t_tex* tex[NBR_TEXTURES + 1];
     int curr_tex;
-    t_ui* active_interface;
-    t_ui main_menu_interface;
-    t_ui game_interface;
     t_map* map;
     t_player player;
     int movement_action[3];
     int rotation_action;
-    t_spr* font_default;
-    t_spr* font_title;
-};
+} t_manager;
 
 extern t_manager man;
 
@@ -149,29 +133,16 @@ void draw_shape(t_tex* t, t_vert arr[], int len);
 void draw_shape_full(t_tex* t, t_vert arr[], int len);
 void draw_sprite(t_tex* t, t_spr* s);
 
-void draw_test(void);
-void draw_test_corners(t_tex* t);
-void draw_test_center(t_tex* t);
-void draw_test_lines(t_tex* t);
-void draw_test_rectangles(t_tex* t);
-void draw_test_circles(t_tex* t);
-void draw_test_shapes(t_tex* t);
-void draw_test_gradient(t_tex* t);
-
 /* Files -------------------------------------------------------------------- */
 
 int is_digit(int c);
 char* read_file(char* filepath);
 t_spr* load_sprite(char* png_path);
-void free_sprite(t_spr* sprite);
 
 /* Game --------------------------------------------------------------------- */
 
-/* Called from the "game" interface object */
 void draw_game(void);
 void reset_global_coordinates(void);
-
-/* Called from the main loop */
 void update_global_coordinates(void);
 
 /* Input -------------------------------------------------------------------- */
@@ -180,29 +151,12 @@ void physical_key_callback(GLFWwindow* window, int key, int scancode,
     int action, int mods);
 void scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
 
-/* Interfaces --------------------------------------------------------------- */
-
-void initialize_interfaces(void);
-void set_active_interface(t_ui* interface);
-
 /* Maps --------------------------------------------------------------------- */
 
 void initialize_maps(void);
 void set_minimap_display(int remove_from_factor);
 void draw_minimap(t_map* map);
 void free_maps(void);
-
-/* Menu --------------------------------------------------------------------- */
-
-/* Called from the "main menu" interface object */
-void draw_main_menu(void);
-void reset_menu_button_selection(void);
-
-/* Events called from input.c */
-void nav_ui_horizontal(int dir);
-void nav_ui_vertical(int dir);
-void nav_ui_confirm(GLFWwindow* window);
-void nav_ui_cancel(GLFWwindow* window);
 
 /* Mesh --------------------------------------------------------------------- */
 

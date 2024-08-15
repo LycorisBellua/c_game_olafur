@@ -4,7 +4,9 @@ t_manager man;
 
 static GLFWwindow* init(char* title);
 static void update_time_variables(void);
-static void draw(void);
+static void clear_buffer(void);
+static void draw_into_buffer(void);
+static void swap_buffer(GLFWwindow* window);
 static void deinit(void);
 
 int main(void)
@@ -18,25 +20,14 @@ int main(void)
     glfwSetKeyCallback(window, physical_key_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
-    man.font_default = load_sprite("assets/font_peaberry_white_outline.png");
-    man.font_title = load_sprite("assets/font_peaberry_shiny.png");
-
     while (!glfwWindowShouldClose(window))
     {
         update_time_variables();
         /* printf("FPS: %.2f\n", fps_count); */
 
-        /* Keep using glClear for when the window is resized */
-        glClear(GL_COLOR_BUFFER_BIT);
-        clear_drawing(man.tex[man.curr_tex]);
-        draw();
-
-        /*
-            Keep using glfwSwapBuffers or the viewport remains black.
-            It's the equivalent to mlx_put_image_to_window
-        */
-        man.curr_tex = (man.curr_tex + 1) % 2;
-        glfwSwapBuffers(window);
+        clear_buffer();
+        draw_into_buffer();
+        swap_buffer(window);
 
         glfwPollEvents();
         /* update_player_transform(map_test); */
@@ -61,7 +52,6 @@ static GLFWwindow* init(char* title)
         create_uniform();
         create_mesh();
         create_textures();
-        initialize_interfaces();
         initialize_maps();
         use_texture(man.tex[man.curr_tex]);
     }
@@ -80,11 +70,30 @@ static void update_time_variables(void)
     return;
 }
 
-static void draw(void)
+static void clear_buffer(void)
 {
-    man.active_interface->draw();
+    /* Keep using glClear for when the window is resized */
+    glClear(GL_COLOR_BUFFER_BIT);
+    clear_drawing(man.tex[man.curr_tex]);
+    return;
+}
+
+static void draw_into_buffer(void)
+{
+    draw_game();
     save_drawing(man.tex[man.curr_tex]);
     render_mesh();
+    return;
+}
+
+static void swap_buffer(GLFWwindow* window)
+{
+    /*
+        Keep using glfwSwapBuffers or the viewport remains black.
+        It's the equivalent to mlx_put_image_to_window
+    */
+    man.curr_tex = (man.curr_tex + 1) % 2;
+    glfwSwapBuffers(window);
     return;
 }
 
@@ -96,7 +105,4 @@ static void deinit(void)
     free_mesh();
     free_textures();
     free_maps();
-    free_sprite(man.font_default);
-    free_sprite(man.font_title);
-    return;
 }

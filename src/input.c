@@ -7,7 +7,6 @@ static void update_movement_action(int axis);
 static void update_rotation_action(void);
 /* static int get_local_key(int physical_key); */
 static void input_escape(GLFWwindow* window, int action);
-static void input_enter(GLFWwindow* window, int action);
 
 static void input_up(int action);
 static void input_down(int action);
@@ -29,8 +28,6 @@ void physical_key_callback
     {
         if (key == GLFW_KEY_ESCAPE)
             input_escape(window, action);
-        else if (key == GLFW_KEY_ENTER)
-            input_enter(window, action);
         else if (key == GLFW_KEY_UP)
             input_up(action);
         else if (key == GLFW_KEY_DOWN)
@@ -99,7 +96,7 @@ static void update_rotation_action(void)
 static int get_local_key(int physical_key)
 {
     // It will be in lowercase, so -32 for uppercase
-     char* key_name = glfwGetKeyName(physical_key, 0);
+    char* key_name = glfwGetKeyName(physical_key, 0);
     return key_name[0] - 32;
 }
 */
@@ -107,28 +104,18 @@ static int get_local_key(int physical_key)
 static void input_escape(GLFWwindow* window, int action)
 {
     /* 
-       By default, the window closing event is triggered by the cross 
-       window button or Alt+F4. We also decide to set the Escape key 
-       as such.
+       By default, the window closing event is triggered by the cross window 
+       button or Alt+F4. We also decide to set the Escape key as such.
 
-       Any of these closing inputs will set 
-       `glfwWindowShouldClose(window)` to GLFW_TRUE, after which the 
-       window can be closed with `glfwDestroyWindow(window)`, or the 
-       whole program (windows included) can be closed with 
-       `glfwTerminate()`.
+       Any of these closing inputs will set `glfwWindowShouldClose(window)` to 
+       GLFW_TRUE, after which the window can be closed with 
+       `glfwDestroyWindow(window)`, or the whole program (windows included) can 
+       be closed with `glfwTerminate()`.
     */
 
     if (action != GLFW_PRESS)
         return;
-    nav_ui_cancel(window);
-    return;
-}
-
-static void input_enter(GLFWwindow* window, int action)
-{
-    if (action != GLFW_PRESS)
-        return;
-    nav_ui_confirm(window);
+    glfwSetWindowShouldClose(window, GLFW_TRUE);
     return;
 }
 
@@ -137,7 +124,6 @@ static void input_up(int action)
     if (action == GLFW_PRESS)
     {
         movement_input[2] += 1;
-        nav_ui_vertical(1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -156,7 +142,6 @@ static void input_down(int action)
     if (action == GLFW_PRESS)
     {
         movement_input[2] += -1;
-        nav_ui_vertical(-1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -175,7 +160,6 @@ static void input_right(int action)
     if (action == GLFW_PRESS)
     {
         rotation_input += 1;
-        nav_ui_horizontal(1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -194,7 +178,6 @@ static void input_left(int action)
     if (action == GLFW_PRESS)
     {
         rotation_input += -1;
-        nav_ui_horizontal(-1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -213,7 +196,6 @@ static void input_strafe_left(int action)
     if (action == GLFW_PRESS)
     {
         movement_input[0] += -1;
-        nav_ui_horizontal(-1);
     }
     else if (action == GLFW_REPEAT)
     {
@@ -232,7 +214,6 @@ static void input_strafe_right(int action)
     if (action == GLFW_PRESS)
     {
         movement_input[0] += 1;
-        nav_ui_horizontal(1);
     }
     else if (action == GLFW_REPEAT)
     {

@@ -79,7 +79,7 @@ static GLuint compile_shader(GLenum type, char* filepath)
     set_glsl_version_in_shader(ptr);
 
     id_shader = glCreateShader(type);
-    glShaderSource(id_shader, 1, (GLchar**)&ptr, 0);
+    glShaderSource(id_shader, 1, (const GLchar**)&ptr, 0);
     glCompileShader(id_shader);
     free(ptr);
     return id_shader;

@@ -1,5 +1,37 @@
 #include "cimmerian.h"
 
+static void draw_gradient(t_tex* t);
+
+void draw_game(void)
+{
+    draw_gradient(man.tex[man.curr_tex]);
+    return;
+}
+
+static void draw_gradient(t_tex* t)
+{
+    t_vert v;
+
+    v.color.b = 255 / 2;
+    v.color.a = 255;
+    v.coord.y = 0;
+    while (v.coord.y < t->size.y)
+    {
+        v.coord.x = 0;
+        while (v.coord.x < t->size.x)
+        {
+            v.color.r = 255 * v.coord.y / t->size.y;
+            v.color.g = 255 * v.coord.x / t->size.x;
+            draw_point(t, v.color, v.coord.x, v.coord.y);
+            ++v.coord.x;
+        }
+        ++v.coord.y;
+    }
+    return;
+}
+
+/* -------------------------------------------------------------------------- */
+
 #define FOV 60
 #define WALL_HEIGHT 35456
 /*
@@ -8,7 +40,6 @@
     In other words: `WALL_HEIGHT = 64 * 554`.
 */
 
-static void draw_floor_and_ceiling(void);
 static int is_player_out_of_bounds(t_vec2 pos, t_map* m);
 static void raycasting(t_map* m);
 static double get_horizontal_distance(t_map* m, int map_val, double tan, double ray_angle);
@@ -16,40 +47,10 @@ static double get_vertical_distance(t_map* m, int map_val, double tan, double ra
 static void fix_fisheye_effect(double* distance, double ray_angle);
 static void draw_wall(t_color color, double distance, int ray);
 
-void draw_game(void)
-{
-    draw_floor_and_ceiling();
-    if (!is_player_out_of_bounds(man.player.pos, man.map))
-        raycasting(man.map);
-    draw_minimap(man.map);
-    return;
-}
-
 void reset_global_coordinates(void)
 {
     set_minimap_display(0);
     reset_player_transform(man.map);
-    return;
-}
-
-static void draw_floor_and_ceiling(void)
-{
-    t_vert v;
-    t_ivec2 size;
-    t_tex* t;
-
-    t = man.tex[man.curr_tex];
-
-    v.coord.x = 0;
-    v.coord.y = 0;
-    v.color = get_color_rgba(109, 101, 98, 255);
-    size.x = t->size.x;
-    size.y = t->size.y * 0.5f;
-    draw_rectangle_full(t, v, size);
-
-    v.coord.y = t->size.y*0.5f;
-    v.color = get_color_rgba(59, 92, 169, 255);
-    draw_rectangle_full(t, v, size);
     return;
 }
 
