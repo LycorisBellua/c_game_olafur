@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+static void draw_shape_full_unicolor(t_tex* t, t_vert arr[], int len);
 static void draw_full_triangle(t_tex* t, t_vert* v);
 static void draw_blended_p(t_tex* t, t_vert* v, t_ivec2 p, float inv_denom);
 
@@ -20,14 +21,73 @@ void draw_shape(t_tex* t, t_vert arr[], int len)
 void draw_shape_full(t_tex* t, t_vert arr[], int len)
 {
     if (len < 3)
-    {
         draw_shape(t, arr, len);
-        return;
-    }
-    else if (len == 3)
-        draw_full_triangle(t, arr);
+    else if (len > 3) 
+        draw_shape_full_unicolor(t, arr, len);
     else
-        draw_shape(t, arr, len);
+        draw_full_triangle(t, arr);
+    return;
+}
+
+/* Scanline Fill algorithm */
+static void draw_shape_full_unicolor(t_tex* t, t_vert arr[], int len)
+{
+    int i;
+    int j;
+    int y;
+    int x1;
+    int x2;
+    int x_intersection;
+    int ymin;
+    int ymax;
+    t_vert v1;
+    t_vert v2;
+
+    v1.color = arr[0].color;
+    v2.color = v1.color;
+    ymin = arr[0].coord.y;
+    ymax = arr[0].coord.y;
+    i = 1;
+    while (i < len)
+    {
+        if (arr[i].coord.y < ymin)
+            ymin = arr[i].coord.y;
+        if (arr[i].coord.y > ymax)
+            ymax = arr[i].coord.y;
+        ++i;
+    }
+    y = ymin;
+    while (y <= ymax)
+    {
+        x1 = t->size.x - 1;
+        x2 = 0;
+        i = 0;
+        while (i < len)
+        {
+            j = (i + 1) % len;
+            if ((arr[i].coord.y <= y && arr[j].coord.y > y)
+                || (arr[j].coord.y <= y && arr[i].coord.y > y))
+            {
+                x_intersection = (arr[i].coord.x * (arr[j].coord.y - y)
+                    + arr[j].coord.x * (y - arr[i].coord.y))
+                    / (arr[j].coord.y - arr[i].coord.y);
+                if (x_intersection < x1)
+                    x1 = x_intersection;
+                if (x_intersection > x2)
+                    x2 = x_intersection;
+            }
+            ++i;
+        }
+        if (x1 <= x2)
+        {
+            v1.coord.x = x1;
+            v2.coord.x = x2;
+            v1.coord.y = y;
+            v2.coord.y = y;
+            draw_line(t, v1, v2);
+        }
+        ++y;
+    }
     return;
 }
 
