@@ -6,11 +6,11 @@ static GLuint EBO; /* Element Buffer Object */
 
 static GLdouble vertex_data[] =
 {
-     /* Pos */       /* Tex Coord */
-    -1.0f, -1.0f,    0.0f, 1.0f,
-     1.0f, -1.0f,    1.0f, 1.0f,
-     1.0f,  1.0f,    1.0f, 0.0f,
-    -1.0f,  1.0f,    0.0f, 0.0f,
+     /* Pos */     /* Tex Coord */
+    -1.0, -1.0,    0.0, 1.0,
+     1.0, -1.0,    1.0, 1.0,
+     1.0,  1.0,    1.0, 0.0,
+    -1.0,  1.0,    0.0, 0.0,
 };
 static GLuint indices[] = 
 {

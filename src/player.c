@@ -26,16 +26,16 @@ static double get_safe_angle(double angle)
     /* The function is to prevent errors with f_tan in the raycasting */
 
     if (angle <= 0)
-        return 0.0001f;
+        return 0.0001;
 
     if (double_equality(RAD_90, angle))
-        return angle - 0.0001f;
+        return angle - 0.0001;
     
     if (double_equality(RAD_180, angle))
-        return angle - 0.0001f;
+        return angle - 0.0001;
     
     if (double_equality(RAD_270, angle))
-        return angle - 0.0001f;
+        return angle - 0.0001;
     
     return angle;
 }
@@ -44,7 +44,7 @@ static void update_rotation(void)
 {
     double speed;
 
-    speed = 30.0f;
+    speed = 30.0;
     if (man.rotation_action)
     {
         man.player.angle += man.rotation_action * RAD_1 * speed * man.delta_time;
@@ -67,7 +67,7 @@ static void update_position(t_map* m)
     t_vec2 size;
     int index;
 
-    speed = 15.0f;
+    speed = 15.0;
     if (man.movement_action[2] + man.movement_action[0] == 0)
         return;
 

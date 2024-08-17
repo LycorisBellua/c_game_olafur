@@ -95,7 +95,7 @@ double f_sin(double rad)
     double fact;
 
     n = 0;
-    result = 0.0f;
+    result = 0.0;
     while (n < 10)
     {
         fact = factorial(2 * n + 1);
@@ -113,7 +113,7 @@ double f_cos(double rad)
     double fact;
 
     n = 0;
-    result = 0.0f;
+    result = 0.0;
     while (n < 10)
     {
         fact = factorial(2 * n);
@@ -130,7 +130,7 @@ double f_tan(double rad)
 
     cos = f_cos(rad);
     if (is_close_to_zero(cos))
-        return 0.0f;
+        return 0.0;
     return f_sin(rad) / cos;
 }
 
@@ -227,7 +227,7 @@ static double is_close_to_zero(double n)
 static double factorial(int n)
 {
     if (n < 2)
-        return 1.0f;
+        return 1.0;
     return n * factorial(n - 1);
 }
 
@@ -237,7 +237,7 @@ static double power(double base, int exponent)
     double result;
 
     i = 0;
-    result = 1.0f;
+    result = 1.0;
     while (i < exponent)
     {
         result *= base;

@@ -224,8 +224,8 @@ static void draw_player(void)
     t_vert end;
     t_ivec2 rect_size;
 
-    player_size = max(1, MAP_CELL_LEN/4.0f/minimap_factor);
-    forward_vector_len = max(2, MAP_CELL_LEN/8.0f/minimap_factor);
+    player_size = max(1, MAP_CELL_LEN/4.0/minimap_factor);
+    forward_vector_len = max(2, MAP_CELL_LEN/8.0/minimap_factor);
     map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
     offset = get_minimap_factor_offset(minimap_factor);
 
@@ -260,7 +260,7 @@ static double get_minimap_factor_offset(int factor)
     offset = 0;
     if (factor > 1 && factor % 2)
     {
-        quotient = factor/2.0f;
+        quotient = factor/2.0;
         modulus = factor % 2;
         offset = quotient + modulus + (quotient-modulus) - 1;
     }
