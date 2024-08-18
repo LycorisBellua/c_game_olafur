@@ -31,7 +31,7 @@ int main(void)
         swap_buffer(window);
 
         glfwPollEvents();
-        /* update_player_transform(man.map); */
+        update_player_transform(man.map);
     }
     deinit();
     return EXIT_SUCCESS;

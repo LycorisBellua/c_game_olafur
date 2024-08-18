@@ -1,126 +1,62 @@
 #include "cimmerian.h"
 
-#define FOV 60
-#define WALL_HEIGHT 35456
-/*
-    Logic for WALL_HEIGHT is `MAP_CELL_LEN * dist_proj_plane`.
-    Second value is `man.tex[man.curr_tex]->size.x / (2.0 * f_tan(DEG2RAD(FOV)/2))`.
-    In other words: `WALL_HEIGHT = 64 * 554`.
-*/
-
-static int is_player_out_of_bounds(t_vec2 pos, t_map* m);
-
-void reset_global_coordinates(void)
-{
-    set_minimap_display(0);
-    reset_player_transform(man.map);
-    return;
-}
-
-static int is_player_out_of_bounds(t_vec2 pos, t_map* m)
-{
-    if (pos.x < 0 || pos.x > m->size.x * MAP_CELL_LEN)
-        return 1;
-    else if (pos.y < 0 || pos.y > m->size.y * MAP_CELL_LEN)
-        return 1;
-    return 0;
-}
 static void draw_gradient(t_tex* t);
+static void raycasting(void);
+static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* color);
+static void draw_wall(t_tex* t, int ray_index, double dist, t_color color);
 
-/*
-    (float) px  -> (double) man.player.pos.x
-    (float) py  -> (double) man.player.pos.y
-    (float) pdx -> (double) man.player.delta.x
-    (float) pdy -> (double) man.player.delta.y
-    (float) pa  -> (double) man.player.angle
-
-    (int) r   -> (int) "ray"
-    (int) mx  -> (int)
-    (int) my  -> (int)
-    (int) mp  -> (int) 
-    (int) dof -> (int) "depth of field"
-    (float) rx  -> (double) "ray x"
-    (float) ry  -> (double) "ray y"
-    (float) ra  -> (double) "ray angle"
-    (float) xo  -> (double) "x offset"
-    (float) yo  -> (double) "y offset"
-    (float) atan -> (double) "arc tangent"
-    (float) ntan -> (double) "negative tangent"
-    (float) disH -> (double) "distance horizontal"
-    (float) hx and hy -> (double)
-    (float) disV -> (double) "distance vertical"
-    (float) vx and vy -> (double)
-    (float) disT -> (double) "final distance"
-    (float) lineH -> (double) "line height"
-*/
-
-double dist(double ax, double ay, double bx, double by, double ang)
-{
-    return f_sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
-}
-
-void draw_wall_line(t_tex* texture, int ray, int line_height, t_color color)
-{
-    t_vert v1, v2;
-    int i;
-
-    /* Calculate the base x-coordinate for the ray */
-    int base_x = ray * 8;
-    float line_offset = texture->size.y - line_height / 2;
-
-    v1.color = color;
-    v2.color = color;
-    v1.coord.y = line_offset;
-    v2.coord.y = line_height + line_offset;
-
-    /* Loop to draw 8 parallel lines to simulate thickness */
-    for (i = 0; i < 8; ++i)
-    {
-        v1.coord.x = base_x + i;
-        v2.coord.x = base_x + i;
-        draw_line(texture, v1, v2);
-    }
-}
+static void draw_map(void);
+static void draw_player(void);
 
 void draw_game(void)
 {
-    double speed;
-    t_vec2 pos;
-    t_ivec2 i;
-    t_vert vert, vert2;
-    t_ivec2 size;
-    int r, mx, my, mp, dof;
-    double rx, ry, ra, xo, yo, atan, ntan, disH, hx, hy, disV, vx, vy, disT, lineH;
-
     draw_gradient(man.tex[man.curr_tex]);
+    raycasting();
+    /*
+    draw_map();
+    draw_player();
+    */
+    return;
+}
 
-    /* PLAYER ROTATION */
-    if (man.rotation_action)
+/*
+    Horizontal gradient from a dark blue/purple color at the top to a dark 
+    greyish brown at the bottom
+*/
+static void draw_gradient(t_tex* t)
+{
+    t_vert v;
+    t_color top;
+    t_color bottom;
+    float factor;
+
+    top = get_color_rgba(64, 0, 64, 255);
+    bottom = get_color_rgba(58, 38, 42, 255);
+    v.coord.y = 0;
+    while (v.coord.y < t->size.y)
     {
-        speed = 30.0;
-        man.player.angle += man.rotation_action * RAD_1 * speed * man.delta_time;
-        man.player.angle = clamp_rad(man.player.angle);
-        man.player.delta.x = f_cos(man.player.angle) * 5;
-        man.player.delta.y = f_sin(man.player.angle) * 5;
+        v.coord.x = 0;
+        while (v.coord.x < t->size.x)
+        {
+            factor = (float)v.coord.y / (t->size.y - 1);
+            v.color.r = top.r + factor * (bottom.r - top.r);
+            v.color.g = top.g + factor * (bottom.g - top.g);
+            v.color.b = top.b + factor * (bottom.b - top.b);
+            v.color.a = 255;
+            draw_point(t, v.color, v.coord.x, v.coord.y);
+            ++v.coord.x;
+        }
+        ++v.coord.y;
     }
-    /* PLAYER POSITION */
-    if (man.movement_action[2] + man.movement_action[0] != 0)
-    {
-        speed = 15.0;
-        pos = man.player.pos;
+}
 
-        /* Movement along the forward axis */
-        pos.x += man.movement_action[2] * man.player.delta.x * speed * man.delta_time;
-        pos.y += man.movement_action[2] * man.player.delta.y * speed * man.delta_time;
+/* TODO: Temporary */
+static void draw_map(void)
+{
+    t_ivec2 i;
+    t_ivec2 size;
+    t_vert vert;
 
-        /* Movement along the lateral axis */
-        pos.x += man.movement_action[0] * man.player.delta.y * speed * man.delta_time;
-        pos.y += man.movement_action[0] * -man.player.delta.x * speed * man.delta_time;
-
-        man.player.pos = pos;
-    }
-
-    /* DRAW MAP */
     i.y = 0;
     while (i.y < man.map->size.y)
     {
@@ -131,8 +67,8 @@ void draw_game(void)
                 vert.color = get_color_rgba(0xFF, 0xFF, 0xFF, 0xFF);
             else
                 vert.color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
-            size.x = 64;
-            size.y = 64;
+            size.x = MAP_CELL_LEN;
+            size.y = MAP_CELL_LEN;
             vert.coord.x = i.x * size.x;
             vert.coord.y = i.y * size.y;
             --size.x;
@@ -142,173 +78,192 @@ void draw_game(void)
         }
         ++i.y;
     }
+    return;
+}
 
-    /* DRAW PLAYER */
-    /* TODO: Put the line in the middle of the square */
-    vert.color = get_color_rgba(0x00, 0xFF, 0xFF, 0xFF);
-    vert.coord.x = man.player.pos.x;
-    vert.coord.y = man.player.pos.y;
+/* TODO: Temporary */
+static void draw_player(void)
+{
+    t_ivec2 size;
+    t_vert vert1;
+    t_vert vert2;
+
+    vert1.color = get_color_rgba(0x00, 0xFF, 0xFF, 0xFF);
+    vert1.coord.x = man.player.pos.x;
+    vert1.coord.y = man.player.pos.y;
     vert2.color = get_color_rgba(0xFF, 0x00, 0x00, 0xFF);
-    vert2.coord.x = vert.coord.x + man.player.delta.x * 5;
-    vert2.coord.y = vert.coord.y + man.player.delta.y * 5;
-    draw_line(man.tex[man.curr_tex], vert, vert2);
+    vert2.coord.x = vert1.coord.x + man.player.delta.x * 5;
+    vert2.coord.y = vert1.coord.y + man.player.delta.y * 5;
+    draw_line(man.tex[man.curr_tex], vert1, vert2);
     size.x = 8;
     size.y = 8;
-    draw_rectangle_full(man.tex[man.curr_tex], vert, size);
-    vert.color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
-    draw_rectangle(man.tex[man.curr_tex], vert, size);
+    vert1.coord.x -= size.x / 2;
+    vert1.coord.y -= size.y / 2;
+    draw_rectangle_full(man.tex[man.curr_tex], vert1, size);
+    vert1.color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
+    draw_rectangle(man.tex[man.curr_tex], vert1, size);
+    return;
+}
 
-    /* RAYCASTING */
-    /* Note that the cells are 64x64 */
-    ra = clamp_rad(man.player.angle - RAD_1 * 30);
-    for (r = 0; r < 60; ++r)
+static void raycasting(void)
+{
+    t_color color;
+    int screen_width, ray_index, map_pos, depth_of_field;
+    t_ivec2 map;
+    double fov, start_angle, angle_increment, ray_angle;
+    double atan, ntan;
+    double dist_h, dist_v, dist;
+    t_vec2 ray, offset, h, v;
+
+    screen_width = man.tex[man.curr_tex]->size.x;
+    fov = RAD_60;
+    start_angle = clamp_rad(man.player.angle - fov / 2);
+    angle_increment = fov / screen_width;
+    for (ray_index = 0; ray_index < screen_width; ++ray_index)
     {
+        ray_angle = clamp_rad(start_angle + ray_index * angle_increment);
+
         /* Check horizontal lines */
-        dof = 0;
-        disH = 1000000;
-        hx = man.player.pos.x;
-        hy = man.player.pos.y;
-        atan = -1 / f_tan(ra);
-        if (ra > PI) /* Looking up */
+        depth_of_field = 0;
+        dist_h = 1000000;
+        h.x = man.player.pos.x;
+        h.y = man.player.pos.y;
+        atan = -1 / f_tan(ray_angle);
+        if (ray_angle > PI) /* Looking up */
         {
             /* Round to the nearest 64th value */
-            ry = (((int)man.player.pos.y >> 6) << 6) - 0.0001;
-            rx = (man.player.pos.y - ry) * atan + man.player.pos.x;
-            yo = -64;
-            xo = -yo * atan;
+            ray.y = (((int)man.player.pos.y >> 6) << 6) - 0.0001;
+            ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
+            offset.y = -MAP_CELL_LEN;
+            offset.x = -offset.y * atan;
         }
-        if (ra < PI) /* Looking down */
+        if (ray_angle < PI) /* Looking down */
         {
             /* Round to the nearest 64th value */
-            ry = (((int)man.player.pos.y >> 6) << 6) + 64;
-            rx = (man.player.pos.y - ry) * atan + man.player.pos.x;
-            yo = 64;
-            xo = -yo * atan;
+            ray.y = (((int)man.player.pos.y >> 6) << 6) + MAP_CELL_LEN;
+            ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
+            offset.y = MAP_CELL_LEN;
+            offset.x = -offset.y * atan;
         }
-        if (ra == 0 || ra == PI) /* Looking straight left or right */
+        if (ray_angle == 0 || ray_angle == PI) /* Looking straight left or right */
         {
-            rx = man.player.pos.x;
-            ry = man.player.pos.y;
-            dof = 8;
+            ray.x = man.player.pos.x;
+            ray.y = man.player.pos.y;
+            depth_of_field = 8;
         }
-        while (dof < 8)
+        while (depth_of_field < 8)
         {
-            mx = (int)(rx) >> 6;
-            my = (int)(ry) >> 6;
-            mp = my * man.map->size.x + mx;
-            if (mp > 0 && mp < man.map->size.x * man.map->size.y && man.map->data[mp] == 1)
+            map.x = (int)(ray.x) >> 6;
+            map.y = (int)(ray.y) >> 6;
+            map_pos = map.y * man.map->size.x + map.x;
+            if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
             {
-                hx = rx;
-                hy = ry;
-                disH = dist(man.player.pos.x, man.player.pos.y, hx, hy, ra);
-                dof = 8;
+                h.x = ray.x;
+                h.y = ray.y;
+                dist_h = get_distance(man.player.pos, h);
+                depth_of_field = 8;
             }
             else
             {
-                rx += xo;
-                ry += yo;
-                dof += 1;
+                ray.x += offset.x;
+                ray.y += offset.y;
+                depth_of_field += 1;
             }
         }
 
         /* Check vertical lines */
-        dof = 0;
-        disV = 1000000;
-        vx = man.player.pos.x;
-        vy = man.player.pos.y;
-        ntan = -f_tan(ra);
-        if (ra > RAD_90 && ra < RAD_270) /* Looking left */
+        depth_of_field = 0;
+        dist_v = 1000000;
+        v.x = man.player.pos.x;
+        v.y = man.player.pos.y;
+        ntan = -f_tan(ray_angle);
+        if (ray_angle > RAD_90 && ray_angle < RAD_270) /* Looking left */
         {
             /* Round to the nearest 64th value */
-            rx = (((int)man.player.pos.x >> 6) << 6) - 0.0001;
-            ry = (man.player.pos.x - rx) * ntan + man.player.pos.y;
-            xo = -64;
-            yo = -xo * ntan;
+            ray.x = (((int)man.player.pos.x >> 6) << 6) - 0.0001;
+            ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
+            offset.x = -MAP_CELL_LEN;
+            offset.y = -offset.x * ntan;
         }
-        if (ra < RAD_90 || ra > RAD_270) /* Looking right */
+        if (ray_angle < RAD_90 || ray_angle > RAD_270) /* Looking right */
         {
             /* Round to the nearest 64th value */
-            rx = (((int)man.player.pos.x >> 6) << 6) + 64;
-            ry = (man.player.pos.x - rx) * ntan + man.player.pos.y;
-            xo = 64;
-            yo = -xo * ntan;
+            ray.x = (((int)man.player.pos.x >> 6) << 6) + MAP_CELL_LEN;
+            ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
+            offset.x = MAP_CELL_LEN;
+            offset.y = -offset.x * ntan;
         }
-        if (ra == 0 || ra == PI) /* Looking straight up or down */
+        if (ray_angle == 0 || ray_angle == PI) /* Looking straight up or down */
         {
-            rx = man.player.pos.x;
-            ry = man.player.pos.y;
-            dof = 8;
+            ray.x = man.player.pos.x;
+            ray.y = man.player.pos.y;
+            depth_of_field = 8;
         }
-        while (dof < 8)
+        while (depth_of_field < 8)
         {
-            mx = (int)(rx) >> 6;
-            my = (int)(ry) >> 6;
-            mp = my * man.map->size.x + mx;
-            if (mp > 0 && mp < man.map->size.x * man.map->size.y && man.map->data[mp] == 1)
+            map.x = (int)(ray.x) >> 6;
+            map.y = (int)(ray.y) >> 6;
+            map_pos = map.y * man.map->size.x + map.x;
+            if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
             {
-                vx = rx;
-                vy = ry;
-                disV = dist(man.player.pos.x, man.player.pos.y, vx, vy, ra);
-                dof = 8;
+                v.x = ray.x;
+                v.y = ray.y;
+                dist_v = get_distance(man.player.pos, v);
+                depth_of_field = 8;
             }
             else
             {
-                rx += xo;
-                ry += yo;
-                dof += 1;
+                ray.x += offset.x;
+                ray.y += offset.y;
+                depth_of_field += 1;
             }
         }
 
-        /* Shortest distance between horizontal and vertical */
-        if (disV < disH)
-        {
-            rx = vx;
-            ry = vy;
-            disT = disV;
-        }
-        if (disH < disV)
-        {
-            rx = hx;
-            ry = hy;
-            disT = disH;
-        }
-        vert.color = get_color_rgba(0xFF, 0x00, 0x00, 0xFF);
-        vert.coord.x = man.player.pos.x;
-        vert.coord.y = man.player.pos.y;
-        vert2.color = vert.color;
-        vert2.coord.x = rx;
-        vert2.coord.y = ry;
-        draw_line(man.tex[man.curr_tex], vert, vert2);
-
-        /* Draw 3D walls */
-        lineH = 64 * man.tex[man.curr_tex]->size.x / disT;
-        if (lineH > man.tex[man.curr_tex]->size.x)
-            lineH = man.tex[man.curr_tex]->size.x;
-        draw_wall_line(man.tex[man.curr_tex], r, lineH, vert.color);
-
-        ra = clamp_rad(ra + RAD_1);
+        dist = get_dist(dist_h, dist_v, ray_angle, &color);
+        draw_wall(man.tex[man.curr_tex], ray_index, dist, color);
     }
     return;
 }
 
-static void draw_gradient(t_tex* t)
+static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* color)
 {
-    t_vert v;
+    double dist;
+    double center_angle;
 
-    v.color.b = 255 / 2;
-    v.color.a = 255;
-    v.coord.y = 0;
-    while (v.coord.y < t->size.y)
+    /* Get shortest dist */
+    if (dist_h < dist_v)
     {
-        v.coord.x = 0;
-        while (v.coord.x < t->size.x)
-        {
-            v.color.r = 255 * v.coord.y / t->size.y;
-            v.color.g = 255 * v.coord.x / t->size.x;
-            draw_point(t, v.color, v.coord.x, v.coord.y);
-            ++v.coord.x;
-        }
-        ++v.coord.y;
+        dist = dist_h;
+        *color = get_color_rgba(74, 42, 77, 255);
     }
+    else
+    {
+        dist = dist_v;
+        *color = get_color_rgba(84, 43, 88, 255);
+    }
+    /* Fix fisheye effect */
+    center_angle = clamp_rad(man.player.angle - ray_angle);
+    dist *= f_cos(center_angle);
+    return (dist);
+}
+
+static void draw_wall(t_tex* t, int ray_index, double dist, t_color color)
+{
+    t_vert v1;
+    t_vert v2;
+    double line_height;
+    double line_offset;
+
+    line_height = MAP_CELL_LEN * man.tex[man.curr_tex]->size.x / dist;
+    if (line_height > man.tex[man.curr_tex]->size.x)
+        line_height = man.tex[man.curr_tex]->size.x;
+    line_offset = (t->size.y - line_height) / 2;
+    v1.color = color;
+    v2.color = color;
+    v1.coord.x = ray_index;
+    v1.coord.y = line_offset;
+    v2.coord.x = ray_index;
+    v2.coord.y = line_height + line_offset;
+    draw_line(t, v1, v2);
     return;
 }

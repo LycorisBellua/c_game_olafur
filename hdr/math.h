@@ -6,6 +6,7 @@
 /* #define PI_OVER_180_INVERSE (180/PI) */
 /* #define RAD_1 (PI*2/360) */
 /* #define RAD_45 (PI/4) */
+/* #define RAD_60 (PI/3) */
 /* #define RAD_90 (PI/2) */
 /* #define RAD_180 (PI) */
 /* #define RAD_270 (PI/2*3) */
@@ -14,6 +15,7 @@
 #define PI_OVER_180_INVERSE 57.295779515
 #define RAD_1 0.017453293
 #define RAD_45 0.785398163
+#define RAD_60 1.047197551
 #define RAD_90 1.570796327
 #define RAD_180 PI
 #define RAD_270 4.71238898
