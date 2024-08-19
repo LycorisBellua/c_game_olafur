@@ -2,6 +2,8 @@
 
 static void draw_gradient(t_tex* t);
 static void raycasting(void);
+static double get_dist_h(double ray_angle);
+static double get_dist_v(double ray_angle);
 static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* color);
 static void draw_wall(t_tex* t, int ray_index, double dist, t_color color);
 
@@ -107,122 +109,153 @@ static void draw_player(void)
 
 static void raycasting(void)
 {
+    int screen_width;
+    double fov;
+    double ray_angle;
+    double angle_increment;
+    int ray_index;
+    double dist;
     t_color color;
-    int screen_width, ray_index, map_pos, depth_of_field;
-    t_ivec2 map;
-    double fov, start_angle, angle_increment, ray_angle;
-    double atan, ntan;
-    double dist_h, dist_v, dist;
-    t_vec2 ray, offset, h, v;
 
     screen_width = man.tex[man.curr_tex]->size.x;
     fov = RAD_60;
-    start_angle = clamp_rad(man.player.angle - fov / 2);
+    ray_angle = clamp_rad(man.player.angle - fov / 2);
     angle_increment = fov / screen_width;
-    for (ray_index = 0; ray_index < screen_width; ++ray_index)
+    ray_index = 0;
+    while (ray_index < screen_width)
     {
-        ray_angle = clamp_rad(start_angle + ray_index * angle_increment);
-
-        /* Check horizontal lines */
-        depth_of_field = 0;
-        dist_h = 1000000;
-        h.x = man.player.pos.x;
-        h.y = man.player.pos.y;
-        atan = -1 / f_tan(ray_angle);
-        if (ray_angle > PI) /* Looking up */
-        {
-            /* Round to the nearest 64th value */
-            ray.y = (((int)man.player.pos.y >> 6) << 6) - 0.0001;
-            ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
-            offset.y = -MAP_CELL_LEN;
-            offset.x = -offset.y * atan;
-        }
-        if (ray_angle < PI) /* Looking down */
-        {
-            /* Round to the nearest 64th value */
-            ray.y = (((int)man.player.pos.y >> 6) << 6) + MAP_CELL_LEN;
-            ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
-            offset.y = MAP_CELL_LEN;
-            offset.x = -offset.y * atan;
-        }
-        if (ray_angle == 0 || ray_angle == PI) /* Looking straight left or right */
-        {
-            ray.x = man.player.pos.x;
-            ray.y = man.player.pos.y;
-            depth_of_field = 8;
-        }
-        while (depth_of_field < 8)
-        {
-            map.x = (int)(ray.x) >> 6;
-            map.y = (int)(ray.y) >> 6;
-            map_pos = map.y * man.map->size.x + map.x;
-            if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
-            {
-                h.x = ray.x;
-                h.y = ray.y;
-                dist_h = get_distance(man.player.pos, h);
-                depth_of_field = 8;
-            }
-            else
-            {
-                ray.x += offset.x;
-                ray.y += offset.y;
-                depth_of_field += 1;
-            }
-        }
-
-        /* Check vertical lines */
-        depth_of_field = 0;
-        dist_v = 1000000;
-        v.x = man.player.pos.x;
-        v.y = man.player.pos.y;
-        ntan = -f_tan(ray_angle);
-        if (ray_angle > RAD_90 && ray_angle < RAD_270) /* Looking left */
-        {
-            /* Round to the nearest 64th value */
-            ray.x = (((int)man.player.pos.x >> 6) << 6) - 0.0001;
-            ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
-            offset.x = -MAP_CELL_LEN;
-            offset.y = -offset.x * ntan;
-        }
-        if (ray_angle < RAD_90 || ray_angle > RAD_270) /* Looking right */
-        {
-            /* Round to the nearest 64th value */
-            ray.x = (((int)man.player.pos.x >> 6) << 6) + MAP_CELL_LEN;
-            ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
-            offset.x = MAP_CELL_LEN;
-            offset.y = -offset.x * ntan;
-        }
-        if (ray_angle == 0 || ray_angle == PI) /* Looking straight up or down */
-        {
-            ray.x = man.player.pos.x;
-            ray.y = man.player.pos.y;
-            depth_of_field = 8;
-        }
-        while (depth_of_field < 8)
-        {
-            map.x = (int)(ray.x) >> 6;
-            map.y = (int)(ray.y) >> 6;
-            map_pos = map.y * man.map->size.x + map.x;
-            if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
-            {
-                v.x = ray.x;
-                v.y = ray.y;
-                dist_v = get_distance(man.player.pos, v);
-                depth_of_field = 8;
-            }
-            else
-            {
-                ray.x += offset.x;
-                ray.y += offset.y;
-                depth_of_field += 1;
-            }
-        }
-
-        dist = get_dist(dist_h, dist_v, ray_angle, &color);
+        dist = get_dist(get_dist_h(ray_angle), get_dist_v(ray_angle), ray_angle, &color);
         draw_wall(man.tex[man.curr_tex], ray_index, dist, color);
+        ray_angle = clamp_rad(ray_angle + angle_increment);
+        ++ray_index;
     }
     return;
+}
+
+static double get_dist_h(double ray_angle)
+{
+    double dist_h;
+    int depth_of_field;
+    t_vec2 h;
+    double atan;
+    t_vec2 ray;
+    t_vec2 offset;
+    t_ivec2 map;
+    int map_pos;
+
+    dist_h = 1000000;
+    depth_of_field = 0;
+    h.x = man.player.pos.x;
+    h.y = man.player.pos.y;
+    atan = -1 / f_tan(ray_angle);
+    /* Looking up */
+    if (ray_angle > PI)
+    {
+        /* Round to the nearest 64th value */
+        ray.y = (((int)man.player.pos.y >> 6) << 6) - 0.0001;
+        ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
+        offset.y = -MAP_CELL_LEN;
+        offset.x = -offset.y * atan;
+    }
+    /* Looking down */
+    else if (ray_angle < PI)
+    {
+        /* Round to the nearest 64th value */
+        ray.y = (((int)man.player.pos.y >> 6) << 6) + MAP_CELL_LEN;
+        ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
+        offset.y = MAP_CELL_LEN;
+        offset.x = -offset.y * atan;
+    }
+    /* Looking straight left or right */
+    else if (ray_angle == 0 || ray_angle == PI)
+    {
+        ray.x = man.player.pos.x;
+        ray.y = man.player.pos.y;
+        depth_of_field = 8;
+    }
+    while (depth_of_field < 8)
+    {
+        map.x = (int)(ray.x) >> 6;
+        map.y = (int)(ray.y) >> 6;
+        map_pos = map.y * man.map->size.x + map.x;
+        if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
+        {
+            h.x = ray.x;
+            h.y = ray.y;
+            dist_h = get_distance(man.player.pos, h);
+            depth_of_field = 8;
+        }
+        else
+        {
+            ray.x += offset.x;
+            ray.y += offset.y;
+            depth_of_field += 1;
+        }
+    }
+    return dist_h;
+}
+
+static double get_dist_v(double ray_angle)
+{
+    double dist_v;
+    int depth_of_field;
+    t_vec2 v;
+    double ntan;
+    t_vec2 ray;
+    t_vec2 offset;
+    t_ivec2 map;
+    int map_pos;
+
+    dist_v = 1000000;
+    depth_of_field = 0;
+    v.x = man.player.pos.x;
+    v.y = man.player.pos.y;
+    ntan = -f_tan(ray_angle);
+    /* Looking left */
+    if (ray_angle > RAD_90 && ray_angle < RAD_270)
+    {
+        /* Round to the nearest 64th value */
+        ray.x = (((int)man.player.pos.x >> 6) << 6) - 0.0001;
+        ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
+        offset.x = -MAP_CELL_LEN;
+        offset.y = -offset.x * ntan;
+    }
+    /* Looking right */
+    else if (ray_angle < RAD_90 || ray_angle > RAD_270)
+    {
+        /* Round to the nearest 64th value */
+        ray.x = (((int)man.player.pos.x >> 6) << 6) + MAP_CELL_LEN;
+        ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
+        offset.x = MAP_CELL_LEN;
+        offset.y = -offset.x * ntan;
+    }
+    /* Looking straight up or down */
+    else if (ray_angle == 0 || ray_angle == PI)
+    {
+        ray.x = man.player.pos.x;
+        ray.y = man.player.pos.y;
+        depth_of_field = 8;
+    }
+    while (depth_of_field < 8)
+    {
+        map.x = (int)(ray.x) >> 6;
+        map.y = (int)(ray.y) >> 6;
+        map_pos = map.y * man.map->size.x + map.x;
+        if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
+        {
+            v.x = ray.x;
+            v.y = ray.y;
+            dist_v = get_distance(man.player.pos, v);
+            depth_of_field = 8;
+        }
+        else
+        {
+            ray.x += offset.x;
+            ray.y += offset.y;
+            depth_of_field += 1;
+        }
+    }
+    return dist_v;
 }
 
 static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* color)
