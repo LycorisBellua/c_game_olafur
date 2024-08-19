@@ -125,7 +125,8 @@ static void raycasting(void)
     while (ray_index < screen_width)
     {
         dist = get_dist(get_dist_h(ray_angle), get_dist_v(ray_angle), ray_angle, &color);
-        draw_wall(man.tex[man.curr_tex], ray_index, dist, color);
+        if (dist > 0)
+            draw_wall(man.tex[man.curr_tex], ray_index, dist, color);
         ray_angle = clamp_rad(ray_angle + angle_increment);
         ++ray_index;
     }
@@ -141,9 +142,8 @@ static double get_dist_h(double ray_angle)
     t_vec2 ray;
     t_vec2 offset;
     t_ivec2 map;
-    int map_pos;
 
-    dist_h = 1000000;
+    dist_h = -1;
     depth_of_field = 0;
     h.x = man.player.pos.x;
     h.y = man.player.pos.y;
@@ -177,13 +177,17 @@ static double get_dist_h(double ray_angle)
     {
         map.x = (int)(ray.x) >> 6;
         map.y = (int)(ray.y) >> 6;
-        map_pos = map.y * man.map->size.x + map.x;
-        if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
+        if (map.x < 0 || map.y < 0 || map.x >= man.map->size.x || map.y >= man.map->size.y)
+            break;
+        if (man.map->data[map.y * man.map->size.x + map.x] == 1)
         {
             h.x = ray.x;
             h.y = ray.y;
             dist_h = get_distance(man.player.pos, h);
             depth_of_field = 8;
+            if (dist_h / MAP_CELL_LEN > depth_of_field)
+                dist_h = -1;
+            break;
         }
         else
         {
@@ -204,9 +208,8 @@ static double get_dist_v(double ray_angle)
     t_vec2 ray;
     t_vec2 offset;
     t_ivec2 map;
-    int map_pos;
 
-    dist_v = 1000000;
+    dist_v = -1;
     depth_of_field = 0;
     v.x = man.player.pos.x;
     v.y = man.player.pos.y;
@@ -240,13 +243,16 @@ static double get_dist_v(double ray_angle)
     {
         map.x = (int)(ray.x) >> 6;
         map.y = (int)(ray.y) >> 6;
-        map_pos = map.y * man.map->size.x + map.x;
-        if (map_pos > 0 && map_pos < man.map->size.x * man.map->size.y && man.map->data[map_pos] == 1)
+        if (map.x < 0 || map.y < 0 || map.x >= man.map->size.x || map.y >= man.map->size.y)
+            break;
+        if (man.map->data[map.y * man.map->size.x + map.x] == 1)
         {
             v.x = ray.x;
             v.y = ray.y;
             dist_v = get_distance(man.player.pos, v);
             depth_of_field = 8;
+            if (dist_v / MAP_CELL_LEN > depth_of_field)
+                dist_v = -1;
         }
         else
         {
@@ -264,7 +270,7 @@ static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* 
     double center_angle;
 
     /* Get shortest dist */
-    if (dist_h < dist_v)
+    if (dist_v < 0 || (dist_h > 0 && dist_h < dist_v))
     {
         dist = dist_h;
         *color = get_color_rgba(74, 42, 77, 255);
@@ -275,8 +281,11 @@ static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* 
         *color = get_color_rgba(84, 43, 88, 255);
     }
     /* Fix fisheye effect */
-    center_angle = clamp_rad(man.player.angle - ray_angle);
-    dist *= f_cos(center_angle);
+    if (dist > 0)
+    {
+        center_angle = clamp_rad(man.player.angle - ray_angle);
+        dist *= f_cos(center_angle);
+    }
     return (dist);
 }
 

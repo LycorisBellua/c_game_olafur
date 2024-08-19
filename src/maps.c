@@ -15,6 +15,7 @@ static double get_minimap_factor_offset(int factor);
 /* 1 is a wall, 0 is an empty space */
 static int map_default[] = 
 {
+    /*
     1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 1, 0, 0, 0, 0, 1,
     1, 0, 1, 0, 0, 0, 0, 1,
@@ -23,8 +24,8 @@ static int map_default[] =
     1, 0, 0, 0, 0, 1, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 1, 1, 1, 1,
+    */
 
-    /*
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -41,7 +42,6 @@ static int map_default[] =
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    */
 };
 
 void initialize_maps(void)
@@ -90,8 +90,8 @@ static t_map* create_map(void)
     if (!map)
         return 0;
 
-    map->size.x = 8;
-    map->size.y = 8;
+    map->size.x = 16;
+    map->size.y = 16;
     map->start_pos.x = map->size.x * MAP_CELL_LEN / 2 - 1;
     map->start_pos.y = map->size.y * MAP_CELL_LEN / 2 - 1;
     map->start_angle = RAD_90;
