@@ -108,6 +108,10 @@ typedef struct s_manager
 
 extern t_manager man;
 
+#define MAP_WIDTH 8
+#define MAP_HEIGHT 8
+extern int world_map[MAP_HEIGHT][MAP_WIDTH];
+
 /* Colors ------------------------------------------------------------------- */
 
 t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);

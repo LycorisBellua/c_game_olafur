@@ -1,0 +1,3 @@
+- Fix the "bypass player size if moving on both axis at the same time and 
+insisting like crazy as if trying to break the game". The player won't phase 
+through walls, but it looks a tad weird.

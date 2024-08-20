@@ -230,18 +230,23 @@ static void raycasting(void)
     double move_speed;
     //the constant value is in radians/second
     double rot_speed;
+    // Buffer distance for the player's size
+    double player_radius = 0.2;
 
     /* Move along the forward axis */
     move_speed = man.movement_action[2] * 2.0 * man.delta_time;
-    if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x + man.player.dir.x * move_speed)])
+    player_radius = man.movement_action[2] * 0.2;
+    if (!world_map[(int)(man.player.pos.y)][(int)(man.player.pos.x + (man.player.dir.x * move_speed) + (man.player.dir.x * player_radius))])
         man.player.pos.x += man.player.dir.x * move_speed;
-    if (!world_map[(int)(man.player.pos.y + man.player.dir.y * move_speed)][(int)man.player.pos.x])
+    if (!world_map[(int)(man.player.pos.y + (man.player.dir.y * move_speed) + (man.player.dir.y * player_radius))][(int)man.player.pos.x])
         man.player.pos.y += man.player.dir.y * move_speed;
+
     /* Move along the lateral axis */
     move_speed = man.movement_action[0] * 2.0 * man.delta_time;
-    if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x + -man.player.dir.y * move_speed)])
+    player_radius = man.movement_action[0] * 0.2;
+    if (!world_map[(int)(man.player.pos.y)][(int)(man.player.pos.x + (-man.player.dir.y * move_speed) + (-man.player.dir.y * player_radius))])
         man.player.pos.x += -man.player.dir.y * move_speed;
-    if (!world_map[(int)(man.player.pos.y + man.player.dir.x * move_speed)][(int)man.player.pos.x])
+    if (!world_map[(int)(man.player.pos.y + (man.player.dir.x * move_speed) + (man.player.dir.x * player_radius))][(int)man.player.pos.x])
         man.player.pos.y += man.player.dir.x * move_speed;
 
     //both camera direction and camera plane must be rotated
