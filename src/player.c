@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
+static void update_position(void);
 static void update_rotation(void);
-static void update_position(t_map* m);
 
 void reset_player_transform(t_map* m)
 {
@@ -11,95 +11,57 @@ void reset_player_transform(t_map* m)
     man.player.dir.y = 0;
     man.player.plane.x = 0;
     man.player.plane.y = f_tan(deg2rad(FOV) / 2.0);
-
-    man.player.angle = m->start_angle;
-    man.player.delta.x = f_cos(man.player.angle) * 5;
-    man.player.delta.y = f_sin(man.player.angle) * 5;
     return;
 }
 
-void update_player_transform(t_map* m)
+void update_player_transform(void)
 {
+    update_position();
     update_rotation();
-    update_position(m);
     return;
 }
 
-/*
-    The values returned by the sine and cosine operations are 
-    very small, so multiply them by 5.
-*/
+/* Speed is in cell per second */
+static void update_position(void)
+{
+    double speed;
+    double radius;
+    t_vec2 pos;
+    t_vec2 dir;
+
+    pos = man.player.pos;
+    dir = man.player.dir;
+    /* Move along the forward axis */
+    speed = man.movement_action[2] * 2.0 * man.delta_time;
+    radius = man.movement_action[2] * 0.2;
+    if (!map[(int)(pos.y)][(int)(pos.x + (dir.x * speed) + (dir.x * radius))])
+        pos.x += dir.x * speed;
+    if (!map[(int)(pos.y + (dir.y * speed) + (dir.y * radius))][(int)pos.x])
+        pos.y += dir.y * speed;
+    /* Move along the lateral axis */
+    speed = man.movement_action[0] * 2.0 * man.delta_time;
+    radius = man.movement_action[0] * 0.2;
+    if (!map[(int)(pos.y)][(int)(pos.x + (-dir.y * speed) + (-dir.y * radius))])
+        pos.x += -dir.y * speed;
+    if (!map[(int)(pos.y + (dir.x * speed) + (dir.x * radius))][(int)pos.x])
+        pos.y += dir.x * speed;
+    man.player.pos = pos;
+    return;
+}
+
+/* Speed is in radian per second */
 static void update_rotation(void)
 {
     double speed;
+    t_vec2 dir;
+    t_vec2 plane;
 
-    if (!man.rotation_action)
-        return;
-    speed = 30.0;
-    man.player.angle += man.rotation_action * RAD_1 * speed * man.delta_time;
-    man.player.angle = clamp_rad(man.player.angle);
-    man.player.delta.x = f_cos(man.player.angle) * 5;
-    man.player.delta.y = f_sin(man.player.angle) * 5;
-    return;
-}
-
-static void update_position(t_map* m)
-{
-    double speed;
-    t_vec2 pos;
-    t_vec2 offset;
-    t_ivec2 index;
-    t_ivec2 add_offset;
-    t_ivec2 sub_offset;
-
-    if (man.movement_action[2] + man.movement_action[0] == 0)
-        return;
-    speed = 15.0;
-    pos = man.player.pos;
-
-    offset.x = man.player.delta.x < 0 ? -20 : 20;
-    offset.y = man.player.delta.y < 0 ? -20 : 20;
-    index.x = pos.x / MAP_CELL_LEN;
-    index.y = pos.y / MAP_CELL_LEN;
-    add_offset.x = (pos.x + offset.x) / MAP_CELL_LEN;
-    add_offset.y = (pos.y + offset.y) / MAP_CELL_LEN;
-    sub_offset.x = (pos.x - offset.x) / MAP_CELL_LEN;
-    sub_offset.y = (pos.y - offset.y) / MAP_CELL_LEN;
-
-    /* Movement along the forward axis */
-    /* TODO: Refactor (ONLY "ADD" or "SUB" CHANGES) */
-    if (man.movement_action[2] > 0)
-    {
-        if (m->data[index.y * m->size.x + add_offset.x] == 0)
-            pos.x += man.movement_action[2] * man.player.delta.x * speed * man.delta_time;
-        if (m->data[add_offset.y * m->size.x + index.x] == 0)
-            pos.y += man.movement_action[2] * man.player.delta.y * speed * man.delta_time;
-    }
-    else if (man.movement_action[2] < 0)
-    {
-        if (m->data[index.y * m->size.x + sub_offset.x] == 0)
-            pos.x += man.movement_action[2] * man.player.delta.x * speed * man.delta_time;
-        if (m->data[sub_offset.y * m->size.x + index.x] == 0)
-            pos.y += man.movement_action[2] * man.player.delta.y * speed * man.delta_time;
-    }
-
-    /* Movement along the lateral axis */
-    /* TODO: Collision on lateral movement */
-    if (man.movement_action[0] > 0)
-    {
-        /*
-        pos.x += man.movement_action[0] * -man.player.delta.y * speed * man.delta_time;
-        pos.y += man.movement_action[0] * man.player.delta.x * speed * man.delta_time;
-        */
-    }
-    else if (man.movement_action[0] < 0)
-    {
-        /*
-        pos.x += man.movement_action[0] * -man.player.delta.y * speed * man.delta_time;
-        pos.y += man.movement_action[0] * man.player.delta.x * speed * man.delta_time;
-        */
-    }
-
-    man.player.pos = pos;
+    dir = man.player.dir;
+    plane = man.player.plane;
+    speed = man.rotation_action * RAD_45 * man.delta_time;
+    man.player.dir.x = dir.x * f_cos(speed) - dir.y * f_sin(speed);
+    man.player.dir.y = dir.x * f_sin(speed) + dir.y * f_cos(speed);
+    man.player.plane.x = plane.x * f_cos(speed) - plane.y * f_sin(speed);
+    man.player.plane.y = plane.x * f_sin(speed) + plane.y * f_cos(speed);
     return;
 }

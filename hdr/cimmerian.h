@@ -60,10 +60,6 @@ typedef struct s_player
     t_vec2 pos;
     t_vec2 dir;
     t_vec2 plane;
-
-    t_vec2 delta;
-    double angle;
-    int map_index;
 } t_player;
 
 typedef struct s_tex
@@ -108,9 +104,9 @@ typedef struct s_manager
 
 extern t_manager man;
 
-#define MAP_WIDTH 8
-#define MAP_HEIGHT 8
-extern int world_map[MAP_HEIGHT][MAP_WIDTH];
+#define MAP_WIDTH 24
+#define MAP_HEIGHT 24
+extern int map[MAP_HEIGHT][MAP_WIDTH];
 
 /* Colors ------------------------------------------------------------------- */
 
@@ -175,7 +171,7 @@ void free_mesh(void);
 /* Player ------------------------------------------------------------------- */
 
 void reset_player_transform(t_map* m);
-void update_player_transform(t_map* m);
+void update_player_transform(void);
 
 /* Shader Program ----------------------------------------------------------- */
 

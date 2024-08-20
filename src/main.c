@@ -21,8 +21,8 @@ int main(void)
     glfwSetScrollCallback(window, scroll_callback);
 
     reset_player_transform(man.map);
-    man.player.pos.x = 4;
-    man.player.pos.y = 4;
+    man.player.pos.x = 22;
+    man.player.pos.y = 12;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -34,7 +34,7 @@ int main(void)
         swap_buffer(window);
 
         glfwPollEvents();
-        /* update_player_transform(man.map); */
+        update_player_transform();
     }
     deinit();
     return EXIT_SUCCESS;

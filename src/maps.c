@@ -8,9 +8,6 @@ static t_ivec2 display_offset = {0};
 
 static t_map* create_map(void);
 static void free_map(t_map** map);
-static void draw_map(t_map* m);
-static void draw_player(void);
-static double get_minimap_factor_offset(int factor);
 
 /* 1 is a wall, 0 is an empty space */
 static int map_default[] = 
@@ -68,12 +65,14 @@ void set_minimap_display(int remove_from_factor)
     return;
 }
 
+/*
 void draw_minimap(t_map* map)
 {
     draw_map(map);
     draw_player();
     return;
 }
+*/
 
 void free_maps(void)
 {
@@ -121,6 +120,7 @@ static void free_map(t_map** map)
     return;
 }
 
+/*
 static void draw_map(t_map* m)
 {
     int max_len_cell;
@@ -141,11 +141,9 @@ static void draw_map(t_map* m)
     rect_size.y = max_len_map;
     draw_rectangle(man.tex[man.curr_tex], v, rect_size);
 
-    /*
-        SMALLEST MAP
-        - MAX LEN FOR THE MAP: 96
-        - DISPLAY OFFSET (544, 264)
-    */
+    //SMALLEST MAP
+    //- MAX LEN FOR THE MAP: 96
+    //- DISPLAY OFFSET (544, 264)
 
     len.x = max_len_cell;
     len.y = max_len_cell;
@@ -195,7 +193,7 @@ static void draw_map(t_map* m)
             else
                 v.color = get_color_rgba(0, 0, 0, 0);
 
-            /* Remove 1 pixel in order to see grid lines */
+            // Remove 1 pixel in order to see grid lines
             rect_size.x = len.x - 1;
             rect_size.y = len.y - 1;
             draw_rectangle_full(man.tex[man.curr_tex], v, rect_size);
@@ -237,14 +235,14 @@ static void draw_player(void)
     end.coord.y = pos.coord.y + man.player.delta.y * forward_vector_len;
     end.color = pos.color;
 
-    /* Forward vector */
+    // Forward vector
     draw_line(man.tex[man.curr_tex], pos, end);
 
     pos.coord.x -= player_size/2;
     pos.coord.y -= player_size/2;
     pos.color = get_color_rgba(255, 0, 0, 255);
 
-    /* Position */
+    // Position
     rect_size.x = player_size;
     rect_size.y = player_size;
     draw_rectangle_full(man.tex[man.curr_tex], pos, rect_size);
@@ -266,3 +264,4 @@ static double get_minimap_factor_offset(int factor)
     }
     return offset;
 }
+*/
