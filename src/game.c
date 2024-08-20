@@ -226,51 +226,33 @@ static void raycasting(void)
         draw_line(man.tex[man.curr_tex], v1, v2);
     }
 
-    //speed modifiers:
     //the constant value is in squares/second
-    double move_speed = man.delta_time * 3.0;
+    double move_speed;
     //the constant value is in radians/second
-    double rot_speed = man.delta_time * RAD_45;
+    double rot_speed;
 
-    //move forward if no wall in front of you
-    if (man.movement_action[2] > 0)
-    {
-        if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x + man.player.dir.x * move_speed)])
-            man.player.pos.x += man.player.dir.x * move_speed;
-        if (!world_map[(int)(man.player.pos.y + man.player.dir.y * move_speed)][(int)man.player.pos.x])
-            man.player.pos.y += man.player.dir.y * move_speed;
-    }
-    //move backwards if no wall behind you
-    if (man.movement_action[2] < 0)
-    {
-        if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x - man.player.dir.x * move_speed)])
-            man.player.pos.x -= man.player.dir.x * move_speed;
-        if (!world_map[(int)(man.player.pos.y - man.player.dir.y * move_speed)][(int)man.player.pos.x])
-            man.player.pos.y -= man.player.dir.y * move_speed;
-    }
+    /* Move along the forward axis */
+    move_speed = man.movement_action[2] * 2.0 * man.delta_time;
+    if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x + man.player.dir.x * move_speed)])
+        man.player.pos.x += man.player.dir.x * move_speed;
+    if (!world_map[(int)(man.player.pos.y + man.player.dir.y * move_speed)][(int)man.player.pos.x])
+        man.player.pos.y += man.player.dir.y * move_speed;
+    /* Move along the lateral axis */
+    move_speed = man.movement_action[0] * 2.0 * man.delta_time;
+    if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x + -man.player.dir.y * move_speed)])
+        man.player.pos.x += -man.player.dir.y * move_speed;
+    if (!world_map[(int)(man.player.pos.y + man.player.dir.x * move_speed)][(int)man.player.pos.x])
+        man.player.pos.y += man.player.dir.x * move_speed;
+
+    //both camera direction and camera plane must be rotated
     t_vec2 old_dir;
     t_vec2 old_plane;
-    //rotate to the right
-    if (man.rotation_action > 0)
-    {
-        //both camera direction and camera plane must be rotated
-        old_dir.x = man.player.dir.x;
-        man.player.dir.x = man.player.dir.x * f_cos(rot_speed) - man.player.dir.y * f_sin(rot_speed);
-        man.player.dir.y = old_dir.x * f_sin(rot_speed) + man.player.dir.y * f_cos(rot_speed);
-        old_plane.x = man.player.plane.x;
-        man.player.plane.x = man.player.plane.x * f_cos(rot_speed) - man.player.plane.y * f_sin(rot_speed);
-        man.player.plane.y = old_plane.x * f_sin(rot_speed) + man.player.plane.y * f_cos(rot_speed);
-    }
-    //rotate to the left
-    if (man.rotation_action < 0)
-    {
-        //both camera direction and camera plane must be rotated
-        old_dir.x = man.player.dir.x;
-        man.player.dir.x = man.player.dir.x * f_cos(-rot_speed) - man.player.dir.y * f_sin(-rot_speed);
-        man.player.dir.y = old_dir.x * f_sin(-rot_speed) + man.player.dir.y * f_cos(-rot_speed);
-        old_plane.x = man.player.plane.x;
-        man.player.plane.x = man.player.plane.x * f_cos(-rot_speed) - man.player.plane.y * f_sin(-rot_speed);
-        man.player.plane.y = old_plane.x * f_sin(-rot_speed) + man.player.plane.y * f_cos(-rot_speed);
-    }
+    rot_speed = man.rotation_action * RAD_45 * man.delta_time;
+    old_dir.x = man.player.dir.x;
+    man.player.dir.x = man.player.dir.x * f_cos(rot_speed) - man.player.dir.y * f_sin(rot_speed);
+    man.player.dir.y = old_dir.x * f_sin(rot_speed) + man.player.dir.y * f_cos(rot_speed);
+    old_plane.x = man.player.plane.x;
+    man.player.plane.x = man.player.plane.x * f_cos(rot_speed) - man.player.plane.y * f_sin(rot_speed);
+    man.player.plane.y = old_plane.x * f_sin(rot_speed) + man.player.plane.y * f_cos(rot_speed);
     return;
 }
