@@ -47,7 +47,7 @@ static void draw_gradient(t_tex* t)
 #define MAP_WIDTH 24
 #define MAP_HEIGHT 24
 
-int world_map[MAP_WIDTH][MAP_HEIGHT] =
+int world_map[MAP_HEIGHT][MAP_WIDTH] =
 {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -74,11 +74,14 @@ int world_map[MAP_WIDTH][MAP_HEIGHT] =
     {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+
+man.player.pos.x = 22;
+man.player.pos.y = 12;
 */
 
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
-int world_map[MAP_WIDTH][MAP_HEIGHT] =
+int world_map[MAP_HEIGHT][MAP_WIDTH] =
 {
     {1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 1, 0, 0, 0, 0, 1},
@@ -167,7 +170,7 @@ static void raycasting(void)
                 side = 1;
             }
             //Check if ray has hit a wall
-            if (world_map[map.x][map.y] > 0)
+            if (world_map[map.y][map.x] > 0)
                 hit = 1;
         }
         //Calculate distance projected on camera direction. This is the shortest distance from the point where the wall is
@@ -194,7 +197,7 @@ static void raycasting(void)
 
         //choose wall color
         t_color color;
-        switch (world_map[map.x][map.y])
+        switch (world_map[map.y][map.x])
         {
             case 1:  color = get_color_rgba(255,   0,   0, 255); break; //red
             case 2:  color = get_color_rgba(  0, 255,   0, 255); break; //green
@@ -232,17 +235,17 @@ static void raycasting(void)
     //move forward if no wall in front of you
     if (man.movement_action[2] > 0)
     {
-        if (world_map[(int)(man.player.pos.x + man.player.dir.x * move_speed)][(int)man.player.pos.y] == 0)
+        if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x + man.player.dir.x * move_speed)])
             man.player.pos.x += man.player.dir.x * move_speed;
-        if (world_map[(int)man.player.pos.x][(int)(man.player.pos.y + man.player.dir.y * move_speed)] == 0)
+        if (!world_map[(int)(man.player.pos.y + man.player.dir.y * move_speed)][(int)man.player.pos.x])
             man.player.pos.y += man.player.dir.y * move_speed;
     }
     //move backwards if no wall behind you
     if (man.movement_action[2] < 0)
     {
-        if (world_map[(int)(man.player.pos.x - man.player.dir.x * move_speed)][(int)man.player.pos.y] == 0)
+        if (!world_map[(int)man.player.pos.y][(int)(man.player.pos.x - man.player.dir.x * move_speed)])
             man.player.pos.x -= man.player.dir.x * move_speed;
-        if (world_map[(int)man.player.pos.x][(int)(man.player.pos.y - man.player.dir.y * move_speed)] == 0)
+        if (!world_map[(int)(man.player.pos.y - man.player.dir.y * move_speed)][(int)man.player.pos.x])
             man.player.pos.y -= man.player.dir.y * move_speed;
     }
     t_vec2 old_dir;
@@ -252,22 +255,22 @@ static void raycasting(void)
     {
         //both camera direction and camera plane must be rotated
         old_dir.x = man.player.dir.x;
-        man.player.dir.x = man.player.dir.x * f_cos(-rot_speed) - man.player.dir.y * f_sin(-rot_speed);
-        man.player.dir.y = old_dir.x * f_sin(-rot_speed) + man.player.dir.y * f_cos(-rot_speed);
+        man.player.dir.x = man.player.dir.x * f_cos(rot_speed) - man.player.dir.y * f_sin(rot_speed);
+        man.player.dir.y = old_dir.x * f_sin(rot_speed) + man.player.dir.y * f_cos(rot_speed);
         old_plane.x = man.player.plane.x;
-        man.player.plane.x = man.player.plane.x * f_cos(-rot_speed) - man.player.plane.y * f_sin(-rot_speed);
-        man.player.plane.y = old_plane.x * f_sin(-rot_speed) + man.player.plane.y * f_cos(-rot_speed);
+        man.player.plane.x = man.player.plane.x * f_cos(rot_speed) - man.player.plane.y * f_sin(rot_speed);
+        man.player.plane.y = old_plane.x * f_sin(rot_speed) + man.player.plane.y * f_cos(rot_speed);
     }
     //rotate to the left
     if (man.rotation_action < 0)
     {
         //both camera direction and camera plane must be rotated
         old_dir.x = man.player.dir.x;
-        man.player.dir.x = man.player.dir.x * f_cos(rot_speed) - man.player.dir.y * f_sin(rot_speed);
-        man.player.dir.y = old_dir.x * f_sin(rot_speed) + man.player.dir.y * f_cos(rot_speed);
+        man.player.dir.x = man.player.dir.x * f_cos(-rot_speed) - man.player.dir.y * f_sin(-rot_speed);
+        man.player.dir.y = old_dir.x * f_sin(-rot_speed) + man.player.dir.y * f_cos(-rot_speed);
         old_plane.x = man.player.plane.x;
-        man.player.plane.x = man.player.plane.x * f_cos(rot_speed) - man.player.plane.y * f_sin(rot_speed);
-        man.player.plane.y = old_plane.x * f_sin(rot_speed) + man.player.plane.y * f_cos(rot_speed);
+        man.player.plane.x = man.player.plane.x * f_cos(-rot_speed) - man.player.plane.y * f_sin(-rot_speed);
+        man.player.plane.y = old_plane.x * f_sin(-rot_speed) + man.player.plane.y * f_cos(-rot_speed);
     }
     return;
 }

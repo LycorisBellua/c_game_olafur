@@ -7,6 +7,11 @@ void reset_player_transform(t_map* m)
 {
     man.player.pos.x = m->start_pos.x;
     man.player.pos.y = m->start_pos.y;
+    man.player.dir.x = 1;
+    man.player.dir.y = 0;
+    man.player.plane.x = 0;
+    man.player.plane.y = f_tan(deg2rad(FOV) / 2.0);
+
     man.player.angle = m->start_angle;
     man.player.delta.x = f_cos(man.player.angle) * 5;
     man.player.delta.y = f_sin(man.player.angle) * 5;

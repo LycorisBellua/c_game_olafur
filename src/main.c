@@ -21,16 +21,8 @@ int main(void)
     glfwSetScrollCallback(window, scroll_callback);
 
     reset_player_transform(man.map);
-
-    //x and y start position
-    man.player.pos.x = 4; //22;
-    man.player.pos.y = 4; //12;
-    //initial direction vector
-    man.player.dir.x = -1;
-    man.player.dir.y = 0;
-    //the 2d raycaster version of camera plane
-    man.player.plane.x = 0;
-    man.player.plane.y = f_tan(deg2rad(FOV) / 2.0);
+    man.player.pos.x = 4;
+    man.player.pos.y = 4;
 
     while (!glfwWindowShouldClose(window))
     {
