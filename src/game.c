@@ -2,22 +2,11 @@
 
 static void draw_gradient(t_tex* t);
 static void raycasting(void);
-static double get_dist_h(double ray_angle);
-static double get_dist_v(double ray_angle);
-static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* color);
-static void draw_wall(t_tex* t, int ray_index, double dist, t_color color);
-
-static void draw_map(void);
-static void draw_player(void);
 
 void draw_game(void)
 {
     draw_gradient(man.tex[man.curr_tex]);
     raycasting();
-    /*
-    draw_map();
-    draw_player();
-    */
     return;
 }
 
@@ -52,260 +41,233 @@ static void draw_gradient(t_tex* t)
     }
 }
 
-/* TODO: Temporary */
-static void draw_map(void)
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 360
+/*
+#define MAP_WIDTH 24
+#define MAP_HEIGHT 24
+
+int world_map[MAP_WIDTH][MAP_HEIGHT] =
 {
-    t_ivec2 i;
-    t_ivec2 size;
-    t_vert vert;
+    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+*/
 
-    i.y = 0;
-    while (i.y < man.map->size.y)
-    {
-        i.x = 0;
-        while (i.x < man.map->size.x)
-        {
-            if (man.map->data[i.y * man.map->size.x + i.x] == 1)
-                vert.color = get_color_rgba(0xFF, 0xFF, 0xFF, 0xFF);
-            else
-                vert.color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
-            size.x = MAP_CELL_LEN;
-            size.y = MAP_CELL_LEN;
-            vert.coord.x = i.x * size.x;
-            vert.coord.y = i.y * size.y;
-            --size.x;
-            --size.y;
-            draw_rectangle_full(man.tex[man.curr_tex], vert, size);
-            ++i.x;
-        }
-        ++i.y;
-    }
-    return;
-}
-
-/* TODO: Temporary */
-static void draw_player(void)
+#define MAP_WIDTH 8
+#define MAP_HEIGHT 8
+int world_map[MAP_WIDTH][MAP_HEIGHT] =
 {
-    t_ivec2 size;
-    t_vert vert1;
-    t_vert vert2;
-
-    vert1.color = get_color_rgba(0x00, 0xFF, 0xFF, 0xFF);
-    vert1.coord.x = man.player.pos.x;
-    vert1.coord.y = man.player.pos.y;
-    vert2.color = get_color_rgba(0xFF, 0x00, 0x00, 0xFF);
-    vert2.coord.x = vert1.coord.x + man.player.delta.x * 5;
-    vert2.coord.y = vert1.coord.y + man.player.delta.y * 5;
-    draw_line(man.tex[man.curr_tex], vert1, vert2);
-    size.x = 8;
-    size.y = 8;
-    vert1.coord.x -= size.x / 2;
-    vert1.coord.y -= size.y / 2;
-    draw_rectangle_full(man.tex[man.curr_tex], vert1, size);
-    vert1.color = get_color_rgba(0x00, 0x00, 0x00, 0xFF);
-    draw_rectangle(man.tex[man.curr_tex], vert1, size);
-    return;
-}
+    {1, 1, 1, 1, 1, 1, 1, 1},
+    {1, 0, 1, 0, 0, 0, 0, 1},
+    {1, 0, 1, 0, 0, 0, 0, 1},
+    {1, 0, 1, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 0, 1, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 1},
+    {1, 1, 1, 1, 1, 1, 1, 1}
+};
 
 static void raycasting(void)
 {
-    int screen_width;
-    double fov;
-    double ray_angle;
-    double angle_increment;
-    int ray_index;
-    double dist;
-    t_color color;
+    for (int x = 0; x < SCREEN_WIDTH; ++x)
+    {
+        //calculate ray position and direction
+        double camera_x = 2 * x / (double)SCREEN_WIDTH - 1; //x-coordinate in camera space
+        t_vec2 ray_dir;
+        ray_dir.x = man.player.dir.x + man.player.plane.x * camera_x;
+        ray_dir.y = man.player.dir.y + man.player.plane.y * camera_x;
+        //which box of the map we're in
+        t_ivec2 map;
+        map.x = (int)man.player.pos.x;
+        map.y = (int)man.player.pos.y;
 
-    screen_width = man.tex[man.curr_tex]->size.x;
-    fov = RAD_60;
-    ray_angle = clamp_rad(man.player.angle - fov / 2);
-    angle_increment = fov / screen_width;
-    ray_index = 0;
-    while (ray_index < screen_width)
-    {
-        dist = get_dist(get_dist_h(ray_angle), get_dist_v(ray_angle), ray_angle, &color);
-        if (dist > 0)
-            draw_wall(man.tex[man.curr_tex], ray_index, dist, color);
-        ray_angle = clamp_rad(ray_angle + angle_increment);
-        ++ray_index;
-    }
-    return;
-}
+        //length of ray from current position to next x or y-side
+        t_vec2 side_dist;
 
-static double get_dist_h(double ray_angle)
-{
-    double dist_h;
-    int depth_of_field;
-    t_vec2 h;
-    double atan;
-    t_vec2 ray;
-    t_vec2 offset;
-    t_ivec2 map;
+        //length of ray from one x or y-side to next x or y-side
+        //these are derived as:
+        //delta_dist.x = sqrt(1 + (ray_dir.y * ray_dir.y) / (ray_dir.x * ray_dir.x))
+        //delta_dist.y = sqrt(1 + (ray_dir.x * ray_dir.x) / (ray_dir.y * ray_dir.y))
+        //which can be simplified to abs(|ray_dir| / ray_dir.x) and abs(|ray_dir| / ray_dir.y)
+        //where |ray_dir| is the length of the vector (ray_dir.x, ray_dir.y). Its length,
+        //unlike (man.player.dir.x, man.player.dir.y) is not 1, however this does not matter, only the
+        //ratio between delta_dist.x and delta_dist.y matters, due to the way the DDA
+        //stepping further below works. So the values can be computed as below.
+        // Division through zero is prevented, even though technically that's not
+        // needed in C++ with IEEE 754 floating point values.
+        t_vec2 delta_dist;
+        delta_dist.x = (ray_dir.x == 0) ? 1e30 : f_abs(1 / ray_dir.x);
+        delta_dist.y = (ray_dir.y == 0) ? 1e30 : f_abs(1 / ray_dir.y);
 
-    dist_h = -1;
-    depth_of_field = 0;
-    h.x = man.player.pos.x;
-    h.y = man.player.pos.y;
-    atan = -1 / f_tan(ray_angle);
-    /* Looking up */
-    if (ray_angle > PI)
-    {
-        /* Round to the nearest 64th value */
-        ray.y = (((int)man.player.pos.y >> 6) << 6) - 0.0001;
-        ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
-        offset.y = -MAP_CELL_LEN;
-        offset.x = -offset.y * atan;
-    }
-    /* Looking down */
-    else if (ray_angle < PI)
-    {
-        /* Round to the nearest 64th value */
-        ray.y = (((int)man.player.pos.y >> 6) << 6) + MAP_CELL_LEN;
-        ray.x = (man.player.pos.y - ray.y) * atan + man.player.pos.x;
-        offset.y = MAP_CELL_LEN;
-        offset.x = -offset.y * atan;
-    }
-    /* Looking straight left or right */
-    else if (ray_angle == 0 || ray_angle == PI)
-    {
-        ray.x = man.player.pos.x;
-        ray.y = man.player.pos.y;
-        depth_of_field = 8;
-    }
-    while (depth_of_field < 8)
-    {
-        map.x = (int)(ray.x) >> 6;
-        map.y = (int)(ray.y) >> 6;
-        if (map.x < 0 || map.y < 0 || map.x >= man.map->size.x || map.y >= man.map->size.y)
-            break;
-        if (man.map->data[map.y * man.map->size.x + map.x] == 1)
+        double perp_wall_dist;
+
+        //what direction to step in x or y-direction (either +1 or -1)
+        t_ivec2 step;
+
+        int hit = 0; //was there a wall hit?
+        int side; //was a NS or a EW wall hit?
+                  //calculate step and initial sideDist
+        if (ray_dir.x < 0)
         {
-            h.x = ray.x;
-            h.y = ray.y;
-            dist_h = get_distance(man.player.pos, h);
-            depth_of_field = 8;
-            if (dist_h / MAP_CELL_LEN > depth_of_field)
-                dist_h = -1;
-            break;
+            step.x = -1;
+            side_dist.x = (man.player.pos.x - map.x) * delta_dist.x;
         }
         else
         {
-            ray.x += offset.x;
-            ray.y += offset.y;
-            depth_of_field += 1;
+            step.x = 1;
+            side_dist.x = (map.x + 1.0 - man.player.pos.x) * delta_dist.x;
         }
-    }
-    return dist_h;
-}
-
-static double get_dist_v(double ray_angle)
-{
-    double dist_v;
-    int depth_of_field;
-    t_vec2 v;
-    double ntan;
-    t_vec2 ray;
-    t_vec2 offset;
-    t_ivec2 map;
-
-    dist_v = -1;
-    depth_of_field = 0;
-    v.x = man.player.pos.x;
-    v.y = man.player.pos.y;
-    ntan = -f_tan(ray_angle);
-    /* Looking left */
-    if (ray_angle > RAD_90 && ray_angle < RAD_270)
-    {
-        /* Round to the nearest 64th value */
-        ray.x = (((int)man.player.pos.x >> 6) << 6) - 0.0001;
-        ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
-        offset.x = -MAP_CELL_LEN;
-        offset.y = -offset.x * ntan;
-    }
-    /* Looking right */
-    else if (ray_angle < RAD_90 || ray_angle > RAD_270)
-    {
-        /* Round to the nearest 64th value */
-        ray.x = (((int)man.player.pos.x >> 6) << 6) + MAP_CELL_LEN;
-        ray.y = (man.player.pos.x - ray.x) * ntan + man.player.pos.y;
-        offset.x = MAP_CELL_LEN;
-        offset.y = -offset.x * ntan;
-    }
-    /* Looking straight up or down */
-    else if (ray_angle == 0 || ray_angle == PI)
-    {
-        ray.x = man.player.pos.x;
-        ray.y = man.player.pos.y;
-        depth_of_field = 8;
-    }
-    while (depth_of_field < 8)
-    {
-        map.x = (int)(ray.x) >> 6;
-        map.y = (int)(ray.y) >> 6;
-        if (map.x < 0 || map.y < 0 || map.x >= man.map->size.x || map.y >= man.map->size.y)
-            break;
-        if (man.map->data[map.y * man.map->size.x + map.x] == 1)
+        if (ray_dir.y < 0)
         {
-            v.x = ray.x;
-            v.y = ray.y;
-            dist_v = get_distance(man.player.pos, v);
-            depth_of_field = 8;
-            if (dist_v / MAP_CELL_LEN > depth_of_field)
-                dist_v = -1;
+            step.y = -1;
+            side_dist.y = (man.player.pos.y - map.y) * delta_dist.y;
         }
         else
         {
-            ray.x += offset.x;
-            ray.y += offset.y;
-            depth_of_field += 1;
+            step.y = 1;
+            side_dist.y = (map.y + 1.0 - man.player.pos.y) * delta_dist.y;
         }
+        //perform DDA
+        while (hit == 0)
+        {
+            //jump to next map square, either in x-direction, or in y-direction
+            if (side_dist.x < side_dist.y)
+            {
+                side_dist.x += delta_dist.x;
+                map.x += step.x;
+                side = 0;
+            }
+            else
+            {
+                side_dist.y += delta_dist.y;
+                map.y += step.y;
+                side = 1;
+            }
+            //Check if ray has hit a wall
+            if (world_map[map.x][map.y] > 0)
+                hit = 1;
+        }
+        //Calculate distance projected on camera direction. This is the shortest distance from the point where the wall is
+        //hit to the camera plane. Euclidean to center camera point would give fisheye effect!
+        //This can be computed as (map.x - man.player.pos.x + (1 - step.x) / 2) / ray_dir.x for side == 0, or same formula with Y
+        //for size == 1, but can be simplified to the code below thanks to how side_dist and delta_dist are computed:
+        //because they were left scaled to |ray_dir|. side_dist is the entire length of the ray above after the multiple
+        //steps, but we subtract delta_dist once because one step more into the wall was taken above.
+        if (side == 0)
+            perp_wall_dist = (side_dist.x - delta_dist.x);
+        else
+            perp_wall_dist = (side_dist.y - delta_dist.y);
+
+        //Calculate height of line to draw on screen
+        int line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+
+        //calculate lowest and highest pixel to fill in current stripe
+        int draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+        if (draw_start < 0)
+            draw_start = 0;
+        int draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+        if (draw_end >= SCREEN_HEIGHT)
+            draw_end = SCREEN_HEIGHT - 1;
+
+        //choose wall color
+        t_color color;
+        switch (world_map[map.x][map.y])
+        {
+            case 1:  color = get_color_rgba(255,   0,   0, 255); break; //red
+            case 2:  color = get_color_rgba(  0, 255,   0, 255); break; //green
+            case 3:  color = get_color_rgba(  0,   0, 255, 255); break; //blue
+            case 4:  color = get_color_rgba(255, 255, 255, 255); break; //white
+            default: color = get_color_rgba(255, 255,   0, 255); break; //yellow
+        }
+
+        //give x and y sides different brightness
+        if (side == 1)
+        {
+            color.r = color.r / 2;
+            color.g = color.g / 2;
+            color.b = color.b / 2;
+        }
+
+        //draw the pixels of the stripe as a vertical line
+        t_vert v1;
+        t_vert v2;
+        v1.coord.x = x;
+        v1.coord.y = draw_start;
+        v1.color = color;
+        v2.coord.x = x;
+        v2.coord.y = draw_end;
+        v2.color = color;
+        draw_line(man.tex[man.curr_tex], v1, v2);
     }
-    return dist_v;
-}
 
-static double get_dist(double dist_h, double dist_v, double ray_angle, t_color* color)
-{
-    double dist;
-    double center_angle;
+    //speed modifiers:
+    //the constant value is in squares/second
+    double move_speed = man.delta_time * 3.0;
+    //the constant value is in radians/second
+    double rot_speed = man.delta_time * RAD_45;
 
-    /* Get shortest dist */
-    if (dist_v < 0 || (dist_h > 0 && dist_h < dist_v))
+    //move forward if no wall in front of you
+    if (man.movement_action[2] > 0)
     {
-        dist = dist_h;
-        *color = get_color_rgba(74, 42, 77, 255);
+        if (world_map[(int)(man.player.pos.x + man.player.dir.x * move_speed)][(int)man.player.pos.y] == 0)
+            man.player.pos.x += man.player.dir.x * move_speed;
+        if (world_map[(int)man.player.pos.x][(int)(man.player.pos.y + man.player.dir.y * move_speed)] == 0)
+            man.player.pos.y += man.player.dir.y * move_speed;
     }
-    else
+    //move backwards if no wall behind you
+    if (man.movement_action[2] < 0)
     {
-        dist = dist_v;
-        *color = get_color_rgba(84, 43, 88, 255);
+        if (world_map[(int)(man.player.pos.x - man.player.dir.x * move_speed)][(int)man.player.pos.y] == 0)
+            man.player.pos.x -= man.player.dir.x * move_speed;
+        if (world_map[(int)man.player.pos.x][(int)(man.player.pos.y - man.player.dir.y * move_speed)] == 0)
+            man.player.pos.y -= man.player.dir.y * move_speed;
     }
-    /* Fix fisheye effect */
-    if (dist > 0)
+    t_vec2 old_dir;
+    t_vec2 old_plane;
+    //rotate to the right
+    if (man.rotation_action > 0)
     {
-        center_angle = clamp_rad(man.player.angle - ray_angle);
-        dist *= f_cos(center_angle);
+        //both camera direction and camera plane must be rotated
+        old_dir.x = man.player.dir.x;
+        man.player.dir.x = man.player.dir.x * f_cos(-rot_speed) - man.player.dir.y * f_sin(-rot_speed);
+        man.player.dir.y = old_dir.x * f_sin(-rot_speed) + man.player.dir.y * f_cos(-rot_speed);
+        old_plane.x = man.player.plane.x;
+        man.player.plane.x = man.player.plane.x * f_cos(-rot_speed) - man.player.plane.y * f_sin(-rot_speed);
+        man.player.plane.y = old_plane.x * f_sin(-rot_speed) + man.player.plane.y * f_cos(-rot_speed);
     }
-    return (dist);
-}
-
-static void draw_wall(t_tex* t, int ray_index, double dist, t_color color)
-{
-    t_vert v1;
-    t_vert v2;
-    double line_height;
-    double line_offset;
-
-    line_height = MAP_CELL_LEN * man.tex[man.curr_tex]->size.x / dist;
-    if (line_height > man.tex[man.curr_tex]->size.x)
-        line_height = man.tex[man.curr_tex]->size.x;
-    line_offset = (t->size.y - line_height) / 2;
-    v1.color = color;
-    v2.color = color;
-    v1.coord.x = ray_index;
-    v1.coord.y = line_offset;
-    v2.coord.x = ray_index;
-    v2.coord.y = line_height + line_offset;
-    draw_line(t, v1, v2);
+    //rotate to the left
+    if (man.rotation_action < 0)
+    {
+        //both camera direction and camera plane must be rotated
+        old_dir.x = man.player.dir.x;
+        man.player.dir.x = man.player.dir.x * f_cos(rot_speed) - man.player.dir.y * f_sin(rot_speed);
+        man.player.dir.y = old_dir.x * f_sin(rot_speed) + man.player.dir.y * f_cos(rot_speed);
+        old_plane.x = man.player.plane.x;
+        man.player.plane.x = man.player.plane.x * f_cos(rot_speed) - man.player.plane.y * f_sin(rot_speed);
+        man.player.plane.y = old_plane.x * f_sin(rot_speed) + man.player.plane.y * f_cos(rot_speed);
+    }
     return;
 }

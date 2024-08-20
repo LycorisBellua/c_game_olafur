@@ -10,6 +10,7 @@
 #include "gl_functions.h"
 #include "math.h"
 
+#define FOV 60
 #define MAP_CELL_LEN 64
 #define MAX_CELL_AMOUNT 8
 #define NBR_TEXTURES 3
@@ -57,6 +58,9 @@ typedef struct s_map
 typedef struct s_player
 {
     t_vec2 pos;
+    t_vec2 dir;
+    t_vec2 plane;
+
     t_vec2 delta;
     double angle;
     int map_index;
