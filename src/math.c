@@ -1,8 +1,7 @@
 #include "cimmerian.h"
 
 static double is_close_to_zero(double n);
-static double factorial(int n);
-static double power(double base, int exponent);
+double factorial(int n);
 
 int abs(int n)
 {
@@ -25,7 +24,7 @@ int min(int a, int b)
     return b;
 }
 
-int f_min(double a, double b)
+double f_min(double a, double b)
 {
     if (a < b)
         return a;
@@ -39,11 +38,28 @@ int max(int a, int b)
     return b;
 }
 
-int f_max(double a, double b)
+double f_max(double a, double b)
 {
     if (a > b)
         return a;
     return b;
+}
+
+double f_floor(double n)
+{
+    return (int)n;
+}
+
+double f_ceil(double n)
+{
+    return (int)n + 1;
+}
+
+double f_round(double n)
+{
+    if (n - (int)n < 0.5)
+        return f_floor(n);
+    return f_ceil(n);
 }
 
 int normalize(int n)
@@ -78,6 +94,15 @@ int clamp_max(int n, int max)
     return n;
 }
 
+double clamp_rad(double rad)
+{
+    if (rad < 0)
+        return rad + RAD_360;
+    else if (rad > RAD_360)
+        return rad - RAD_360;
+    return rad;
+}
+
 double deg2rad(double deg)
 {
     return deg * PI_OVER_180;
@@ -100,7 +125,7 @@ double f_sin(double rad)
     {
         fact = factorial(2 * n + 1);
         if (!is_close_to_zero(fact))
-            result += power(-1, n) * power(rad, 2 * n + 1) / fact;
+            result += f_pow(-1, n) * f_pow(rad, 2 * n + 1) / fact;
         ++n;
     }
     return result;
@@ -118,7 +143,7 @@ double f_cos(double rad)
     {
         fact = factorial(2 * n);
         if (!is_close_to_zero(fact))
-            result += power(-1, n) * power(rad, 2 * n) / fact;
+            result += f_pow(-1, n) * f_pow(rad, 2 * n) / fact;
         ++n;
     }
     return result;
@@ -132,6 +157,28 @@ double f_tan(double rad)
     if (is_close_to_zero(cos))
         return 0.0;
     return f_sin(rad) / cos;
+}
+
+double f_pow(double base, int exponent)
+{
+    int i;
+    double result;
+
+    i = 0;
+    result = 1.0;
+    while (i < exponent)
+    {
+        result *= base;
+        ++i;
+    }
+    return result;
+}
+
+double factorial(int n)
+{
+    if (n < 2)
+        return 1.0;
+    return n * factorial(n - 1);
 }
 
 double f_sqrt(double n)
@@ -189,19 +236,10 @@ int double_equality(double a, double b)
     a -= (int)a;
     b -= (int)b;
 
-    /* Check up to 7 digits after the doubleing point */
-    a *= power(10, 7);
-    b *= power(10, 7);
+    /* Check up to 7 digits after the floating point */
+    a *= f_pow(10, 7);
+    b *= f_pow(10, 7);
     return (int)a == (int)b;
-}
-
-double clamp_rad(double rad)
-{
-    if (rad < 0)
-        return rad + RAD_360;
-    else if (rad > RAD_360)
-        return rad - RAD_360;
-    return rad;
 }
 
 /* 32-bit Xorshift pseudo-RNG */
@@ -222,26 +260,4 @@ int	rng_minmax(int *seed, int min, int max)
 static double is_close_to_zero(double n)
 {
     return f_abs(n) < 1e-15;
-}
-
-static double factorial(int n)
-{
-    if (n < 2)
-        return 1.0;
-    return n * factorial(n - 1);
-}
-
-static double power(double base, int exponent)
-{
-    int i;
-    double result;
-
-    i = 0;
-    result = 1.0;
-    while (i < exponent)
-    {
-        result *= base;
-        ++i;
-    }
-    return result;
 }

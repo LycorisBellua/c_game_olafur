@@ -24,22 +24,27 @@
 int    abs(int n);
 double f_abs(double n);
 int    min(int a, int b);
-int    f_min(double a, double b);
+double f_min(double a, double b);
 int    max(int a, int b);
-int    f_max(double a, double b);
+double f_max(double a, double b);
+double f_floor(double n);
+double f_ceil(double n);
+double f_round(double n);
 int    normalize(int n);
 int    clamp(int n, int min, int max);
 int    clamp_min(int n, int min);
 int    clamp_max(int n, int max);
+double clamp_rad(double rad);
 double deg2rad(double deg);
 double rad2deg(double rad);
 double f_sin(double rad);
 double f_cos(double rad);
 double f_tan(double rad);
+double f_pow(double base, int exponent);
+double factorial(int n);
 double f_sqrt(double n);
 void   swap(int* a, int* b);
 int    double_equality(double a, double b);
-double clamp_rad(double rad);
 int	   rng_minmax(int *seed, int min, int max);
 
 #endif

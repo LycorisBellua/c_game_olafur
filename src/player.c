@@ -29,24 +29,26 @@ static void update_position(void)
     t_vec2 pos;
     t_vec2 dir;
 
+    speed = 2.0 * man.delta_time;
+    radius = 0.25;
     pos = man.player.pos;
     dir = man.player.dir;
     /* Move along the forward axis */
-    speed = man.movement_action[2] * 2.0 * man.delta_time;
-    radius = man.movement_action[2] * 0.2;
-    if (!map[(int)(pos.y)][(int)(pos.x + (dir.x * speed) + (dir.x * radius))])
-        pos.x += dir.x * speed;
-    if (!map[(int)(pos.y + (dir.y * speed) + (dir.y * radius))][(int)pos.x])
-        pos.y += dir.y * speed;
+    pos.x += man.movement_action[2] * dir.x * speed;
+    pos.y += man.movement_action[2] * dir.y * speed;
     /* Move along the lateral axis */
-    speed = man.movement_action[0] * 2.0 * man.delta_time;
-    radius = man.movement_action[0] * 0.2;
-    if (!map[(int)(pos.y)][(int)(pos.x + (-dir.y * speed) + (-dir.y * radius))])
-        pos.x += -dir.y * speed;
-    if (!map[(int)(pos.y + (dir.x * speed) + (dir.x * radius))][(int)pos.x])
-        pos.y += dir.x * speed;
+    pos.x += man.movement_action[0] * -dir.y * speed;
+    pos.y += man.movement_action[0] * dir.x * speed;
+    /* Adjust position on collision */
+    if (map[(int)(pos.y)][(int)(pos.x + radius)])
+        pos.x = f_floor(pos.x + radius) - radius;
+    if (map[(int)(pos.y)][(int)(pos.x - radius)])
+        pos.x = f_ceil(pos.x - radius) + radius;
+    if (map[(int)(pos.y + radius)][(int)(pos.x)])
+        pos.y = f_floor(pos.y + radius) - radius;
+    if (map[(int)(pos.y - radius)][(int)(pos.x)])
+        pos.y = f_ceil(pos.y - radius) + radius;
     man.player.pos = pos;
-    return;
 }
 
 /* Speed is in radian per second */
