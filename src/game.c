@@ -118,13 +118,9 @@ static void raycasting(void)
         delta_dist.x = (ray_dir.x == 0) ? 1e30 : f_abs(1 / ray_dir.x);
         delta_dist.y = (ray_dir.y == 0) ? 1e30 : f_abs(1 / ray_dir.y);
 
-        //what direction to step in x or y-direction (either +1 or -1)
         t_ivec2 step;
-        //was there a wall hit?
         int hit = 0;
-        //was a NS or a EW wall hit?
         int side;
-        //calculate step and initial side_dist
         if (ray_dir.x < 0)
         {
             step.x = -1;
@@ -145,7 +141,6 @@ static void raycasting(void)
             step.y = 1;
             side_dist.y = (map_index.y + 1.0 - man.player.pos.y) * delta_dist.y;
         }
-        //perform DDA
         while (!hit)
         {
             if (side_dist.x < side_dist.y)
@@ -163,17 +158,13 @@ static void raycasting(void)
             if (map[map_index.y][map_index.x] > 0)
                 hit = 1;
         }
-        //calculate distance projected on camera direction
         double perp_wall_dist;
         if (side == 0)
             perp_wall_dist = (side_dist.x - delta_dist.x);
         else
             perp_wall_dist = (side_dist.y - delta_dist.y);
 
-        //calculate height of line to draw on screen
         int line_height = (int)(t->size.y / perp_wall_dist * man.res.h_mod);
-
-        //calculate lowest and highest pixel to fill in current stripe
         t_vert v1;
         t_vert v2;
         v1.coord.x = x;
@@ -185,7 +176,6 @@ static void raycasting(void)
         if (v2.coord.y >= t->size.y)
             v2.coord.y = t->size.y - 1;
 
-        //choose wall color
         t_color color;
         if (side == 0 && ray_dir.x > 0) // WEST
             color = get_color_rgba( 93,  42,  98, 255); //purple
