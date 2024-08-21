@@ -1,20 +1,18 @@
 #include "cimmerian.h"
 
-static void draw_gradient(t_tex* t);
+static void draw_ceiling_gradient(t_tex* t);
+static void draw_floor_gradient(t_tex* t);
 static void raycasting(void);
 
 void draw_game(void)
 {
-    draw_gradient(man.tex[man.curr_tex]);
+    draw_ceiling_gradient(man.tex[man.curr_tex]);
+    draw_floor_gradient(man.tex[man.curr_tex]);
     raycasting();
     return;
 }
 
-/*
-    Horizontal gradient from a dark blue/purple color at the top to a dark 
-    greyish brown at the bottom
-*/
-static void draw_gradient(t_tex* t)
+static void draw_ceiling_gradient(t_tex* t)
 {
     t_vert v;
     t_color top;
@@ -22,8 +20,36 @@ static void draw_gradient(t_tex* t)
     float factor;
 
     top = get_color_rgba(64, 0, 64, 255);
-    bottom = get_color_rgba(58, 38, 42, 255);
+    bottom = get_color_rgba(0, 0, 0, 255);
     v.coord.y = 0;
+    while (v.coord.y < t->size.y / 2)
+    {
+        v.coord.x = 0;
+        while (v.coord.x < t->size.x)
+        {
+            factor = (float)v.coord.y / (t->size.y / 2 - 1);
+            v.color.r = top.r + factor * (bottom.r - top.r);
+            v.color.g = top.g + factor * (bottom.g - top.g);
+            v.color.b = top.b + factor * (bottom.b - top.b);
+            v.color.a = 255;
+            draw_point(t, v.color, v.coord.x, v.coord.y);
+            ++v.coord.x;
+        }
+        ++v.coord.y;
+    }
+    return;
+}
+
+static void draw_floor_gradient(t_tex* t)
+{
+    t_vert v;
+    t_color top;
+    t_color bottom;
+    float factor;
+
+    top = get_color_rgba(0, 0, 0, 255);
+    bottom = get_color_rgba(42, 30, 30, 255);
+    v.coord.y = t->size.y / 2;
     while (v.coord.y < t->size.y)
     {
         v.coord.x = 0;
@@ -39,6 +65,7 @@ static void draw_gradient(t_tex* t)
         }
         ++v.coord.y;
     }
+    return;
 }
 
 int map[MAP_HEIGHT][MAP_WIDTH] =
