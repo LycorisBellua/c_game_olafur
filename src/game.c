@@ -41,9 +41,6 @@ static void draw_gradient(t_tex* t)
     }
 }
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 360
-
 int map[MAP_HEIGHT][MAP_WIDTH] =
 {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -100,11 +97,14 @@ man.player.pos.y = 4;
 
 static void raycasting(void)
 {
-    for (int x = 0; x < SCREEN_WIDTH; ++x)
+    t_tex *t;
+    int x;
+
+    t = man.tex[man.curr_tex];
+
+    for (x = 0; x < t->size.x; ++x)
     {
-        //calculate ray position and direction
-        //camera_x is x-coordinate in camera space
-        double camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+        double camera_x = 2 * x / (double)t->size.x - 1;
         t_vec2 ray_dir;
         ray_dir.x = man.player.dir.x + man.player.plane.x * camera_x;
         ray_dir.y = man.player.dir.y + man.player.plane.y * camera_x;
@@ -112,30 +112,14 @@ static void raycasting(void)
         map_index.x = (int)man.player.pos.x;
         map_index.y = (int)man.player.pos.y;
 
-        //length of ray from current position to next x or y-side
         t_vec2 side_dist;
 
-        //length of ray from one x or y-side to next x or y-side
         t_vec2 delta_dist;
         delta_dist.x = (ray_dir.x == 0) ? 1e30 : f_abs(1 / ray_dir.x);
         delta_dist.y = (ray_dir.y == 0) ? 1e30 : f_abs(1 / ray_dir.y);
-        /*
-            These are derived as:
-                delta_dist.x = sqrt(1 + pow(ray_dir.y, 2) / pow(ray_dir.x, 2))
-                delta_dist.y = sqrt(1 + pow(ray_dir.x, 2) / pow(ray_dir.y, 2))
-            which can be simplified to:
-                abs(|ray_dir| / ray_dir.x)
-                abs(|ray_dir| / ray_dir.y)
-            where |ray_dir| is the length of the vector (ray_dir.x, ray_dir.y).
-            Its length, unlike (dir.x, dir.y) is not 1, however this does not 
-            matter, only the ratio between delta_dist.x and delta_dist.y 
-            matters, due to the way the DDA stepping further below works. So 
-            the values can be computed as below. Division by zero is prevented.
-        */
 
         //what direction to step in x or y-direction (either +1 or -1)
         t_ivec2 step;
-
         //was there a wall hit?
         int hit = 0;
         //was a NS or a EW wall hit?
@@ -162,9 +146,8 @@ static void raycasting(void)
             side_dist.y = (map_index.y + 1.0 - man.player.pos.y) * delta_dist.y;
         }
         //perform DDA
-        while (hit == 0)
+        while (!hit)
         {
-            //jump to next map square, either in x-direction, or in y-direction
             if (side_dist.x < side_dist.y)
             {
                 side_dist.x += delta_dist.x;
@@ -177,7 +160,6 @@ static void raycasting(void)
                 map_index.y += step.y;
                 side = 1;
             }
-            //check if ray has hit a wall
             if (map[map_index.y][map_index.x] > 0)
                 hit = 1;
         }
@@ -200,19 +182,19 @@ static void raycasting(void)
         */
 
         //calculate height of line to draw on screen
-        int line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+        int line_height = (int)(t->size.y / perp_wall_dist * man.res.h_mod);
 
         //calculate lowest and highest pixel to fill in current stripe
         t_vert v1;
         t_vert v2;
         v1.coord.x = x;
-        v1.coord.y = -line_height / 2 + SCREEN_HEIGHT / 2;
+        v1.coord.y = -line_height / 2 + t->size.y / 2;
         if (v1.coord.y < 0)
             v1.coord.y = 0;
         v2.coord.x = x;
-        v2.coord.y = line_height / 2 + SCREEN_HEIGHT / 2;
-        if (v2.coord.y >= SCREEN_HEIGHT)
-            v2.coord.y = SCREEN_HEIGHT - 1;
+        v2.coord.y = line_height / 2 + t->size.y / 2;
+        if (v2.coord.y >= t->size.y)
+            v2.coord.y = t->size.y - 1;
 
         //choose wall color
         t_color color;
@@ -235,7 +217,7 @@ static void raycasting(void)
         }
         v1.color = color;
         v2.color = color;
-        draw_line(man.tex[man.curr_tex], v1, v2);
+        draw_line(t, v1, v2);
     }
     return;
 }

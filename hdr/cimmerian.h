@@ -81,6 +81,7 @@ typedef struct s_res
 {
     t_ivec2 monitor_size;
     double aspect_ratio;
+    double h_mod;
 
     t_ivec2 window_size_default;
     t_ivec2 window_size;

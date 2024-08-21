@@ -84,6 +84,8 @@ void toggle_fullscreen(GLFWwindow* window)
 
 static void set_res(const GLFWvidmode* vid_mode)
 {
+    int closest_int;
+
     man.res.monitor_size.x = vid_mode->width;
     man.res.monitor_size.y = vid_mode->height;
     man.res.aspect_ratio = (double)man.res.monitor_size.x / man.res.monitor_size.y;
@@ -104,6 +106,12 @@ static void set_res(const GLFWvidmode* vid_mode)
     man.res.window_position.y = 0;
     man.res.fullscreen.x = (vid_mode->width - man.res.monitor_size.x) / 2;
     man.res.fullscreen.y = (vid_mode->height - man.res.monitor_size.y) / 2;
+
+    /* Height modifier for raycasting rendering */
+    closest_int = (int)man.res.aspect_ratio;
+    if (man.res.aspect_ratio - (int)man.res.aspect_ratio >= 0.5)
+        ++closest_int;
+    man.res.h_mod = man.res.aspect_ratio - (closest_int - man.res.aspect_ratio);
     return;
 }
 

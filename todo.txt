@@ -1,5 +1,3 @@
-- Have them cubes be cubes no matter the aspect ratio.
-
 - I would like to have a 1D array, for which I do map[y * width + x] to access 
 the proper cell, instead of map[y][x]. My map init function handles this kind 
 of array, so I don't want to have to malloc each line, one allocation and we 
