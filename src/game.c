@@ -169,17 +169,6 @@ static void raycasting(void)
             perp_wall_dist = (side_dist.x - delta_dist.x);
         else
             perp_wall_dist = (side_dist.y - delta_dist.y);
-        /*
-            This is the shortest distance from the point where the wall is hit 
-            to the camera plane. Euclidean to center camera point would give 
-            fisheye effect! This can be computed as (map_index.x - pos.x + 
-            (1 - step.x) / 2) / ray_dir.x for side == 0, or same formula with Y 
-            for size == 1, but can be simplified to the code below thanks to 
-            how side_dist and delta_dist are computed: because they were left 
-            scaled to |ray_dir|. side_dist is the entire length of the ray 
-            above after the multiple steps, but we subtract delta_dist once 
-            because one step more into the wall was taken above.
-        */
 
         //calculate height of line to draw on screen
         int line_height = (int)(t->size.y / perp_wall_dist * man.res.h_mod);
@@ -198,6 +187,15 @@ static void raycasting(void)
 
         //choose wall color
         t_color color;
+        if (side == 0 && ray_dir.x > 0) // WEST
+            color = get_color_rgba( 93,  42,  98, 255); //purple
+        else if (side == 0 && ray_dir.x < 0) // EAST
+            color = get_color_rgba( 78, 120,  94, 255); //green
+        else if (side == 1 && ray_dir.y > 0) // NORTH
+            color = get_color_rgba( 83, 120, 156, 255); //blue
+        else if (side == 1 && ray_dir.y < 0) // SOUTH
+            color = get_color_rgba(155, 114,  44, 255); //yellow
+        /*
         if (map[map_index.y][map_index.x] == 1)
             color = get_color_rgba( 93,  42,  98, 255); //purple
         else if (map[map_index.y][map_index.x] == 2)
@@ -208,6 +206,7 @@ static void raycasting(void)
             color = get_color_rgba(155, 114,  44, 255); //yellow
         else
             color = get_color_rgba(255, 255, 255, 255); //white
+        */
         //give x and y sides different brightness
         if (side == 1)
         {
