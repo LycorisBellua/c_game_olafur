@@ -51,7 +51,7 @@ typedef struct s_map
 {
     t_ivec2 size;
     t_vec2 start_pos;
-    double start_angle;
+    t_vec2 start_dir;
     int* data;
 } t_map;
 
@@ -105,10 +105,6 @@ typedef struct s_manager
 
 extern t_manager man;
 
-#define MAP_WIDTH 24
-#define MAP_HEIGHT 24
-extern int map[MAP_HEIGHT][MAP_WIDTH];
-
 /* Colors ------------------------------------------------------------------- */
 
 t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
@@ -146,7 +142,7 @@ t_spr* load_sprite(char* png_path);
 
 /* Game --------------------------------------------------------------------- */
 
-void draw_game(void);
+void draw_game(t_map* m);
 void reset_global_coordinates(void);
 void update_global_coordinates(void);
 
@@ -172,7 +168,7 @@ void free_mesh(void);
 /* Player ------------------------------------------------------------------- */
 
 void reset_player_transform(t_map* m);
-void update_player_transform(void);
+void update_player_transform(t_map* m);
 
 /* Shader Program ----------------------------------------------------------- */
 

@@ -5,7 +5,7 @@ t_manager man;
 static GLFWwindow* init(char* title);
 static void update_time_variables(void);
 static void clear_buffer(void);
-static void draw_into_buffer(void);
+static void draw_into_buffer(t_map* m);
 static void swap_buffer(GLFWwindow* window);
 static void deinit(void);
 
@@ -30,11 +30,11 @@ int main(void)
         /* printf("FPS: %.2f\n", fps_count); */
 
         clear_buffer();
-        draw_into_buffer();
+        draw_into_buffer(man.map);
         swap_buffer(window);
 
         glfwPollEvents();
-        update_player_transform();
+        update_player_transform(man.map);
     }
     deinit();
     return EXIT_SUCCESS;
@@ -82,9 +82,9 @@ static void clear_buffer(void)
     return;
 }
 
-static void draw_into_buffer(void)
+static void draw_into_buffer(t_map* m)
 {
-    draw_game();
+    draw_game(m);
     save_drawing(man.tex[man.curr_tex]);
     render_mesh();
     return;

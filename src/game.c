@@ -2,13 +2,13 @@
 
 static void draw_ceiling_gradient(t_tex* t);
 static void draw_floor_gradient(t_tex* t);
-static void raycasting(void);
+static void raycasting(t_map* m);
 
-void draw_game(void)
+void draw_game(t_map* m)
 {
     draw_ceiling_gradient(man.tex[man.curr_tex]);
     draw_floor_gradient(man.tex[man.curr_tex]);
-    raycasting();
+    raycasting(m);
     return;
 }
 
@@ -68,61 +68,7 @@ static void draw_floor_gradient(t_tex* t)
     return;
 }
 
-int map[MAP_HEIGHT][MAP_WIDTH] =
-{
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-/*
-#define MAP_WIDTH 24
-#define MAP_HEIGHT 24
-man.player.pos.x = 22;
-man.player.pos.y = 12;
-*/
-
-/*
-int map[MAP_HEIGHT][MAP_WIDTH] =
-{
-    {1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 1, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1}
-};
-*/
-/*
-#define MAP_WIDTH 8
-#define MAP_HEIGHT 8
-man.player.pos.x = 4;
-man.player.pos.y = 4;
-*/
-
-static void raycasting(void)
+static void raycasting(t_map* m)
 {
     t_tex *t;
     int x;
@@ -135,9 +81,9 @@ static void raycasting(void)
         t_vec2 ray_dir;
         ray_dir.x = man.player.dir.x + man.player.plane.x * camera_x;
         ray_dir.y = man.player.dir.y + man.player.plane.y * camera_x;
-        t_ivec2 map_index;
-        map_index.x = (int)man.player.pos.x;
-        map_index.y = (int)man.player.pos.y;
+        t_ivec2 m_index;
+        m_index.x = (int)man.player.pos.x;
+        m_index.y = (int)man.player.pos.y;
 
         t_vec2 side_dist;
 
@@ -151,38 +97,38 @@ static void raycasting(void)
         if (ray_dir.x < 0)
         {
             step.x = -1;
-            side_dist.x = (man.player.pos.x - map_index.x) * delta_dist.x;
+            side_dist.x = (man.player.pos.x - m_index.x) * delta_dist.x;
         }
         else
         {
             step.x = 1;
-            side_dist.x = (map_index.x + 1.0 - man.player.pos.x) * delta_dist.x;
+            side_dist.x = (m_index.x + 1.0 - man.player.pos.x) * delta_dist.x;
         }
         if (ray_dir.y < 0)
         {
             step.y = -1;
-            side_dist.y = (man.player.pos.y - map_index.y) * delta_dist.y;
+            side_dist.y = (man.player.pos.y - m_index.y) * delta_dist.y;
         }
         else
         {
             step.y = 1;
-            side_dist.y = (map_index.y + 1.0 - man.player.pos.y) * delta_dist.y;
+            side_dist.y = (m_index.y + 1.0 - man.player.pos.y) * delta_dist.y;
         }
         while (!hit)
         {
             if (side_dist.x < side_dist.y)
             {
                 side_dist.x += delta_dist.x;
-                map_index.x += step.x;
+                m_index.x += step.x;
                 side = 0;
             }
             else
             {
                 side_dist.y += delta_dist.y;
-                map_index.y += step.y;
+                m_index.y += step.y;
                 side = 1;
             }
-            if (map[map_index.y][map_index.x] > 0)
+            if (m->data[m_index.y * m->size.x + m_index.x] > 0)
                 hit = 1;
         }
         double perp_wall_dist;
@@ -213,14 +159,14 @@ static void raycasting(void)
         else if (side == 1 && ray_dir.y < 0) // SOUTH
             color = get_color_rgba(155, 114,  44, 255); //yellow
         /*
-        if (map[map_index.y][map_index.x] == 1)
-            color = get_color_rgba( 93,  42,  98, 255); //purple
-        else if (map[map_index.y][map_index.x] == 2)
-            color = get_color_rgba( 78, 120,  94, 255); //green
-        else if (map[map_index.y][map_index.x] == 3)
-            color = get_color_rgba( 83, 120, 156, 255); //blue
-        else if (map[map_index.y][map_index.x] == 4)
-            color = get_color_rgba(155, 114,  44, 255); //yellow
+        if (m->data[m_index.y * m->size.x + m_index.x] == 1)
+            color = get_color_rgba(93, 42, 98, 255); //purple
+        else if (m->data[m_index.y * m->size.x + m_index.x] == 2)
+            color = get_color_rgba(78, 120, 94, 255); //green
+        else if (m->data[m_index.y * m->size.x + m_index.x] == 3)
+            color = get_color_rgba(83, 120, 156, 255); //blue
+        else if (m->data[m_index.y * m->size.x + m_index.x] == 4)
+            color = get_color_rgba(155, 114, 44, 255); //yellow
         else
             color = get_color_rgba(255, 255, 255, 255); //white
         */

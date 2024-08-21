@@ -3,15 +3,33 @@
 #define MINIMAP_FACTOR_MIN 1
 #define MINIMAP_FACTOR_MAX 5
 
+/*
+#define MAP_SIZE_X 8
+#define MAP_SIZE_Y 8
+#define PLAYER_POS_X 4
+#define PLAYER_POS_Y 4
+*/
+/*
+#define MAP_SIZE_X 16
+#define MAP_SIZE_Y 16
+#define PLAYER_POS_X 8
+#define PLAYER_POS_Y 8
+*/
+#define MAP_SIZE_X 24
+#define MAP_SIZE_Y 24
+#define PLAYER_POS_X 22
+#define PLAYER_POS_Y 12
+
 static int minimap_factor = MINIMAP_FACTOR_MAX;
 static t_ivec2 display_offset = {0};
 
 static t_map* create_map(void);
 static void free_map(t_map** map);
+static t_vec2 get_cardinal_dir(char c);
 
-/* 1 is a wall, 0 is an empty space */
 static int map_default[] = 
 {
+    /*
     1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 1, 0, 0, 0, 0, 1,
     1, 0, 1, 0, 0, 0, 0, 1,
@@ -20,6 +38,7 @@ static int map_default[] =
     1, 0, 0, 0, 0, 1, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 1, 1, 1, 1,
+    */
 
     /*
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -39,6 +58,31 @@ static int map_default[] =
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     */
+
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1,
+    1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1,
+    1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 };
 
 void initialize_maps(void)
@@ -88,13 +132,11 @@ static t_map* create_map(void)
     map = malloc(sizeof(t_map));
     if (!map)
         return 0;
-
-    map->size.x = 8;
-    map->size.y = 8;
-    map->start_pos.x = map->size.x * MAP_CELL_LEN / 2 - 1;
-    map->start_pos.y = map->size.y * MAP_CELL_LEN / 2 - 1;
-    map->start_angle = RAD_90;
-
+    map->size.x = MAP_SIZE_X;
+    map->size.y = MAP_SIZE_Y;
+    map->start_pos.x = PLAYER_POS_X;
+    map->start_pos.y = PLAYER_POS_Y;
+    map->start_dir = get_cardinal_dir('N');
     map->data = malloc(map->size.x * map->size.y * sizeof(int));
     if (!map->data)
     {
@@ -118,6 +160,25 @@ static void free_map(t_map** map)
     /* Nullify the reference to prevent a double free */
     *map = 0;
     return;
+}
+
+static t_vec2 get_cardinal_dir(char c)
+{
+    t_vec2 dir;
+
+    dir.x = 0;
+    dir.y = 0;
+    if (c >= 'a' && c <= 'z')
+        c -= 'a' - 'A';
+    if (c == 'N')
+        dir.y = -1;
+    else if (c == 'S')
+        dir.y = 1;
+    else if (c == 'W')
+        dir.x = -1;
+    else if (c == 'E')
+        dir.x = 1;
+    return dir;
 }
 
 /*
