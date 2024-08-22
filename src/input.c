@@ -64,6 +64,7 @@ void scroll_callback
     double y_offset
 )
 {
+    update_dof(man.map, y_offset);
     set_minimap_display(y_offset);
     return;
 }

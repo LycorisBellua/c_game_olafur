@@ -52,7 +52,9 @@ typedef struct s_map
     t_ivec2 size;
     t_vec2 start_pos;
     t_vec2 start_dir;
-    t_color fog;
+    double dof;
+    double fog_width;
+    t_color fog_color;
     int* data;
 } t_map;
 
@@ -134,6 +136,14 @@ void draw_circle_full_grad(t_tex* t, t_vert center, int radius, t_color edge);
 void draw_shape(t_tex* t, t_vert arr[], int len);
 void draw_shape_full(t_tex* t, t_vert arr[], int len);
 void draw_sprite(t_tex* t, t_spr* s);
+
+/* Fog ---------------------------------------------------------------------- */
+
+void update_dof(t_map* m, double increment);
+double get_fog_width(double dof);
+void draw_floor_gradient(t_tex* t, double fog_width, t_color fog);
+void draw_ceiling_gradient(t_tex* t, double fog_width, t_color fog);
+void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof);
 
 /* Files -------------------------------------------------------------------- */
 

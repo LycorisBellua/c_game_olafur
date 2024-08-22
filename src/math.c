@@ -1,7 +1,6 @@
 #include "cimmerian.h"
 
 static double is_close_to_zero(double n);
-double factorial(int n);
 
 int abs(int n)
 {
@@ -71,7 +70,25 @@ int normalize(int n)
     return 0;
 }
 
+double f_normalize(double n)
+{
+    if (n < 0)
+        return -1;
+    else if (n > 0)
+        return 1;
+    return 0;
+}
+
 int clamp(int n, int min, int max)
+{
+    if (n < min)
+        return min;
+    else if (n > max)
+        return max;
+    return n;
+}
+
+double f_clamp(double n, double min, double max)
 {
     if (n < min)
         return min;
@@ -87,7 +104,21 @@ int clamp_min(int n, int min)
     return n;
 }
 
+double f_clamp_min(double n, double min)
+{
+    if (n < min)
+        return min;
+    return n;
+}
+
 int clamp_max(int n, int max)
+{
+    if (n > max)
+        return max;
+    return n;
+}
+
+double f_clamp_max(double n, double max)
 {
     if (n > max)
         return max;

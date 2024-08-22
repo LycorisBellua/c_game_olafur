@@ -1,7 +1,5 @@
 #include "cimmerian.h"
 
-double atan2(double y, double x);
-
 static void move_along_forward_axis(double speed);
 static void move_along_lateral_axis(double speed);
 static void adjust_position_on_collision(t_map* m, double radius);
@@ -79,6 +77,7 @@ static void rotate(double angle)
     return;
 }
 
+double atan2(double y, double x);
 static double get_angle_from_dir(t_vec2 dir)
 {
     if (dir.x != 0 || dir.y != 0)
