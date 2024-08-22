@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+double atan2(double y, double x);
+
 static void move_along_forward_axis(double speed);
 static void move_along_lateral_axis(double speed);
 static void adjust_position_on_collision(t_map* m, double radius);

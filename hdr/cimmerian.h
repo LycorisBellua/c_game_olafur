@@ -52,6 +52,7 @@ typedef struct s_map
     t_ivec2 size;
     t_vec2 start_pos;
     t_vec2 start_dir;
+    t_color fog;
     int* data;
 } t_map;
 

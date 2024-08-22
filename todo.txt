@@ -1,7 +1,6 @@
 - Textures for walls, ceiling and floor.
-- Distance fog.
 
 - Minimap.
-- Door which can open and close (opportunity to use alpha blending).
-- Animated sprite.
 - Rotate with the mouse.
+- Animated sprite.
+- Door which can open and close (opportunity to use alpha blending).

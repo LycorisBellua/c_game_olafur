@@ -1,36 +1,48 @@
 #include "cimmerian.h"
 
-static void draw_ceiling_gradient(t_tex* t);
-static void draw_floor_gradient(t_tex* t);
+static void draw_floor_gradient(t_tex* t, float fog_width, t_color fog);
+static void draw_ceiling_gradient(t_tex* t, float fog_width, t_color fog);
 static void raycasting(t_map* m);
+static void apply_fog(t_color* wall, t_color fog, double dist, double dof);
 
 void draw_game(t_map* m)
 {
-    draw_ceiling_gradient(man.tex[man.curr_tex]);
-    draw_floor_gradient(man.tex[man.curr_tex]);
+    draw_floor_gradient(man.tex[man.curr_tex], 0.2, m->fog);
+    draw_ceiling_gradient(man.tex[man.curr_tex], 0.2, m->fog);
     raycasting(m);
     return;
 }
 
-static void draw_ceiling_gradient(t_tex* t)
+static void draw_floor_gradient(t_tex* t, float fog_width, t_color fog)
 {
-    t_vert v;
-    t_color top;
-    t_color bottom;
+    int h_solid = t->size.y / 2 * fog_width;
+    int h_gradient = t->size.y / 2 - h_solid;
     float factor;
+    t_color bottom;
+    t_vert v;
 
-    top = get_color_rgba(64, 0, 64, 255);
-    bottom = get_color_rgba(0, 0, 0, 255);
-    v.coord.y = 0;
-    while (v.coord.y < t->size.y / 2)
+    bottom = get_color_rgba(42, 30, 30, 255);
+    v.color = fog;
+    v.coord.y = t->size.y / 2;
+    while (v.coord.y < t->size.y / 2 + h_solid)
     {
         v.coord.x = 0;
         while (v.coord.x < t->size.x)
         {
-            factor = (float)v.coord.y / (t->size.y / 2 - 1);
-            v.color.r = top.r + factor * (bottom.r - top.r);
-            v.color.g = top.g + factor * (bottom.g - top.g);
-            v.color.b = top.b + factor * (bottom.b - top.b);
+            draw_point(t, v.color, v.coord.x, v.coord.y);
+            ++v.coord.x;
+        }
+        ++v.coord.y;
+    }
+    while (v.coord.y < t->size.y)
+    {
+        v.coord.x = 0;
+        factor = (float)(v.coord.y - t->size.y / 2 - h_solid) / h_gradient;
+        while (v.coord.x < t->size.x)
+        {
+            v.color.r = (1 - factor) * fog.r + factor * bottom.r;
+            v.color.g = (1 - factor) * fog.g + factor * bottom.g;
+            v.color.b = (1 - factor) * fog.b + factor * bottom.b;
             v.color.a = 255;
             draw_point(t, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
@@ -40,26 +52,37 @@ static void draw_ceiling_gradient(t_tex* t)
     return;
 }
 
-static void draw_floor_gradient(t_tex* t)
+static void draw_ceiling_gradient(t_tex* t, float fog_width, t_color fog)
 {
-    t_vert v;
-    t_color top;
-    t_color bottom;
+    int h_solid = t->size.y / 2 * fog_width;
+    int h_gradient = t->size.y / 2 - h_solid;
     float factor;
+    t_color top;
+    t_vert v;
 
-    top = get_color_rgba(0, 0, 0, 255);
-    bottom = get_color_rgba(42, 30, 30, 255);
-    v.coord.y = t->size.y / 2;
-    while (v.coord.y < t->size.y)
+    top = get_color_rgba(64, 0, 64, 255);
+    v.coord.y = 0;
+    while (v.coord.y < h_gradient)
+    {
+        v.coord.x = 0;
+        factor = (float)v.coord.y / h_gradient;
+        while (v.coord.x < t->size.x)
+        {
+            v.color.r = (1 - factor) * top.r + factor * fog.r;
+            v.color.g = (1 - factor) * top.g + factor * fog.g;
+            v.color.b = (1 - factor) * top.b + factor * fog.b;
+            v.color.a = 255;
+            draw_point(t, v.color, v.coord.x, v.coord.y);
+            ++v.coord.x;
+        }
+        ++v.coord.y;
+    }
+    v.color = fog;
+    while (v.coord.y < t->size.y / 2)
     {
         v.coord.x = 0;
         while (v.coord.x < t->size.x)
         {
-            factor = (float)v.coord.y / (t->size.y - 1);
-            v.color.r = top.r + factor * (bottom.r - top.r);
-            v.color.g = top.g + factor * (bottom.g - top.g);
-            v.color.b = top.b + factor * (bottom.b - top.b);
-            v.color.a = 255;
             draw_point(t, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
         }
@@ -177,9 +200,22 @@ static void raycasting(t_map* m)
             color.g -= color.g / 5;
             color.b -= color.b / 5;
         }
+        apply_fog(&color, m->fog, perp_wall_dist, 8);
         v1.color = color;
         v2.color = color;
         draw_line(t, v1, v2);
     }
+    return;
+}
+
+static void apply_fog(t_color* wall, t_color fog, double dist, double dof)
+{
+    double factor;
+
+    factor = f_min(dist / dof, 1);
+    wall->r = wall->r + factor * (fog.r - wall->r);
+    wall->g = wall->g + factor * (fog.g - wall->g);
+    wall->b = wall->b + factor * (fog.b - wall->b);
+    wall->a = 255;
     return;
 }

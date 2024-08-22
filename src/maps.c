@@ -137,6 +137,7 @@ static t_map* create_map(void)
     map->start_pos.x = PLAYER_POS_X;
     map->start_pos.y = PLAYER_POS_Y;
     map->start_dir = get_cardinal_dir('N');
+    map->fog = get_color_rgba(0, 0, 0, 255);
     map->data = malloc(map->size.x * map->size.y * sizeof(int));
     if (!map->data)
     {
