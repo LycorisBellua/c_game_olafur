@@ -14,6 +14,7 @@ void reset_player_transform(t_map* m)
     man.player.dir.y = 0;
     man.player.plane.x = 0;
     man.player.plane.y = f_tan(deg2rad(FOV) / 2.0);
+    man.player.height = 0;
     rotate(get_angle_from_dir(m->start_dir));
     return;
 }

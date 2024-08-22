@@ -4,7 +4,6 @@ void update_dof(t_map* m, double increment)
 {
     m->dof = f_clamp(m->dof + increment, 0, 30);
     m->fog_width = get_fog_width(m->dof);
-    printf("dof = %f\n", m->dof);
     return;
 }
 

@@ -15,6 +15,17 @@ static void raycasting(t_map* m)
     t_tex *t;
     int x;
 
+    t_spr* texture[5];
+    texture[0] = load_sprite("pics/bluestone.png");
+    texture[1] = load_sprite("pics/greystone.png");
+    texture[2] = load_sprite("pics/purplestone.png");
+    texture[3] = load_sprite("pics/redbrick.png");
+    texture[4] = load_sprite("pics/mossy.png");
+    /*
+        `texture` is an array of 5 t_spr pointers.
+        Each of size 64x64.
+    */
+
     t = man.tex[man.curr_tex];
 
     for (x = 0; x < t->size.x; ++x)
@@ -83,14 +94,65 @@ static void raycasting(t_map* m)
         t_vert v1;
         t_vert v2;
         v1.coord.x = x;
-        v1.coord.y = -line_height / 2 + t->size.y / 2;
+        v1.coord.y = -line_height / 2 + t->size.y / 2 + man.player.height;
         if (v1.coord.y < 0)
             v1.coord.y = 0;
         v2.coord.x = x;
-        v2.coord.y = line_height / 2 + t->size.y / 2;
+        v2.coord.y = line_height / 2 + t->size.y / 2 + man.player.height;
         if (v2.coord.y >= t->size.y)
             v2.coord.y = t->size.y - 1;
 
+        //texturing calculations
+        int texNum;
+        
+        //1 subtracted from it so that texture 0 can be used!
+        //texNum = m->data[m_index.y * m->size.x + m_index.x] - 1;
+
+        if (side == 0 && ray_dir.x > 0) // WEST
+            texNum = 0;
+        else if (side == 0 && ray_dir.x < 0) // EAST
+            texNum = 1;
+        else if (side == 1 && ray_dir.y > 0) // NORTH
+            texNum = 2;
+        else if (side == 1 && ray_dir.y < 0) // SOUTH
+            texNum = 3;
+
+        //calculate value of wallX
+        double wallX; //where exactly the wall was hit
+        if(side == 0) wallX = man.player.pos.y + perp_wall_dist * ray_dir.y;
+        else          wallX = man.player.pos.x + perp_wall_dist * ray_dir.x;
+        wallX -= f_floor((wallX));
+
+        int texWidth = 64;
+        int texHeight = 64;
+        //x coordinate on the texture
+        int texX = (int)(wallX * (double)texWidth);
+        if(side == 0 && ray_dir.x > 0) texX = texWidth - texX - 1;
+        if(side == 1 && ray_dir.y < 0) texX = texWidth - texX - 1;
+
+        // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
+        // How much to increase the texture coordinate per screen pixel
+        double texStep = 1.0 * texHeight / line_height;
+        // Starting texture coordinate
+        double texPos = (v1.coord.y - man.player.height - t->size.y / 2 + line_height / 2) * texStep;
+        for(int y = v1.coord.y; y < v2.coord.y; y++)
+        {
+            // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+            int texY = (int)texPos & (texHeight - 1);
+            texPos += texStep;
+            t_color color = *((t_color*)texture[texNum]->buf + (texY * texHeight + texX));
+            //make color darker for y-sides:
+            if (side == 1)
+            {
+                color.r -= color.r / 2;
+                color.g -= color.g / 2;
+                color.b -= color.b / 2;
+            }
+            apply_wall_fog(&color, m->fog_color, perp_wall_dist, m->dof);
+            draw_point(t, color, x, y);
+        }
+
+        /*
         t_color color;
         if (side == 0 && ray_dir.x > 0) // WEST
             color = get_color_rgba( 93,  42,  98, 255); //purple
@@ -100,6 +162,7 @@ static void raycasting(t_map* m)
             color = get_color_rgba( 83, 120, 156, 255); //blue
         else if (side == 1 && ray_dir.y < 0) // SOUTH
             color = get_color_rgba(155, 114,  44, 255); //yellow
+        */
         /*
         if (m->data[m_index.y * m->size.x + m_index.x] == 1)
             color = get_color_rgba(93, 42, 98, 255); //purple
@@ -112,6 +175,7 @@ static void raycasting(t_map* m)
         else
             color = get_color_rgba(255, 255, 255, 255); //white
         */
+        /*
         //give x and y sides different brightness
         if (side == 1)
         {
@@ -123,6 +187,7 @@ static void raycasting(t_map* m)
         v1.color = color;
         v2.color = color;
         draw_line(t, v1, v2);
+        */
     }
     return;
 }

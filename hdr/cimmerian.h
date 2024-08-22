@@ -63,6 +63,7 @@ typedef struct s_player
     t_vec2 pos;
     t_vec2 dir;
     t_vec2 plane;
+    int height;
 } t_player;
 
 typedef struct s_tex

@@ -4,3 +4,10 @@
 - Rotate with the mouse.
 - Animated sprite.
 - Door which can open and close (opportunity to use alpha blending).
+
+- Use the height value for something: jump. It makes the walls higher or lower 
+than the middle of the screen. Use a height value of 0 for the default look of 
+the game. Have a vertical jump if no direction is pressed, otherwise go in the 
+direction in question. But be careful not to bypass collisions. Jumping can be 
+useful to avoid an enemy's attack, or to jump across toxic water, or even to 
+jump on a moving platform.
