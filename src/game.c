@@ -15,6 +15,8 @@ static void raycasting(t_map* m)
     t_tex *t;
     int x;
 
+    int texWidth = 64;
+    int texHeight = 64;
     t_spr* texture[5];
     texture[0] = load_sprite("pics/bluestone.png");
     texture[1] = load_sprite("pics/greystone.png");
@@ -123,12 +125,10 @@ static void raycasting(t_map* m)
         else          wallX = man.player.pos.x + perp_wall_dist * ray_dir.x;
         wallX -= f_floor((wallX));
 
-        int texWidth = 64;
-        int texHeight = 64;
         //x coordinate on the texture
         int texX = (int)(wallX * (double)texWidth);
-        if(side == 0 && ray_dir.x > 0) texX = texWidth - texX - 1;
-        if(side == 1 && ray_dir.y < 0) texX = texWidth - texX - 1;
+        if (side == 0 && ray_dir.x < 0) texX = texWidth - texX - 1;
+        if (side == 1 && ray_dir.y > 0) texX = texWidth - texX - 1;
 
         // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
         // How much to increase the texture coordinate per screen pixel
