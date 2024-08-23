@@ -1,12 +1,106 @@
 #include "cimmerian.h"
 
 static void raycasting(t_map* m);
+void check_door_activation(t_map* m);
 
 void draw_game(t_map* m)
 {
     draw_floor_gradient(man.tex[man.curr_tex], m->fog_width, m->fog_color);
     draw_ceiling_gradient(man.tex[man.curr_tex], m->fog_width, m->fog_color);
     raycasting(m);
+    check_door_activation(m);
+    return;
+}
+
+void check_door_activation(t_map* m)
+{
+    static t_ivec2 last_door = { -1, -1 };
+    int x = (int)man.player.pos.x;
+    int y = (int)man.player.pos.y;
+
+    /*
+        TODO:
+        Do not just use the distance from the door.
+        If the player is not exactly in the cells that would trigger the 
+        opening of the door, close it.
+        Take a look at the grey room for example. The player runs from enemies, 
+        enters the room, and hide in a corner diagonal to the door so it can 
+        close, and the enemies cannot open the door for whatever reason (plot). 
+        But currently, the door doesn't close because the player isn't far 
+        enough.
+
+        Anyway, there's also the fact that the function is way too long. Should 
+        I use the Manhattan distance?
+    */
+    if (last_door.x >= 0)
+    {
+        t_ivec2 diff;
+        diff.x = abs(x - last_door.x);
+        diff.y = abs(y - last_door.y);
+        if (diff.x > 3 || diff.y > 3)
+        {
+            m->data[last_door.y * m->size.x + last_door.x] = 5;
+            last_door.x = -1;
+            last_door.y = -1;
+        }
+    }
+
+    if (m->data[y * m->size.x + (x - 1)] == 5)
+    {
+        //printf("Door is to the left\n");
+        last_door.x = x - 1;
+        last_door.y = y;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[y * m->size.x + (x - 2)] == 5)
+    {
+        //printf("Door is to the left\n");
+        last_door.x = x - 2;
+        last_door.y = y;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[y * m->size.x + (x + 1)] == 5)
+    {
+        //printf("Door is to the right\n");
+        last_door.x = x + 1;
+        last_door.y = y;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[y * m->size.x + (x + 2)] == 5)
+    {
+        //printf("Door is to the right\n");
+        last_door.x = x + 2;
+        last_door.y = y;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[(y - 1) * m->size.x + x] == 5)
+    {
+        //printf("Door is in front\n");
+        last_door.x = x;
+        last_door.y = y - 1;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[(y - 2) * m->size.x + x] == 5)
+    {
+        //printf("Door is in front\n");
+        last_door.x = x;
+        last_door.y = y - 2;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[(y + 1) * m->size.x + x] == 5)
+    {
+        //printf("Door is behind\n");
+        last_door.x = x;
+        last_door.y = y + 1;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
+    else if (m->data[(y + 2) * m->size.x + x] == 5)
+    {
+        //printf("Door is behind\n");
+        last_door.x = x;
+        last_door.y = y + 2;
+        m->data[last_door.y * m->size.x + last_door.x] = 0;
+    }
     return;
 }
 
@@ -157,6 +251,8 @@ static void raycasting(t_map* m)
                 color.b -= color.b / 2;
             }
             apply_wall_fog(&color, m->fog_color, perp_wall_dist, m->dof);
+            if (s_num == 4)
+                color.a = 255/5;
             draw_point(t, color, x, y);
             ++y;
         }

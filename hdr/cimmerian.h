@@ -12,6 +12,7 @@
 
 #define FOV 60
 #define NBR_TEXTURES 3
+/* Sprite size must be a power of two: */
 #define SPR_W 64
 #define SPR_H 64
 
