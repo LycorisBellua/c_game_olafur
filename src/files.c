@@ -75,6 +75,28 @@ t_spr* load_sprite(char* png_path)
     return s;
 }
 
+t_spr* create_sprite(t_color c)
+{
+    t_spr* s;
+    unsigned int i;
+
+    s = malloc(sizeof(t_spr));
+    if (!s)
+        return 0;
+    s->size.x = SPR_W;
+    s->size.y = SPR_H;
+    s->buf = malloc(s->size.x * s->size.y * 4 * sizeof(GLubyte));
+    if (!s->buf)
+    {
+        free_sprite(s);
+        return 0;
+    }
+    i = 0;
+    while (i < s->size.x * s->size.y)
+        *((t_color*)s->buf + i++) = c;
+    return s;
+}
+
 void free_sprite(t_spr* s)
 {
     free(s->buf);

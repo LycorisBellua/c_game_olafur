@@ -152,6 +152,7 @@ void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof);
 int is_digit(int c);
 char* read_file(char* filepath);
 t_spr* load_sprite(char* png_path);
+t_spr* create_sprite(t_color c);
 void free_sprite(t_spr* s);
 
 /* Game --------------------------------------------------------------------- */

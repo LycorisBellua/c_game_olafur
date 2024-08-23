@@ -19,23 +19,23 @@ static void raycasting(t_map* m)
 
     for (x = 0; x < t->size.x; ++x)
     {
-        double camera_x = 2 * x / (double)t->size.x - 1;
+        double camera_x;
+        camera_x = 2 * x / (double)t->size.x - 1;
+
         t_vec2 ray_dir;
         ray_dir.x = man.player.dir.x + man.player.plane.x * camera_x;
         ray_dir.y = man.player.dir.y + man.player.plane.y * camera_x;
+
         t_ivec2 m_index;
         m_index.x = (int)man.player.pos.x;
         m_index.y = (int)man.player.pos.y;
-
-        t_vec2 side_dist;
 
         t_vec2 delta_dist;
         delta_dist.x = (ray_dir.x == 0) ? 1e30 : f_abs(1 / ray_dir.x);
         delta_dist.y = (ray_dir.y == 0) ? 1e30 : f_abs(1 / ray_dir.y);
 
         t_ivec2 step;
-        int hit = 0;
-        int side;
+        t_vec2 side_dist;
         if (ray_dir.x < 0)
         {
             step.x = -1;
@@ -56,6 +56,10 @@ static void raycasting(t_map* m)
             step.y = 1;
             side_dist.y = (m_index.y + 1.0 - man.player.pos.y) * delta_dist.y;
         }
+
+        int hit;
+        int side;
+        hit = 0;
         while (!hit)
         {
             if (side_dist.x < side_dist.y)
@@ -73,6 +77,7 @@ static void raycasting(t_map* m)
             if (m->data[m_index.y * m->size.x + m_index.x] > 0)
                 hit = 1;
         }
+
         double perp_wall_dist;
         if (side == 0)
             perp_wall_dist = (side_dist.x - delta_dist.x);
@@ -91,12 +96,12 @@ static void raycasting(t_map* m)
         if (v2.coord.y >= t->size.y)
             v2.coord.y = t->size.y - 1;
 
-        //texturing calculations
+        /* Wall Texturing --------------------------------------------------- */
+
         int s_num;
         
-        //1 subtracted from it so that sprite 0 can be used!
-        //s_num = m->data[m_index.y * m->size.x + m_index.x] - 1;
-
+        s_num = m->data[m_index.y * m->size.x + m_index.x] - 1;
+        /*
         if (side == 0 && ray_dir.x > 0) // WEST
             s_num = 0;
         else if (side == 0 && ray_dir.x < 0) // EAST
@@ -106,8 +111,9 @@ static void raycasting(t_map* m)
         else if (side == 1 && ray_dir.y < 0) // SOUTH
             s_num = 3;
         s_num = s_num % man.map->spr_len;
+        */
 
-        //where exactly the wall was hit
+        // Where exactly the wall was hit
         double wall_x;
         if (side == 0)
             wall_x = man.player.pos.y + perp_wall_dist * ray_dir.y;
@@ -115,24 +121,35 @@ static void raycasting(t_map* m)
             wall_x = man.player.pos.x + perp_wall_dist * ray_dir.x;
         wall_x -= f_floor((wall_x));
 
-        t_ivec2 s_coord;
 
-        //x coordinate on the sprite
+        // X coordinate on the sprite
+        t_ivec2 s_coord;
         s_coord.x = (int)(wall_x * (double)SPR_W);
         if ((side == 0 && ray_dir.x < 0) || (side == 1 && ray_dir.y > 0))
             s_coord.x = SPR_W - s_coord.x - 1;
 
         // How much to increase the sprite coordinate per screen pixel
-        double s_step = 1.0 * SPR_H / line_height;
+        double s_step;
+        s_step = 1.0 * SPR_H / line_height;
+
         // Starting sprite coordinate
-        double s_pos = (v1.coord.y - man.player.height - t->size.y / 2 + line_height / 2) * s_step;
-        for(int y = v1.coord.y; y < v2.coord.y; y++)
+        double s_pos;
+        s_pos = (v1.coord.y - man.player.height - t->size.y / 2 
+            + line_height / 2) * s_step;
+
+        t_color* s_buf;
+        t_color color;
+        int y;
+        s_buf = (t_color*)man.map->spr[s_num]->buf;
+        y = v1.coord.y;
+        while (y < v2.coord.y)
         {
-            // Cast the sprite coordinate to integer, and mask with (SPR_H - 1) in case of overflow
+            // Cast the sprite coordinate to integer, and mask with (SPR_H - 1) 
+            // in case of overflow
             s_coord.y = (int)s_pos & (SPR_H - 1);
             s_pos += s_step;
-            t_color color = *((t_color*)man.map->spr[s_num]->buf + (s_coord.y * SPR_H + s_coord.x));
-            //make color darker for y-sides:
+            color = s_buf[s_coord.y * SPR_H + s_coord.x];
+            // Make color darker for y-sides
             if (side == 1)
             {
                 color.r -= color.r / 2;
@@ -141,44 +158,8 @@ static void raycasting(t_map* m)
             }
             apply_wall_fog(&color, m->fog_color, perp_wall_dist, m->dof);
             draw_point(t, color, x, y);
+            ++y;
         }
-
-        /*
-        t_color color;
-        if (side == 0 && ray_dir.x > 0) // WEST
-            color = get_color_rgba( 93,  42,  98, 255); //purple
-        else if (side == 0 && ray_dir.x < 0) // EAST
-            color = get_color_rgba( 78, 120,  94, 255); //green
-        else if (side == 1 && ray_dir.y > 0) // NORTH
-            color = get_color_rgba( 83, 120, 156, 255); //blue
-        else if (side == 1 && ray_dir.y < 0) // SOUTH
-            color = get_color_rgba(155, 114,  44, 255); //yellow
-        */
-        /*
-        if (m->data[m_index.y * m->size.x + m_index.x] == 1)
-            color = get_color_rgba(93, 42, 98, 255); //purple
-        else if (m->data[m_index.y * m->size.x + m_index.x] == 2)
-            color = get_color_rgba(78, 120, 94, 255); //green
-        else if (m->data[m_index.y * m->size.x + m_index.x] == 3)
-            color = get_color_rgba(83, 120, 156, 255); //blue
-        else if (m->data[m_index.y * m->size.x + m_index.x] == 4)
-            color = get_color_rgba(155, 114, 44, 255); //yellow
-        else
-            color = get_color_rgba(255, 255, 255, 255); //white
-        */
-        /*
-        //give x and y sides different brightness
-        if (side == 1)
-        {
-            color.r -= color.r / 5;
-            color.g -= color.g / 5;
-            color.b -= color.b / 5;
-        }
-        apply_wall_fog(&color, m->fog_color, perp_wall_dist, m->dof);
-        v1.color = color;
-        v2.color = color;
-        draw_line(t, v1, v2);
-        */
     }
     return;
 }

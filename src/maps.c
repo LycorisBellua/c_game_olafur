@@ -162,6 +162,13 @@ static t_map* create_map(void)
         free(map);
         return 0;
     }
+    /*
+    map->spr[0] = create_sprite(get_color_rgba(93, 42, 98, 255));
+    map->spr[1] = create_sprite(get_color_rgba(78, 120, 94, 255));
+    map->spr[2] = create_sprite(get_color_rgba(83, 120, 156, 255));
+    map->spr[3] = create_sprite(get_color_rgba(155, 114, 44, 255));
+    map->spr[4] = create_sprite(get_color_rgba(255, 255, 255, 255));
+    */
     map->spr[0] = load_sprite("img/bluestone.png");
     map->spr[1] = load_sprite("img/greystone.png");
     map->spr[2] = load_sprite("img/purplestone.png");
