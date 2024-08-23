@@ -69,9 +69,15 @@ t_spr* load_sprite(char* png_path)
     {
         fprintf(stderr, "Error: %s (Lodepng lib - error n°%u)\n", 
             lodepng_error_text(err), err);
-        free(s->buf);
-        free(s);
+        free_sprite(s);
         return 0;
     }
     return s;
+}
+
+void free_sprite(t_spr* s)
+{
+    free(s->buf);
+    free(s);
+    return;
 }

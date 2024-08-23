@@ -11,9 +11,9 @@
 #include "math.h"
 
 #define FOV 60
-#define MAP_CELL_LEN 64
-#define MAX_CELL_AMOUNT 8
 #define NBR_TEXTURES 3
+#define SPR_W 64
+#define SPR_H 64
 
 typedef struct s_vec2
 {
@@ -47,6 +47,12 @@ typedef struct s_vert
     t_color color;
 } t_vert;
 
+typedef struct s_spr
+{
+    t_uivec2 size;
+    GLubyte* buf;
+} t_spr;
+
 typedef struct s_map
 {
     t_ivec2 size;
@@ -56,6 +62,8 @@ typedef struct s_map
     double fog_width;
     t_color fog_color;
     int* data;
+    int spr_len;
+    t_spr** spr;
 } t_map;
 
 typedef struct s_player
@@ -75,18 +83,11 @@ typedef struct s_tex
     GLubyte* buf;
 } t_tex;
 
-typedef struct s_spr
-{
-    GLubyte* buf;
-    t_uivec2 size;
-} t_spr;
-
 typedef struct s_res
 {
     t_ivec2 monitor_size;
     double aspect_ratio;
     double h_mod;
-
     t_ivec2 window_size_default;
     t_ivec2 window_size;
     t_ivec2 window_position;
@@ -101,10 +102,10 @@ typedef struct s_manager
     t_res res;
     t_tex* tex[NBR_TEXTURES + 1];
     int curr_tex;
-    t_map* map;
     t_player player;
     int movement_action[3];
     int rotation_action;
+    t_map* map;
 } t_manager;
 
 extern t_manager man;
@@ -151,6 +152,7 @@ void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof);
 int is_digit(int c);
 char* read_file(char* filepath);
 t_spr* load_sprite(char* png_path);
+void free_sprite(t_spr* s);
 
 /* Game --------------------------------------------------------------------- */
 

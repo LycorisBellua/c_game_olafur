@@ -15,19 +15,6 @@ static void raycasting(t_map* m)
     t_tex *t;
     int x;
 
-    int texWidth = 64;
-    int texHeight = 64;
-    t_spr* texture[5];
-    texture[0] = load_sprite("pics/bluestone.png");
-    texture[1] = load_sprite("pics/greystone.png");
-    texture[2] = load_sprite("pics/purplestone.png");
-    texture[3] = load_sprite("pics/redbrick.png");
-    texture[4] = load_sprite("pics/mossy.png");
-    /*
-        `texture` is an array of 5 t_spr pointers.
-        Each of size 64x64.
-    */
-
     t = man.tex[man.curr_tex];
 
     for (x = 0; x < t->size.x; ++x)
@@ -105,42 +92,46 @@ static void raycasting(t_map* m)
             v2.coord.y = t->size.y - 1;
 
         //texturing calculations
-        int texNum;
+        int s_num;
         
-        //1 subtracted from it so that texture 0 can be used!
-        //texNum = m->data[m_index.y * m->size.x + m_index.x] - 1;
+        //1 subtracted from it so that sprite 0 can be used!
+        //s_num = m->data[m_index.y * m->size.x + m_index.x] - 1;
 
         if (side == 0 && ray_dir.x > 0) // WEST
-            texNum = 0;
+            s_num = 0;
         else if (side == 0 && ray_dir.x < 0) // EAST
-            texNum = 1;
+            s_num = 1;
         else if (side == 1 && ray_dir.y > 0) // NORTH
-            texNum = 2;
+            s_num = 2;
         else if (side == 1 && ray_dir.y < 0) // SOUTH
-            texNum = 3;
+            s_num = 3;
+        s_num = s_num % man.map->spr_len;
 
-        //calculate value of wallX
-        double wallX; //where exactly the wall was hit
-        if(side == 0) wallX = man.player.pos.y + perp_wall_dist * ray_dir.y;
-        else          wallX = man.player.pos.x + perp_wall_dist * ray_dir.x;
-        wallX -= f_floor((wallX));
+        //where exactly the wall was hit
+        double wall_x;
+        if (side == 0)
+            wall_x = man.player.pos.y + perp_wall_dist * ray_dir.y;
+        else
+            wall_x = man.player.pos.x + perp_wall_dist * ray_dir.x;
+        wall_x -= f_floor((wall_x));
 
-        //x coordinate on the texture
-        int texX = (int)(wallX * (double)texWidth);
-        if (side == 0 && ray_dir.x < 0) texX = texWidth - texX - 1;
-        if (side == 1 && ray_dir.y > 0) texX = texWidth - texX - 1;
+        t_ivec2 s_coord;
 
-        // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
-        // How much to increase the texture coordinate per screen pixel
-        double texStep = 1.0 * texHeight / line_height;
-        // Starting texture coordinate
-        double texPos = (v1.coord.y - man.player.height - t->size.y / 2 + line_height / 2) * texStep;
+        //x coordinate on the sprite
+        s_coord.x = (int)(wall_x * (double)SPR_W);
+        if ((side == 0 && ray_dir.x < 0) || (side == 1 && ray_dir.y > 0))
+            s_coord.x = SPR_W - s_coord.x - 1;
+
+        // How much to increase the sprite coordinate per screen pixel
+        double s_step = 1.0 * SPR_H / line_height;
+        // Starting sprite coordinate
+        double s_pos = (v1.coord.y - man.player.height - t->size.y / 2 + line_height / 2) * s_step;
         for(int y = v1.coord.y; y < v2.coord.y; y++)
         {
-            // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-            int texY = (int)texPos & (texHeight - 1);
-            texPos += texStep;
-            t_color color = *((t_color*)texture[texNum]->buf + (texY * texHeight + texX));
+            // Cast the sprite coordinate to integer, and mask with (SPR_H - 1) in case of overflow
+            s_coord.y = (int)s_pos & (SPR_H - 1);
+            s_pos += s_step;
+            t_color color = *((t_color*)man.map->spr[s_num]->buf + (s_coord.y * SPR_H + s_coord.x));
             //make color darker for y-sides:
             if (side == 1)
             {

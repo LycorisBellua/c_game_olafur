@@ -96,6 +96,8 @@ void set_minimap_display(int remove_from_factor)
 {
     int cell;
     t_tex* t;
+    int MAP_CELL_LEN = 64;
+    int MAX_CELL_AMOUNT = 8;
 
     if (!remove_from_factor)
         minimap_factor = MINIMAP_FACTOR_MAX;
@@ -152,12 +154,47 @@ static t_map* create_map(void)
         map->data[i] = map_default[i];
         ++i;
     }
+    map->spr_len = 5;
+    map->spr = malloc(map->spr_len * sizeof(t_spr*));
+    if (!map->spr)
+    {
+        free(map->data);
+        free(map);
+        return 0;
+    }
+    map->spr[0] = load_sprite("img/bluestone.png");
+    map->spr[1] = load_sprite("img/greystone.png");
+    map->spr[2] = load_sprite("img/purplestone.png");
+    map->spr[3] = load_sprite("img/redbrick.png");
+    map->spr[4] = load_sprite("img/mossy.png");
+    if (!map->spr[0] || !map->spr[1] || !map->spr[2] || !map->spr[3] 
+        || !map->spr[4])
+    {
+        free(map->data);
+        free_sprite(map->spr[0]);
+        free_sprite(map->spr[1]);
+        free_sprite(map->spr[2]);
+        free_sprite(map->spr[3]);
+        free_sprite(map->spr[4]);
+        free(map->spr);
+        free(map);
+        return 0;
+    }
     return map;
 }
 
 static void free_map(t_map** map)
 {
+    int i;
+
     free((*map)->data);
+    i = 0;
+    while (i < (*map)->spr_len)
+    {
+        free_sprite((*map)->spr[i]);
+        ++i;
+    }
+    free((*map)->spr);
     free(*map);
 
     /* Nullify the reference to prevent a double free */
