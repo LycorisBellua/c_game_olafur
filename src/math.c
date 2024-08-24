@@ -288,6 +288,18 @@ int	rng_minmax(int *seed, int min, int max)
     return random % (max - min + 1) + min;
 }
 
+/* Euclidean distance (all directions) */
+double	get_dist_euclidean(double ax, double ay, double bx, double by)
+{
+	return (f_sqrt(f_pow(ax - bx, 2) + f_pow(ay - by, 2)));
+}
+
+/* Manhattan distance (no diagonal) */
+double	get_dist_manhattan(double ax, double ay, double bx, double by)
+{
+	return (f_abs(ax - bx) + f_abs(ay - by));
+}
+
 static double is_close_to_zero(double n)
 {
     return f_abs(n) < 1e-15;
