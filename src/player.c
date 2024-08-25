@@ -2,6 +2,7 @@
 
 static void move_along_forward_axis(double speed);
 static void move_along_lateral_axis(double speed);
+static void prevent_out_of_bounds(t_map* m, double radius);
 static void adjust_position_on_collision(t_map* m, double radius);
 static void rotate(double angle);
 static double get_angle_from_dir(t_vec2 dir);
@@ -28,6 +29,7 @@ void update_player_transform(t_map* m)
 {
     move_along_forward_axis(2.0 * man.movement_action[2] * man.delta_time);
     move_along_lateral_axis(2.0 * man.movement_action[0] * man.delta_time);
+    prevent_out_of_bounds(m, 0.25);
     adjust_position_on_collision(m, 0.25);
     rotate(RAD_45 * man.rotation_action * man.delta_time);
     return;
@@ -44,6 +46,17 @@ static void move_along_lateral_axis(double speed)
 {
     man.player.pos.x -= man.player.dir.y * speed;
     man.player.pos.y += man.player.dir.x * speed;
+    return;
+}
+
+static void prevent_out_of_bounds(t_map* m, double radius)
+{
+    t_vec2 pos;
+
+    pos = man.player.pos;
+    pos.x = f_clamp(pos.x, 1 + radius, m->size.x - 2 - radius);
+    pos.y = f_clamp(pos.y, 1 + radius, m->size.y - 2 - radius);
+    man.player.pos = pos;
     return;
 }
 

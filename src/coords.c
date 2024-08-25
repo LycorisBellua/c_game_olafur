@@ -1,5 +1,19 @@
 #include "cimmerian.h"
 
+void set_vec2(t_vec2* coord, double x, double y)
+{
+    coord->x = x;
+    coord->y = y;
+    return;
+}
+
+void set_ivec2(t_ivec2* coord, int x, int y)
+{
+    coord->x = x;
+    coord->y = y;
+    return;
+}
+
 int get_coord_x(t_tex* t, double normalized)
 {
     return (t->size.x - 1) * normalized;

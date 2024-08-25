@@ -5,8 +5,8 @@
 - Minimap.
 - Rotate with the mouse.
 - Animated sprite.
-- Door which can open and close (opportunity to use alpha blending).
 
+- Place doors in the middle of the cell.
 - Collectibles and non-collectible objects with a collision.
 - Regen and take damage (with traps or enemies).
 - Damage enemies.

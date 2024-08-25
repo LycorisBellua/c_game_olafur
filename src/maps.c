@@ -63,7 +63,7 @@ static int map_default[] =
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1,
+    1,0,0,0,0,0,2,2,5,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1,
     1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1,
     1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -169,11 +169,11 @@ static t_map* create_map(void)
     map->spr[3] = create_sprite(get_color_rgba(155, 114, 44, 255));
     map->spr[4] = create_sprite(get_color_rgba(255, 255, 255, 255));
     */
-    map->spr[0] = load_sprite("img/bluestone.png");
-    map->spr[1] = load_sprite("img/greystone.png");
-    map->spr[2] = load_sprite("img/purplestone.png");
-    map->spr[3] = load_sprite("img/redbrick.png");
-    map->spr[4] = load_sprite("img/mossy.png");
+    map->spr[0] = load_sprite("img/wall_01.png");
+    map->spr[1] = load_sprite("img/wall_02.png");
+    map->spr[2] = load_sprite("img/wall_03.png");
+    map->spr[3] = load_sprite("img/wall_04.png");
+    map->spr[4] = load_sprite("img/doors.png");
     if (!map->spr[0] || !map->spr[1] || !map->spr[2] || !map->spr[3] 
         || !map->spr[4])
     {

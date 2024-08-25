@@ -126,6 +126,5 @@ void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof)
     wall->r = wall->r + factor * (fog.r - wall->r);
     wall->g = wall->g + factor * (fog.g - wall->g);
     wall->b = wall->b + factor * (fog.b - wall->b);
-    wall->a = 255;
     return;
 }

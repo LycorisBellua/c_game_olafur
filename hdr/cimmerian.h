@@ -16,6 +16,12 @@
 #define SPR_W 64
 #define SPR_H 64
 
+typedef struct s_list
+{
+    void* data;
+    struct s_list* next;
+} t_list;
+
 typedef struct s_vec2
 {
     double x;
@@ -53,6 +59,18 @@ typedef struct s_spr
     t_uivec2 size;
     GLubyte* buf;
 } t_spr;
+
+typedef struct s_ray
+{
+    t_vec2 ray_dir;
+    t_ivec2 m_index;
+    int side;
+    double perp_wall_dist;
+    int line_height;
+    t_ivec2 coord1;
+    t_ivec2 coord2;
+    t_list* alpha;
+} t_ray;
 
 typedef struct s_map
 {
@@ -111,6 +129,16 @@ typedef struct s_manager
 
 extern t_manager man;
 
+/* Linked List -------------------------------------------------------------- */
+
+t_list* list_last(t_list *list);
+t_list* list_new(void* data);
+void list_add_front(t_list** list, t_list* new);
+void list_add_back(t_list** list, t_list* new);
+void list_del_one(t_list** list, void (*del)(void*));
+
+void basic_free(void* data);
+
 /* Colors ------------------------------------------------------------------- */
 
 t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
@@ -119,6 +147,8 @@ t_color get_alpha_blended_color(t_color prev, t_color new);
 
 /* Coords ------------------------------------------------------------------- */
 
+void set_vec2(t_vec2* coord, double x, double y);
+void set_ivec2(t_ivec2* coord, int x, int y);
 int get_coord_x(t_tex* t, double normalized);
 int get_coord_y(t_tex* t, double normalized);
 double get_coord_x_norm(t_tex* t, int coord);
@@ -158,6 +188,7 @@ void free_sprite(t_spr* s);
 
 /* Game --------------------------------------------------------------------- */
 
+void door_routine(t_map* m);
 void draw_game(t_map* m);
 void reset_global_coordinates(void);
 void update_global_coordinates(void);
