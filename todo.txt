@@ -1,4 +1,3 @@
-- Textures for walls: fix wobbly boys.
 - Textures for ceiling and floor.
 - Skybox which rotates with the player.
 

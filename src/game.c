@@ -96,9 +96,7 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
             return 0;
         else if (m->data[r->m_index.y * m->size.x + r->m_index.x] > 0)
         {
-            if (m->data[r->m_index.y * m->size.x + r->m_index.x] < 5)
-                hit = 1;
-            else
+            if (m->data[r->m_index.y * m->size.x + r->m_index.x] == 5)
             {
                 alpha = malloc(sizeof(t_ray));
                 if (alpha)
@@ -113,6 +111,8 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
                     list_add_front(&r->alpha, list_new(alpha));
                 }
             }
+            else
+                hit = 1;
         }
     }
     if (r->side == 0)
@@ -139,18 +139,7 @@ static void set_line(t_tex* t, int x, t_ray *r)
 static void wall_texturing(t_map* m, t_tex* t, int x, t_ray* r)
 {
     int s_num;
-    //s_num = m->data[r->m_index.y * m->size.x + r->m_index.x] - 1;
-    if (m->data[r->m_index.y * m->size.x + r->m_index.x] == 5)
-        s_num = 4;
-    else if (r->side == 0 && r->ray_dir.x > 0) // WEST
-        s_num = 0;
-    else if (r->side == 0 && r->ray_dir.x < 0) // EAST
-        s_num = 1;
-    else if (r->side == 1 && r->ray_dir.y > 0) // NORTH
-        s_num = 2;
-    else if (r->side == 1 && r->ray_dir.y < 0) // SOUTH
-        s_num = 3;
-    s_num = s_num % man.map->spr_len;
+    s_num = m->data[r->m_index.y * m->size.x + r->m_index.x] - 1;
 
     // Where exactly the wall was hit
     double wall_x;
@@ -163,37 +152,35 @@ static void wall_texturing(t_map* m, t_tex* t, int x, t_ray* r)
     // X coordinate on the sprite
     t_ivec2 s_coord;
     s_coord.x = (int)(wall_x * (double)SPR_W);
-    if ((r->side == 0 && r->ray_dir.x < 0) 
+    if ((r->side == 0 && r->ray_dir.x < 0)
         || (r->side == 1 && r->ray_dir.y > 0))
         s_coord.x = SPR_W - s_coord.x - 1;
 
     // How much to increase the sprite coordinate per screen pixel
-    double s_step;
-    s_step = 1.0 * SPR_H / r->line_height;
+    double s_step = (double)SPR_H / (double)r->line_height;
 
     // Starting sprite coordinate
-    double s_pos;
-    s_pos = (r->coord1.y - man.player.height - t->size.y / 2 
-        + r->line_height / 2) * s_step;
+    double s_pos = (r->coord1.y - (t->size.y / 2.0 - r->line_height / 2.0)) * s_step;
 
-    t_color* s_buf;
+    t_color* s_buf = (t_color*)man.map->spr[s_num]->buf;
     t_color color;
-    int y;
-    s_buf = (t_color*)man.map->spr[s_num]->buf;
-    y = r->coord1.y;
+    int y = r->coord1.y;
     while (y < r->coord2.y)
     {
-        // Cast the sprite coordinate to integer, and mask with (SPR_H - 1) 
-        // in case of overflow
-        s_coord.y = (int)s_pos & (SPR_H - 1);
+        // Cast the sprite coordinate to integer, and clamp to [0, SPR_H - 1]
+        s_coord.y = (int)s_pos;
+        if (s_coord.y < 0) s_coord.y = 0;
+        if (s_coord.y >= SPR_H) s_coord.y = SPR_H - 1;
         s_pos += s_step;
-        color = s_buf[s_coord.y * SPR_H + s_coord.x];
+
+        color = s_buf[s_coord.y * SPR_W + s_coord.x];
+
         // Make color darker for y-sides
         if (r->side == 1)
         {
-            color.r -= color.r / 2;
-            color.g -= color.g / 2;
-            color.b -= color.b / 2;
+            color.r /= 2;
+            color.g /= 2;
+            color.b /= 2;
         }
         apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
         draw_point(t, color, x, y);

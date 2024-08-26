@@ -54,8 +54,8 @@ static void prevent_out_of_bounds(t_map* m, double radius)
     t_vec2 pos;
 
     pos = man.player.pos;
-    pos.x = f_clamp(pos.x, 1 + radius, m->size.x - 2 - radius);
-    pos.y = f_clamp(pos.y, 1 + radius, m->size.y - 2 - radius);
+    pos.x = f_clamp(pos.x, 1 + radius, m->size.x - 1 - radius);
+    pos.y = f_clamp(pos.y, 1 + radius, m->size.y - 1 - radius);
     man.player.pos = pos;
     return;
 }

@@ -154,7 +154,7 @@ static t_map* create_map(void)
         map->data[i] = map_default[i];
         ++i;
     }
-    map->spr_len = 5;
+    map->spr_len = 7;
     map->spr = malloc(map->spr_len * sizeof(t_spr*));
     if (!map->spr)
     {
@@ -174,8 +174,10 @@ static t_map* create_map(void)
     map->spr[2] = load_sprite("img/wall_03.png");
     map->spr[3] = load_sprite("img/wall_04.png");
     map->spr[4] = load_sprite("img/doors.png");
+    map->spr[5] = load_sprite("img/floor.png");
+    map->spr[6] = load_sprite("img/ceiling.png");
     if (!map->spr[0] || !map->spr[1] || !map->spr[2] || !map->spr[3] 
-        || !map->spr[4])
+        || !map->spr[4] || !map->spr[5] || !map->spr[6])
     {
         free(map->data);
         free_sprite(map->spr[0]);
@@ -183,6 +185,8 @@ static t_map* create_map(void)
         free_sprite(map->spr[2]);
         free_sprite(map->spr[3]);
         free_sprite(map->spr[4]);
+        free_sprite(map->spr[5]);
+        free_sprite(map->spr[6]);
         free(map->spr);
         free(map);
         return 0;
