@@ -96,7 +96,8 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
             return 0;
         else if (m->data[r->m_index.y * m->size.x + r->m_index.x] > 0)
         {
-            if (m->data[r->m_index.y * m->size.x + r->m_index.x] == 5)
+            if (m->spr[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
+                % m->spr_len]->is_see_through)
             {
                 alpha = malloc(sizeof(t_ray));
                 if (alpha)

@@ -56,7 +56,7 @@ char* read_file(char* filepath)
     return ptr;
 }
 
-t_spr* load_sprite(char* png_path)
+t_spr* load_sprite(char* png_path, int is_see_through)
 {
     t_spr* s;
     unsigned int err;
@@ -64,6 +64,7 @@ t_spr* load_sprite(char* png_path)
     s = malloc(sizeof(t_spr));
     if (!s)
         return 0;
+    s->is_see_through = is_see_through;
     err = lodepng_decode32_file(&s->buf, &s->size.x, &s->size.y, png_path);
     if (err)
     {
@@ -75,7 +76,7 @@ t_spr* load_sprite(char* png_path)
     return s;
 }
 
-t_spr* create_sprite(t_color c)
+t_spr* create_sprite(t_color c, int is_see_through)
 {
     t_spr* s;
     unsigned int i;
@@ -83,6 +84,7 @@ t_spr* create_sprite(t_color c)
     s = malloc(sizeof(t_spr));
     if (!s)
         return 0;
+    s->is_see_through = is_see_through;
     s->size.x = SPR_W;
     s->size.y = SPR_H;
     s->buf = malloc(s->size.x * s->size.y * 4 * sizeof(GLubyte));

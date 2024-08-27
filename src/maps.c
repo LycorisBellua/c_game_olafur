@@ -163,19 +163,19 @@ static t_map* create_map(void)
         return 0;
     }
     /*
-    map->spr[0] = create_sprite(get_color_rgba(93, 42, 98, 255));
-    map->spr[1] = create_sprite(get_color_rgba(78, 120, 94, 255));
-    map->spr[2] = create_sprite(get_color_rgba(83, 120, 156, 255));
-    map->spr[3] = create_sprite(get_color_rgba(155, 114, 44, 255));
-    map->spr[4] = create_sprite(get_color_rgba(255, 255, 255, 255));
+    map->spr[0] = create_sprite(get_color_rgba(93, 42, 98, 255), 0);
+    map->spr[1] = create_sprite(get_color_rgba(78, 120, 94, 255), 0);
+    map->spr[2] = create_sprite(get_color_rgba(83, 120, 156, 255), 0);
+    map->spr[3] = create_sprite(get_color_rgba(155, 114, 44, 255), 0);
+    map->spr[4] = create_sprite(get_color_rgba(255, 255, 255, 255), 0);
     */
-    map->spr[0] = load_sprite("img/wall_01.png");
-    map->spr[1] = load_sprite("img/wall_02.png");
-    map->spr[2] = load_sprite("img/wall_03.png");
-    map->spr[3] = load_sprite("img/wall_04.png");
-    map->spr[4] = load_sprite("img/doors.png");
-    map->spr[5] = load_sprite("img/floor.png");
-    map->spr[6] = load_sprite("img/ceiling.png");
+    map->spr[0] = load_sprite("img/wall_01.png", 0);
+    map->spr[1] = load_sprite("img/wall_02.png", 0);
+    map->spr[2] = load_sprite("img/wall_03.png", 0);
+    map->spr[3] = load_sprite("img/wall_04.png", 0);
+    map->spr[4] = load_sprite("img/doors.png", 1);
+    map->spr[5] = load_sprite("img/floor.png", 0);
+    map->spr[6] = load_sprite("img/ceiling.png", 0);
     if (!map->spr[0] || !map->spr[1] || !map->spr[2] || !map->spr[3] 
         || !map->spr[4] || !map->spr[5] || !map->spr[6])
     {
