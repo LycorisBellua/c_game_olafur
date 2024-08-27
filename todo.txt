@@ -1,3 +1,4 @@
+- Add slight fog gradient to the textures themselves (bottom and top).
 - Textures for ceiling and floor.
 - Skybox which rotates with the player.
 

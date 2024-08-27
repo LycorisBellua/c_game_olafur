@@ -12,7 +12,6 @@
 
 #define FOV 60
 #define NBR_TEXTURES 3
-/* Sprite size must be a power of two: */
 #define SPR_W 64
 #define SPR_H 64
 
@@ -57,7 +56,7 @@ typedef struct s_vert
 typedef struct s_spr
 {
     int is_see_through;
-    t_uivec2 size;
+    t_ivec2 size;
     GLubyte* buf;
 } t_spr;
 

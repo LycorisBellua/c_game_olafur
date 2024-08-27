@@ -56,16 +56,17 @@ char* read_file(char* filepath)
     return ptr;
 }
 
+/* Sprite size must be a power of two */
 t_spr* load_sprite(char* png_path, int is_see_through)
 {
     t_spr* s;
+    t_uivec2 size;
     unsigned int err;
     
     s = malloc(sizeof(t_spr));
     if (!s)
         return 0;
-    s->is_see_through = is_see_through;
-    err = lodepng_decode32_file(&s->buf, &s->size.x, &s->size.y, png_path);
+    err = lodepng_decode32_file(&s->buf, &size.x, &size.y, png_path);
     if (err)
     {
         fprintf(stderr, "Error: %s (Lodepng lib - error n°%u)\n", 
@@ -73,13 +74,16 @@ t_spr* load_sprite(char* png_path, int is_see_through)
         free_sprite(s);
         return 0;
     }
+    s->is_see_through = is_see_through;
+    s->size.x = size.x;
+    s->size.y = size.y;
     return s;
 }
 
 t_spr* create_sprite(t_color c, int is_see_through)
 {
     t_spr* s;
-    unsigned int i;
+    int i;
 
     s = malloc(sizeof(t_spr));
     if (!s)

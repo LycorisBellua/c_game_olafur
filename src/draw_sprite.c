@@ -2,7 +2,7 @@
 
 void draw_sprite(t_tex* t, t_spr* s)
 {
-    t_uivec2 i;
+    t_ivec2 i;
 
     i.y = 0;
     while (i.y < s->size.y)
