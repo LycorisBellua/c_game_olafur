@@ -55,9 +55,9 @@ static GLFWwindow* init(char* title)
     {
         create_uniform();
         create_mesh();
-        create_textures();
+        create_frames();
         initialize_maps();
-        use_texture(man.tex[man.curr_tex]);
+        use_frame(man.frame[man.curr_frame]);
     }
     return window;
 }
@@ -78,14 +78,14 @@ static void clear_buffer(void)
 {
     /* Keep using glClear for when the window is resized */
     glClear(GL_COLOR_BUFFER_BIT);
-    clear_drawing(man.tex[man.curr_tex]);
+    clear_drawing(man.frame[man.curr_frame]);
     return;
 }
 
 static void draw_into_buffer(t_map* m)
 {
     draw_game(m);
-    save_drawing(man.tex[man.curr_tex]);
+    save_drawing(man.frame[man.curr_frame]);
     render_mesh();
     return;
 }
@@ -96,7 +96,7 @@ static void swap_buffer(GLFWwindow* window)
         Keep using glfwSwapBuffers or the viewport remains black.
         It's the equivalent to mlx_put_image_to_window
     */
-    man.curr_tex = (man.curr_tex + 1) % 2;
+    man.curr_frame = (man.curr_frame + 1) % 2;
     glfwSwapBuffers(window);
     return;
 }
@@ -107,6 +107,7 @@ static void deinit(void)
     free_shader_program();
     free_uniform();
     free_mesh();
-    free_textures();
+    free_frames();
     free_maps();
+    return;
 }

@@ -95,7 +95,7 @@ void initialize_maps(void)
 void set_minimap_display(int remove_from_factor)
 {
     int cell;
-    t_tex* t;
+    t_frame* f;
     int MAP_CELL_LEN = 64;
     int MAX_CELL_AMOUNT = 8;
 
@@ -104,10 +104,10 @@ void set_minimap_display(int remove_from_factor)
     else
         minimap_factor = clamp(minimap_factor - remove_from_factor, 
             MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
-    t = man.tex[man.curr_tex];
+    f = man.frame[man.curr_frame];
     cell = MAP_CELL_LEN/minimap_factor;
-    display_offset.x = t->size.x - cell * MAX_CELL_AMOUNT - 50;
-    display_offset.y = t->size.y - cell * MAX_CELL_AMOUNT - 50;
+    display_offset.x = f->size.x - cell * MAX_CELL_AMOUNT - 50;
+    display_offset.y = f->size.y - cell * MAX_CELL_AMOUNT - 50;
     return;
 }
 
@@ -154,40 +154,40 @@ static t_map* create_map(void)
         map->data[i] = map_default[i];
         ++i;
     }
-    map->spr_len = 7;
-    map->spr = malloc(map->spr_len * sizeof(t_spr*));
-    if (!map->spr)
+    map->img_len = 7;
+    map->img = malloc(map->img_len * sizeof(t_img*));
+    if (!map->img)
     {
         free(map->data);
         free(map);
         return 0;
     }
     /*
-    map->spr[0] = create_sprite(get_color_rgba(93, 42, 98, 255), 0);
-    map->spr[1] = create_sprite(get_color_rgba(78, 120, 94, 255), 0);
-    map->spr[2] = create_sprite(get_color_rgba(83, 120, 156, 255), 0);
-    map->spr[3] = create_sprite(get_color_rgba(155, 114, 44, 255), 0);
-    map->spr[4] = create_sprite(get_color_rgba(255, 255, 255, 255), 0);
+    map->img[0] = create_image(get_color_rgba(93, 42, 98, 255));
+    map->img[1] = create_image(get_color_rgba(78, 120, 94, 255));
+    map->img[2] = create_image(get_color_rgba(83, 120, 156, 255));
+    map->img[3] = create_image(get_color_rgba(155, 114, 44, 255));
+    map->img[4] = create_image(get_color_rgba(255, 255, 255, 255));
     */
-    map->spr[0] = load_sprite("img/wall_01.png", 0);
-    map->spr[1] = load_sprite("img/wall_02.png", 0);
-    map->spr[2] = load_sprite("img/wall_03.png", 0);
-    map->spr[3] = load_sprite("img/wall_04.png", 0);
-    map->spr[4] = load_sprite("img/doors.png", 1);
-    map->spr[5] = load_sprite("img/floor.png", 0);
-    map->spr[6] = load_sprite("img/ceiling.png", 0);
-    if (!map->spr[0] || !map->spr[1] || !map->spr[2] || !map->spr[3] 
-        || !map->spr[4] || !map->spr[5] || !map->spr[6])
+    map->img[0] = load_image_from_file("img/wall_01.png", 0);
+    map->img[1] = load_image_from_file("img/wall_02.png", 0);
+    map->img[2] = load_image_from_file("img/wall_03.png", 0);
+    map->img[3] = load_image_from_file("img/wall_04.png", 0);
+    map->img[4] = load_image_from_file("img/doors.png", 1);
+    map->img[5] = load_image_from_file("img/floor.png", 0);
+    map->img[6] = load_image_from_file("img/ceiling.png", 0);
+    if (!map->img[0] || !map->img[1] || !map->img[2] || !map->img[3] 
+        || !map->img[4] || !map->img[5] || !map->img[6])
     {
         free(map->data);
-        free_sprite(map->spr[0]);
-        free_sprite(map->spr[1]);
-        free_sprite(map->spr[2]);
-        free_sprite(map->spr[3]);
-        free_sprite(map->spr[4]);
-        free_sprite(map->spr[5]);
-        free_sprite(map->spr[6]);
-        free(map->spr);
+        free_image(map->img[0]);
+        free_image(map->img[1]);
+        free_image(map->img[2]);
+        free_image(map->img[3]);
+        free_image(map->img[4]);
+        free_image(map->img[5]);
+        free_image(map->img[6]);
+        free(map->img);
         free(map);
         return 0;
     }
@@ -200,12 +200,12 @@ static void free_map(t_map** map)
 
     free((*map)->data);
     i = 0;
-    while (i < (*map)->spr_len)
+    while (i < (*map)->img_len)
     {
-        free_sprite((*map)->spr[i]);
+        free_image((*map)->img[i]);
         ++i;
     }
-    free((*map)->spr);
+    free((*map)->img);
     free(*map);
 
     /* Nullify the reference to prevent a double free */
@@ -251,7 +251,7 @@ static void draw_map(t_map* m)
     v.color = get_color_rgba(255, 0, 0, 255);
     rect_size.x = max_len_map;
     rect_size.y = max_len_map;
-    draw_rectangle(man.tex[man.curr_tex], v, rect_size);
+    draw_rectangle(man.frame[man.curr_frame], v, rect_size);
 
     //SMALLEST MAP
     //- MAX LEN FOR THE MAP: 96
@@ -308,7 +308,7 @@ static void draw_map(t_map* m)
             // Remove 1 pixel in order to see grid lines
             rect_size.x = len.x - 1;
             rect_size.y = len.y - 1;
-            draw_rectangle_full(man.tex[man.curr_tex], v, rect_size);
+            draw_rectangle_full(man.frame[man.curr_frame], v, rect_size);
             v.coord.x += len.x;
             len.x = max_len_cell;
             if (v.coord.x > display_offset.x + max_len_map)
@@ -348,7 +348,7 @@ static void draw_player(void)
     end.color = pos.color;
 
     // Forward vector
-    draw_line(man.tex[man.curr_tex], pos, end);
+    draw_line(man.frame[man.curr_frame], pos, end);
 
     pos.coord.x -= player_size/2;
     pos.coord.y -= player_size/2;
@@ -357,7 +357,7 @@ static void draw_player(void)
     // Position
     rect_size.x = player_size;
     rect_size.y = player_size;
-    draw_rectangle_full(man.tex[man.curr_tex], pos, rect_size);
+    draw_rectangle_full(man.frame[man.curr_frame], pos, rect_size);
     return;
 }
 

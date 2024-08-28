@@ -43,13 +43,13 @@ void create_mesh(void)
 
     /*
         Set up attributes. For example, the position attribute is represented 
-        by layout(location = 0) in the vertex shader, then 
-        layout(location = 1) is the texture coordinate attribute.
+        by layout(location = 0) in the vertex shader, then layout(location = 1) 
+        is the texture coordinate attribute.
 
         - `attr_nbr` is the number of attributes (pos and tex coord).
         - `attr_len` being 2 means vertex_data is organized in vec2.
-        - `attr_nbr * attr_len * sizeof(GLdouble)` is the stride, aka how 
-        many bytes a vertex is made of in total.
+        - `attr_nbr * attr_len * sizeof(GLdouble)` is the stride, aka how many 
+        bytes a vertex is made of in total.
         - Last arg is, in the stride, a pointer to the attribute.
     */
     i = 0;

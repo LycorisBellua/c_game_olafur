@@ -1,15 +1,15 @@
 #include "cimmerian.h"
 
 static int perform_dda(t_map* m, double cam_x, t_ray* r);
-static void set_line(t_tex* t, int x, t_ray *r);
-static void wall_texturing(t_map* m, t_tex* t, int x, t_ray* r);
+static void set_line(t_frame* f, int x, t_ray *r);
+static void wall_texturing(t_map* m, t_frame* f, int x, t_ray* r);
 
 static void raycasting(t_map* m);
 
 void draw_game(t_map* m)
 {
-    draw_floor_gradient(man.tex[man.curr_tex], m->fog_width, m->fog_color);
-    draw_ceiling_gradient(man.tex[man.curr_tex], m->fog_width, m->fog_color);
+    draw_floor(man.frame[man.curr_frame], m->fog_width, m->fog_color);
+    draw_ceiling(man.frame[man.curr_frame], m->fog_width, m->fog_color);
     raycasting(m);
     door_routine(m);
     return;
@@ -17,24 +17,24 @@ void draw_game(t_map* m)
 
 static void raycasting(t_map* m)
 {
-    t_tex *t;
+    t_frame *f;
     int x;
     t_ray r;
 
-    t = man.tex[man.curr_tex];
+    f = man.frame[man.curr_frame];
     r.alpha = 0;
     x = 0;
-    while (x < t->size.x)
+    while (x < f->size.x)
     {
-        if (perform_dda(m, 2 * x / (double)t->size.x - 1, &r))
+        if (perform_dda(m, 2 * x / (double)f->size.x - 1, &r))
         {
-            set_line(t, x, &r);
-            wall_texturing(m, t, x, &r);
+            set_line(f, x, &r);
+            wall_texturing(m, f, x, &r);
         }
         while (r.alpha)
         {
-            set_line(t, x, r.alpha->data);
-            wall_texturing(m, t, x, r.alpha->data);
+            set_line(f, x, r.alpha->data);
+            wall_texturing(m, f, x, r.alpha->data);
             list_del_one(&r.alpha, basic_free);
         }
         ++x;
@@ -96,8 +96,8 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
             return 0;
         else if (m->data[r->m_index.y * m->size.x + r->m_index.x] > 0)
         {
-            if (m->spr[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
-                % m->spr_len]->is_see_through)
+            if (m->img[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
+                % m->img_len]->is_see_through)
             {
                 alpha = malloc(sizeof(t_ray));
                 if (alpha)
@@ -123,25 +123,25 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
     return 1;
 }
 
-static void set_line(t_tex* t, int x, t_ray *r)
+static void set_line(t_frame* f, int x, t_ray *r)
 {
-    r->line_height = (int)(t->size.y / r->perp_wall_dist * man.res.h_mod);
+    r->line_height = (int)(f->size.y / r->perp_wall_dist * man.res.h_mod);
     r->coord1.x = x;
-    r->coord1.y = -r->line_height / 2 + t->size.y / 2 + man.player.height;
+    r->coord1.y = -r->line_height / 2 + f->size.y / 2 + man.player.height;
     if (r->coord1.y < 0)
         r->coord1.y = 0;
     r->coord2.x = x;
-    r->coord2.y = r->line_height / 2 + t->size.y / 2 + man.player.height;
-    if (r->coord2.y >= t->size.y)
-        r->coord2.y = t->size.y - 1;
+    r->coord2.y = r->line_height / 2 + f->size.y / 2 + man.player.height;
+    if (r->coord2.y >= f->size.y)
+        r->coord2.y = f->size.y - 1;
     return;
 }
 
-static void wall_texturing(t_map* m, t_tex* t, int x, t_ray* r)
+static void wall_texturing(t_map* m, t_frame* f, int x, t_ray* r)
 {
-    t_spr* s;
-    s = m->spr[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
-        % m->spr_len];
+    t_img* img;
+    img = m->img[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
+        % m->img_len];
 
     // Where exactly the wall was hit
     double wall_x;
@@ -151,37 +151,38 @@ static void wall_texturing(t_map* m, t_tex* t, int x, t_ray* r)
         wall_x = man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
     wall_x -= f_floor(wall_x);
 
-    // X coordinate on the sprite
-    t_ivec2 s_coord;
-    s_coord.x = (int)(wall_x * (double)s->size.x);
+    // X coordinate on the image
+    t_ivec2 img_coord;
+    img_coord.x = (int)(wall_x * (double)img->size.x);
     if ((r->side == 0 && r->ray_dir.x < 0)
         || (r->side == 1 && r->ray_dir.y > 0))
-        s_coord.x = s->size.x - s_coord.x - 1;
+        img_coord.x = img->size.x - img_coord.x - 1;
 
-    // How much to increase the sprite coordinate per screen pixel
-    double s_step;
-    s_step = (double)s->size.y / (double)r->line_height;
+    // How much to increase the image coordinate per screen pixel
+    double img_step;
+    img_step = (double)img->size.y / (double)r->line_height;
 
-    // Starting sprite coordinate
-    double s_pos;
-    s_pos = (r->coord1.y - (t->size.y / 2.0 - r->line_height / 2.0)) * s_step;
+    // Starting image coordinate
+    double img_pos;
+    img_pos = (r->coord1.y - (f->size.y / 2.0 - r->line_height / 2.0)) 
+        * img_step;
 
-    t_color* s_buf;
+    t_color* img_buf;
     t_color color;
     int y;
-    s_buf = (t_color*)s->buf;
+    img_buf = (t_color*)img->buf;
     y = r->coord1.y;
     while (y < r->coord2.y)
     {
-        // Cast the sprite coordinate to integer, and clamp to [0, SPR_H - 1]
-        s_coord.y = (int)s_pos;
-        if (s_coord.y < 0)
-            s_coord.y = 0;
-        if (s_coord.y >= s->size.y)
-            s_coord.y = s->size.y - 1;
-        s_pos += s_step;
+        // Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
+        img_coord.y = (int)img_pos;
+        if (img_coord.y < 0)
+            img_coord.y = 0;
+        if (img_coord.y >= img->size.y)
+            img_coord.y = img->size.y - 1;
+        img_pos += img_step;
 
-        color = s_buf[s_coord.y * s->size.x + s_coord.x];
+        color = img_buf[img_coord.y * img->size.x + img_coord.x];
 
         // Make color darker for y-sides
         if (r->side == 1)
@@ -191,7 +192,7 @@ static void wall_texturing(t_map* m, t_tex* t, int x, t_ray* r)
             color.b /= 2;
         }
         apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
-        draw_point(t, color, x, y);
+        draw_point(f, color, x, y);
         ++y;
     }
     return;

@@ -89,7 +89,7 @@ static int get_app_glsl_version(void)
 {
     /*
         GLSL (OpenGL Shader Language)
-        -----------------------------------------------------------------------
+        ------------------------------------------------------------------------
         There is a deprecated way to render graphics in OpenGL, but the modern 
         way is to use shaders. There are two common sorts: vertex (shape) and 
         fragment (color) shaders. Shaders are written in a language called 

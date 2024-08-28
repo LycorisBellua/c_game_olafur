@@ -3,7 +3,7 @@
 static void set_res(const GLFWvidmode* vid_mode);
 static void set_viewport(int size_x, int size_y);
 static void set_initial_viewport(GLFWwindow* window);
-static void framebuffer_size_callback(GLFWwindow* window, int size_x, int size_y);
+static void framebuffer_size_callback(GLFWwindow* window, int x, int y);
 static void window_pos_callback(GLFWwindow* window, int xpos, int ypos);
 
 GLFWwindow* get_window(char* title)
@@ -30,8 +30,8 @@ GLFWwindow* get_window(char* title)
         title, NULL, NULL);
     if (!window)
     {
-        fprintf(stderr, "Error: The window failed to create (the issue may "
-            "be with the GLFW library, but comes more likely from the OpenGL "
+        fprintf(stderr, "Error: The window failed to create (the issue may be "
+            "with the GLFW library, but comes more likely from the OpenGL "
             "library / check that your drivers are properly installed)\n");
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -75,8 +75,8 @@ void toggle_fullscreen(GLFWwindow* window)
         monitor = glfwGetPrimaryMonitor();
         mode = glfwGetVideoMode(monitor);
         glfwSetWindowMonitor(window, monitor, man.res.fullscreen.x, 
-            man.res.fullscreen.y, man.res.monitor_size.x, man.res.monitor_size.y, 
-            mode->refreshRate);
+            man.res.fullscreen.y, man.res.monitor_size.x, 
+            man.res.monitor_size.y, mode->refreshRate);
     }
     glfwSetWindowAttrib(window, GLFW_DECORATED, decorated);
     return;
@@ -86,17 +86,19 @@ static void set_res(const GLFWvidmode* vid_mode)
 {
     man.res.monitor_size.x = vid_mode->width;
     man.res.monitor_size.y = vid_mode->height;
-    man.res.aspect_ratio = (double)man.res.monitor_size.x / man.res.monitor_size.y;
+    man.res.aspect_ratio = (double)man.res.monitor_size.x / 
+        man.res.monitor_size.y;
 
     /* For monitors that are horizontally very long */
-    if (man.res.aspect_ratio > 16.0/9)
+    if (man.res.aspect_ratio > 16.0 / 9)
     {
-        man.res.aspect_ratio = 16.0/9;
+        man.res.aspect_ratio = 16.0 / 9;
         man.res.monitor_size.x = man.res.monitor_size.y * man.res.aspect_ratio;
     }
 
     man.res.window_size_default.x = min(640, man.res.monitor_size.x);
-    man.res.window_size_default.y = min(640/man.res.aspect_ratio, man.res.monitor_size.y);
+    man.res.window_size_default.y = min(640 / man.res.aspect_ratio, 
+        man.res.monitor_size.y);
     man.res.window_size.x = man.res.window_size_default.x;
     man.res.window_size.y = man.res.window_size_default.y;
 
@@ -141,17 +143,17 @@ static void set_initial_viewport(GLFWwindow* window)
 static void framebuffer_size_callback
 (
     __attribute__((unused))GLFWwindow* window, 
-    int size_x, 
-    int size_y
+    int x, 
+    int y
 )
 {
-    set_viewport(size_x, size_y);
+    set_viewport(x, y);
 
     /* for toggle_fullscreen() */
     if (glfwGetWindowAttrib(window, GLFW_DECORATED))
     {
-        man.res.window_size.x = size_x;
-        man.res.window_size.y = size_y;
+        man.res.window_size.x = x;
+        man.res.window_size.y = y;
     }
     return;
 }

@@ -11,9 +11,9 @@
 #include "math.h"
 
 #define FOV 60
-#define NBR_TEXTURES 3
-#define SPR_W 64
-#define SPR_H 64
+#define NBR_FRAMES 3
+#define IMG_W 64
+#define IMG_H 64
 
 typedef struct s_list
 {
@@ -53,12 +53,12 @@ typedef struct s_vert
     t_color color;
 } t_vert;
 
-typedef struct s_spr
+typedef struct s_img
 {
     int is_see_through;
     t_ivec2 size;
     GLubyte* buf;
-} t_spr;
+} t_img;
 
 typedef struct s_ray
 {
@@ -81,8 +81,8 @@ typedef struct s_map
     double fog_width;
     t_color fog_color;
     int* data;
-    int spr_len;
-    t_spr** spr;
+    int img_len;
+    t_img** img;
 } t_map;
 
 typedef struct s_player
@@ -93,14 +93,14 @@ typedef struct s_player
     int height;
 } t_player;
 
-typedef struct s_tex
+typedef struct s_frame
 {
     GLuint id;
     t_ivec2 size;
     t_ivec2 real_size;
     int thickness;
     GLubyte* buf;
-} t_tex;
+} t_frame;
 
 typedef struct s_res
 {
@@ -119,8 +119,8 @@ typedef struct s_manager
     double delta_time;
     double fps_count;
     t_res res;
-    t_tex* tex[NBR_TEXTURES + 1];
-    int curr_tex;
+    t_frame* frame[NBR_FRAMES + 1];
+    int curr_frame;
     t_player player;
     int movement_action[3];
     int rotation_action;
@@ -149,42 +149,44 @@ t_color get_alpha_blended_color(t_color prev, t_color new);
 
 void set_vec2(t_vec2* coord, double x, double y);
 void set_ivec2(t_ivec2* coord, int x, int y);
-int get_coord_x(t_tex* t, double normalized);
-int get_coord_y(t_tex* t, double normalized);
-double get_coord_x_norm(t_tex* t, int coord);
-double get_coord_y_norm(t_tex* t, int coord);
+int get_coord_x(t_frame* f, double normalized);
+int get_coord_y(t_frame* f, double normalized);
+double get_coord_x_norm(t_frame* f, int coord);
+double get_coord_y_norm(t_frame* f, int coord);
 t_ivec2 get_direction(t_ivec2 v1, t_ivec2 v2);
 t_vec2 get_direction_double(t_vec2 v1, t_vec2 v2);
-double get_distance(t_vec2 a, t_vec2 b);
 
 /* Draw --------------------------------------------------------------------- */
 
-void draw_point(t_tex* t, t_color color, int x, int y);
-void draw_line(t_tex* t, t_vert v1, t_vert v2);
-void draw_rectangle(t_tex* t, t_vert v, t_ivec2 size);
-void draw_rectangle_full(t_tex* t, t_vert v, t_ivec2 size);
-void draw_circle(t_tex* t, t_vert center, int radius);
-void draw_circle_full(t_tex* t, t_vert center, int radius);
-void draw_circle_full_grad(t_tex* t, t_vert center, int radius, t_color edge);
-void draw_shape(t_tex* t, t_vert arr[], int len);
-void draw_shape_full(t_tex* t, t_vert arr[], int len);
-void draw_sprite(t_tex* t, t_spr* s);
+void draw_point(t_frame* f, t_color color, int x, int y);
+void draw_line(t_frame* f, t_vert v1, t_vert v2);
+void draw_rectangle(t_frame* f, t_vert v, t_ivec2 size);
+void draw_rectangle_full(t_frame* f, t_vert v, t_ivec2 size);
+void draw_circle(t_frame* f, t_vert center, int radius);
+void draw_circle_full(t_frame* f, t_vert center, int radius);
+void draw_circle_full_grad(t_frame* f, t_vert center, int radius, t_color edge);
+void draw_shape(t_frame* f, t_vert arr[], int len);
+void draw_shape_full(t_frame* f, t_vert arr[], int len);
+void draw_image(t_frame* f, t_img* s);
 
 /* Fog ---------------------------------------------------------------------- */
 
 void update_dof(t_map* m, double increment);
 double get_fog_width(double dof);
-void draw_floor_gradient(t_tex* t, double fog_width, t_color fog);
-void draw_ceiling_gradient(t_tex* t, double fog_width, t_color fog);
+void draw_floor(t_frame* f, double fog_width, t_color fog);
+void draw_ceiling(t_frame* f, double fog_width, t_color fog);
 void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof);
 
 /* Files -------------------------------------------------------------------- */
 
 int is_digit(int c);
 char* read_file(char* filepath);
-t_spr* load_sprite(char* png_path, int is_see_through);
-t_spr* create_sprite(t_color c, int is_see_through);
-void free_sprite(t_spr* s);
+
+/* Images ------------------------------------------------------------------- */
+
+t_img* load_image_from_file(char* png_path, int is_see_through);
+t_img* create_image(t_color c);
+void free_image(t_img* s);
 
 /* Game --------------------------------------------------------------------- */
 
@@ -222,13 +224,13 @@ void update_player_transform(t_map* m);
 int create_shader_program(void);
 void free_shader_program(void);
 
-/* Textures ----------------------------------------------------------------- */
+/* Frames ------------------------------------------------------------------- */
 
-void create_textures(void);
-void use_texture(t_tex* t);
-void clear_drawing(t_tex* t);
-void save_drawing(t_tex* t);
-void free_textures(void);
+void create_frames(void);
+void use_frame(t_frame* f);
+void clear_drawing(t_frame* f);
+void save_drawing(t_frame* f);
+void free_frames(void);
 
 /* Uniform ------------------------------------------------------------------ */
 

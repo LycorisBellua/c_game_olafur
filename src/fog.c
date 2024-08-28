@@ -40,38 +40,38 @@ double get_fog_width(double dof)
     return 0.1;
 }
 
-void draw_floor_gradient(t_tex* t, double fog_width, t_color fog)
+void draw_floor(t_frame* f, double fog_width, t_color fog)
 {
-    int h_solid = t->size.y / 2 * fog_width;
-    int h_gradient = t->size.y / 2 - h_solid;
+    int h_solid = f->size.y / 2 * fog_width;
+    int h_gradient = f->size.y / 2 - h_solid;
     double factor;
     t_color bottom;
     t_vert v;
 
     bottom = get_color_rgba(42, 30, 30, 255);
     v.color = fog;
-    v.coord.y = t->size.y / 2;
-    while (v.coord.y < t->size.y / 2 + h_solid)
+    v.coord.y = f->size.y / 2;
+    while (v.coord.y < f->size.y / 2 + h_solid)
     {
         v.coord.x = 0;
-        while (v.coord.x < t->size.x)
+        while (v.coord.x < f->size.x)
         {
-            draw_point(t, v.color, v.coord.x, v.coord.y);
+            draw_point(f, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
         }
         ++v.coord.y;
     }
-    while (v.coord.y < t->size.y)
+    while (v.coord.y < f->size.y)
     {
         v.coord.x = 0;
-        factor = (double)(v.coord.y - t->size.y / 2 - h_solid) / h_gradient;
-        while (v.coord.x < t->size.x)
+        factor = (double)(v.coord.y - f->size.y / 2 - h_solid) / h_gradient;
+        while (v.coord.x < f->size.x)
         {
             v.color.r = (1 - factor) * fog.r + factor * bottom.r;
             v.color.g = (1 - factor) * fog.g + factor * bottom.g;
             v.color.b = (1 - factor) * fog.b + factor * bottom.b;
             v.color.a = 255;
-            draw_point(t, v.color, v.coord.x, v.coord.y);
+            draw_point(f, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
         }
         ++v.coord.y;
@@ -79,10 +79,10 @@ void draw_floor_gradient(t_tex* t, double fog_width, t_color fog)
     return;
 }
 
-void draw_ceiling_gradient(t_tex* t, double fog_width, t_color fog)
+void draw_ceiling(t_frame* f, double fog_width, t_color fog)
 {
-    int h_solid = t->size.y / 2 * fog_width;
-    int h_gradient = t->size.y / 2 - h_solid;
+    int h_solid = f->size.y / 2 * fog_width;
+    int h_gradient = f->size.y / 2 - h_solid;
     double factor;
     t_color top;
     t_vert v;
@@ -93,24 +93,24 @@ void draw_ceiling_gradient(t_tex* t, double fog_width, t_color fog)
     {
         v.coord.x = 0;
         factor = (double)v.coord.y / h_gradient;
-        while (v.coord.x < t->size.x)
+        while (v.coord.x < f->size.x)
         {
             v.color.r = (1 - factor) * top.r + factor * fog.r;
             v.color.g = (1 - factor) * top.g + factor * fog.g;
             v.color.b = (1 - factor) * top.b + factor * fog.b;
             v.color.a = 255;
-            draw_point(t, v.color, v.coord.x, v.coord.y);
+            draw_point(f, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
         }
         ++v.coord.y;
     }
     v.color = fog;
-    while (v.coord.y < t->size.y / 2)
+    while (v.coord.y < f->size.y / 2)
     {
         v.coord.x = 0;
-        while (v.coord.x < t->size.x)
+        while (v.coord.x < f->size.x)
         {
-            draw_point(t, v.color, v.coord.x, v.coord.y);
+            draw_point(f, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
         }
         ++v.coord.y;
