@@ -109,6 +109,11 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
                         alpha->perp_wall_dist = (side_dist.x - delta_dist.x);
                     else
                         alpha->perp_wall_dist = (side_dist.y - delta_dist.y);
+                    if (alpha->perp_wall_dist > m->dof)
+                    {
+                        free(alpha);
+                        return 0;
+                    }
                     list_add_front(&r->alpha, list_new(alpha));
                 }
             }
@@ -120,6 +125,8 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
         r->perp_wall_dist = (side_dist.x - delta_dist.x);
     else
         r->perp_wall_dist = (side_dist.y - delta_dist.y);
+    if (r->perp_wall_dist > m->dof)
+        return 0;
     return 1;
 }
 
