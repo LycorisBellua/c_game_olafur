@@ -57,6 +57,7 @@ typedef struct s_img
 {
     int is_see_through;
     t_ivec2 size;
+    t_color average_color;
     GLubyte* buf;
 } t_img;
 
@@ -121,6 +122,7 @@ typedef struct s_manager
     t_res res;
     t_frame* frame[NBR_FRAMES + 1];
     int curr_frame;
+    double tex_in_dof;
     t_player player;
     int movement_action[3];
     int rotation_action;
@@ -144,6 +146,7 @@ void basic_free(void* data);
 t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 t_color get_color_hex(char* str, GLubyte alpha);
 t_color get_alpha_blended_color(t_color prev, t_color new);
+t_color calculate_average_color(t_img *img);
 
 /* Coords ------------------------------------------------------------------- */
 
@@ -192,6 +195,7 @@ void free_image(t_img* s);
 
 void door_routine(t_map* m);
 void draw_game(t_map* m);
+void draw_wall(t_map* m, t_frame* f, t_ray* r);
 void reset_global_coordinates(void);
 void update_global_coordinates(void);
 

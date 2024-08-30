@@ -57,6 +57,7 @@ static GLFWwindow* init(char* title)
         create_mesh();
         create_frames();
         initialize_maps();
+        man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
         use_frame(man.frame[man.curr_frame]);
     }
     return window;

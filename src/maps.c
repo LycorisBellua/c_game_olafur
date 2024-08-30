@@ -191,6 +191,12 @@ static t_map* create_map(void)
         free(map);
         return 0;
     }
+    i = 0;
+    while (i < map->img_len)
+    {
+        map->img[i]->average_color = calculate_average_color(map->img[i]);
+        ++i;
+    }
     return map;
 }
 

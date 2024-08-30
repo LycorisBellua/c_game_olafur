@@ -1,10 +1,8 @@
 #include "cimmerian.h"
 
+static void raycasting(t_map* m);
 static int perform_dda(t_map* m, double cam_x, t_ray* r);
 static void set_line(t_frame* f, int x, t_ray *r);
-static void wall_texturing(t_map* m, t_frame* f, int x, t_ray* r);
-
-static void raycasting(t_map* m);
 
 void draw_game(t_map* m)
 {
@@ -29,12 +27,12 @@ static void raycasting(t_map* m)
         if (perform_dda(m, 2 * x / (double)f->size.x - 1, &r))
         {
             set_line(f, x, &r);
-            wall_texturing(m, f, x, &r);
+            draw_wall(m, f, &r);
         }
         while (r.alpha)
         {
             set_line(f, x, r.alpha->data);
-            wall_texturing(m, f, x, r.alpha->data);
+            draw_wall(m, f, r.alpha->data);
             list_del_one(&r.alpha, basic_free);
         }
         ++x;
@@ -141,66 +139,5 @@ static void set_line(t_frame* f, int x, t_ray *r)
     r->coord2.y = r->line_height / 2 + f->size.y / 2 + man.player.height;
     if (r->coord2.y >= f->size.y)
         r->coord2.y = f->size.y - 1;
-    return;
-}
-
-static void wall_texturing(t_map* m, t_frame* f, int x, t_ray* r)
-{
-    t_img* img;
-    img = m->img[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
-        % m->img_len];
-
-    // Where exactly the wall was hit
-    double wall_x;
-    if (r->side == 0)
-        wall_x = man.player.pos.y + r->perp_wall_dist * r->ray_dir.y;
-    else
-        wall_x = man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
-    wall_x -= f_floor(wall_x);
-
-    // X coordinate on the image
-    t_ivec2 img_coord;
-    img_coord.x = (int)(wall_x * (double)img->size.x);
-    if ((r->side == 0 && r->ray_dir.x < 0)
-        || (r->side == 1 && r->ray_dir.y > 0))
-        img_coord.x = img->size.x - img_coord.x - 1;
-
-    // How much to increase the image coordinate per screen pixel
-    double img_step;
-    img_step = (double)img->size.y / (double)r->line_height;
-
-    // Starting image coordinate
-    double img_pos;
-    img_pos = (r->coord1.y - (f->size.y / 2.0 - r->line_height / 2.0)) 
-        * img_step;
-
-    t_color* img_buf;
-    t_color color;
-    int y;
-    img_buf = (t_color*)img->buf;
-    y = r->coord1.y;
-    while (y < r->coord2.y)
-    {
-        // Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
-        img_coord.y = (int)img_pos;
-        if (img_coord.y < 0)
-            img_coord.y = 0;
-        if (img_coord.y >= img->size.y)
-            img_coord.y = img->size.y - 1;
-        img_pos += img_step;
-
-        color = img_buf[img_coord.y * img->size.x + img_coord.x];
-
-        // Make color darker for y-sides
-        if (r->side == 1)
-        {
-            color.r /= 2;
-            color.g /= 2;
-            color.b /= 2;
-        }
-        apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
-        draw_point(f, color, x, y);
-        ++y;
-    }
     return;
 }
