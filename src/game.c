@@ -3,6 +3,7 @@
 static void raycasting(t_map* m);
 static int perform_dda(t_map* m, double cam_x, t_ray* r);
 static void set_line(t_frame* f, int x, t_ray *r);
+static int is_obstacle_see_through(t_map* m, t_ray* r);
 
 void draw_game(t_map* m)
 {
@@ -92,10 +93,11 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
         if (r->m_index.x < 0 || r->m_index.y < 0 
             || r->m_index.x >= m->size.x || r->m_index.y >= m->size.y)
             return 0;
-        else if (m->data[r->m_index.y * m->size.x + r->m_index.x] > 0)
+        else if (m->cells[r->m_index.y * m->size.x + r->m_index.x].is_obstacle)
         {
-            if (m->img[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
-                % m->img_len]->is_see_through)
+            if (!is_obstacle_see_through(m, r))
+                hit = 1;
+            else
             {
                 alpha = malloc(sizeof(t_ray));
                 if (alpha)
@@ -115,8 +117,6 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
                     list_add_front(&r->alpha, list_new(alpha));
                 }
             }
-            else
-                hit = 1;
         }
     }
     if (r->side == 0)
@@ -140,4 +140,20 @@ static void set_line(t_frame* f, int x, t_ray *r)
     if (r->coord2.y >= f->size.y)
         r->coord2.y = f->size.y - 1;
     return;
+}
+
+static int is_obstacle_see_through(t_map* m, t_ray* r)
+{
+    t_cell* cell;
+
+    cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
+    if (r->side == 1 && r->ray_dir.y > 0)
+        return cell->tex_north->is_see_through;
+    else if (r->side == 1 && r->ray_dir.y < 0)
+        return cell->tex_south->is_see_through;
+    else if (r->side == 0 && r->ray_dir.x > 0)
+        return cell->tex_west->is_see_through;
+    else if (r->side == 0 && r->ray_dir.x < 0)
+        return cell->tex_east->is_see_through;
+    return 0;
 }

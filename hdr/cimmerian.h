@@ -73,6 +73,18 @@ typedef struct s_ray
     t_list* alpha;
 } t_ray;
 
+typedef struct s_cell
+{
+    int is_obstacle;
+    int is_door;
+    t_img* tex_floor;
+    t_img* tex_ceiling;
+    t_img* tex_north;
+    t_img* tex_east;
+    t_img* tex_south;
+    t_img* tex_west;
+} t_cell;
+
 typedef struct s_map
 {
     t_ivec2 size;
@@ -81,9 +93,9 @@ typedef struct s_map
     double dof;
     double fog_width;
     t_color fog_color;
-    int* data;
     int img_len;
     t_img** img;
+    t_cell* cells;
 } t_map;
 
 typedef struct s_player
@@ -187,7 +199,7 @@ char* read_file(char* filepath);
 
 /* Images ------------------------------------------------------------------- */
 
-t_img* load_image_from_file(char* png_path, int is_see_through);
+t_img* load_image_from_file(char* png_path);
 t_img* create_image(t_color c);
 void free_image(t_img* s);
 

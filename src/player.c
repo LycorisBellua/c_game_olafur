@@ -65,13 +65,13 @@ static void adjust_position_on_collision(t_map* m, double radius)
     t_vec2 pos;
 
     pos = man.player.pos;
-    if (m->data[(int)(pos.y) * m->size.x + (int)(pos.x + radius)])
+    if (m->cells[(int)(pos.y) * m->size.x + (int)(pos.x + radius)].is_obstacle)
         pos.x = f_floor(pos.x + radius) - radius;
-    if (m->data[(int)(pos.y) * m->size.x + (int)(pos.x - radius)])
+    if (m->cells[(int)(pos.y) * m->size.x + (int)(pos.x - radius)].is_obstacle)
         pos.x = f_ceil(pos.x - radius) + radius;
-    if (m->data[(int)(pos.y + radius) * m->size.x + (int)(pos.x)])
+    if (m->cells[(int)(pos.y + radius) * m->size.x + (int)(pos.x)].is_obstacle)
         pos.y = f_floor(pos.y + radius) - radius;
-    if (m->data[(int)(pos.y - radius) * m->size.x + (int)(pos.x)])
+    if (m->cells[(int)(pos.y - radius) * m->size.x + (int)(pos.x)].is_obstacle)
         pos.y = f_ceil(pos.y - radius) + radius;
     man.player.pos = pos;
     return;

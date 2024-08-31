@@ -2,6 +2,7 @@
 
 static void wall_flat_color(t_map* m, t_frame* f, t_ray* r);
 static void wall_texturing(t_map* m, t_frame* f, t_ray* r);
+static t_img* get_texture(t_map* m, t_ray* r);
 
 void draw_wall(t_map* m, t_frame* f, t_ray* r)
 {
@@ -20,8 +21,8 @@ static void wall_flat_color(t_map* m, t_frame* f, t_ray* r)
 
     v1.coord = r->coord1;
     v2.coord = r->coord2;
-    color = m->img[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
-        % m->img_len]->average_color;
+    color = m->cells[r->m_index.y * m->size.x + r->m_index.x]
+        .tex_north->average_color;
     if (r->side == 1)
     {
         color.r /= 2;
@@ -38,8 +39,9 @@ static void wall_flat_color(t_map* m, t_frame* f, t_ray* r)
 static void wall_texturing(t_map* m, t_frame* f, t_ray* r)
 {
     t_img* img;
-    img = m->img[(m->data[r->m_index.y * m->size.x + r->m_index.x] - 1) 
-        % m->img_len];
+    img = get_texture(m, r);
+    if (!img)
+        return;
 
     // Where exactly the wall was hit
     double wall_x;
@@ -94,4 +96,17 @@ static void wall_texturing(t_map* m, t_frame* f, t_ray* r)
         ++y;
     }
     return;
+}
+
+static t_img* get_texture(t_map* m, t_ray* r)
+{
+    if (r->side == 1 && r->ray_dir.y > 0)
+        return m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_north;
+    else if (r->side == 1 && r->ray_dir.y < 0)
+        return m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_south;
+    else if (r->side == 0 && r->ray_dir.x > 0)
+        return m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_west;
+    else if (r->side == 0 && r->ray_dir.x < 0)
+        return m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_east;
+    return 0;
 }
