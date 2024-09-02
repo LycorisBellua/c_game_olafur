@@ -46,20 +46,11 @@ static GLFWwindow* init(char* title)
 
     window = get_window(title);
     man.shader_program = create_shader_program();
-    if (!man.shader_program)
-    {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    if (!window || !man.shader_program || !create_uniform() || !create_mesh() 
+        || !create_frames() || !initialize_maps())
         return 0;
-    }
-    else
-    {
-        create_uniform();
-        create_mesh();
-        create_frames();
-        initialize_maps();
-        man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
-        use_frame(man.frame[man.curr_frame]);
-    }
+    man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
+    use_frame(man.frame[man.curr_frame]);
     return window;
 }
 

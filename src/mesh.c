@@ -18,7 +18,7 @@ static GLuint indices[] =
     0, 2, 3
 };
 
-void create_mesh(void)
+int create_mesh(void)
 {
     int i;
     int attr_nbr;
@@ -61,7 +61,7 @@ void create_mesh(void)
             (void*)(attr_len * i * sizeof(GLdouble)));
         ++i;
     }
-    return;
+    return 1;
 }
 
 void render_mesh(void)

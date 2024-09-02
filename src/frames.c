@@ -3,19 +3,25 @@
 static t_frame* create_frame(void);
 static void free_frame(t_frame** f);
 
-void create_frames(void)
+int create_frames(void)
 {
     int i;
+    int success;
 
+    success = 1;
     man.curr_frame = 0;
     i = 0;
     while (i < NBR_FRAMES)
     {
         man.frame[i] = create_frame();
+        if (!man.frame[i])
+            success = 0;
         ++i;
     }
     man.frame[i] = 0;
-    return;
+    if (!success)
+        free_frames();
+    return success;
 }
 
 void use_frame(t_frame* f)

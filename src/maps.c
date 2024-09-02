@@ -85,11 +85,13 @@ static int map_default[] =
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 };
 
-void initialize_maps(void)
+int initialize_maps(void)
 {
     man.map = create_map();
+    if (!man.map)
+        return 0;
     set_minimap_display(0);
-    return;
+    return 1;
 }
 
 void set_minimap_display(int remove_from_factor)

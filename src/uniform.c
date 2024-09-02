@@ -2,7 +2,7 @@
 
 static GLint loc = 0;
 
-void create_uniform(void)
+int create_uniform(void)
 {
     char* name;
 
@@ -12,10 +12,10 @@ void create_uniform(void)
     {
         fprintf(stderr, "Error: The \"%s\" uniform is either not found or "
             "unused in shader program ID°%d\n", name, man.shader_program);
-        exit(EXIT_FAILURE);
+        return 0;
     }
     glUniform1i(loc, 0);
-    return;
+    return 1;
 }
 
 void free_uniform(void)

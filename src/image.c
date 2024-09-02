@@ -1,7 +1,6 @@
 #include "cimmerian.h"
 #include "lodepng.h"
 
-/* Image size must be a power of two */
 t_img* load_image_from_file(char* png_path)
 {
     t_img* img;
@@ -14,8 +13,8 @@ t_img* load_image_from_file(char* png_path)
     err = lodepng_decode32_file(&img->buf, &size.x, &size.y, png_path);
     if (err)
     {
-        fprintf(stderr, "Error: %s (Lodepng lib - error n°%u)\n", 
-            lodepng_error_text(err), err);
+        fprintf(stderr, "Lodepng error n°%u for \"%s\": %s\n", 
+            err, png_path, lodepng_error_text(err));
         free_image(img);
         return 0;
     }
@@ -52,7 +51,8 @@ t_img* create_image(t_color c)
 
 void free_image(t_img* img)
 {
-    free(img->buf);
+    if (img)
+        free(img->buf);
     free(img);
     return;
 }

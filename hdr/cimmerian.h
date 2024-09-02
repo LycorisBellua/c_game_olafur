@@ -219,14 +219,14 @@ void scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
 
 /* Maps --------------------------------------------------------------------- */
 
-void initialize_maps(void);
+int initialize_maps(void);
 void set_minimap_display(int remove_from_factor);
 void draw_minimap(t_map* map);
 void free_maps(void);
 
 /* Mesh --------------------------------------------------------------------- */
 
-void create_mesh(void);
+int create_mesh(void);
 void render_mesh(void);
 void free_mesh(void);
 
@@ -242,7 +242,7 @@ void free_shader_program(void);
 
 /* Frames ------------------------------------------------------------------- */
 
-void create_frames(void);
+int create_frames(void);
 void use_frame(t_frame* f);
 void clear_drawing(t_frame* f);
 void save_drawing(t_frame* f);
@@ -250,7 +250,7 @@ void free_frames(void);
 
 /* Uniform ------------------------------------------------------------------ */
 
-void create_uniform(void);
+int create_uniform(void);
 void free_uniform(void);
 
 /* Windowing ---------------------------------------------------------------- */
