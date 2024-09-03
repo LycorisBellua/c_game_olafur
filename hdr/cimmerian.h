@@ -12,8 +12,6 @@
 
 #define FOV 60
 #define NBR_FRAMES 3
-#define IMG_W 64
-#define IMG_H 64
 
 typedef struct s_list
 {
@@ -201,6 +199,7 @@ char* read_file(char* filepath);
 
 t_img* load_image_from_file(char* png_path);
 t_img* create_image(t_color c);
+void apply_vertical_gradient(t_img* img, t_color color);
 void free_image(t_img* s);
 
 /* Game --------------------------------------------------------------------- */

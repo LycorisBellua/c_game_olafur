@@ -158,6 +158,8 @@ static t_map* create_map(void)
     map->img[2] = create_image(get_color_rgba(83, 120, 156, 255));
     map->img[3] = create_image(get_color_rgba(155, 114, 44, 255));
     map->img[4] = create_image(get_color_rgba(255, 255, 255, 255));
+    map->img[5] = create_image(get_color_rgba(255, 255, 255, 255));
+    map->img[6] = create_image(get_color_rgba(255, 255, 255, 255));
     */
     map->img[0] = load_image_from_file("img/wall_01.png");
     map->img[1] = load_image_from_file("img/wall_02.png");
@@ -172,6 +174,9 @@ static t_map* create_map(void)
         free_map(&map);
         return 0;
     }
+    i = 0;
+    while (i < 5)
+        apply_vertical_gradient(map->img[i++], map->fog_color);
     map->cells = malloc(map->size.x * map->size.y * sizeof(t_cell));
     if (!map->cells)
     {

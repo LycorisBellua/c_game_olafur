@@ -1,11 +1,10 @@
-- Add slight fog gradient to the textures themselves (bottom and top).
-- Textures for ceiling and floor.
 - Skybox which rotates with the player.
 
 - Minimap.
 - Rotate with the mouse.
 - Animated sprite.
 
+- Textures for ceiling and floor.
 - Place doors in the middle of the cell.
 - Collectibles and non-collectible objects with a collision.
 - Regen and take damage (with traps or enemies).

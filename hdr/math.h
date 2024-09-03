@@ -49,8 +49,8 @@ double factorial(int n);
 double f_sqrt(double n);
 void   swap(int* a, int* b);
 int    double_equality(double a, double b);
-int	   rng_minmax(int *seed, int min, int max);
-double	get_dist_euclidean(double ax, double ay, double bx, double by);
-double	get_dist_manhattan(double ax, double ay, double bx, double by);
+int    rng_minmax(int *seed, int min, int max);
+double get_dist_euclidean(double ax, double ay, double bx, double by);
+double get_dist_manhattan(double ax, double ay, double bx, double by);
 
 #endif

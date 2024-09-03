@@ -45,12 +45,12 @@ GLFWwindow* get_window(char* title)
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetWindowPosCallback(window, window_pos_callback);
 
-	if (!init_gl_functions())
-	{
+    if (!init_gl_functions())
+    {
         fprintf(stderr, "Error: Failed to load OpenGL functions\n");
         glfwTerminate();
         exit(EXIT_FAILURE);
-	}
+    }
 
     return window;
 }

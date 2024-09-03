@@ -274,7 +274,7 @@ int double_equality(double a, double b)
 }
 
 /* 32-bit Xorshift pseudo-RNG */
-int	rng_minmax(int *seed, int min, int max)
+int rng_minmax(int *seed, int min, int max)
 {
     unsigned int random;
 
@@ -289,15 +289,15 @@ int	rng_minmax(int *seed, int min, int max)
 }
 
 /* Euclidean distance (all directions) */
-double	get_dist_euclidean(double ax, double ay, double bx, double by)
+double get_dist_euclidean(double ax, double ay, double bx, double by)
 {
-	return (f_sqrt(f_pow(ax - bx, 2) + f_pow(ay - by, 2)));
+    return (f_sqrt(f_pow(ax - bx, 2) + f_pow(ay - by, 2)));
 }
 
 /* Manhattan distance (no diagonal) */
-double	get_dist_manhattan(double ax, double ay, double bx, double by)
+double get_dist_manhattan(double ax, double ay, double bx, double by)
 {
-	return (f_abs(ax - bx) + f_abs(ay - by));
+    return (f_abs(ax - bx) + f_abs(ay - by));
 }
 
 static double is_close_to_zero(double n)
