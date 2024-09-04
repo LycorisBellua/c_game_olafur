@@ -157,6 +157,7 @@ t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 t_color get_color_hex(char* str, GLubyte alpha);
 t_color get_alpha_blended_color(t_color prev, t_color new);
 t_color calculate_average_color(t_img *img);
+t_color get_frame_color(t_frame* f, int x, int y);
 
 /* Coords ------------------------------------------------------------------- */
 
@@ -187,7 +188,7 @@ void draw_image(t_frame* f, t_img* s);
 void update_dof(t_map* m, double increment);
 double get_fog_width(double dof);
 void draw_floor(t_frame* f, double fog_width, t_color fog);
-void draw_ceiling(t_frame* f, double fog_width, t_color fog);
+void draw_skybox(t_frame* f, t_img* skybox, double fog_width, t_color fog);
 void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof);
 
 /* Files -------------------------------------------------------------------- */

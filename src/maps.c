@@ -143,9 +143,9 @@ static t_map* create_map(void)
     map->start_dir = get_cardinal_dir('N');
     map->dof = 8;
     map->fog_width = get_fog_width(map->dof);
-    map->fog_color = get_color_rgba(0, 0, 0, 255);
+    map->fog_color = get_color_rgba(17, 15, 35, 255);
     map->cells = 0;
-    map->img_len = 7;
+    map->img_len = 8;
     map->img = malloc(map->img_len * sizeof(t_img*));
     if (!map->img)
     {
@@ -160,22 +160,24 @@ static t_map* create_map(void)
     map->img[4] = create_image(get_color_rgba(255, 255, 255, 255));
     map->img[5] = create_image(get_color_rgba(255, 255, 255, 255));
     map->img[6] = create_image(get_color_rgba(255, 255, 255, 255));
+    map->img[7] = create_image(get_color_rgba(255, 255, 255, 255));
     */
-    map->img[0] = load_image_from_file("img/wall_01.png");
-    map->img[1] = load_image_from_file("img/wall_02.png");
-    map->img[2] = load_image_from_file("img/wall_03.png");
-    map->img[3] = load_image_from_file("img/wall_04.png");
-    map->img[4] = load_image_from_file("img/doors.png");
-    map->img[5] = load_image_from_file("img/floor.png");
-    map->img[6] = load_image_from_file("img/ceiling.png");
+    map->img[0] = load_image_from_file("img/skybox.png");
+    map->img[1] = load_image_from_file("img/wall_01.png");
+    map->img[2] = load_image_from_file("img/wall_02.png");
+    map->img[3] = load_image_from_file("img/wall_03.png");
+    map->img[4] = load_image_from_file("img/wall_04.png");
+    map->img[5] = load_image_from_file("img/doors.png");
+    map->img[6] = load_image_from_file("img/floor.png");
+    map->img[7] = load_image_from_file("img/ceiling.png");
     if (!map->img[0] || !map->img[1] || !map->img[2] || !map->img[3] 
-        || !map->img[4] || !map->img[5] || !map->img[6])
+        || !map->img[4] || !map->img[5] || !map->img[6] || !map->img[7])
     {
         free_map(&map);
         return 0;
     }
-    i = 0;
-    while (i < 5)
+    i = 1;
+    while (i < 6)
         apply_vertical_gradient(map->img[i++], map->fog_color);
     map->cells = malloc(map->size.x * map->size.y * sizeof(t_cell));
     if (!map->cells)
@@ -188,12 +190,12 @@ static t_map* create_map(void)
     {
         map->cells[i].is_obstacle = map_default[i] > 0;
         map->cells[i].is_door = map_default[i] == 5;
-        map->cells[i].tex_floor = map->img[5];
-        map->cells[i].tex_ceiling = map->img[6];
-        map->cells[i].tex_north = map_default[i] ? map->img[map_default[i] - 1] : 0;
-        map->cells[i].tex_east = map_default[i] ? map->img[map_default[i] - 1] : 0;
-        map->cells[i].tex_south = map_default[i] ? map->img[map_default[i] - 1] : 0;
-        map->cells[i].tex_west = map_default[i] ? map->img[map_default[i] - 1] : 0;
+        map->cells[i].tex_floor = map->img[6];
+        map->cells[i].tex_ceiling = map->img[7];
+        map->cells[i].tex_north = map_default[i] ? map->img[map_default[i]] : 0;
+        map->cells[i].tex_east = map_default[i] ? map->img[map_default[i]] : 0;
+        map->cells[i].tex_south = map_default[i] ? map->img[map_default[i]] : 0;
+        map->cells[i].tex_west = map_default[i] ? map->img[map_default[i]] : 0;
         ++i;
     }
     return map;

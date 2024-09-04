@@ -79,15 +79,15 @@ void draw_floor(t_frame* f, double fog_width, t_color fog)
     return;
 }
 
-void draw_ceiling(t_frame* f, double fog_width, t_color fog)
+void draw_skybox(t_frame* f, t_img* skybox, double fog_width, t_color fog)
 {
     int h_solid = f->size.y / 2 * fog_width;
     int h_gradient = f->size.y / 2 - h_solid;
     double factor;
-    t_color top;
+    t_color background;
     t_vert v;
 
-    top = get_color_rgba(64, 0, 64, 255);
+    draw_image(f, skybox);
     v.coord.y = 0;
     while (v.coord.y < h_gradient)
     {
@@ -95,9 +95,10 @@ void draw_ceiling(t_frame* f, double fog_width, t_color fog)
         factor = (double)v.coord.y / h_gradient;
         while (v.coord.x < f->size.x)
         {
-            v.color.r = (1 - factor) * top.r + factor * fog.r;
-            v.color.g = (1 - factor) * top.g + factor * fog.g;
-            v.color.b = (1 - factor) * top.b + factor * fog.b;
+            background = get_frame_color(f, v.coord.x, v.coord.y);
+            v.color.r = (1 - factor) * background.r + factor * fog.r;
+            v.color.g = (1 - factor) * background.g + factor * fog.g;
+            v.color.b = (1 - factor) * background.b + factor * fog.b;
             v.color.a = 255;
             draw_point(f, v.color, v.coord.x, v.coord.y);
             ++v.coord.x;
