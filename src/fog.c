@@ -87,7 +87,7 @@ void draw_skybox(t_frame* f, t_img* skybox, double fog_width, t_color fog)
     t_color background;
     t_vert v;
 
-    draw_image(f, skybox);
+    draw_image_with_x_offset(f, skybox, skybox->size.x / 2);
     v.coord.y = 0;
     while (v.coord.y < h_gradient)
     {

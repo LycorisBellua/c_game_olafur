@@ -181,7 +181,8 @@ void draw_circle_full(t_frame* f, t_vert center, int radius);
 void draw_circle_full_grad(t_frame* f, t_vert center, int radius, t_color edge);
 void draw_shape(t_frame* f, t_vert arr[], int len);
 void draw_shape_full(t_frame* f, t_vert arr[], int len);
-void draw_image(t_frame* f, t_img* s);
+void draw_image(t_frame* f, t_img* img);
+void draw_image_with_x_offset(t_frame* f, t_img* img, int x_offset);
 
 /* Fog ---------------------------------------------------------------------- */
 
