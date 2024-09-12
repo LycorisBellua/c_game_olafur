@@ -5,7 +5,6 @@ static void move_along_lateral_axis(double speed);
 static void prevent_out_of_bounds(t_map* m, double radius);
 static void adjust_position_on_collision(t_map* m, double radius);
 static void rotate(double angle);
-static double get_angle_from_dir(t_vec2 dir);
 
 void reset_player_transform(t_map* m)
 {
@@ -33,6 +32,14 @@ void update_player_transform(t_map* m)
     adjust_position_on_collision(m, 0.25);
     rotate(RAD_45 * man.rotation_action * man.delta_time);
     return;
+}
+
+double atan2(double y, double x);
+double get_angle_from_dir(t_vec2 dir)
+{
+    if (dir.x != 0 || dir.y != 0)
+        return atan2(dir.y, dir.x);
+    return 0;
 }
 
 static void move_along_forward_axis(double speed)
@@ -89,12 +96,4 @@ static void rotate(double angle)
     man.player.plane.x = plane.x * f_cos(angle) - plane.y * f_sin(angle);
     man.player.plane.y = plane.x * f_sin(angle) + plane.y * f_cos(angle);
     return;
-}
-
-double atan2(double y, double x);
-static double get_angle_from_dir(t_vec2 dir)
-{
-    if (dir.x != 0 || dir.y != 0)
-        return atan2(dir.y, dir.x);
-    return 0;
 }

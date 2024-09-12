@@ -1,5 +1,3 @@
-- Skybox which rotates with the player.
-
 - Minimap.
 - Rotate with the mouse.
 - Animated sprite.

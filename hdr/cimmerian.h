@@ -235,6 +235,7 @@ void free_mesh(void);
 
 void reset_player_transform(t_map* m);
 void update_player_transform(t_map* m);
+double get_angle_from_dir(t_vec2 dir);
 
 /* Shader Program ----------------------------------------------------------- */
 

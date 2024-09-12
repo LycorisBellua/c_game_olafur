@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+static int get_skybox_offset(t_img* skybox, t_player* p);
+
 void update_dof(t_map* m, double increment)
 {
     m->dof = f_clamp(m->dof + increment, 0, 30);
@@ -87,7 +89,7 @@ void draw_skybox(t_frame* f, t_img* skybox, double fog_width, t_color fog)
     t_color background;
     t_vert v;
 
-    draw_image_with_x_offset(f, skybox, skybox->size.x / 2);
+    draw_image_with_x_offset(f, skybox, get_skybox_offset(skybox, &man.player)); 
     v.coord.y = 0;
     while (v.coord.y < h_gradient)
     {
@@ -128,4 +130,9 @@ void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof)
     wall->g = wall->g + factor * (fog.g - wall->g);
     wall->b = wall->b + factor * (fog.b - wall->b);
     return;
+}
+
+static int get_skybox_offset(t_img* skybox, t_player* p)
+{
+    return (get_angle_from_dir(p->dir) + PI) / RAD_360 * skybox->size.x;
 }
