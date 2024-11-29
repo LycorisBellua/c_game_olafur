@@ -37,7 +37,7 @@ static void raycasting(t_map* m)
         {
             set_line(f, x, r.alpha->data);
             draw_wall(m, f, r.alpha->data);
-            list_del_one(&r.alpha, basic_free);
+            list_del_one(&r.alpha, free);
         }
         ++x;
     }

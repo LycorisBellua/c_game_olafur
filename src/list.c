@@ -55,9 +55,3 @@ void list_del_one(t_list** list, void (*del)(void*))
     *list = next;
     return;
 }
-
-void basic_free(void* data)
-{
-    free(data);
-    return;
-}

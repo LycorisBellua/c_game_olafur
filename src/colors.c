@@ -80,7 +80,7 @@ t_color get_frame_color(t_frame* f, int x, int y)
 
 static int hex_char_to_int(char c)
 {
-    if (is_digit(c))
+    if (isdigit(c))
         return c - '0';
     else if (c >= 'a' && c <= 'f')
         return 10 + (c - 'a');

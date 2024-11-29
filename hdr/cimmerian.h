@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <ctype.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include "gl_functions.h"
@@ -149,8 +150,6 @@ void list_add_front(t_list** list, t_list* new);
 void list_add_back(t_list** list, t_list* new);
 void list_del_one(t_list** list, void (*del)(void*));
 
-void basic_free(void* data);
-
 /* Colors ------------------------------------------------------------------- */
 
 t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
@@ -194,7 +193,6 @@ void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof);
 
 /* Files -------------------------------------------------------------------- */
 
-int is_digit(int c);
 char* read_file(char* filepath);
 
 /* Images ------------------------------------------------------------------- */
