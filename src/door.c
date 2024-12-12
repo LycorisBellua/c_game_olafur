@@ -16,7 +16,6 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
 {
     t_list* head;
     t_list* curr;
-    t_list* next;
     t_ivec2 door;
     int i;
     int x;
@@ -28,7 +27,6 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
     head = curr;
     while (curr)
     {
-        next = curr->next;
         door = *((t_ivec2*)curr->data);
         i = -max_dist;
         while (i <= max_dist + 1)
@@ -37,17 +35,18 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
             {
                 m->cells[door.y * m->size.x + door.x].is_obstacle = 1;
                 if (curr == head)
-                    head = next;
-                free(curr->data);
-                free(curr);
+                    head = curr->next;
+                list_del_one(&curr, free);
                 break;
             }
             if ((x == door.x + i && y == door.y) 
                 || (x == door.x && y == door.y + i))
+			{
+				curr = curr->next;
                 break;
+			}
             ++i;
         }
-        curr = next;
     }
     *opened_doors = head;
     return;
@@ -56,6 +55,7 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
 static void open_new_door(t_map* m, t_list** opened_doors, int max_dist)
 {
     t_ivec2* coord;
+    t_list* node;
     int i;
     int x;
     int y;
@@ -65,24 +65,34 @@ static void open_new_door(t_map* m, t_list** opened_doors, int max_dist)
     i = -max_dist;
     while (i <= max_dist)
     {
-        if (m->cells[y * m->size.x + (x + i)].is_door)
+        if (m->cells[y * m->size.x + (x + i)].is_door
+            && m->cells[y * m->size.x + (x + i)].is_obstacle)
         {
             coord = malloc(sizeof(t_ivec2));
             if (coord)
             {
                 set_ivec2(coord, x + i, y);
-                list_add_back(opened_doors, list_new(coord));
+                node = list_new(coord);
+                if (!node)
+                    free(coord);
+                else
+                    list_add_back(opened_doors, node);
             }
             m->cells[y * m->size.x + (x + i)].is_obstacle = 0;
             break;
         }
-        else if (m->cells[(y + i) * m->size.x + x].is_door)
+        else if (m->cells[(y + i) * m->size.x + x].is_door
+            && m->cells[(y + i) * m->size.x + x].is_obstacle)
         {
             coord = malloc(sizeof(t_ivec2));
             if (coord)
             {
                 set_ivec2(coord, x, y + i);
-                list_add_back(opened_doors, list_new(coord));
+                node = list_new(coord);
+                if (!node)
+                    free(coord);
+                else
+                    list_add_back(opened_doors, node);
             }
             m->cells[(y + i) * m->size.x + x].is_obstacle = 0;
             break;

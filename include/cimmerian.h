@@ -16,6 +16,7 @@
 
 typedef struct s_list
 {
+    struct s_list* prev;
     void* data;
     struct s_list* next;
 } t_list;
