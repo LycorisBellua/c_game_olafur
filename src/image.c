@@ -1,5 +1,4 @@
 #include "cimmerian.h"
-#include "lodepng.h"
 
 t_img* load_image_from_file(char* png_path)
 {

@@ -7,9 +7,10 @@
 #include <strings.h>
 #include <ctype.h>
 #include <GL/gl.h>
-#include <GLFW/glfw3.h>
+#include "glfw3.h"
 #include "gl_functions.h"
 #include "math.h"
+#include "lodepng.h"
 
 #define FOV 60
 #define NBR_FRAMES 3
