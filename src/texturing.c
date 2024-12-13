@@ -1,10 +1,10 @@
 #include "cimmerian.h"
 
-static void wall_flat_color(t_map* m, t_frame* f, t_ray* r);
-static void wall_texturing(t_map* m, t_frame* f, t_ray* r);
-static t_img* get_texture(t_map* m, t_ray* r);
+static void wall_flat_color(t_map *m, t_frame *f, t_ray *r);
+static void wall_texturing(t_map *m, t_frame *f, t_ray *r);
+static t_img *get_texture(t_map *m, t_ray *r);
 
-void draw_wall(t_map* m, t_frame* f, t_ray* r)
+void draw_wall(t_map *m, t_frame *f, t_ray *r)
 {
     if (r->perp_wall_dist > m->dof * man.tex_in_dof)
         wall_flat_color(m, f, r);
@@ -13,7 +13,7 @@ void draw_wall(t_map* m, t_frame* f, t_ray* r)
     return;
 }
 
-static void wall_flat_color(t_map* m, t_frame* f, t_ray* r)
+static void wall_flat_color(t_map *m, t_frame *f, t_ray *r)
 {
     t_vert v1;
     t_vert v2;
@@ -36,9 +36,9 @@ static void wall_flat_color(t_map* m, t_frame* f, t_ray* r)
     return;
 }
 
-static void wall_texturing(t_map* m, t_frame* f, t_ray* r)
+static void wall_texturing(t_map *m, t_frame *f, t_ray *r)
 {
-    t_img* img;
+    t_img *img;
     img = get_texture(m, r);
     if (!img)
         return;
@@ -67,10 +67,10 @@ static void wall_texturing(t_map* m, t_frame* f, t_ray* r)
     img_pos = (r->coord1.y - (f->size.y / 2.0 - r->line_height / 2.0)) 
         * img_step;
 
-    t_color* img_buf;
+    t_color *img_buf;
     t_color color;
     int y;
-    img_buf = (t_color*)img->buf;
+    img_buf = (t_color *)img->buf;
     y = r->coord1.y;
     while (y < r->coord2.y)
     {
@@ -98,7 +98,7 @@ static void wall_texturing(t_map* m, t_frame* f, t_ray* r)
     return;
 }
 
-static t_img* get_texture(t_map* m, t_ray* r)
+static t_img *get_texture(t_map *m, t_ray *r)
 {
     if (r->side == 1 && r->ray_dir.y > 0)
         return m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_north;

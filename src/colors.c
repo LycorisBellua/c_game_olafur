@@ -13,7 +13,7 @@ t_color get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
     return c;
 }
 
-t_color get_color_hex(char* str, GLubyte alpha)
+t_color get_color_hex(const char *str, GLubyte alpha)
 {
     int i;
     t_color c;
@@ -52,7 +52,7 @@ t_color calculate_average_color(t_img *img)
     total_color[1] = 0;
     total_color[2] = 0;
     total_color[3] = 0;
-    buf = (t_color*)img->buf;
+    buf = (t_color *)img->buf;
     len = img->size.x * img->size.y;
     i = 0;
     while (i < len)
@@ -71,11 +71,11 @@ t_color calculate_average_color(t_img *img)
     return average;
 }
 
-t_color get_frame_color(t_frame* f, int x, int y)
+t_color get_frame_color(t_frame *f, int x, int y)
 {
     x *= f->thickness;
     y *= f->thickness;
-    return ((t_color*)f->buf)[y * f->real_size.x + x];
+    return ((t_color *)f->buf)[y * f->real_size.x + x];
 }
 
 static int hex_char_to_int(char c)

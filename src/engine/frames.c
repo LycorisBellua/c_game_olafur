@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
-static t_frame* create_frame(void);
-static void free_frame(t_frame** f);
+static t_frame *create_frame(void);
+static void free_frame(t_frame **f);
 
 int create_frames(void)
 {
@@ -24,13 +24,13 @@ int create_frames(void)
     return success;
 }
 
-void use_frame(t_frame* f)
+void use_frame(t_frame *f)
 {
     glBindTexture(GL_TEXTURE_2D, f ? f->id : 0);
     return;
 }
 
-void clear_drawing(t_frame* f)
+void clear_drawing(t_frame *f)
 {
     size_t i;
     size_t len;
@@ -46,7 +46,7 @@ void clear_drawing(t_frame* f)
     return;
 }
 
-void save_drawing(t_frame* f)
+void save_drawing(t_frame *f)
 {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, f->real_size.x, f->real_size.y, 0, 
         GL_RGBA, GL_UNSIGNED_BYTE, f->buf);
@@ -68,9 +68,9 @@ void free_frames(void)
     return;
 }
 
-static t_frame* create_frame(void)
+static t_frame *create_frame(void)
 {
-    t_frame* f;
+    t_frame *f;
     long buf_length;
 
     f = malloc(sizeof(t_frame));
@@ -110,7 +110,7 @@ static t_frame* create_frame(void)
     return f;
 }
 
-static void free_frame(t_frame** f)
+static void free_frame(t_frame **f)
 {
     /*
         Check whether the pointer is null. If it is, it means it doesn't 

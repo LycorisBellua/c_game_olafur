@@ -1,8 +1,8 @@
 #include "cimmerian.h"
 
-t_img* load_image_from_file(char* png_path)
+t_img *load_image_from_file(const char *png_path)
 {
-    t_img* img;
+    t_img *img;
     t_uivec2 size;
     unsigned int err;
     
@@ -24,9 +24,9 @@ t_img* load_image_from_file(char* png_path)
     return img;
 }
 
-t_img* create_image(t_color c)
+t_img *create_image(t_color c)
 {
-    t_img* img;
+    t_img *img;
     int i;
 
     img = malloc(sizeof(t_img));
@@ -42,24 +42,24 @@ t_img* create_image(t_color c)
     }
     i = 0;
     while (i < img->size.x * img->size.y)
-        *((t_color*)img->buf + i++) = c;
+        *((t_color *)img->buf + i++) = c;
     img->average_color = c;
     img->is_see_through = img->average_color.a < 255;
     return img;
 }
 
-void apply_vertical_gradient(t_img* img, t_color color)
+void apply_vertical_gradient(t_img *img, t_color color)
 {
     int x;
     int y;
     double gradient_strength;
     double dist_from_edge;
     double factor;
-    t_color* buf;
-    t_color* pixel;
+    t_color *buf;
+    t_color *pixel;
 
     gradient_strength = 0.6;
-    buf = (t_color*)img->buf;
+    buf = (t_color *)img->buf;
     y = 0;
     while (y < img->size.y)
     {
@@ -80,7 +80,7 @@ void apply_vertical_gradient(t_img* img, t_color color)
     return;
 }
 
-void free_image(t_img* img)
+void free_image(t_img *img)
 {
     if (img)
         free(img->buf);

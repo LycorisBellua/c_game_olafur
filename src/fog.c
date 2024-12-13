@@ -1,8 +1,8 @@
 #include "cimmerian.h"
 
-static int get_skybox_offset(t_img* skybox, t_player* p);
+static int get_skybox_offset(t_img *skybox, t_player *p);
 
-void update_dof(t_map* m, double increment)
+void update_dof(t_map *m, double increment)
 {
     m->dof = f_clamp(m->dof + increment, 0, 30);
     m->fog_width = get_fog_width(m->dof);
@@ -42,7 +42,7 @@ double get_fog_width(double dof)
     return 0.1;
 }
 
-void draw_floor(t_frame* f, double fog_width, t_color fog)
+void draw_floor(t_frame *f, double fog_width, t_color fog)
 {
     int h_solid = f->size.y / 2 * fog_width;
     int h_gradient = f->size.y / 2 - h_solid;
@@ -81,7 +81,7 @@ void draw_floor(t_frame* f, double fog_width, t_color fog)
     return;
 }
 
-void draw_skybox(t_frame* f, t_img* skybox, double fog_width, t_color fog)
+void draw_skybox(t_frame *f, t_img *skybox, double fog_width, t_color fog)
 {
     int h_solid = f->size.y / 2 * fog_width;
     int h_gradient = f->size.y / 2 - h_solid;
@@ -121,7 +121,7 @@ void draw_skybox(t_frame* f, t_img* skybox, double fog_width, t_color fog)
     return;
 }
 
-void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof)
+void apply_wall_fog(t_color *wall, t_color fog, double dist, double dof)
 {
     double factor;
 
@@ -132,7 +132,7 @@ void apply_wall_fog(t_color* wall, t_color fog, double dist, double dof)
     return;
 }
 
-static int get_skybox_offset(t_img* skybox, t_player* p)
+static int get_skybox_offset(t_img *skybox, t_player *p)
 {
     return (get_angle_from_dir(p->dir) + PI) / RAD_360 * skybox->size.x;
 }

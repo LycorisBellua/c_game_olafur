@@ -1,21 +1,21 @@
 #include "cimmerian.h"
 
-static void close_last_door(t_map* m, t_list** opened_doors, int max_dist);
-static void open_new_door(t_map* m, t_list** opened_doors, int max_dist);
+static void close_last_door(t_map *m, t_list **opened_doors, int max_dist);
+static void open_new_door(t_map *m, t_list **opened_doors, int max_dist);
 
-void door_routine(t_map* m)
+void door_routine(t_map *m)
 {
-    static t_list* opened_doors = 0;
+    static t_list *opened_doors = 0;
 
     close_last_door(m, &opened_doors, 3);
     open_new_door(m, &opened_doors, 2);
     return;
 }
 
-static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
+static void close_last_door(t_map *m, t_list **opened_doors, int max_dist)
 {
-    t_list* head;
-    t_list* curr;
+    t_list *head;
+    t_list *curr;
     t_ivec2 door;
     int i;
     int x;
@@ -27,7 +27,7 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
     head = curr;
     while (curr)
     {
-        door = *((t_ivec2*)curr->data);
+        door = *((t_ivec2 *)curr->data);
         i = -max_dist;
         while (i <= max_dist + 1)
         {
@@ -41,10 +41,10 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
             }
             if ((x == door.x + i && y == door.y) 
                 || (x == door.x && y == door.y + i))
-			{
-				curr = curr->next;
+            {
+                curr = curr->next;
                 break;
-			}
+            }
             ++i;
         }
     }
@@ -52,10 +52,10 @@ static void close_last_door(t_map* m, t_list** opened_doors, int max_dist)
     return;
 }
 
-static void open_new_door(t_map* m, t_list** opened_doors, int max_dist)
+static void open_new_door(t_map *m, t_list **opened_doors, int max_dist)
 {
-    t_ivec2* coord;
-    t_list* node;
+    t_ivec2 *coord;
+    t_list *node;
     int i;
     int x;
     int y;

@@ -58,7 +58,7 @@ int create_mesh(void)
         glEnableVertexArrayAttrib(VAO, i);
         glVertexAttribPointer(i, attr_nbr, GL_DOUBLE, GL_FALSE, 
             attr_nbr * attr_len * sizeof(GLdouble), 
-            (void*)(attr_len * i * sizeof(GLdouble)));
+            (void *)(attr_len * i * sizeof(GLdouble)));
         ++i;
     }
     return 1;

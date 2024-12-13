@@ -2,21 +2,19 @@
 
 static int app_glsl_version = 0;
 
-static GLuint compile_shader(GLenum type, char* filepath);
+static GLuint compile_shader(GLenum type, const char *filepath);
 static int get_app_glsl_version(void);
-static void set_glsl_version_in_shader(char* ptr_shader);
-static void free_shader(GLuint* id);
+static void set_glsl_version_in_shader(char *ptr_shader);
+static void free_shader(GLuint *id);
 
 int create_shader_program(void)
 {
-    char* vs_filepath;
-    char* fs_filepath;
+    const char *vs_filepath = "src/engine/shaders/vs.glsl";
+    const char *fs_filepath = "src/engine/shaders/fs.glsl";
     GLuint vs;
     GLuint fs;
     int shader_program;
 
-    vs_filepath = "shaders/vs.glsl";
-    fs_filepath = "shaders/fs.glsl";
     vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
     fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
 
@@ -60,10 +58,10 @@ void free_shader_program(void)
     return;
 }
 
-static GLuint compile_shader(GLenum type, char* filepath)
+static GLuint compile_shader(GLenum type, const char *filepath)
 {
     GLuint id_shader;
-    char* ptr;
+    char *ptr;
 
     ptr = read_file(filepath);
     if (!ptr)
@@ -79,7 +77,7 @@ static GLuint compile_shader(GLenum type, char* filepath)
     set_glsl_version_in_shader(ptr);
 
     id_shader = glCreateShader(type);
-    glShaderSource(id_shader, 1, (const GLchar**)&ptr, 0);
+    glShaderSource(id_shader, 1, (const GLchar **)&ptr, 0);
     glCompileShader(id_shader);
     free(ptr);
     return id_shader;
@@ -109,7 +107,7 @@ static int get_app_glsl_version(void)
         - OpenGL 3.2 and below --> GLSL 150
     */
 
-    const unsigned char* gl = glGetString(GL_VERSION); /* "4.6.0 [...]" */
+    const unsigned char *gl = glGetString(GL_VERSION); /* "4.6.0 [...]" */
 
     if (gl[0]-48 >= 4)
         return 400;
@@ -119,7 +117,7 @@ static int get_app_glsl_version(void)
         return 150;
 }
 
-static void set_glsl_version_in_shader(char* ptr_shader)
+static void set_glsl_version_in_shader(char *ptr_shader)
 {
     int i;
     int glsl;
@@ -149,7 +147,7 @@ static void set_glsl_version_in_shader(char* ptr_shader)
     return;
 }
 
-static void free_shader(GLuint* id)
+static void free_shader(GLuint *id)
 {
     glDeleteShader(*id);
 

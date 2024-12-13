@@ -1,14 +1,14 @@
 #include "cimmerian.h"
 
-static void set_res(const GLFWvidmode* vid_mode);
+static void set_res(const GLFWvidmode *vid_mode);
 static void set_viewport(int size_x, int size_y);
-static void set_initial_viewport(GLFWwindow* window);
-static void framebuffer_size_callback(GLFWwindow* window, int x, int y);
-static void window_pos_callback(GLFWwindow* window, int xpos, int ypos);
+static void set_initial_viewport(GLFWwindow *window);
+static void framebuffer_size_callback(GLFWwindow *window, int x, int y);
+static void window_pos_callback(GLFWwindow *window, int xpos, int ypos);
 
-GLFWwindow* get_window(char* title)
+GLFWwindow *get_window(const char *title)
 {
-    GLFWwindow* window;
+    GLFWwindow *window;
 
     if (!glfwInit())
     {
@@ -55,11 +55,11 @@ GLFWwindow* get_window(char* title)
     return window;
 }
 
-void toggle_fullscreen(GLFWwindow* window)
+void toggle_fullscreen(GLFWwindow *window)
 {
     int decorated;
-    GLFWmonitor* monitor;
-    const GLFWvidmode* mode;
+    GLFWmonitor *monitor;
+    const GLFWvidmode *mode;
 
     decorated = !glfwGetWindowAttrib(window, GLFW_DECORATED);
     if (decorated)
@@ -82,7 +82,7 @@ void toggle_fullscreen(GLFWwindow* window)
     return;
 }
 
-static void set_res(const GLFWvidmode* vid_mode)
+static void set_res(const GLFWvidmode *vid_mode)
 {
     man.res.monitor_size.x = vid_mode->width;
     man.res.monitor_size.y = vid_mode->height;
@@ -131,7 +131,7 @@ static void set_viewport(int size_x, int size_y)
     return;
 }
 
-static void set_initial_viewport(GLFWwindow* window)
+static void set_initial_viewport(GLFWwindow *window)
 {
     t_ivec2 size;
 
@@ -142,7 +142,7 @@ static void set_initial_viewport(GLFWwindow* window)
 
 static void framebuffer_size_callback
 (
-    __attribute__((unused))GLFWwindow* window, 
+    __attribute__((unused))GLFWwindow *window, 
     int x, 
     int y
 )
@@ -158,7 +158,7 @@ static void framebuffer_size_callback
     return;
 }
 
-static void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
+static void window_pos_callback(GLFWwindow *window, int xpos, int ypos)
 {
     /* for toggle_fullscreen() */
     if (glfwGetWindowAttrib(window, GLFW_DECORATED))

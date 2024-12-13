@@ -1,13 +1,13 @@
 #include "cimmerian.h"
 
-static void raycasting(t_map* m);
-static int perform_dda(t_map* m, double cam_x, t_ray* r);
-static void set_line(t_frame* f, int x, t_ray *r);
-static int is_obstacle_see_through(t_map* m, t_ray* r);
+static void raycasting(t_map *m);
+static int perform_dda(t_map *m, double cam_x, t_ray *r);
+static void set_line(t_frame *f, int x, t_ray *r);
+static int is_obstacle_see_through(t_map *m, t_ray *r);
 
-void draw_game(t_map* m)
+void draw_game(t_map *m)
 {
-    t_frame* f;
+    t_frame *f;
 
     f = man.frame[man.curr_frame];
     draw_skybox(f, m->img[0], m->fog_width, m->fog_color);
@@ -17,7 +17,7 @@ void draw_game(t_map* m)
     return;
 }
 
-static void raycasting(t_map* m)
+static void raycasting(t_map *m)
 {
     t_frame *f;
     int x;
@@ -44,13 +44,13 @@ static void raycasting(t_map* m)
     return;
 }
 
-static int perform_dda(t_map* m, double cam_x, t_ray* r)
+static int perform_dda(t_map *m, double cam_x, t_ray *r)
 {
     t_vec2 delta_dist;
     t_ivec2 step;
     t_vec2 side_dist;
     int hit;
-    t_ray* alpha;
+    t_ray *alpha;
 
     r->ray_dir.x = man.player.dir.x + man.player.plane.x * cam_x;
     r->ray_dir.y = man.player.dir.y + man.player.plane.y * cam_x;
@@ -131,7 +131,7 @@ static int perform_dda(t_map* m, double cam_x, t_ray* r)
     return 1;
 }
 
-static void set_line(t_frame* f, int x, t_ray *r)
+static void set_line(t_frame *f, int x, t_ray *r)
 {
     r->line_height = (int)(f->size.y / r->perp_wall_dist * man.res.h_mod);
     r->coord1.x = x;
@@ -145,9 +145,9 @@ static void set_line(t_frame* f, int x, t_ray *r)
     return;
 }
 
-static int is_obstacle_see_through(t_map* m, t_ray* r)
+static int is_obstacle_see_through(t_map *m, t_ray *r)
 {
-    t_cell* cell;
+    t_cell *cell;
 
     cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
     if (r->side == 1 && r->ray_dir.y > 0)

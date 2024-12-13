@@ -1,8 +1,9 @@
 #include "cimmerian.h"
 
+static t_ivec2 get_direction(t_ivec2 v1, t_ivec2 v2);
 static t_color get_lerp_c(t_color c1, t_color c2, int steps, int total_steps);
 
-void draw_line(t_frame* f, t_vert v1, t_vert v2)
+void draw_line(t_frame *f, t_vert v1, t_vert v2)
 {
     int steps;
     int total_steps;
@@ -26,6 +27,15 @@ void draw_line(t_frame* f, t_vert v1, t_vert v2)
         coord.y += increment.y;
     }
     return;
+}
+
+static t_ivec2 get_direction(t_ivec2 v1, t_ivec2 v2)
+{
+    t_ivec2 dir;
+
+    dir.x = v1.x < 0 && v2.x < 0 ? abs(v1.x) + v2.x : v2.x - v1.x;
+    dir.y = v1.y < 0 && v2.y < 0 ? abs(v1.y) + v2.y : v2.y - v1.y;
+    return dir;
 }
 
 static t_color get_lerp_c(t_color c1, t_color c2, int steps, int total_steps)

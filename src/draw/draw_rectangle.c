@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-void draw_rectangle(t_frame* f, t_vert v, t_ivec2 size)
+void draw_rectangle(t_frame *f, t_vert v, t_ivec2 size)
 {
     t_vert v2;
     t_vert v3;
@@ -26,7 +26,7 @@ void draw_rectangle(t_frame* f, t_vert v, t_ivec2 size)
     return;
 }
 
-void draw_rectangle_full(t_frame* f, t_vert v, t_ivec2 size)
+void draw_rectangle_full(t_frame *f, t_vert v, t_ivec2 size)
 {
     int target_y;
     t_vert v2;

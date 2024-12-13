@@ -3,7 +3,7 @@ CFLAGS = -Iinclude -Wall -Wextra -g#-ansi -pedantic
 LDFLAGS = -lGL -Llib -lglfw34 -lm
 
 BIN = cimmerian
-SRC = $(wildcard lib/*.c) $(wildcard src/*.c) $(wildcard src/*/*.c)
+SRC = $(wildcard */*.c) $(wildcard */*/*.c)
 OBJ = $(SRC:.c=.o)
 
 all: $(BIN)

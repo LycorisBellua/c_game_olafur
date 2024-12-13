@@ -2,11 +2,11 @@
 
 static void move_along_forward_axis(double speed);
 static void move_along_lateral_axis(double speed);
-static void prevent_out_of_bounds(t_map* m, double radius);
-static void adjust_position_on_collision(t_map* m, double radius);
+static void prevent_out_of_bounds(t_map *m, double radius);
+static void adjust_position_on_collision(t_map *m, double radius);
 static void rotate(double angle);
 
-void reset_player_transform(t_map* m)
+void reset_player_transform(t_map *m)
 {
     man.player.pos.x = m->start_pos.x;
     man.player.pos.y = m->start_pos.y;
@@ -24,7 +24,7 @@ void reset_player_transform(t_map* m)
     The radius is the player size.
     Rotation angle is in radian per second.
 */
-void update_player_transform(t_map* m)
+void update_player_transform(t_map *m)
 {
     move_along_forward_axis(2.0 * man.movement_action[2] * man.delta_time);
     move_along_lateral_axis(2.0 * man.movement_action[0] * man.delta_time);
@@ -56,7 +56,7 @@ static void move_along_lateral_axis(double speed)
     return;
 }
 
-static void prevent_out_of_bounds(t_map* m, double radius)
+static void prevent_out_of_bounds(t_map *m, double radius)
 {
     t_vec2 pos;
 
@@ -67,7 +67,7 @@ static void prevent_out_of_bounds(t_map* m, double radius)
     return;
 }
 
-static void adjust_position_on_collision(t_map* m, double radius)
+static void adjust_position_on_collision(t_map *m, double radius)
 {
     t_vec2 pos;
 

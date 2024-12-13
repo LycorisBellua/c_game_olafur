@@ -2,17 +2,17 @@
 
 t_manager man;
 
-static GLFWwindow* init(char* title);
+static GLFWwindow *init(const char *title);
 static void update_time_variables(void);
 static void clear_buffer(void);
-static void draw_into_buffer(t_map* m);
-static void swap_buffer(GLFWwindow* window);
+static void draw_into_buffer(t_map *m);
+static void swap_buffer(GLFWwindow *window);
 static void deinit(void);
 
 int main(void)
 {
-    char* title = "Cimmerian";
-    GLFWwindow* window = init(title);
+    const char *title = "Cimmerian";
+    GLFWwindow *window = init(title);
     
     if (!window)
         return EXIT_FAILURE;
@@ -40,9 +40,9 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-static GLFWwindow* init(char* title)
+static GLFWwindow *init(const char *title)
 {
-    GLFWwindow* window;
+    GLFWwindow *window;
 
     window = get_window(title);
     man.shader_program = create_shader_program();
@@ -74,7 +74,7 @@ static void clear_buffer(void)
     return;
 }
 
-static void draw_into_buffer(t_map* m)
+static void draw_into_buffer(t_map *m)
 {
     draw_game(m);
     save_drawing(man.frame[man.curr_frame]);
@@ -82,7 +82,7 @@ static void draw_into_buffer(t_map* m)
     return;
 }
 
-static void swap_buffer(GLFWwindow* window)
+static void swap_buffer(GLFWwindow *window)
 {
     /*
         Keep using glfwSwapBuffers or the viewport remains black.

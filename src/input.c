@@ -6,7 +6,7 @@ static int rotation_input = 0;
 static void update_movement_action(int axis);
 static void update_rotation_action(void);
 /* static int get_local_key(int physical_key); */
-static void input_escape(GLFWwindow* window, int action);
+static void input_escape(GLFWwindow *window, int action);
 
 static void input_up(int action);
 static void input_down(int action);
@@ -17,7 +17,7 @@ static void input_strafe_right(int action);
 
 void physical_key_callback
 (
-    GLFWwindow* window, 
+    GLFWwindow *window, 
     int key, 
     __attribute__((unused)) int scancode, 
      int action, 
@@ -59,7 +59,7 @@ void physical_key_callback
 
 void scroll_callback
 (
-    __attribute__((unused))GLFWwindow* window, 
+    __attribute__((unused))GLFWwindow *window, 
     __attribute__((unused))double x_offset, 
     double y_offset
 )
@@ -97,14 +97,14 @@ static void update_rotation_action(void)
 static int get_local_key(int physical_key)
 {
     // It will be in lowercase, so -32 for uppercase
-    char* key_name = glfwGetKeyName(physical_key, 0);
+    char *key_name = glfwGetKeyName(physical_key, 0);
     return key_name[0] - 32;
 }
 */
 
-static void input_escape(GLFWwindow* window, int action)
+static void input_escape(GLFWwindow *window, int action)
 {
-    /* 
+    /*
        By default, the window closing event is triggered by the cross window 
        button or Alt+F4. We also decide to set the Escape key as such.
 

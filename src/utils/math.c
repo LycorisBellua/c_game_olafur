@@ -220,9 +220,9 @@ double f_sqrt(double n)
 
     x = n;
     xhalf = 0.5 * x;
-    i = *(int64_t*)&x;
+    i = *(int64_t *)&x;
     i = 0x5fe6ec85e7de30da - (i >> 1);
-    x = *(double*)&i;
+    x = *(double *)&i;
     x = x * (1.5 - xhalf * x * x);
     x = x * (1.5 - xhalf * x * x);
     x = x * (1.5 - xhalf * x * x);
@@ -237,9 +237,9 @@ double f_sqrt(double n)
 
     x = n;
     xhalf = 0.5f * x;
-    i = *(int32_t*)&x;
+    i = *(int32_t *)&x;
     i = 0x5f375a86 - (i >> 1);
-    x = *(float*)&i;
+    x = *(float *)&i;
     x = x * (1.5f - xhalf * x * x);
     x = x * (1.5f - xhalf * x * x);
     x = x * (1.5f - xhalf * x * x);
@@ -247,7 +247,7 @@ double f_sqrt(double n)
 */
 }
 
-void swap(int* a, int* b)
+void swap(int *a, int *b)
 {
     int tmp;
 

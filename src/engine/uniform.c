@@ -4,9 +4,7 @@ static GLint loc = 0;
 
 int create_uniform(void)
 {
-    char* name;
-
-    name = "frame_texture";
+    const char *name = "frame_texture";
     loc = glGetUniformLocation(man.shader_program, name);
     if (loc < 0)
     {

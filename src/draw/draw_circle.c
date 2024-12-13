@@ -3,7 +3,7 @@
 static t_color interpolate_color(t_color start, t_color end, double ratio);
 
 /* Bresenham/Midpoint Circle Drawing algorithm */
-void draw_circle(t_frame* f, t_vert center, int radius)
+void draw_circle(t_frame *f, t_vert center, int radius)
 {
     int x;
     int y;
@@ -44,7 +44,7 @@ void draw_circle(t_frame* f, t_vert center, int radius)
 }
 
 /* Bresenham/Midpoint Circle Drawing algorithm */
-void draw_circle_full(t_frame* f, t_vert center, int radius)
+void draw_circle_full(t_frame *f, t_vert center, int radius)
 {
     int x;
     int y;
@@ -83,7 +83,7 @@ void draw_circle_full(t_frame* f, t_vert center, int radius)
     return;
 }
 
-void draw_circle_full_grad(t_frame* f, t_vert center, int radius, t_color edge)
+void draw_circle_full_grad(t_frame *f, t_vert center, int radius, t_color edge)
 {
     int x;
     int y;

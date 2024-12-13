@@ -1,10 +1,10 @@
 #include "cimmerian.h"
 
-static void draw_shape_full_unicolor(t_frame* f, t_vert arr[], int len);
-static void draw_full_triangle(t_frame* f, t_vert* v);
-static void draw_blended_p(t_frame* f, t_vert* v, t_ivec2 p, float inv_denom);
+static void draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len);
+static void draw_full_triangle(t_frame *f, t_vert *v);
+static void draw_blended_p(t_frame *f, t_vert *v, t_ivec2 p, float inv_denom);
 
-void draw_shape(t_frame* f, t_vert arr[], int len)
+void draw_shape(t_frame *f, t_vert arr[], int len)
 {
     int i;
 
@@ -18,7 +18,7 @@ void draw_shape(t_frame* f, t_vert arr[], int len)
 }
 
 /* TODO: Use Delaunay triangulation for shapes of more than 3 vertices */
-void draw_shape_full(t_frame* f, t_vert arr[], int len)
+void draw_shape_full(t_frame *f, t_vert arr[], int len)
 {
     if (len < 3)
         draw_shape(f, arr, len);
@@ -30,7 +30,7 @@ void draw_shape_full(t_frame* f, t_vert arr[], int len)
 }
 
 /* Scanline Fill algorithm */
-static void draw_shape_full_unicolor(t_frame* f, t_vert arr[], int len)
+static void draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len)
 {
     int i;
     int j;
@@ -92,7 +92,7 @@ static void draw_shape_full_unicolor(t_frame* f, t_vert arr[], int len)
 }
 
 /* Barycentric weights for color blending */
-static void draw_full_triangle(t_frame* f, t_vert* v)
+static void draw_full_triangle(t_frame *f, t_vert *v)
 {
     t_ivec2 min_coord;
     t_ivec2 max_coord;
@@ -121,7 +121,7 @@ static void draw_full_triangle(t_frame* f, t_vert* v)
     return;
 }
 
-static void draw_blended_p(t_frame* f, t_vert* v, t_ivec2 p, float inv_denom)
+static void draw_blended_p(t_frame *f, t_vert *v, t_ivec2 p, float inv_denom)
 {
     t_color color;
     float w[3];

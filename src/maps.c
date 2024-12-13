@@ -23,8 +23,8 @@
 static int minimap_factor = MINIMAP_FACTOR_MAX;
 static t_ivec2 display_offset = {0};
 
-static t_map* create_map(void);
-static void free_map(t_map** map);
+static t_map *create_map(void);
+static void free_map(t_map **map);
 static t_vec2 get_cardinal_dir(char c);
 
 static int map_default[] = 
@@ -97,7 +97,7 @@ int initialize_maps(void)
 void set_minimap_display(int remove_from_factor)
 {
     int cell;
-    t_frame* f;
+    t_frame *f;
     int MAP_CELL_LEN = 64;
     int MAX_CELL_AMOUNT = 8;
 
@@ -114,7 +114,7 @@ void set_minimap_display(int remove_from_factor)
 }
 
 /*
-void draw_minimap(t_map* map)
+void draw_minimap(t_map *map)
 {
     draw_map(map);
     draw_player();
@@ -128,10 +128,10 @@ void free_maps(void)
     return;
 }
 
-static t_map* create_map(void)
+static t_map *create_map(void)
 {
     int i;
-    t_map* map;
+    t_map *map;
 
     map = malloc(sizeof(t_map));
     if (!map)
@@ -146,7 +146,7 @@ static t_map* create_map(void)
     map->fog_color = get_color_rgba(17, 15, 35, 255);
     map->cells = 0;
     map->img_len = 8;
-    map->img = malloc(map->img_len * sizeof(t_img*));
+    map->img = malloc(map->img_len * sizeof(t_img *));
     if (!map->img)
     {
         free(map);
@@ -201,7 +201,7 @@ static t_map* create_map(void)
     return map;
 }
 
-static void free_map(t_map** map)
+static void free_map(t_map **map)
 {
     int i;
 
@@ -240,7 +240,7 @@ static t_vec2 get_cardinal_dir(char c)
 }
 
 /*
-static void draw_map(t_map* m)
+static void draw_map(t_map *m)
 {
     int max_len_cell;
     int max_len_map;
