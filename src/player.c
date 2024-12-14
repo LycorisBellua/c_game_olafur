@@ -9,6 +9,8 @@ static void	rotate(double angle);
 
 void	reset_player_transform(t_map *m)
 {
+	g_man.movement_speed = DEFAULT_MOVE_SPEED;
+	g_man.rotation_speed = DEFAULT_ROT_SPEED;
 	g_man.player.pos.x = m->start_pos.x;
 	g_man.player.pos.y = m->start_pos.y;
 	g_man.player.dir.x = 1;
@@ -27,11 +29,13 @@ void	reset_player_transform(t_map *m)
 */
 void	update_player_transform(t_map *m)
 {
-	move_along_forward_axis(2.0 * g_man.movement_action[2] * g_man.delta_time);
-	move_along_lateral_axis(2.0 * g_man.movement_action[0] * g_man.delta_time);
-	prevent_out_of_bounds(m, 0.25);
-	adjust_position_on_collision(m, 0.25);
-	rotate(RAD_45 * g_man.rotation_action * g_man.delta_time);
+	move_along_forward_axis(g_man.movement_speed * norm(g_man.movement_action.y)
+		* g_man.dt);
+	move_along_lateral_axis(g_man.movement_speed * norm(g_man.movement_action.x)
+		* g_man.dt);
+	prevent_out_of_bounds(m, g_man.rotation_speed);
+	adjust_position_on_collision(m, g_man.rotation_speed);
+	rotate(RAD_45 * norm(g_man.rotation_action) * g_man.dt);
 	return ;
 }
 

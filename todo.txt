@@ -1,22 +1,12 @@
-- Minimap.
+- Use a colored glass or something to showcase transparency. Maybe an enemy.
+- The goal is to reach a tall monolith. It can cycle through different colors 
+or even have an animated texture.
 - Rotate with the mouse.
+- Minimap.
 - Animated sprite.
-
 - Textures for ceiling and floor.
 - Place doors in the middle of the cell.
-- Collectibles and non-collectible objects with a collision.
-- Regen and take damage (with traps or enemies).
-- Damage enemies.
-- Secret doors.
-- Look up and down (pitch) with the mouse.
 - Text support.
-- HUD (minimap, health bar, etc).
-- Use the height value for something: jump. It makes the walls higher or lower 
-than the middle of the screen. Use a height value of 0 for the default look of 
-the game. Have a vertical jump if no direction is pressed, otherwise go in the 
-direction in question. But be careful not to bypass collisions. Jumping can be 
-useful to avoid an enemy's attack, or to jump across toxic water, or even to 
-jump on a moving platform. Of course, if I can jump, I can crawl as well.
 - Sound.
 - Enter a seed to generate a level, or maybe you can send a map file. Support 
 for both?

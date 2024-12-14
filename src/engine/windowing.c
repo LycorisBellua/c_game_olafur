@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
 static void	set_res(const GLFWvidmode *vid_mode);
-static void	set_viewport(int size_x, int size_y);
+static void	set_viewport(int framebuffer_size_x, int framebuffer_size_y);
 static void	set_initial_viewport(GLFWwindow *window);
 static void	framebuffer_size_callback(GLFWwindow *window, int x, int y);
 static void	window_pos_callback(GLFWwindow *window, int xpos, int ypos);
@@ -116,21 +116,21 @@ static void	set_res(const GLFWvidmode *vid_mode)
 	return ;
 }
 
-static void	set_viewport(int size_x, int size_y)
+static void	set_viewport(int framebuffer_size_x, int framebuffer_size_y)
 {
-	t_ivec2	new_size;
-	t_ivec2	offset;
-
-	new_size.x = size_x;
-	new_size.y = size_x / g_man.res.aspect_ratio;
-	if (new_size.y > size_y)
+	g_man.res.viewport_size.x = framebuffer_size_x;
+	g_man.res.viewport_size.y = framebuffer_size_x / g_man.res.aspect_ratio;
+	if (g_man.res.viewport_size.y > framebuffer_size_y)
 	{
-		new_size.y = size_y;
-		new_size.x = size_y * g_man.res.aspect_ratio;
+		g_man.res.viewport_size.y = framebuffer_size_y;
+		g_man.res.viewport_size.x = framebuffer_size_y * g_man.res.aspect_ratio;
 	}
-	offset.x = (size_x - new_size.x) / 2;
-	offset.y = (size_y - new_size.y) / 2;
-	glViewport(offset.x, offset.y, new_size.x, new_size.y);
+	g_man.res.viewport_offset.x = (framebuffer_size_x
+			- g_man.res.viewport_size.x) / 2;
+	g_man.res.viewport_offset.y = (framebuffer_size_y
+			- g_man.res.viewport_size.y) / 2;
+	glViewport(g_man.res.viewport_offset.x, g_man.res.viewport_offset.y,
+		g_man.res.viewport_size.x, g_man.res.viewport_size.y);
 	return ;
 }
 

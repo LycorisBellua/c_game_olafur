@@ -17,7 +17,10 @@ int	main(void)
 	if (!window)
 		return (EXIT_FAILURE);
 	glfwSetKeyCallback(window, physical_key_callback);
+	glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
 	glfwSetScrollCallback(window, scroll_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
+    glfwSetCursorPosCallback(window, cursor_pos_callback);
 	reset_player_transform(g_man.map);
 	g_man.player.pos.x = 22;
 	g_man.player.pos.y = 12;
@@ -56,9 +59,9 @@ static void	update_time_variables(void)
 	double			current_time;
 
 	current_time = glfwGetTime();
-	g_man.delta_time = current_time - last_time;
+	g_man.dt = current_time - last_time;
 	last_time = current_time;
-	g_man.fps_count = 1 / g_man.delta_time;
+	g_man.fps_count = 1 / g_man.dt;
 	return ;
 }
 

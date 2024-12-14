@@ -16,6 +16,8 @@
 
 # define FOV 60
 # define NBR_FRAMES 3
+# define DEFAULT_MOVE_SPEED 2.0
+# define DEFAULT_ROT_SPEED 0.25
 
 typedef struct s_list
 {
@@ -126,6 +128,8 @@ typedef struct s_res
 	t_ivec2	window_size_default;
 	t_ivec2	window_size;
 	t_ivec2	window_position;
+	t_ivec2	viewport_size;
+	t_ivec2	viewport_offset;
 	t_ivec2	fullscreen;
 }	t_res;
 
@@ -133,15 +137,19 @@ typedef struct s_manager
 {
 	GLuint		shader_program;
 	GLint		uniform_loc;
-	double		delta_time;
+	double		dt;
 	double		fps_count;
 	t_res		res;
 	t_frame		*frame[NBR_FRAMES + 1];
 	int			curr_frame;
 	double		tex_in_dof;
 	t_player	player;
-	int			movement_action[3];
+	double		movement_speed;
+	double		rotation_speed;
+	t_ivec2		movement_action;
 	int			rotation_action;
+	int			click_action;
+	t_ivec2		cursor;
 	t_map		*map;
 }	t_manager;
 
@@ -219,6 +227,9 @@ void		physical_key_callback(GLFWwindow *window, int key, int scancode,
 				int action, int mods);
 void		scroll_callback(GLFWwindow *window, double x_offset,
 				double y_offset);
+void		mouse_callback(GLFWwindow *window, int button, int action,
+				int mods);
+void		cursor_pos_callback(GLFWwindow *window, double xpos, double ypos);
 
 /* Maps --------------------------------------------------------------------- */
 
