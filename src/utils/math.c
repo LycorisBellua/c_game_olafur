@@ -1,306 +1,305 @@
 #include "cimmerian.h"
 
-static double is_close_to_zero(double n);
+static double	is_close_to_zero(double n);
 
-int abs(int n)
+int	abs(int n)
 {
-    if (n < 0)
-        return -n;
-    return n;
+	if (n < 0)
+		return (-n);
+	return (n);
 }
 
-double f_abs(double n)
+double	f_abs(double n)
 {
-    if (n < 0)
-        return -n;
-    return n;
+	if (n < 0)
+		return (-n);
+	return (n);
 }
 
-int min(int a, int b)
+int	min(int a, int b)
 {
-    if (a < b)
-        return a;
-    return b;
+	if (a < b)
+		return (a);
+	return (b);
 }
 
-double f_min(double a, double b)
+double	f_min(double a, double b)
 {
-    if (a < b)
-        return a;
-    return b;
+	if (a < b)
+		return (a);
+	return (b);
 }
 
-int max(int a, int b)
+int	max(int a, int b)
 {
-    if (a > b)
-        return a;
-    return b;
+	if (a > b)
+		return (a);
+	return (b);
 }
 
-double f_max(double a, double b)
+double	f_max(double a, double b)
 {
-    if (a > b)
-        return a;
-    return b;
+	if (a > b)
+		return (a);
+	return (b);
 }
 
-double f_floor(double n)
+double	f_floor(double n)
 {
-    return (int)n;
+	return ((int)n);
 }
 
-double f_ceil(double n)
+double	f_ceil(double n)
 {
-    return (int)n + 1;
+	return ((int)n + 1);
 }
 
-double f_round(double n)
+double	f_round(double n)
 {
-    if (n - (int)n < 0.5)
-        return f_floor(n);
-    return f_ceil(n);
+	if (n - (int)n < 0.5)
+		return (f_floor(n));
+	return (f_ceil(n));
 }
 
-int normalize(int n)
+int	norm(int n)
 {
-    if (n < 0)
-        return -1;
-    else if (n > 0)
-        return 1;
-    return 0;
+	if (n < 0)
+		return (-1);
+	else if (n > 0)
+		return (1);
+	return (0);
 }
 
-double f_normalize(double n)
+double	f_norm(double n)
 {
-    if (n < 0)
-        return -1;
-    else if (n > 0)
-        return 1;
-    return 0;
+	if (n < 0)
+		return (-1);
+	else if (n > 0)
+		return (1);
+	return (0);
 }
 
-int clamp(int n, int min, int max)
+int	clamp(int n, int min, int max)
 {
-    if (n < min)
-        return min;
-    else if (n > max)
-        return max;
-    return n;
+	if (n < min)
+		return (min);
+	else if (n > max)
+		return (max);
+	return (n);
 }
 
-double f_clamp(double n, double min, double max)
+double	f_clamp(double n, double min, double max)
 {
-    if (n < min)
-        return min;
-    else if (n > max)
-        return max;
-    return n;
+	if (n < min)
+		return (min);
+	else if (n > max)
+		return (max);
+	return (n);
 }
 
-int clamp_min(int n, int min)
+int	clamp_min(int n, int min)
 {
-    if (n < min)
-        return min;
-    return n;
+	if (n < min)
+		return (min);
+	return (n);
 }
 
-double f_clamp_min(double n, double min)
+double	f_clamp_min(double n, double min)
 {
-    if (n < min)
-        return min;
-    return n;
+	if (n < min)
+		return (min);
+	return (n);
 }
 
-int clamp_max(int n, int max)
+int	clamp_max(int n, int max)
 {
-    if (n > max)
-        return max;
-    return n;
+	if (n > max)
+		return (max);
+	return (n);
 }
 
-double f_clamp_max(double n, double max)
+double	f_clamp_max(double n, double max)
 {
-    if (n > max)
-        return max;
-    return n;
+	if (n > max)
+		return (max);
+	return (n);
 }
 
-double clamp_rad(double rad)
+double	clamp_rad(double rad)
 {
-    if (rad < 0)
-        return rad + RAD_360;
-    else if (rad > RAD_360)
-        return rad - RAD_360;
-    return rad;
+	if (rad < 0)
+		return (rad + RAD_360);
+	else if (rad > RAD_360)
+		return (rad - RAD_360);
+	return (rad);
 }
 
-double deg2rad(double deg)
+double	deg2rad(double deg)
 {
-    return deg * PI_OVER_180;
+	return (deg * PI_OVER_180);
 }
 
-double rad2deg(double rad)
+double	rad2deg(double rad)
 {
-    return rad * PI_OVER_180_INVERSE;
+	return (rad * PI_OVER_180_INVERSE);
 }
 
-double f_sin(double rad)
+double	f_sin(double rad)
 {
-    int n;
-    double result;
-    double fact;
+	int		n;
+	double	result;
+	double	fact;
 
-    n = 0;
-    result = 0.0;
-    while (n < 10)
-    {
-        fact = factorial(2 * n + 1);
-        if (!is_close_to_zero(fact))
-            result += f_pow(-1, n) * f_pow(rad, 2 * n + 1) / fact;
-        ++n;
-    }
-    return result;
+	n = 0;
+	result = 0.0;
+	while (n < 10)
+	{
+		fact = factorial(2 * n + 1);
+		if (!is_close_to_zero(fact))
+			result += f_pow(-1, n) * f_pow(rad, 2 * n + 1) / fact;
+		++n;
+	}
+	return (result);
 }
 
-double f_cos(double rad)
+double	f_cos(double rad)
 {
-    int n;
-    double result;
-    double fact;
+	int		n;
+	double	result;
+	double	fact;
 
-    n = 0;
-    result = 0.0;
-    while (n < 10)
-    {
-        fact = factorial(2 * n);
-        if (!is_close_to_zero(fact))
-            result += f_pow(-1, n) * f_pow(rad, 2 * n) / fact;
-        ++n;
-    }
-    return result;
+	n = 0;
+	result = 0.0;
+	while (n < 10)
+	{
+		fact = factorial(2 * n);
+		if (!is_close_to_zero(fact))
+			result += f_pow(-1, n) * f_pow(rad, 2 * n) / fact;
+		++n;
+	}
+	return (result);
 }
 
-double f_tan(double rad)
+double	f_tan(double rad)
 {
-    double cos;
+	double	cos;
 
-    cos = f_cos(rad);
-    if (is_close_to_zero(cos))
-        return 0.0;
-    return f_sin(rad) / cos;
+	cos = f_cos(rad);
+	if (is_close_to_zero(cos))
+		return (0.0);
+	return (f_sin(rad) / cos);
 }
 
-double f_pow(double base, int exponent)
+double	f_pow(double base, int exponent)
 {
-    int i;
-    double result;
+	int		i;
+	double	result;
 
-    i = 0;
-    result = 1.0;
-    while (i < exponent)
-    {
-        result *= base;
-        ++i;
-    }
-    return result;
+	i = 0;
+	result = 1.0;
+	while (i < exponent)
+	{
+		result *= base;
+		++i;
+	}
+	return (result);
 }
 
-double factorial(int n)
+double	factorial(int n)
 {
-    if (n < 2)
-        return 1.0;
-    return n * factorial(n - 1);
+	if (n < 2)
+		return (1.0);
+	return (n * factorial(n - 1));
 }
 
-double f_sqrt(double n)
+double	f_sqrt(double n)
 {
-    double x;
-    double xhalf;
-    int64_t i;
+	double	x;
+	double	xhalf;
+	int64_t	i;
 
-    x = n;
-    xhalf = 0.5 * x;
-    i = *(int64_t *)&x;
-    i = 0x5fe6ec85e7de30da - (i >> 1);
-    x = *(double *)&i;
-    x = x * (1.5 - xhalf * x * x);
-    x = x * (1.5 - xhalf * x * x);
-    x = x * (1.5 - xhalf * x * x);
-    return x * n;
-
-/*
-    SQRT FLOAT VERSION:
-
-    float x;
-    float xhalf;
-    int32_t i;
-
-    x = n;
-    xhalf = 0.5f * x;
-    i = *(int32_t *)&x;
-    i = 0x5f375a86 - (i >> 1);
-    x = *(float *)&i;
-    x = x * (1.5f - xhalf * x * x);
-    x = x * (1.5f - xhalf * x * x);
-    x = x * (1.5f - xhalf * x * x);
-    return x * n;
-*/
+	x = n;
+	xhalf = 0.5 * x;
+	i = *(int64_t *)&x;
+	i = 0x5fe6ec85e7de30da - (i >> 1);
+	x = *(double *)&i;
+	x = x * (1.5 - xhalf * x * x);
+	x = x * (1.5 - xhalf * x * x);
+	x = x * (1.5 - xhalf * x * x);
+	return (x * n);
 }
 
-void swap(int *a, int *b)
+float	f32_sqrt(float n)
 {
-    int tmp;
+	float	x;
+	float	xhalf;
+	int32_t	i;
 
-    tmp = *a;
-    *a = *b;
-    *b = tmp;
-    return;
+	x = n;
+	xhalf = 0.5f * x;
+	i = *(int32_t *)&x;
+	i = 0x5f375a86 - (i >> 1);
+	x = *(float *)&i;
+	x = x * (1.5f - xhalf * x * x);
+	x = x * (1.5f - xhalf * x * x);
+	x = x * (1.5f - xhalf * x * x);
+	return (x * n);
 }
 
-int double_equality(double a, double b)
+void	swap(int *a, int *b)
 {
-    /* If different signs */
-    if ((a < 0 && b > 0) || (a > 0 && b < 0))
-        return 0;
+	int	tmp;
 
-    /* Remove decimal part */
-    a -= (int)a;
-    b -= (int)b;
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+	return ;
+}
 
-    /* Check up to 7 digits after the floating point */
-    a *= f_pow(10, 7);
-    b *= f_pow(10, 7);
-    return (int)a == (int)b;
+int	double_equality(double a, double b)
+{
+	/* If different signs */
+	if ((a < 0 && b > 0) || (a > 0 && b < 0))
+		return (0);
+
+	/* Remove decimal part */
+	a -= (int)a;
+	b -= (int)b;
+
+	/* Check up to 7 digits after the floating point */
+	a *= f_pow(10, 7);
+	b *= f_pow(10, 7);
+	return ((int)a == (int)b);
 }
 
 /* 32-bit Xorshift pseudo-RNG */
-int rng_minmax(int *seed, int min, int max)
+int	rng_minmax(int *seed, int min, int max)
 {
-    unsigned int random;
+	unsigned int	random;
 
-    if (!*seed)
-        *seed = 1;
-    random = *seed;
-    random ^= random << 13;
-    random ^= random >> 17;
-    random ^= random << 5;
-    *seed = random;
-    return random % (max - min + 1) + min;
+	if (!*seed)
+		*seed = 1;
+	random = *seed;
+	random ^= random << 13;
+	random ^= random >> 17;
+	random ^= random << 5;
+	*seed = random;
+	return (random % (max - min + 1) + min);
 }
 
 /* Euclidean distance (all directions) */
-double get_dist_euclidean(double ax, double ay, double bx, double by)
+double	get_dist_euclidean(double ax, double ay, double bx, double by)
 {
-    return (f_sqrt(f_pow(ax - bx, 2) + f_pow(ay - by, 2)));
+	return (f_sqrt(f_pow(ax - bx, 2) + f_pow(ay - by, 2)));
 }
 
 /* Manhattan distance (no diagonal) */
-double get_dist_manhattan(double ax, double ay, double bx, double by)
+double	get_dist_manhattan(double ax, double ay, double bx, double by)
 {
-    return (f_abs(ax - bx) + f_abs(ay - by));
+	return (f_abs(ax - bx) + f_abs(ay - by));
 }
 
-static double is_close_to_zero(double n)
+static double	is_close_to_zero(double n)
 {
-    return f_abs(n) < 1e-15;
+	return (f_abs(n) < 1e-15);
 }
