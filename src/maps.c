@@ -162,14 +162,14 @@ static t_map	*create_map(void)
 	map->img[6] = create_image(get_color_rgba(255, 255, 255, 255));
 	map->img[7] = create_image(get_color_rgba(255, 255, 255, 255));
 	*/
-	map->img[0] = load_image_from_file("img/skybox.png");
-	map->img[1] = load_image_from_file("img/wall_01.png");
-	map->img[2] = load_image_from_file("img/wall_02.png");
-	map->img[3] = load_image_from_file("img/wall_03.png");
-	map->img[4] = load_image_from_file("img/wall_04.png");
-	map->img[5] = load_image_from_file("img/doors.png");
-	map->img[6] = load_image_from_file("img/floor.png");
-	map->img[7] = load_image_from_file("img/ceiling.png");
+	map->img[0] = load_image_from_file("img/textures/skybox.png");
+	map->img[1] = load_image_from_file("img/textures/wall_01.png");
+	map->img[2] = load_image_from_file("img/textures/wall_02.png");
+	map->img[3] = load_image_from_file("img/textures/wall_03.png");
+	map->img[4] = load_image_from_file("img/textures/wall_04.png");
+	map->img[5] = load_image_from_file("img/textures/doors.png");
+	map->img[6] = load_image_from_file("img/textures/floor.png");
+	map->img[7] = load_image_from_file("img/textures/ceiling.png");
 	if (!map->img[0] || !map->img[1] || !map->img[2] || !map->img[3]
 		|| !map->img[4] || !map->img[5] || !map->img[6] || !map->img[7])
 	{

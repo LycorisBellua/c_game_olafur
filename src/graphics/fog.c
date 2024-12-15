@@ -9,7 +9,7 @@ void	update_dof(t_map *m, double increment)
 	return ;
 }
 
-double get_fog_width(double dof)
+double	get_fog_width(double dof)
 {
 	if (dof < 2)
 		return (1);
@@ -94,7 +94,7 @@ void	draw_skybox(t_frame *f, t_img *skybox, double fog_width, t_color fog)
 	h_solid = f->size.y / 2 * fog_width;
 	h_gradient = f->size.y / 2 - h_solid;
 	draw_image_with_x_offset(f, skybox, get_skybox_offset(skybox,
-		&g_man.player)); 
+			&g_man.player));
 	v.coord.y = 0;
 	while (v.coord.y < h_gradient)
 	{

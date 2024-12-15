@@ -1,23 +1,10 @@
 #include "cimmerian.h"
 
-static void	raycasting(t_map *m);
 static int	perform_dda(t_map *m, double cam_x, t_ray *r);
 static void	set_line(t_frame *f, int x, t_ray *r);
 static int	is_obstacle_see_through(t_map *m, t_ray *r);
 
-void	draw_game(t_map *m)
-{
-	t_frame	*f;
-
-	f = g_man.frame[g_man.curr_frame];
-	draw_skybox(f, m->img[0], m->fog_width, m->fog_color);
-	draw_floor(f, m->fog_width, m->fog_color);
-	raycasting(m);
-	door_routine(m);
-	return ;
-}
-
-static void	raycasting(t_map *m)
+void	raycasting(t_map *m)
 {
 	t_frame	*f;
 	int		x;

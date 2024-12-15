@@ -24,7 +24,8 @@ t_img	*load_image_from_file(const char *png_path)
 	return (img);
 }
 
-t_img	*create_image(t_color c)
+/* Size can be 128x128 */
+t_img	*create_image(t_color c, t_ivec2 size)
 {
 	t_img	*img;
 	int		i;
@@ -32,8 +33,8 @@ t_img	*create_image(t_color c)
 	img = malloc(sizeof(t_img));
 	if (!img)
 		return (0);
-	img->size.x = 128;
-	img->size.y = 128;
+	img->size.x = size.x;
+	img->size.y = size.y;
 	img->buf = malloc(img->size.x * img->size.y * 4 * sizeof(GLubyte));
 	if (!img->buf)
 	{

@@ -16,6 +16,7 @@
 
 # define FOV 60
 # define NBR_FRAMES 3
+# define SPRITE_LEN 6
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROT_SPEED 0.25
 
@@ -58,12 +59,42 @@ typedef struct s_vert
 	t_color	color;
 }	t_vert;
 
+typedef struct s_spr
+{
+	char	*id;
+	t_ivec2	size;
+	t_ivec2	shadow_offset;
+	int		still_frame;
+	int		cycle_len;
+	int		cycle_index;
+	long	elapsed_time_in_ms;
+	long	cycle_time_in_ms;
+	t_color	**cycle;
+	t_color	**cycle_shadow;
+}	t_spr;
+
+typedef struct s_img_seg
+{
+	char	*id;
+	t_ivec2	size;
+	t_ivec2	shadow_offset;
+	int		still_frame;
+	int		cycle_len;
+	long	cycle_time_in_ms;
+	t_ivec2	*cycle;
+}	t_img_seg;
+
 typedef struct s_img
 {
-	int		is_see_through;
-	t_ivec2	size;
-	t_color	average_color;
-	GLubyte	*buf;
+	char		*path;
+	char		*path_shadow;
+	t_ivec2		size;
+	int			is_see_through;
+	t_color		average_color;
+	GLubyte		*buf;
+	GLubyte		*buf_shadow;
+	int			segment_len;
+	t_img_seg	*seg;
 }	t_img;
 
 typedef struct s_ray
@@ -100,6 +131,7 @@ typedef struct s_map
 	t_color	fog_color;
 	int		img_len;
 	t_img	**img;
+	t_spr	sprites[SPRITE_LEN];
 	t_cell	*cells;
 }	t_map;
 
@@ -168,6 +200,7 @@ void		list_del_one(t_list **list, void (*del)(void*));
 t_color		get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 t_color		get_color_hex(const char *str, GLubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
+int			cmp_color(t_color a, t_color b);
 t_color		calculate_average_color(t_img *img);
 t_color		get_frame_color(t_frame *f, int x, int y);
 
@@ -190,6 +223,9 @@ void		draw_shape(t_frame *f, t_vert arr[], int len);
 void		draw_shape_full(t_frame *f, t_vert arr[], int len);
 void		draw_image(t_frame *f, t_img *img);
 void		draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset);
+void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
+void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos, long dt_ms);
+t_spr		*get_sprite(char *id);
 
 /* Fog ---------------------------------------------------------------------- */
 
@@ -209,14 +245,20 @@ char		*strjoin(char const *s1, char const *s2);
 /* Images ------------------------------------------------------------------- */
 
 t_img		*load_image_from_file(const char *png_path);
-t_img		*create_image(t_color c);
+t_img		*create_image(t_color c, t_ivec2 size);
 void		apply_vertical_gradient(t_img *img, t_color color);
 void		free_image(t_img *s);
+void		add_outline_to_font(t_spr *font);
+int			set_img_file_obj(t_img *file, int fd);
+int			create_sprites_from_file(t_img *file, int *i_spr);
+void		free_sprites(void);
+int			set_sprite_array(char *path);
 
 /* Game --------------------------------------------------------------------- */
 
+void		run_game_loop(t_map *m);
 void		door_routine(t_map *m);
-void		draw_game(t_map *m);
+void		raycasting(t_map *m);
 void		draw_wall(t_map *m, t_frame *f, t_ray *r);
 void		reset_global_coordinates(void);
 void		update_global_coordinates(void);

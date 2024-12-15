@@ -16,6 +16,10 @@ void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 
 void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 {
+	/*
+	if (g_man.cursor.x >= 0 && g_man.cursor.y >= 0)
+		draw_cursor(frame, &g_man.sprites[1], g_man.cursor, g_man.click_action);
+	*/
 	g_man.cursor.x = ((int)xpos - g_man.res.viewport_offset.x)
 		* g_man.res.window_size_default.x / g_man.res.viewport_size.x;
 	g_man.cursor.y = ((int)ypos - g_man.res.viewport_offset.y)
