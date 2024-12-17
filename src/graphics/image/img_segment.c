@@ -54,6 +54,7 @@ void	free_sprites(void)
 		}
 		free(g_man.map->sprites[i].cycle);
 		free(g_man.map->sprites[i].cycle_shadow);
+		bzero(g_man.map->sprites + i, sizeof(t_spr));
 		++i;
 	}
 	return ;

@@ -8,6 +8,7 @@
 # include <ctype.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <sys/time.h>
 # include <GL/gl.h>
 # include "glfw3.h"
 # include "gl_functions.h"
@@ -170,7 +171,6 @@ typedef struct s_manager
 	GLuint		shader_program;
 	GLint		uniform_loc;
 	double		dt;
-	double		fps_count;
 	t_res		res;
 	t_frame		*frame[NBR_FRAMES + 1];
 	int			curr_frame;
@@ -256,6 +256,7 @@ int			set_sprite_array(char *path);
 
 /* Game --------------------------------------------------------------------- */
 
+void		set_delta_time(void);
 void		run_game_loop(t_map *m);
 void		door_routine(t_map *m);
 void		raycasting(t_map *m);

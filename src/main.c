@@ -3,7 +3,6 @@
 t_manager	g_man;
 
 static GLFWwindow	*init(const char *title);
-static void			update_time_variables(void);
 static void			clear_buffer(void);
 static void			draw_into_buffer(t_map *m);
 static void			swap_buffer(GLFWwindow *window);
@@ -26,8 +25,7 @@ int	main(void)
 	g_man.player.pos.y = 12;
 	while (!glfwWindowShouldClose(window))
 	{
-		update_time_variables();
-		/* printf("FPS: %.2f\n", fps_count); */
+		set_delta_time(); // FPS = 1 / dt
 		clear_buffer();
 		draw_into_buffer(g_man.map);
 		swap_buffer(window);
@@ -54,18 +52,6 @@ static GLFWwindow	*init(const char *title)
 	g_man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
 	use_frame(g_man.frame[g_man.curr_frame]);
 	return (window);
-}
-
-static void	update_time_variables(void)
-{
-	static double	last_time;
-	double			current_time;
-
-	current_time = glfwGetTime();
-	g_man.dt = current_time - last_time;
-	last_time = current_time;
-	g_man.fps_count = 1 / g_man.dt;
-	return ;
 }
 
 static void	clear_buffer(void)

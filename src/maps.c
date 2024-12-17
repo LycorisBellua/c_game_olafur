@@ -133,7 +133,7 @@ static t_map	*create_map(void)
 	int		i;
 	t_map	*map;
 
-	map = malloc(sizeof(t_map));
+	map = calloc(1, sizeof(t_map));
 	if (!map)
 		return (0);
 	map->size.x = MAP_SIZE_X;
