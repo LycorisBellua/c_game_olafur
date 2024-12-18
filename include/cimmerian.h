@@ -240,6 +240,7 @@ void		update_background(t_map *m, t_img *bg);
 /* Files -------------------------------------------------------------------- */
 
 char		*read_file(const char *filepath);
+char		**get_json_content(const char *filepath);
 char		*gnl(int fd);
 char		*strjoin(char const *s1, char const *s2);
 
@@ -253,7 +254,7 @@ void		draw_background(t_frame *f, t_map *m);
 void		apply_vertical_gradient(t_img *img, t_color color);
 void		free_image(t_img *s);
 void		add_outline_to_font(t_spr *font);
-int			set_img_file_obj(t_img *file, int fd);
+int			set_img_file_obj(t_img *file, char **lines, size_t *i);
 int			create_sprites_from_file(t_img *file, int *i_spr);
 void		free_sprites(void);
 int			set_sprite_array(char *path);

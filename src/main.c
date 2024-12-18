@@ -42,8 +42,8 @@ static GLFWwindow	*init(const char *title)
 	GLFWwindow	*window;
 
 	bzero(&g_man, sizeof(t_manager));
-	//if (!set_sprite_array("img/sprites/index.json"))
-	//	return (0);
+	if (!set_sprite_array("img/sprites/index.json"))
+		return (0);
 	window = get_window(title);
 	g_man.shader_program = create_shader_program();
 	if (!window || !g_man.shader_program || !create_uniform() || !create_mesh()

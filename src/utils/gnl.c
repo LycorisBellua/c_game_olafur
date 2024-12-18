@@ -101,8 +101,8 @@ static char	*add_to_line(char *line, char *added, int free_added)
 		if (joined)
 		{
 			joined[0] = 0;
-			strncat(joined, line, len + 1);
-			strncat(joined, added, len + 1);
+			strncat(joined, line, len);
+			strncat(joined, added, len);
 			free(line);
 			line = joined;
 		}
@@ -122,7 +122,7 @@ static char	*get_line(char *src, char *newline_in_src)
 	if (!dup)
 		return (0);
 	dup[0] = 0;
-	strncat(dup, src, len + 1);
+	strncat(dup, src, len);
 	return (dup);
 }
 

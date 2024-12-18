@@ -7,8 +7,17 @@ static int	set_info_vars(char *line, char **field, char **data, char **dup);
 static int	segment(t_img_seg *seg, char *field, char *data, char *dup);
 static void	allocate_segment_cycle(t_img_seg *seg);
 
-int	set_img_file_obj(t_img *file, int fd)
+int	set_img_file_obj(t_img *file, char **lines, size_t *i)
 {
+	/*
+	while (lines[*i])
+	{
+		printf("%s\n", lines[*i]);
+		++*i;
+	}
+	*/
+	return (0);
+	/*
 	int		seg;
 	int		in_cycle;
 	char	*line;
@@ -32,6 +41,7 @@ int	set_img_file_obj(t_img *file, int fd)
 	line = gnl(fd);
 	free(line);
 	return (line != 0);
+	*/
 }
 
 static int	cycle(char *line, t_img_seg *seg)

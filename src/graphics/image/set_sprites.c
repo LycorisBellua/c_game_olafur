@@ -7,15 +7,38 @@ static void		free_and_reset_img_data(t_img *file);
 
 int	set_sprite_array(char *path)
 {
-	int		fd;
+	size_t	i;
+	char	**lines;
+	t_img	file;
+	int		is_parsing_ongoing;
+
+	lines = get_json_content(path);
+	if (!lines)
+		return (0);
+
+	// parse img file
+	is_parsing_ongoing = 1;
+	i = 0;
+	while (is_parsing_ongoing)
+	{
+		is_parsing_ongoing = set_img_file_obj(&file, lines, &i);
+	}
+
+
+	// free file lines
+	i = 0;
+	while (lines[i])
+		free(lines[i++]);
+	free(lines);
+	//
+	return (1);
+
+	/*
 	int		i_spr;
 	int		is_success;
 	int		is_parsing_ongoing;
 	t_img	file;
 
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (0);
 	i_spr = 1;
 	is_success = 1;
 	is_parsing_ongoing = 1;
@@ -27,9 +50,8 @@ int	set_sprite_array(char *path)
 			is_success = set_pixel_data(&file, &i_spr);
 		free_and_reset_img_data(&file);
 	}
-	close(fd);
-	gnl(-1);
 	return (is_success);
+	*/
 }
 
 static int	set_pixel_data(t_img *file, int *i_spr)
