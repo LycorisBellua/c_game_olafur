@@ -171,6 +171,7 @@ typedef struct s_manager
 	GLuint		shader_program;
 	GLint		uniform_loc;
 	double		dt;
+	int			fps;
 	t_res		res;
 	t_frame		*frame[NBR_FRAMES + 1];
 	int			curr_frame;
@@ -256,7 +257,7 @@ int			set_sprite_array(char *path);
 
 /* Game --------------------------------------------------------------------- */
 
-void		set_delta_time(void);
+void		set_dt_and_fps(void);
 void		run_game_loop(t_map *m);
 void		door_routine(t_map *m);
 void		raycasting(t_map *m);

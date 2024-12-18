@@ -25,7 +25,8 @@ int	main(void)
 	g_man.player.pos.y = 12;
 	while (!glfwWindowShouldClose(window))
 	{
-		set_delta_time(); // FPS = 1 / dt
+		set_dt_and_fps();
+		printf("FPS = %d\n", g_man.fps);
 		clear_buffer();
 		draw_into_buffer(g_man.map);
 		swap_buffer(window);

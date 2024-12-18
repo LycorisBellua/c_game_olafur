@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-void	set_delta_time(void)
+void	set_dt_and_fps(void)
 {
 	static struct timeval	prev_time;
 	struct timeval			curr_time;
@@ -18,6 +18,10 @@ void	set_delta_time(void)
 		delta_ms += 1.0;
 	}
 	g_man.dt = delta_s + delta_ms;
+	if (!g_man.dt)
+		g_man.fps = 0;
+	else
+		g_man.fps = (int)(1 / g_man.dt);
 	prev_time = curr_time;
 	return ;
 }
