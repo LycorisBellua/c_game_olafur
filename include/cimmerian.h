@@ -130,6 +130,7 @@ typedef struct s_map
 	double	dof;
 	double	fog_width;
 	t_color	fog_color;
+	t_img	*skybox;
 	int		img_len;
 	t_img	**img;
 	t_spr	sprites[SPRITE_LEN];
@@ -213,6 +214,7 @@ void		set_ivec2(t_ivec2 *v, int x, int y);
 /* Draw --------------------------------------------------------------------- */
 
 void		draw_point(t_frame *f, t_color color, int x, int y);
+void		draw_point_img(t_img *img, t_color c, int x, int y);
 void		draw_line(t_frame *f, t_vert v1, t_vert v2);
 void		draw_rectangle(t_frame *f, t_vert v, t_ivec2 size);
 void		draw_rectangle_full(t_frame *f, t_vert v, t_ivec2 size);
@@ -232,10 +234,8 @@ t_spr		*get_sprite(char *id);
 
 void		update_dof(t_map *m, double increment);
 double		get_fog_width(double dof);
-void		draw_floor(t_frame *f, double fog_width, t_color fog);
-void		draw_skybox(t_frame *f, t_img *skybox, double fog_width,
-				t_color fog);
 void		apply_wall_fog(t_color *wall, t_color fog, double dist, double dof);
+void		update_background(t_map *m, t_img *bg);
 
 /* Files -------------------------------------------------------------------- */
 
@@ -247,6 +247,9 @@ char		*strjoin(char const *s1, char const *s2);
 
 t_img		*load_image_from_file(const char *png_path);
 t_img		*create_image(t_color c, t_ivec2 size);
+t_img		*compose_skybox(const char *path_skybox, t_color fog);
+t_img		*compose_background(t_map *m);
+void		draw_background(t_frame *f, t_map *m);
 void		apply_vertical_gradient(t_img *img, t_color color);
 void		free_image(t_img *s);
 void		add_outline_to_font(t_spr *font);

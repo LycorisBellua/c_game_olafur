@@ -26,7 +26,7 @@ int	main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		set_dt_and_fps();
-		printf("FPS = %d\n", g_man.fps);
+		//printf("FPS = %d\n", g_man.fps);
 		clear_buffer();
 		draw_into_buffer(g_man.map);
 		swap_buffer(window);

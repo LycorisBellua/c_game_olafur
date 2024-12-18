@@ -26,3 +26,12 @@ void	draw_point(t_frame *f, t_color c, int x, int y)
 	}
 	return ;
 }
+
+void	draw_point_img(t_img *img, t_color c, int x, int y)
+{
+	t_color	*buf;
+
+	buf = (t_color *)img->buf + (y * img->size.x + x);
+	*buf = get_alpha_blended_color(*buf, c);
+	return ;
+}

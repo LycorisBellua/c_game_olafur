@@ -162,7 +162,8 @@ static t_map	*create_map(void)
 	map->img[6] = create_image(get_color_rgba(255, 255, 255, 255));
 	map->img[7] = create_image(get_color_rgba(255, 255, 255, 255));
 	*/
-	map->img[0] = load_image_from_file("img/textures/skybox.png");
+	map->skybox = compose_skybox("img/textures/skybox.png", map->fog_color);
+	map->img[0] = compose_background(map);
 	map->img[1] = load_image_from_file("img/textures/wall_01.png");
 	map->img[2] = load_image_from_file("img/textures/wall_02.png");
 	map->img[3] = load_image_from_file("img/textures/wall_03.png");
@@ -170,8 +171,9 @@ static t_map	*create_map(void)
 	map->img[5] = load_image_from_file("img/textures/doors.png");
 	map->img[6] = load_image_from_file("img/textures/floor.png");
 	map->img[7] = load_image_from_file("img/textures/ceiling.png");
-	if (!map->img[0] || !map->img[1] || !map->img[2] || !map->img[3]
-		|| !map->img[4] || !map->img[5] || !map->img[6] || !map->img[7])
+	if (!map->skybox || !map->img[0] || !map->img[1] || !map->img[2]
+		|| !map->img[3] || !map->img[4] || !map->img[5] || !map->img[6]
+		|| !map->img[7])
 	{
 		free_map(&map);
 		return (0);
@@ -206,6 +208,7 @@ static void	free_map(t_map **map)
 	int	i;
 
 	free((*map)->cells);
+	free_image((*map)->skybox);
 	i = 0;
 	while (i < (*map)->img_len)
 	{
