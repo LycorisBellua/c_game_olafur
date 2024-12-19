@@ -2,9 +2,15 @@
 
 void	update_dof(t_map *m, double increment)
 {
+	double	prev_dof;
+
+	prev_dof = m->dof;
 	m->dof = f_clamp(m->dof + increment, 0, 30);
-	m->fog_width = get_fog_width(m->dof);
-	update_background(m, m->img[0]);
+	if (prev_dof != m->dof)
+	{
+		m->fog_width = get_fog_width(m->dof);
+		update_background(m, m->img[0]);
+	}
 	return ;
 }
 
