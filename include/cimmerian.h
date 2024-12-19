@@ -240,9 +240,17 @@ void		update_background(t_map *m, t_img *bg);
 /* Files -------------------------------------------------------------------- */
 
 char		*read_file(const char *filepath);
-char		**get_json_content(const char *filepath);
 char		*gnl(int fd);
 char		*strjoin(char const *s1, char const *s2);
+
+/* JSON --------------------------------------------------------------------- */
+
+char		**get_json_content(const char *filepath);
+void		free_json_content(char **content);
+int			is_field(char *line, const char *field);
+char		*get_string_value(char *line);
+int			get_int_value(char *line);
+t_ivec2		get_ivec2_value(char *line);
 
 /* Images ------------------------------------------------------------------- */
 

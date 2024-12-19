@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -g#-ansi -pedantic
+CFLAGS = -Iinclude -Wall -Wextra -pedantic -g#-fsanitize=address
 LDFLAGS = -lGL -Llib -lglfw34 -lm
 
 BIN = cimmerian

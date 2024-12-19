@@ -31,6 +31,22 @@ char	**get_json_content(const char *filepath)
 	return (lines);
 }
 
+void	free_json_content(char **content)
+{
+	size_t	i;
+
+	if (!content)
+		return ;
+	i = 0;
+	while (content[i])
+	{
+		free(content[i]);
+		++i;
+	}
+	free(content);
+	return ;
+}
+
 static char	**get_line_arr(const char *filepath)
 {
 	int		fd;
