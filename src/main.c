@@ -26,7 +26,6 @@ int	main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		set_dt_and_fps();
-		//printf("FPS = %d\n", g_man.fps);
 		clear_buffer();
 		draw_into_buffer(g_man.map);
 		swap_buffer(window);
@@ -49,7 +48,8 @@ static GLFWwindow	*init(const char *title)
 	if (!window || !g_man.shader_program || !create_uniform() || !create_mesh()
 		|| !create_frames() || !initialize_maps())
 		return (0);
-	//add_outline_to_font(&g_man.map->sprites[2]);
+	add_outline_to_font(&g_man.sprites[1]);
+	set_ivec2(&g_man.cursor, -1, -1);
 	g_man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
 	use_frame(g_man.frame[g_man.curr_frame]);
 	return (window);

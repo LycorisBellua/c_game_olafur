@@ -27,8 +27,8 @@ t_img	*load_image_from_file(const char *png_path)
 /* Size can be 128x128 */
 t_img	*create_image(t_color c, t_ivec2 size)
 {
-	t_img	*img;
 	int		i;
+	t_img	*img;
 
 	img = malloc(sizeof(t_img));
 	if (!img)
@@ -49,42 +49,39 @@ t_img	*create_image(t_color c, t_ivec2 size)
 	return (img);
 }
 
-void	apply_vertical_gradient(t_img *img, t_color color)
-{
-	int		x;
-	int		y;
-	double	gradient_strength;
-	double	dist_from_edge;
-	double	factor;
-	t_color	*buf;
-	t_color	*pixel;
-
-	gradient_strength = 0.6;
-	buf = (t_color *)img->buf;
-	y = 0;
-	while (y < img->size.y)
-	{
-		dist_from_edge = f_abs((double)y - img->size.y / 2) / (img->size.y / 2);
-		factor = f_pow(dist_from_edge, 2.0) * gradient_strength;
-		x = 0;
-		while (x < img->size.x)
-		{
-			pixel = &buf[y * img->size.x + x];
-			pixel->r = (GLubyte)((1.0 - factor) * pixel->r + factor * color.r);
-			pixel->g = (GLubyte)((1.0 - factor) * pixel->g + factor * color.g);
-			pixel->b = (GLubyte)((1.0 - factor) * pixel->b + factor * color.b);
-			pixel->a = (GLubyte)((1.0 - factor) * pixel->a + factor * color.a);
-			++x;
-		}
-		++y;
-	}
-	return ;
-}
-
 void	free_image(t_img *img)
 {
 	if (img)
 		free(img->buf);
 	free(img);
+	return ;
+}
+
+void	apply_vertical_gradient(t_img *img, t_color color)
+{
+	t_ivec2	v;
+	double	gradient_strength;
+	double	edge_dist;
+	double	factor;
+	t_color	*pixel;
+
+	gradient_strength = 0.6;
+	v.y = 0;
+	while (v.y < img->size.y)
+	{
+		edge_dist = f_abs((double)v.y - img->size.y / 2) / (img->size.y / 2);
+		factor = f_pow(edge_dist, 2.0) * gradient_strength;
+		v.x = 0;
+		while (v.x < img->size.x)
+		{
+			pixel = &((t_color *)img->buf)[v.y * img->size.x + v.x];
+			pixel->r = (GLubyte)((1.0 - factor) * pixel->r + factor * color.r);
+			pixel->g = (GLubyte)((1.0 - factor) * pixel->g + factor * color.g);
+			pixel->b = (GLubyte)((1.0 - factor) * pixel->b + factor * color.b);
+			pixel->a = (GLubyte)((1.0 - factor) * pixel->a + factor * color.a);
+			++v.x;
+		}
+		++v.y;
+	}
 	return ;
 }

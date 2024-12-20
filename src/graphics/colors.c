@@ -39,11 +39,6 @@ t_color	get_alpha_blended_color(t_color prev, t_color new)
 	return (blend);
 }
 
-int	cmp_color(t_color a, t_color b)
-{
-	return (a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a);
-}
-
 t_color	calculate_average_color(t_img *img)
 {
 	int		i;

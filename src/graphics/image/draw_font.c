@@ -7,9 +7,8 @@
 #define MOD_Y  4
 
 static void	fix_initial_pos(t_ivec2 *pos);
-static int	get_index(char c, int cycle_len);
 static void	draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos);
-static void	alignment_left(char *str, int *i, t_ivec2 *pos);
+static void	alignment_left(char *str, size_t *i, t_ivec2 *pos);
 
 /*
 	The capacity is 90 characters per line ([0-89]).
@@ -17,19 +16,19 @@ static void	alignment_left(char *str, int *i, t_ivec2 *pos);
 */
 void	draw_font_default(t_frame *frame, t_ivec2 *pos, char *str)
 {
-	int		i;
-	int		len;
+	size_t	i;
+	size_t	len;
 	t_spr	*s;
 
 	if (!str)
 		return ;
 	i = 0;
 	len = strlen(str);
-	s = &g_man.map->sprites[2];
+	s = &g_man.sprites[1];
 	fix_initial_pos(pos);
 	while (i <= len)
 	{
-		s->cycle_index = get_index(str[i], s->cycle_len);
+		s->cycle_index = (size_t)clamp(str[i] - ' ', 0, (int)s->cycle_len - 1);
 		alignment_left(str, &i, pos);
 		draw_char(frame, s, *pos);
 		pos->x += SIZE_X;
@@ -57,20 +56,10 @@ static void	fix_initial_pos(t_ivec2 *pos)
 	return ;
 }
 
-static int	get_index(char c, int cycle_len)
-{
-	int	index;
-
-	index = c - ' ';
-	if (index < 0 || index >= cycle_len)
-		return (0);
-	return (index);
-}
-
 static void	draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos)
 {
-	int		i;
-	int		len;
+	size_t	i;
+	size_t	len;
 	t_ivec2	p;
 
 	i = 0;
@@ -86,9 +75,9 @@ static void	draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos)
 	return ;
 }
 
-static void	alignment_left(char *str, int *i, t_ivec2 *pos)
+static void	alignment_left(char *str, size_t *i, t_ivec2 *pos)
 {
-	int		i_curr_space;
+	size_t	i_curr_space;
 	char	*p_next_space;
 
 	if (str[*i] != ' ')

@@ -1,115 +1,43 @@
 #include "cimmerian.h"
 
-static void	parse_segments(t_img *file, char **lines, size_t *i);
-static int	get_segment_len(char **lines, size_t start, size_t end);
-static void	fill_seg_array(t_img *file, char **lines, size_t start, size_t end);
-static void	parse_cycle(t_img_seg *seg, char **lines, size_t *start,
-				size_t end);
-
-int	set_img_file_obj(t_img *file, char **lines, size_t *i)
+int	set_img_file_obj(t_img *file, char **lines)
 {
-	while (lines[*i])
+	static size_t	i;
+
+	while (lines[i])
 	{
-		if (is_field(lines[*i], "path"))
-			file->path = get_string_value(lines[*i]);
-		else if (is_field(lines[*i], "path_shadow"))
-			file->path_shadow = get_string_value(lines[*i]);
-		else if (is_field(lines[*i], "segments"))
-			parse_segments(file, lines, i);
-		else if (lines[*i][0] == '}')
+		if (is_field(lines[i], "path"))
+			file->path = get_string_value(lines[i]);
+		else if (is_field(lines[i], "path_shadow"))
+			file->path_shadow = get_string_value(lines[i]);
+		else if (is_field(lines[i], "segments"))
+			parse_segments(file, lines, &i);
+		else if (lines[i][0] == '}')
 		{
-			++*i;
+			++i;
 			break ;
 		}
-		++*i;
+		++i;
 	}
-	return (!!lines[*i]);
+	return (!!lines[i]);
 }
 
-static void	parse_segments(t_img *file, char **lines, size_t *i)
-{
-	size_t	start;
-	size_t	end;
-
-	start = *i;
-	while (lines[*i])
-	{
-		++*i;
-		if (lines[*i - 1][0] == '}' && lines[*i] && lines[*i][0] == ']')
-			break ;
-	}
-	if (!lines[*i])
-		--*i;
-	end = *i;
-	file->segment_len = get_segment_len(lines, start, end);
-	file->seg = calloc(file->segment_len, sizeof(t_img_seg));
-	if (file->seg)
-		fill_seg_array(file, lines, start, end);
-	return ;
-}
-
-static int	get_segment_len(char **lines, size_t start, size_t end)
-{
-	int	len;
-
-	len = 0;
-	while (lines[start] && start <= end)
-	{
-		if (lines[start][0] == '}')
-			++len;
-		++start;
-	}
-	return (len);
-}
-
-static void	fill_seg_array(t_img *file, char **lines, size_t start, size_t end)
-{
-	size_t	i_seg;
-
-	i_seg = 0;
-	while (lines[start] && start <= end)
-	{
-		if (lines[start][0] == '}')
-			++i_seg;
-		else if (is_field(lines[start], "id"))
-			file->seg[i_seg].id = get_string_value(lines[start]);
-		else if (is_field(lines[start], "size"))
-			file->seg[i_seg].size = get_ivec2_value(lines[start]);
-		else if (is_field(lines[start], "shadow_offset"))
-			file->seg[i_seg].shadow_offset = get_ivec2_value(lines[start]);
-		else if (is_field(lines[start], "still_frame"))
-			file->seg[i_seg].still_frame = get_int_value(lines[start]);
-		else if (is_field(lines[start], "cycle_time_in_ms"))
-			file->seg[i_seg].cycle_time_in_ms = get_int_value(lines[start]);
-		else if (is_field(lines[start], "cycle"))
-			parse_cycle(file->seg + i_seg, lines, &start, end);
-		++start;
-	}
-	return ;
-}
-
-static void	parse_cycle(t_img_seg *seg, char **lines, size_t *start, size_t end)
+void	free_and_reset_img_file_obj(t_img *file)
 {
 	size_t	i;
 
-	i = *start;
-	while (lines[i] && i <= end)
+	free(file->path);
+	free(file->path_shadow);
+	free(file->buf);
+	free(file->buf_shadow);
+	i = 0;
+	while (i < file->segment_len)
 	{
-		if (lines[i][0] == '[')
-			++seg->cycle_len;
+		free(file->seg[i].id);
+		free(file->seg[i].cycle);
 		++i;
 	}
-	seg->cycle = calloc(seg->cycle_len, sizeof(t_ivec2));
-	if (!seg->cycle)
-		return ;
-	i = 0;
-	while (lines[*start] && *start <= end)
-	{
-		if (lines[*start][0] == '[')
-			seg->cycle[i++] = get_ivec2_value(lines[*start]);
-		++*start;
-	}
-	if (!lines[*start])
-		--*start;
+	free(file->seg);
+	bzero(file, sizeof(t_img));
 	return ;
 }

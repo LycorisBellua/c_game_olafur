@@ -1,13 +1,14 @@
 #include "cimmerian.h"
 
 static t_ivec2	*get_outline_offsets(void);
-static void		set_text_to_white(t_spr *s, int cycle_index);
-static void		add_outline(t_spr *s, int cycle_index, t_ivec2 *offsets);
+static void		set_text_to_white(t_spr *s, size_t cycle_index);
+static void		add_outline(t_spr *s, size_t cycle_index, t_ivec2 *offsets);
+static int		cmpc(t_color a, t_color b);
 
 /* White text and black outline */
 void	add_outline_to_font(t_spr *font)
 {
-	int		cycle_index;
+	size_t	cycle_index;
 	t_ivec2	*offsets;
 
 	offsets = get_outline_offsets();
@@ -28,7 +29,7 @@ static t_ivec2	*get_outline_offsets(void)
 {
 	t_ivec2	*offsets;
 
-	offsets = malloc(8 * sizeof(t_ivec2));
+	offsets = calloc(8, sizeof(t_ivec2));
 	if (!offsets)
 		return (0);
 	set_ivec2(offsets + 0, -1, 0);
@@ -42,10 +43,10 @@ static t_ivec2	*get_outline_offsets(void)
 	return (offsets);
 }
 
-static void	set_text_to_white(t_spr *s, int cycle_index)
+static void	set_text_to_white(t_spr *s, size_t cycle_index)
 {
-	int	i;
-	int	len;
+	size_t	i;
+	size_t	len;
 
 	i = 0;
 	len = s->size.x * s->size.y;
@@ -58,22 +59,16 @@ static void	set_text_to_white(t_spr *s, int cycle_index)
 	return ;
 }
 
-static void	add_outline(t_spr *s, int cycle_index, t_ivec2 *offsets)
+static void	add_outline(t_spr *s, size_t cycle_index, t_ivec2 *offsets)
 {
 	int		i;
 	int		j;
-	int		len;
 	t_ivec2	p;
-	t_color	color_white;
-	t_color	color_black;
 
-	color_white = get_color_rgba(255, 255, 255, 255);
-	color_black = get_color_rgba(0, 0, 0, 255);
 	i = 0;
-	len = s->size.x * s->size.y;
-	while (i < len)
+	while (i < s->size.x * s->size.y)
 	{
-		if (cmp_color(s->cycle[cycle_index][i], color_white))
+		if (cmpc(s->cycle[cycle_index][i], get_color_rgba(255, 255, 255, 255)))
 		{
 			j = 0;
 			while (j < 8)
@@ -81,13 +76,19 @@ static void	add_outline(t_spr *s, int cycle_index, t_ivec2 *offsets)
 				p.y = i / s->size.x;
 				p.x = i - p.y * s->size.x;
 				set_ivec2(&p, p.x + offsets[j].x, p.y + offsets[j].y);
-				if (!cmp_color(s->cycle[cycle_index][p.y * s->size.x + p.x],
-					color_white))
-					s->cycle[cycle_index][p.y * s->size.x + p.x] = color_black;
+				if (!cmpc(s->cycle[cycle_index][p.y * s->size.x + p.x],
+					get_color_rgba(255, 255, 255, 255)))
+					s->cycle[cycle_index][p.y * s->size.x + p.x] = \
+						get_color_rgba(0, 0, 0, 255);
 				++j;
 			}
 		}
 		++i;
 	}
 	return ;
+}
+
+static int	cmpc(t_color a, t_color b)
+{
+	return (a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a);
 }

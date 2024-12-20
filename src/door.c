@@ -68,7 +68,7 @@ static void	open_new_door(t_map *m, t_list **opened_doors, int max_dist)
 		if (m->cells[y * m->size.x + (x + i)].is_door
 			&& m->cells[y * m->size.x + (x + i)].is_obstacle)
 		{
-			coord = malloc(sizeof(t_ivec2));
+			coord = calloc(1, sizeof(t_ivec2));
 			if (coord)
 			{
 				set_ivec2(coord, x + i, y);
@@ -84,7 +84,7 @@ static void	open_new_door(t_map *m, t_list **opened_doors, int max_dist)
 		else if (m->cells[(y + i) * m->size.x + x].is_door
 			&& m->cells[(y + i) * m->size.x + x].is_obstacle)
 		{
-			coord = malloc(sizeof(t_ivec2));
+			coord = calloc(1, sizeof(t_ivec2));
 			if (coord)
 			{
 				set_ivec2(coord, x, y + i);

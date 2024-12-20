@@ -66,8 +66,8 @@ typedef struct s_spr
 	t_ivec2	size;
 	t_ivec2	shadow_offset;
 	int		still_frame;
-	int		cycle_len;
-	int		cycle_index;
+	size_t	cycle_len;
+	size_t	cycle_index;
 	long	elapsed_time_in_ms;
 	long	cycle_time_in_ms;
 	t_color	**cycle;
@@ -80,8 +80,8 @@ typedef struct s_img_seg
 	t_ivec2	size;
 	t_ivec2	shadow_offset;
 	int		still_frame;
-	int		cycle_len;
 	long	cycle_time_in_ms;
+	size_t	cycle_len;
 	t_ivec2	*cycle;
 }	t_img_seg;
 
@@ -94,7 +94,7 @@ typedef struct s_img
 	t_color		average_color;
 	GLubyte		*buf;
 	GLubyte		*buf_shadow;
-	int			segment_len;
+	size_t		segment_len;
 	t_img_seg	*seg;
 }	t_img;
 
@@ -133,7 +133,6 @@ typedef struct s_map
 	t_img	*skybox;
 	int		img_len;
 	t_img	**img;
-	t_spr	sprites[SPRITE_LEN];
 	t_cell	*cells;
 }	t_map;
 
@@ -172,6 +171,7 @@ typedef struct s_manager
 	GLuint		shader_program;
 	GLint		uniform_loc;
 	double		dt;
+	long		dt_ms;
 	int			fps;
 	t_res		res;
 	t_frame		*frame[NBR_FRAMES + 1];
@@ -184,6 +184,7 @@ typedef struct s_manager
 	int			rotation_action;
 	int			click_action;
 	t_ivec2		cursor;
+	t_spr		sprites[SPRITE_LEN];
 	t_map		*map;
 }	t_manager;
 
@@ -202,7 +203,6 @@ void		list_del_one(t_list **list, void (*del)(void*));
 t_color		get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 t_color		get_color_hex(const char *str, GLubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
-int			cmp_color(t_color a, t_color b);
 t_color		calculate_average_color(t_img *img);
 t_color		get_frame_color(t_frame *f, int x, int y);
 
@@ -228,6 +228,7 @@ void		draw_image(t_frame *f, t_img *img);
 void		draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset);
 void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
 void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos, long dt_ms);
+void 		draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc);
 t_spr		*get_sprite(char *id);
 
 /* Fog ---------------------------------------------------------------------- */
@@ -242,15 +243,19 @@ void		update_background(t_map *m, t_img *bg);
 char		*read_file(const char *filepath);
 char		*gnl(int fd);
 char		*strjoin(char const *s1, char const *s2);
+char		*itoa_dec(int number);
 
 /* JSON --------------------------------------------------------------------- */
 
 char		**get_json_content(const char *filepath);
 void		free_json_content(char **content);
+int			set_img_file_obj(t_img *file, char **lines);
+void		free_and_reset_img_file_obj(t_img *file);
 int			is_field(char *line, const char *field);
 char		*get_string_value(char *line);
 int			get_int_value(char *line);
 t_ivec2		get_ivec2_value(char *line);
+void		parse_segments(t_img *file, char **lines, size_t *i);
 
 /* Images ------------------------------------------------------------------- */
 
@@ -262,14 +267,14 @@ void		draw_background(t_frame *f, t_map *m);
 void		apply_vertical_gradient(t_img *img, t_color color);
 void		free_image(t_img *s);
 void		add_outline_to_font(t_spr *font);
-int			set_img_file_obj(t_img *file, char **lines, size_t *i);
-int			create_sprites_from_file(t_img *file, int *i_spr);
+int			create_sprites_from_file(t_img *file, size_t *i_spr);
 void		free_sprites(void);
 int			set_sprite_array(char *path);
 
 /* Game --------------------------------------------------------------------- */
 
 void		set_dt_and_fps(void);
+void		display_fps(t_frame *f, t_ivec2 pos);
 void		run_game_loop(t_map *m);
 void		door_routine(t_map *m);
 void		raycasting(t_map *m);

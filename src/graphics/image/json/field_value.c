@@ -74,8 +74,8 @@ t_ivec2	get_ivec2_value(char *line)
 		set_ivec2(&vec, 0, 0);
 		return (vec);
 	}
-	while (isspace(*p_char))
-		++p_char;
+	while (isspace(*++p_char))
+		;
 	vec.y = atoi(p_char);
 	return (vec);
 }
@@ -95,8 +95,7 @@ static char	*bypass_field(char *line)
 	p_char = strchr(++p_char, ':');
 	if (!p_char)
 		return (0);
-	++p_char;
-	while (isspace(*p_char))
-		++p_char;
+	while (isspace(*++p_char))
+		;
 	return (p_char);
 }
