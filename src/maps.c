@@ -145,7 +145,7 @@ static t_map	*create_map(void)
 	map->fog_width = get_fog_width(map->dof);
 	map->fog_color = get_color_rgba(17, 15, 35, 255);
 	map->cells = 0;
-	map->img_len = 8;
+	map->img_len = 11;
 	map->img = malloc(map->img_len * sizeof(t_img *));
 	if (!map->img)
 	{
@@ -171,9 +171,12 @@ static t_map	*create_map(void)
 	map->img[5] = load_image_from_file("img/textures/doors.png");
 	map->img[6] = load_image_from_file("img/textures/floor.png");
 	map->img[7] = load_image_from_file("img/textures/ceiling.png");
+	map->img[8] = load_image_from_file("img/sprites/wf_barrel.png");
+	map->img[9] = load_image_from_file("img/sprites/wf_pillar.png");
+	map->img[10] = load_image_from_file("img/sprites/wf_greenlight.png");
 	if (!map->skybox || !map->img[0] || !map->img[1] || !map->img[2]
 		|| !map->img[3] || !map->img[4] || !map->img[5] || !map->img[6]
-		|| !map->img[7])
+		|| !map->img[7] || !map->img[8] || !map->img[9] || !map->img[10])
 	{
 		free_map(&map);
 		return (0);

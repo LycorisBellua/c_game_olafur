@@ -52,6 +52,7 @@ void	swap(int *a, int *b);
 int		double_equality(double a, double b);
 int		rng_minmax(int *seed, int min, int max);
 double	get_dist_euclidean(double ax, double ay, double bx, double by);
+double	get_squared_dist_euclidean(double ax, double ay, double bx, double by);
 double	get_dist_manhattan(double ax, double ay, double bx, double by);
 
 #endif

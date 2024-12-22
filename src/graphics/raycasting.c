@@ -9,8 +9,11 @@ void	raycasting(t_map *m)
 	t_frame	*f;
 	int		x;
 	t_ray	r;
+	double	*z_buffer;
 
 	f = g_man.frame[g_man.curr_frame];
+	cast_floor_and_ceiling(f, m);
+	z_buffer = calloc(f->size.x, sizeof(double));
 	r.alpha = 0;
 	x = 0;
 	while (x < f->size.x)
@@ -20,6 +23,12 @@ void	raycasting(t_map *m)
 			set_line(f, x, &r);
 			draw_wall(m, f, &r);
 		}
+		/*
+			TODO:
+			For transparency, draw the sprite before drawing the alpha walls.
+		*/
+		if (z_buffer)
+			z_buffer[x] = r.perp_wall_dist;
 		while (r.alpha)
 		{
 			set_line(f, x, r.alpha->data);
@@ -28,6 +37,9 @@ void	raycasting(t_map *m)
 		}
 		++x;
 	}
+	if (z_buffer)
+		cast_sprites(f, m, z_buffer);
+	free(z_buffer);
 	return ;
 }
 
@@ -120,15 +132,11 @@ static int	perform_dda(t_map *m, double cam_x, t_ray *r)
 
 static void	set_line(t_frame *f, int x, t_ray *r)
 {
-	r->line_height = (int)(f->size.y / r->perp_wall_dist * g_man.res.h_mod);
+	r->line_height = (int)(f->size.y / r->perp_wall_dist);
 	r->coord1.x = x;
-	r->coord1.y = -r->line_height / 2 + f->size.y / 2 + g_man.player.height;
-	if (r->coord1.y < 0)
-		r->coord1.y = 0;
+	r->coord1.y = f_max(-r->line_height / 2 + f->size.y / 2, 0);
 	r->coord2.x = x;
-	r->coord2.y = r->line_height / 2 + f->size.y / 2 + g_man.player.height;
-	if (r->coord2.y >= f->size.y)
-		r->coord2.y = f->size.y - 1;
+	r->coord2.y = f_min(r->line_height / 2 + f->size.y / 2, f->size.y - 1);
 	return ;
 }
 

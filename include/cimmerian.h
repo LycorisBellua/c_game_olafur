@@ -141,7 +141,6 @@ typedef struct s_player
 	t_vec2	pos;
 	t_vec2	dir;
 	t_vec2	plane;
-	int		height;
 }	t_player;
 
 typedef struct s_frame
@@ -277,10 +276,15 @@ void		set_dt_and_fps(void);
 void		display_fps(t_frame *f, t_ivec2 pos);
 void		run_game_loop(t_map *m);
 void		door_routine(t_map *m);
-void		raycasting(t_map *m);
-void		draw_wall(t_map *m, t_frame *f, t_ray *r);
 void		reset_global_coordinates(void);
 void		update_global_coordinates(void);
+
+/* Raycasting --------------------------------------------------------------- */
+
+void		raycasting(t_map *m);
+void		cast_floor_and_ceiling(t_frame *f, t_map *m);
+void		draw_wall(t_map *m, t_frame *f, t_ray *r);
+void		cast_sprites(t_frame *f, t_map *m, double *z_buffer);
 
 /* Input -------------------------------------------------------------------- */
 

@@ -13,7 +13,7 @@ void	run_game_loop(t_map *m)
 	display_gui(f);
 	/*
 		- 60 FPS. Objective is 150 FPS.
-		- Image resolution doesn't do anything.
+		- A lower image resolution or even flat colors don't change anything.
 	*/
 	return ;
 }

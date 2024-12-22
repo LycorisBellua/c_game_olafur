@@ -26,7 +26,7 @@ void	draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset)
 	t_ivec2	f_coord;
 	t_ivec2	i_coord;
 
-	x_offset = clamp(x_offset, 0, img->size.x - 1);
+	x_offset %= img->size.x;
 	f_coord.y = 0;
 	while (f_coord.y < img->size.y)
 	{

@@ -61,7 +61,7 @@ static void	wall_texturing(t_map *m, t_frame *f, t_ray *r)
 
 	// How much to increase the image coordinate per screen pixel
 	double	img_step;
-	img_step = (double)img->size.y / (double)r->line_height;
+	img_step = 1.0 * img->size.y / r->line_height;
 
 	// Starting image coordinate
 	double img_pos;
@@ -76,7 +76,7 @@ static void	wall_texturing(t_map *m, t_frame *f, t_ray *r)
 	while (y < r->coord2.y)
 	{
 		// Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
-		img_coord.y = clamp((int)img_pos, 0, img->size.y - 1);
+		img_coord.y = (int)img_pos % img->size.y;
 		img_pos += img_step;
 
 		color = img_buf[img_coord.y * img->size.x + img_coord.x];

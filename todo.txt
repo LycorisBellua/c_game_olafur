@@ -1,12 +1,21 @@
-- Use a colored glass or something to showcase transparency. Maybe an enemy.
+- Fix sprite showing through doors.
+- Animated sprite.
+- Animated texture for walls, ground and ceiling.
+- Spread the floor and ceiling a bit more. This is too narrow, claustrophobic. 
+This might be an interesting concept, but I don't like it. And, it's also the 
+opportunity to make the walls cube-shaped, make them taller.
 - The goal is to reach a tall monolith. It can cycle through different colors 
 or even have an animated texture.
+- Once you're done with the raycasting, have indoor rooms have a ceiling, while 
+everything else has the skybox. Also, use a grass tile outside, or even 
+different tiles, some dirt, some grass, and a blend of the two, like in 2D 
+games. Indoors, you can have the checkered pattern.
+
+- Use a colored glass or something to showcase transparency. Maybe an enemy.
 - Rotate with the mouse.
 - Minimap.
-- Animated sprite.
-- Textures for ceiling and floor.
+
 - Place doors in the middle of the cell.
-- Text support.
 - Sound.
 - Enter a seed to generate a level, or maybe you can send a map file. Support 
 for both?
