@@ -99,10 +99,12 @@ static void	render_sprite(t_frame *f, t_map *m, t_sprite *s, double gridDistance
 	// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
 	// [ planeY   dirY ]                                          [ -planeY  planeX ]
 
-	double invDet = 1.0 / (g_man.player.plane.x * g_man.player.dir.y - g_man.player.dir.x * g_man.player.plane.y); //required for correct matrix multiplication
+	//required for correct matrix multiplication
+	double invDet = 1.0 / ((g_man.player.plane.x * g_man.player.dir.y - g_man.player.dir.x * g_man.player.plane.y) * g_man.res.h_mod);
 
 	double transformX = invDet * (g_man.player.dir.y * spriteX - g_man.player.dir.x * spriteY);
-	double transformY = invDet * (-g_man.player.plane.y * spriteX + g_man.player.plane.x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+	//this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+	double transformY = invDet * (-g_man.player.plane.y * spriteX + g_man.player.plane.x * spriteY);
 
 	int spriteScreenX = (int)((f->size.x / 2) * (1 + transformX / transformY));
 
@@ -115,35 +117,33 @@ static void	render_sprite(t_frame *f, t_map *m, t_sprite *s, double gridDistance
 	//calculate height of the sprite on screen
 	int spriteHeight = abs((int)(f->size.y / transformY)) / vDiv; //using "transformY" instead of the real distance prevents fisheye
 																  //calculate lowest and highest pixel to fill in current stripe
-	int drawStartY = -spriteHeight / 2 + f->size.y / 2 + vMoveScreen;
-	if (drawStartY < 0)
-		drawStartY = 0;
-	int drawEndY = spriteHeight / 2 + f->size.y / 2 + vMoveScreen;
-	if (drawEndY >= f->size.y)
-		drawEndY = f->size.y - 1;
+	int drawStartY = max(-spriteHeight / 2 + f->size.y / 2 + vMoveScreen, 0);
+	int drawEndY = min(spriteHeight / 2 + f->size.y / 2 + vMoveScreen, f->size.y - 1);
 
 	//calculate width of the sprite
 	int spriteWidth = abs((int)(f->size.y / transformY)) / uDiv; // same as height of sprite, given that it's square
-	int drawStartX = f_max(-spriteWidth / 2 + spriteScreenX, 0);
-	int drawEndX = f_min(spriteWidth / 2 + spriteScreenX, f->size.x);
+	int drawStartX = max(-spriteWidth / 2 + spriteScreenX, 0);
+	int drawEndX = min(spriteWidth / 2 + spriteScreenX, f->size.x);
 
 	//loop through every vertical stripe of the sprite on screen
 	for (int stripe = drawStartX; stripe < drawEndX; ++stripe)
 	{
 		int texWidth = m->img[s->texture]->size.x;
 		int texHeight = m->img[s->texture]->size.y;
+		/*
 		//TEST
 		if (s->texture == 8)
 		{
 			texWidth = g_man.sprites[2].size.x; 
 			texHeight = g_man.sprites[2].size.y; 
 		}
+		*/
 
 		int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
 		//the conditions in the if are:
 		//1) it's in front of camera plane so you don't see things behind you
 		//2) z_buffer, with perpendicular distance
-		if (transformY > 0 && transformY < z_buffer[stripe])
+		if (transformY > 0 && transformY < z_buffer[stripe] / g_man.res.h_mod)
 		{
 			for (int y = drawStartY; y < drawEndY; ++y) //for every pixel of the current stripe
 			{
@@ -151,9 +151,11 @@ static void	render_sprite(t_frame *f, t_map *m, t_sprite *s, double gridDistance
 				int texY = ((d * texHeight) / spriteHeight) / 256;
 				//get current color from the texture
 				t_color color = ((t_color *)m->img[s->texture]->buf)[texWidth * texY + texX];
+				/*
 				//TEST
 				if (s->texture == 8)
 					color = g_man.sprites[2].cycle[g_man.sprites[2].cycle_index][texWidth * texY + texX];
+				*/
 				apply_wall_fog(&color, m->fog_color, gridDistance, m->dof);
 				draw_point(f, color, stripe, y);
 			}

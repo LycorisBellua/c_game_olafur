@@ -132,11 +132,11 @@ static int	perform_dda(t_map *m, double cam_x, t_ray *r)
 
 static void	set_line(t_frame *f, int x, t_ray *r)
 {
-	r->line_height = (int)(f->size.y / r->perp_wall_dist);
+	r->line_height = (int)(f->size.y / r->perp_wall_dist * g_man.res.h_mod);
 	r->coord1.x = x;
-	r->coord1.y = f_max(-r->line_height / 2 + f->size.y / 2, 0);
+	r->coord1.y = max(-r->line_height / 2 + f->size.y / 2, 0);
 	r->coord2.x = x;
-	r->coord2.y = f_min(r->line_height / 2 + f->size.y / 2, f->size.y - 1);
+	r->coord2.y = min(r->line_height / 2 + f->size.y / 2, f->size.y - 1);
 	return ;
 }
 
