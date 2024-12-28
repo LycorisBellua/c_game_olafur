@@ -19,7 +19,7 @@
 # define NBR_FRAMES 3
 # define SPRITE_LEN 6
 # define DEFAULT_MOVE_SPEED 2.0
-# define DEFAULT_ROT_SPEED 0.25
+# define DEFAULT_ROTATE_SPEED 0.25
 
 typedef struct s_list
 {
@@ -179,10 +179,10 @@ typedef struct s_manager
 	int			curr_frame;
 	double		tex_in_dof;
 	t_player	player;
-	double		movement_speed;
-	double		rotation_speed;
-	t_ivec2		movement_action;
-	int			rotation_action;
+	double		move_speed;
+	double		rotate_speed;
+	t_ivec2		move_action;
+	int			rotate_action;
 	int			click_action;
 	t_ivec2		cursor;
 	t_spr		sprites[SPRITE_LEN];
@@ -204,7 +204,6 @@ void		list_del_one(t_list **list, void (*del)(void*));
 t_color		get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 t_color		get_color_hex(const char *str, GLubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
-t_color		calculate_average_color(t_img *img);
 t_color		get_frame_color(t_frame *f, int x, int y);
 
 /* Vectors ------------------------------------------------------------------ */
@@ -221,7 +220,7 @@ void		draw_rectangle(t_frame *f, t_vert v, t_ivec2 size);
 void		draw_rectangle_full(t_frame *f, t_vert v, t_ivec2 size);
 void		draw_circle(t_frame *f, t_vert center, int radius);
 void		draw_circle_full(t_frame *f, t_vert center, int radius);
-void		draw_circle_full_grad(t_frame *f, t_vert center, int radius,
+void		draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
 				t_color edge);
 void		draw_shape(t_frame *f, t_vert arr[], int len);
 void		draw_shape_full(t_frame *f, t_vert arr[], int len);
@@ -229,7 +228,7 @@ void		draw_image(t_frame *f, t_img *img);
 void		draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset);
 void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
 void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos, long dt_ms);
-void 		draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc);
+void		draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc);
 t_spr		*get_sprite(char *id);
 
 /* Fog ---------------------------------------------------------------------- */
@@ -312,11 +311,11 @@ int			create_mesh(void);
 void		render_mesh(void);
 void		free_mesh(void);
 
-/* Player ------------------------------------------------------------------- */
+/* Transform ---------------------------------------------------------------- */
 
 void		reset_player_transform(t_map *m);
 void		update_player_transform(t_map *m);
-double		get_angle_from_dir(t_vec2 dir);
+void		rotate_player(double angle);
 
 /* Shader Program ----------------------------------------------------------- */
 

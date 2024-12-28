@@ -11,10 +11,6 @@ void	run_game_loop(t_map *m)
 	raycasting(f, m);
 	door_routine(m);
 	display_gui(f);
-	/*
-		- 60 FPS. Objective is 150 FPS.
-		- A lower image resolution or even flat colors don't change anything.
-	*/
 	return ;
 }
 

@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+static t_color	calculate_average_color(t_img *img);
+
 t_img	*load_image_from_file(const char *png_path)
 {
 	t_img			*img;
@@ -84,4 +86,29 @@ void	apply_vertical_gradient(t_img *img, t_color color)
 		++v.y;
 	}
 	return ;
+}
+
+static t_color	calculate_average_color(t_img *img)
+{
+	size_t	i;
+	size_t	len;
+	t_color	*buf;
+	double	alpha;
+	int		total_color[4];
+
+	bzero(&total_color, 4 * sizeof(int));
+	i = 0;
+	len = img->size.x * img->size.y;
+	buf = (t_color *)img->buf;
+	while (i < len)
+	{
+		alpha = buf[i].a / 255.0;
+		total_color[0] += buf[i].r * alpha;
+		total_color[1] += buf[i].g * alpha;
+		total_color[2] += buf[i].b * alpha;
+		total_color[3] += buf[i].a;
+		++i;
+	}
+	return (get_color_rgba(total_color[0] / len, total_color[1] / len,
+			total_color[2] / len, total_color[3] / len));
 }

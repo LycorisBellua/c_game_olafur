@@ -80,10 +80,8 @@ static void	draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len)
 		}
 		if (x1 <= x2)
 		{
-			v1.coord.x = x1;
-			v2.coord.x = x2;
-			v1.coord.y = y;
-			v2.coord.y = y;
+			set_ivec2(&v1.coord, x1, y);
+			set_ivec2(&v2.coord, x2, y);
 			draw_line(f, v1, v2);
 		}
 		++y;

@@ -15,8 +15,9 @@ void	raycasting(t_frame *f, t_map *m)
 
 	// #include <float.h>
 	z_buffer = malloc(f->size.x * sizeof(double));
-	for (int i = 0; i < f->size.x; ++i)
-		z_buffer[i] = DBL_MAX;
+	int i = 0;
+	while (i < f->size.x)
+		z_buffer[i++] = DBL_MAX;
 
 	list = 0;
 	x = 0;

@@ -33,8 +33,14 @@ static t_ivec2	get_direction(t_ivec2 v1, t_ivec2 v2)
 {
 	t_ivec2	dir;
 
-	dir.x = v1.x < 0 && v2.x < 0 ? abs(v1.x) + v2.x : v2.x - v1.x;
-	dir.y = v1.y < 0 && v2.y < 0 ? abs(v1.y) + v2.y : v2.y - v1.y;
+	if (v1.x < 0 && v2.x < 0)
+		dir.x = abs(v1.x) + v2.x;
+	else
+		dir.x = v2.x - v1.x;
+	if (v1.y < 0 && v2.y < 0)
+		dir.y = abs(v1.y) + v2.y;
+	else
+		dir.y = v2.y - v1.y;
 	return (dir);
 }
 

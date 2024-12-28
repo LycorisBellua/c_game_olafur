@@ -39,7 +39,7 @@ static int		map_walls[] =
 	1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 	1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 	1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+	1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,3,3,3,3,1,
 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 };
 
@@ -181,6 +181,14 @@ static t_map	*create_map(void)
 		map->cells[i].height = !map->cells[i].is_obstacle ? 0 : 2.0;
 		if (map_walls[i] == 6)
 			map->cells[i].height = 1.0;
+		if (i == 22 * map->size.x + 19)
+			map->cells[i].height = 0.5;
+		else if (i == 22 * map->size.x + 20)
+			map->cells[i].height = 1.0;
+		else if (i == 22 * map->size.x + 21)
+			map->cells[i].height = 1.5;
+		else if (i == 22 * map->size.x + 22)
+			map->cells[i].height = 2.0;
 		map->cells[i].tex_floor = map_buildings[i] ? map->img[8] : map->img[7];
 		map->cells[i].tex_ceiling = map_buildings[i] ? map->img[9] : 0;
 		map->cells[i].tex_north = map_walls[i] ? map->img[map_walls[i]] : 0;

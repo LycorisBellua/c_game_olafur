@@ -12,3 +12,10 @@ or even have an animated texture.
 - Enter a seed to generate a level, or maybe you can send a map file. Support 
 for both?
 - Main menu.
+
+Norm:
+main.c
+maps.c
+door.c
+graphics/draw/draw_shape.c
+graphics/raycasting/*

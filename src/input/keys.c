@@ -25,13 +25,13 @@ static void	handle_player_speed(int mods)
 {
 	if (mods & GLFW_MOD_SHIFT)
 	{
-		g_man.movement_speed = DEFAULT_MOVE_SPEED * 2;
-		g_man.rotation_speed = DEFAULT_ROT_SPEED * 2;
+		g_man.move_speed = DEFAULT_MOVE_SPEED * 2;
+		g_man.rotate_speed = DEFAULT_ROTATE_SPEED * 2;
 	}
 	else
 	{
-		g_man.movement_speed = DEFAULT_MOVE_SPEED;
-		g_man.rotation_speed = DEFAULT_ROT_SPEED;
+		g_man.move_speed = DEFAULT_MOVE_SPEED;
+		g_man.rotate_speed = DEFAULT_ROTATE_SPEED;
 	}
 	return ;
 }
@@ -44,20 +44,20 @@ static void	handle_key_press(GLFWwindow *window, int key, int mods)
 		toggle_fullscreen(window);
 	else if (key == GLFW_KEY_DOWN || key == GLFW_KEY_S
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_2))
-		g_man.movement_action.y += -1;
+		g_man.move_action.y += -1;
 	else if (key == GLFW_KEY_UP || key == GLFW_KEY_W
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_8))
-		g_man.movement_action.y += 1;
+		g_man.move_action.y += 1;
 	else if (key == GLFW_KEY_Q)
-		g_man.movement_action.x += -1;
+		g_man.move_action.x += -1;
 	else if (key == GLFW_KEY_E)
-		g_man.movement_action.x += 1;
+		g_man.move_action.x += 1;
 	else if (key == GLFW_KEY_LEFT || key == GLFW_KEY_A
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_4))
-		g_man.rotation_action += -1;
+		g_man.rotate_action += -1;
 	else if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_D
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_6))
-		g_man.rotation_action += 1;
+		g_man.rotate_action += 1;
 	return ;
 }
 
@@ -65,20 +65,20 @@ static void	handle_key_release(int key, int mods)
 {
 	if (key == GLFW_KEY_DOWN || key == GLFW_KEY_S
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_2))
-		g_man.movement_action.y += 1;
+		g_man.move_action.y += 1;
 	else if (key == GLFW_KEY_UP || key == GLFW_KEY_W
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_8))
-		g_man.movement_action.y += -1;
+		g_man.move_action.y += -1;
 	else if (key == GLFW_KEY_Q)
-		g_man.movement_action.x += 1;
+		g_man.move_action.x += 1;
 	else if (key == GLFW_KEY_E)
-		g_man.movement_action.x += -1;
+		g_man.move_action.x += -1;
 	else if (key == GLFW_KEY_LEFT || key == GLFW_KEY_A
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_4))
-		g_man.rotation_action += 1;
+		g_man.rotate_action += 1;
 	else if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_D
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_6))
-		g_man.rotation_action += -1;
+		g_man.rotate_action += -1;
 	return ;
 }
 

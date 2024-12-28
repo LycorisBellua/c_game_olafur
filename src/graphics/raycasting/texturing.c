@@ -36,76 +36,6 @@ static void	wall_flat_color(t_frame *f, t_map *m, t_ray *r)
 	return ;
 }
 
-static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
-{
-	t_img	*img;
-
-	img = get_texture(m, r);
-	if (!img)
-		return ;
-
-    // Where exactly the wall was hit
-	double	wall_x;
-	if (r->side == 0)
-		wall_x = g_man.player.pos.y + r->perp_wall_dist * r->ray_dir.y;
-	else
-		wall_x = g_man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
-	wall_x -= f_floor(wall_x);
-
-	// X coordinate on the image
-	t_ivec2	img_coord;
-	img_coord.x = (int)(wall_x * img->size.x);
-	if ((r->side == 0 && r->ray_dir.x < 0)
-		|| (r->side == 1 && r->ray_dir.y > 0))
-		img_coord.x = img->size.x - img_coord.x - 1;
-
-	// How much to increase the image coordinate per screen pixel
-	double	img_step;
-	img_step = (double)img->size.y / r->line_height_cubic;
-
-	// Add an offset to control where the texture sampling starts on the Y-axis
-	double texture_offset_y;
-	t_cell	*cell;
-	cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
-	texture_offset_y = img->size.y * (1.0 - cell->height) * 0.5;
-
-	// Starting image coordinate
-	double img_pos;
-	img_pos = (texture_offset_y
-		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * img_step);
-
-	t_color	*img_buf;
-	t_color	color;
-	int		y;
-	img_buf = (t_color *)img->buf;
-
-	y = r->coord1.y;
-	while (y < r->coord2.y)
-	{
-		// Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
-		img_coord.y = (int)img_pos % img->size.y;
-		img_pos += img_step;
-
-		// Clamp the texture coordinate to within bounds
-		if (img_coord.y < 0)
-			img_coord.y += img->size.y;
-
-		color = img_buf[img_coord.y * img->size.x + img_coord.x];
-
-		// Make color darker for y-sides
-		if (r->side == 1)
-		{
-			color.r /= 2;
-			color.g /= 2;
-			color.b /= 2;
-		}
-		apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
-		draw_point(f, color, r->coord1.x, y);
-		++y;
-	}
-	return ;
-}
-
 static t_img	*get_texture(t_map *m, t_ray *r)
 {
 	if (r->side == 1 && r->ray_dir.y > 0)
@@ -117,4 +47,66 @@ static t_img	*get_texture(t_map *m, t_ray *r)
 	else if (r->side == 0 && r->ray_dir.x < 0)
 		return (m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_east);
 	return (0);
+}
+
+static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
+{
+	t_img	*img;
+	t_ivec2	img_coord;
+	double	img_step;
+	double	img_pos;
+	t_color	*img_buf;
+	t_color	color;
+	int		y;
+
+	img = get_texture(m, r);
+	if (!img)
+		return ;
+
+	// img_coord.x
+	double	wall_x;
+	if (r->side == 0)
+		wall_x = g_man.player.pos.y + r->perp_wall_dist * r->ray_dir.y;
+	else
+		wall_x = g_man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
+	wall_x -= f_floor(wall_x);
+	img_coord.x = (int)(wall_x * img->size.x);
+	if ((r->side == 0 && r->ray_dir.x < 0)
+		|| (r->side == 1 && r->ray_dir.y > 0))
+		img_coord.x = img->size.x - img_coord.x - 1;
+
+	// img_step
+	img_step = (double)img->size.y / r->line_height_cubic;
+
+	// img_pos
+	t_cell	*cell;
+	double	y_offset;
+	cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
+	y_offset = img->size.y * (1.0 - cell->height) * 0.5;
+	img_pos = (y_offset
+		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * img_step);
+
+	img_buf = (t_color *)img->buf;
+	y = r->coord1.y;
+	while (y < r->coord2.y)
+	{
+		// Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
+		img_coord.y = (int)img_pos % img->size.y;
+		img_pos += img_step;
+		// Clamp the texture coordinate to within bounds
+		if (img_coord.y < 0)
+			img_coord.y += img->size.y;
+
+		color = img_buf[img_coord.y * img->size.x + img_coord.x];
+		if (r->side == 1)
+		{
+			color.r /= 2;
+			color.g /= 2;
+			color.b /= 2;
+		}
+		apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
+		draw_point(f, color, r->coord1.x, y);
+		++y;
+	}
+	return ;
 }

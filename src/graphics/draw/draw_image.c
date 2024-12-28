@@ -51,11 +51,13 @@ void	draw_background(t_frame *f, t_map *m)
 {
 	t_img		*bg;
 	t_player	*p;
+	double		angle;
 	int			offset;
 
 	bg = m->img[0];
 	p = &g_man.player;
-	offset = (get_angle_from_dir(p->dir) + PI) / RAD_360 * bg->size.x;
+	angle = get_angle_from_dir(p->dir.x, p->dir.y);
+	offset = (angle + PI) / RAD_360 * bg->size.x;
 	draw_image_with_x_offset(f, bg, offset);
 	return ;
 }
