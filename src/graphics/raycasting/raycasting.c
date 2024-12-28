@@ -1,56 +1,62 @@
 #include "cimmerian.h"
+#include <float.h>
 
-static int	perform_dda(t_map *m, double cam_x, t_ray *r);
-static void	set_line(t_frame *f, int x, t_ray *r);
+static void	perform_dda(t_map *m, double cam_x, t_list **list);
 static int	is_obstacle_see_through(t_map *m, t_ray *r);
+static void	set_line(t_frame *f, t_map *m, int x, t_ray *r);
 
-void	raycasting(t_map *m)
+void	raycasting(t_frame *f, t_map *m)
 {
-	t_frame	*f;
 	int		x;
-	t_ray	r;
+	t_list	*list;
 	double	*z_buffer;
 
-	f = g_man.frame[g_man.curr_frame];
-	cast_floor_and_ceiling(f, m);
-	z_buffer = calloc(f->size.x, sizeof(double));
-	r.alpha = 0;
+	cast_floor(f, m);
+
+	// #include <float.h>
+	z_buffer = malloc(f->size.x * sizeof(double));
+	for (int i = 0; i < f->size.x; ++i)
+		z_buffer[i] = DBL_MAX;
+
+	list = 0;
 	x = 0;
 	while (x < f->size.x)
 	{
-		if (perform_dda(m, 2 * x / (double)f->size.x - 1, &r))
-		{
-			set_line(f, x, &r);
-			draw_wall(m, f, &r);
-		}
+		perform_dda(m, 2 * x / (double)f->size.x - 1, &list);
 		/*
 			TODO:
 			For transparency, draw the sprite before drawing the alpha walls.
 		*/
-		if (z_buffer)
-			z_buffer[x] = r.perp_wall_dist;
-		while (r.alpha)
+
+		while (list)
 		{
-			set_line(f, x, r.alpha->data);
-			draw_wall(m, f, r.alpha->data);
-			list_del_one(&r.alpha, free);
+			t_ray *ray = (t_ray *)list->data;
+			if (ray->perp_wall_dist < z_buffer[x])
+				z_buffer[x] = ray->perp_wall_dist;
+			set_line(f, m, x, ray);
+			draw_wall(f, m, ray);
+			list_del_one(&list, free);
 		}
 		++x;
 	}
+	cast_ceiling(f, m, z_buffer);
 	if (z_buffer)
 		cast_sprites(f, m, z_buffer);
 	free(z_buffer);
 	return ;
 }
 
-static int	perform_dda(t_map *m, double cam_x, t_ray *r)
+static void	perform_dda(t_map *m, double cam_x, t_list **list)
 {
 	t_vec2	delta_dist;
 	t_ivec2	step;
 	t_vec2	side_dist;
-	int		hit;
-	t_ray	*alpha;
+	t_ray	*r;
+	double	biggest_height;
 
+	r = calloc(1, sizeof(t_ray));
+	if (!r)
+		return ;
 	r->ray_dir.x = g_man.player.dir.x + g_man.player.plane.x * cam_x;
 	r->ray_dir.y = g_man.player.dir.y + g_man.player.plane.y * cam_x;
 	r->m_index.x = (int)g_man.player.pos.x;
@@ -77,8 +83,8 @@ static int	perform_dda(t_map *m, double cam_x, t_ray *r)
 		step.y = 1;
 		side_dist.y = (r->m_index.y + 1.0 - g_man.player.pos.y) * delta_dist.y;
 	}
-	hit = 0;
-	while (!hit)
+	biggest_height = 0;
+	while (1)
 	{
 		if (side_dist.x < side_dist.y)
 		{
@@ -94,49 +100,37 @@ static int	perform_dda(t_map *m, double cam_x, t_ray *r)
 		}
 		if (r->m_index.x < 0 || r->m_index.y < 0
 			|| r->m_index.x >= m->size.x || r->m_index.y >= m->size.y)
-			return (0);
+			break ;
 		else if (m->cells[r->m_index.y * m->size.x + r->m_index.x].is_obstacle)
 		{
-			if (!is_obstacle_see_through(m, r))
-				hit = 1;
-			else
+			t_cell	*cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
+			int	add_to_list = 0;
+
+			if (is_obstacle_see_through(m, r))
+				add_to_list = 1;
+			else if (cell->height > biggest_height)
 			{
-				alpha = malloc(sizeof(t_ray));
-				if (alpha)
-				{
-					alpha->side = r->side;
-					alpha->m_index = r->m_index;
-					alpha->ray_dir = r->ray_dir;
-					if (alpha->side == 0)
-						alpha->perp_wall_dist = (side_dist.x - delta_dist.x);
-					else
-						alpha->perp_wall_dist = (side_dist.y - delta_dist.y);
-					if (alpha->perp_wall_dist > m->dof)
-					{
-						free(alpha);
-						return (0);
-					}
-					list_add_front(&r->alpha, list_new(alpha));
-				}
+				biggest_height = cell->height;
+				add_to_list = 1;
+			}
+
+			if (add_to_list)
+			{
+				if (r->side == 0)
+					r->perp_wall_dist = (side_dist.x - delta_dist.x);
+				else
+					r->perp_wall_dist = (side_dist.y - delta_dist.y);
+				if (r->perp_wall_dist > m->dof)
+					break ;
+				list_add_front(list, list_new(r));
+				r = calloc(1, sizeof(t_ray));
+				r->ray_dir = ((t_ray *)(*list)->data)->ray_dir;
+				r->m_index = ((t_ray *)(*list)->data)->m_index;
+				r->side = ((t_ray *)(*list)->data)->side;
 			}
 		}
 	}
-	if (r->side == 0)
-		r->perp_wall_dist = (side_dist.x - delta_dist.x);
-	else
-		r->perp_wall_dist = (side_dist.y - delta_dist.y);
-	if (r->perp_wall_dist > m->dof)
-		return (0);
-	return (1);
-}
-
-static void	set_line(t_frame *f, int x, t_ray *r)
-{
-	r->line_height = (int)(f->size.y / r->perp_wall_dist * g_man.res.h_mod);
-	r->coord1.x = x;
-	r->coord1.y = max(-r->line_height / 2 + f->size.y / 2, 0);
-	r->coord2.x = x;
-	r->coord2.y = min(r->line_height / 2 + f->size.y / 2, f->size.y - 1);
+	free(r);
 	return ;
 }
 
@@ -154,4 +148,20 @@ static int	is_obstacle_see_through(t_map *m, t_ray *r)
 	else if (r->side == 0 && r->ray_dir.x < 0)
 		return (cell->tex_east->is_see_through);
 	return (0);
+}
+
+static void	set_line(t_frame *f, t_map *m, int x, t_ray *r)
+{
+	t_cell	*cell;
+	int		offset;
+
+	cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
+	r->line_height_cubic = (int)(f->size.y / r->perp_wall_dist * g_man.res.h_mod);
+	r->line_height = r->line_height_cubic * cell->height;
+	offset = r->line_height_cubic * (1.0 - cell->height) * 0.5;
+	r->coord1.x = x;
+	r->coord1.y = max(-r->line_height / 2 + f->size.y / 2 + offset, 0);
+	r->coord2.x = x;
+	r->coord2.y = min(r->line_height / 2 + f->size.y / 2 + offset, f->size.y - 1);
+	return ;
 }

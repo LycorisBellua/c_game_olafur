@@ -105,15 +105,17 @@ typedef struct s_ray
 	int		side;
 	double	perp_wall_dist;
 	int		line_height;
+	int		line_height_cubic;
 	t_ivec2	coord1;
 	t_ivec2	coord2;
-	t_list	*alpha;
 }	t_ray;
 
 typedef struct s_cell
 {
 	int		is_obstacle;
 	int		is_door;
+	int		is_indoors;
+	double	height;
 	t_img	*tex_floor;
 	t_img	*tex_ceiling;
 	t_img	*tex_north;
@@ -281,9 +283,10 @@ void		update_global_coordinates(void);
 
 /* Raycasting --------------------------------------------------------------- */
 
-void		raycasting(t_map *m);
-void		cast_floor_and_ceiling(t_frame *f, t_map *m);
-void		draw_wall(t_map *m, t_frame *f, t_ray *r);
+void		raycasting(t_frame *f, t_map *m);
+void		cast_floor(t_frame *f, t_map *m);
+void		cast_ceiling(t_frame *f, t_map *m, double *z_buffer);
+void		draw_wall(t_frame *f, t_map *m, t_ray *r);
 void		cast_sprites(t_frame *f, t_map *m, double *z_buffer);
 
 /* Input -------------------------------------------------------------------- */

@@ -19,11 +19,11 @@ double	get_fog_width(double dof)
 	if (dof < 2.0)
 		return (1.0);
 	else if (dof >= 2.0 && dof < 3.79)
-		return (0.75 - (dof - 2.0) / 2 * 0.5);
+		return (0.80 - (dof - 2.0) / 2 * 0.5);
 	else if (dof >= 3.8 && dof < 5)
-		return (0.3);
+		return (0.40);
 	else if (dof >= 5 && dof < 8)
-		return (0.25);
+		return (0.30);
 	else if (dof >= 8 && dof < 8.5)
 		return (0.2);
 	else if (dof >= 8.5 && dof < 9)

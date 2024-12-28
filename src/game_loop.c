@@ -8,7 +8,7 @@ void	run_game_loop(t_map *m)
 
 	f = g_man.frame[g_man.curr_frame];
 	draw_background(f, m);
-	raycasting(m);
+	raycasting(f, m);
 	door_routine(m);
 	display_gui(f);
 	/*

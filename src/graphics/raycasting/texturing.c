@@ -1,19 +1,19 @@
 #include "cimmerian.h"
 
-static void		wall_flat_color(t_map *m, t_frame *f, t_ray *r);
-static void		wall_texturing(t_map *m, t_frame *f, t_ray *r);
+static void		wall_flat_color(t_frame *f, t_map *m, t_ray *r);
+static void		wall_texturing(t_frame *f, t_map *m, t_ray *r);
 static t_img	*get_texture(t_map *m, t_ray *r);
 
-void	draw_wall(t_map *m, t_frame *f, t_ray *r)
+void	draw_wall(t_frame *f, t_map *m, t_ray *r)
 {
 	if (r->perp_wall_dist > m->dof * g_man.tex_in_dof)
-		wall_flat_color(m, f, r);
+		wall_flat_color(f, m, r);
 	else
-		wall_texturing(m, f, r);
+		wall_texturing(f, m, r);
 	return ;
 }
 
-static void	wall_flat_color(t_map *m, t_frame *f, t_ray *r)
+static void	wall_flat_color(t_frame *f, t_map *m, t_ray *r)
 {
 	t_vert	v1;
 	t_vert	v2;
@@ -36,7 +36,7 @@ static void	wall_flat_color(t_map *m, t_frame *f, t_ray *r)
 	return ;
 }
 
-static void	wall_texturing(t_map *m, t_frame *f, t_ray *r)
+static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 {
 	t_img	*img;
 
@@ -54,30 +54,41 @@ static void	wall_texturing(t_map *m, t_frame *f, t_ray *r)
 
 	// X coordinate on the image
 	t_ivec2	img_coord;
-	img_coord.x = (int)(wall_x * (double)img->size.x);
+	img_coord.x = (int)(wall_x * img->size.x);
 	if ((r->side == 0 && r->ray_dir.x < 0)
 		|| (r->side == 1 && r->ray_dir.y > 0))
 		img_coord.x = img->size.x - img_coord.x - 1;
 
 	// How much to increase the image coordinate per screen pixel
 	double	img_step;
-	img_step = 1.0 * img->size.y / r->line_height;
+	img_step = (double)img->size.y / r->line_height_cubic;
+
+	// Add an offset to control where the texture sampling starts on the Y-axis
+	double texture_offset_y;
+	t_cell	*cell;
+	cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
+	texture_offset_y = img->size.y * (1.0 - cell->height) * 0.5;
 
 	// Starting image coordinate
 	double img_pos;
-	img_pos = (r->coord1.y - (f->size.y / 2.0 - r->line_height / 2.0))
-		* img_step;
+	img_pos = (texture_offset_y
+		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * img_step);
 
 	t_color	*img_buf;
 	t_color	color;
 	int		y;
 	img_buf = (t_color *)img->buf;
+
 	y = r->coord1.y;
 	while (y < r->coord2.y)
 	{
 		// Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
 		img_coord.y = (int)img_pos % img->size.y;
 		img_pos += img_step;
+
+		// Clamp the texture coordinate to within bounds
+		if (img_coord.y < 0)
+			img_coord.y += img->size.y;
 
 		color = img_buf[img_coord.y * img->size.x + img_coord.x];
 
