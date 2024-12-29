@@ -11,7 +11,8 @@ t_img	*load_image_from_file(const char *png_path)
 	img = malloc(sizeof(t_img));
 	if (!img)
 		return (0);
-	err = lodepng_decode32_file(&img->buf, &size.x, &size.y, png_path);
+	err = lodepng_decode32_file((GLubyte **)&img->buf, &size.x, &size.y,
+			png_path);
 	if (err)
 	{
 		dprintf(STDERR_FILENO, "Lodepng error n°%u for \"%s\": %s\n",
@@ -37,7 +38,7 @@ t_img	*create_image(t_color c, t_ivec2 size)
 		return (0);
 	img->size.x = size.x;
 	img->size.y = size.y;
-	img->buf = malloc(img->size.x * img->size.y * 4 * sizeof(GLubyte));
+	img->buf = malloc(img->size.x * img->size.y * sizeof(t_color));
 	if (!img->buf)
 	{
 		free_image(img);
@@ -45,7 +46,7 @@ t_img	*create_image(t_color c, t_ivec2 size)
 	}
 	i = 0;
 	while (i < img->size.x * img->size.y)
-		*((t_color *)img->buf + i++) = c;
+		img->buf[i++] = c;
 	img->average_color = c;
 	img->is_see_through = img->average_color.a < 255;
 	return (img);
@@ -76,7 +77,7 @@ void	apply_vertical_gradient(t_img *img, t_color color)
 		v.x = 0;
 		while (v.x < img->size.x)
 		{
-			pixel = &((t_color *)img->buf)[v.y * img->size.x + v.x];
+			pixel = &img->buf[v.y * img->size.x + v.x];
 			pixel->r = (GLubyte)((1.0 - factor) * pixel->r + factor * color.r);
 			pixel->g = (GLubyte)((1.0 - factor) * pixel->g + factor * color.g);
 			pixel->b = (GLubyte)((1.0 - factor) * pixel->b + factor * color.b);
@@ -92,21 +93,19 @@ static t_color	calculate_average_color(t_img *img)
 {
 	size_t	i;
 	size_t	len;
-	t_color	*buf;
 	double	alpha;
 	int		total_color[4];
 
 	bzero(&total_color, 4 * sizeof(int));
 	i = 0;
 	len = img->size.x * img->size.y;
-	buf = (t_color *)img->buf;
 	while (i < len)
 	{
-		alpha = buf[i].a / 255.0;
-		total_color[0] += buf[i].r * alpha;
-		total_color[1] += buf[i].g * alpha;
-		total_color[2] += buf[i].b * alpha;
-		total_color[3] += buf[i].a;
+		alpha = img->buf[i].a / 255.0;
+		total_color[0] += img->buf[i].r * alpha;
+		total_color[1] += img->buf[i].g * alpha;
+		total_color[2] += img->buf[i].b * alpha;
+		total_color[3] += img->buf[i].a;
 		++i;
 	}
 	return (get_color_rgba(total_color[0] / len, total_color[1] / len,

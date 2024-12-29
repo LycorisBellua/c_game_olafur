@@ -55,7 +55,6 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 	t_ivec2	img_coord;
 	double	img_step;
 	double	img_pos;
-	t_color	*img_buf;
 	t_color	color;
 	int		y;
 
@@ -86,7 +85,6 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 	img_pos = (y_offset
 		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * img_step);
 
-	img_buf = (t_color *)img->buf;
 	y = r->coord1.y;
 	while (y < r->coord2.y)
 	{
@@ -97,7 +95,7 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 		if (img_coord.y < 0)
 			img_coord.y += img->size.y;
 
-		color = img_buf[img_coord.y * img->size.x + img_coord.x];
+		color = img->buf[img_coord.y * img->size.x + img_coord.x];
 		if (r->side == 1)
 		{
 			color.r /= 2;

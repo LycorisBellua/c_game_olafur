@@ -36,11 +36,11 @@ void	clear_drawing(t_frame *f)
 	size_t	len;
 
 	len = f->real_size.x * f->real_size.y;
-	bzero(f->buf, len * 4 * sizeof(GLubyte));
+	bzero(f->buf, len * sizeof(t_color));
 	i = 0;
 	while (i < len)
 	{
-		f->buf[i * 4 + 3] = 255;
+		f->buf->a = 255;
 		++i;
 	}
 	return ;
@@ -87,7 +87,7 @@ static t_frame	*create_frame(void)
 	f->size.x = f->real_size.x / f->thickness;
 	f->size.y = f->real_size.y / f->thickness;
 
-	buf_length = f->real_size.x * f->real_size.y * 4 * sizeof(GLubyte);
+	buf_length = f->real_size.x * f->real_size.y * sizeof(t_color);
 	f->buf = malloc(buf_length);
 	if (!f->buf)
 	{

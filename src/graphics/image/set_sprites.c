@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
 static int		set_pixel_data(t_img *file, size_t *i_spr);
-static GLubyte	*get_pixel_data(t_img *file, int is_shadow);
+static t_color	*get_pixel_data(t_img *file, int is_shadow);
 static t_color	get_pixel(t_img *img, size_t i, int is_shadow);
 
 int	set_sprite_array(char *path)
@@ -44,7 +44,7 @@ static int	set_pixel_data(t_img *file, size_t *i_spr)
 	return (create_sprites_from_file(file, i_spr));
 }
 
-static GLubyte	*get_pixel_data(t_img *file, int is_shadow)
+static t_color	*get_pixel_data(t_img *file, int is_shadow)
 {
 	int		i;
 	char	*path;
@@ -69,7 +69,7 @@ static GLubyte	*get_pixel_data(t_img *file, int is_shadow)
 		}
 	}
 	free_image(img);
-	return ((GLubyte *)data);
+	return (data);
 }
 
 static t_color	get_pixel(t_img *img, size_t i, int is_shadow)
@@ -79,10 +79,10 @@ static t_color	get_pixel(t_img *img, size_t i, int is_shadow)
 	GLubyte	blue;
 	GLubyte	alpha;
 
-	red = img->buf[i * 4 + 0];
-	green = img->buf[i * 4 + 1];
-	blue = img->buf[i * 4 + 2];
-	alpha = img->buf[i * 4 + 3];
+	red = ((GLubyte *)img->buf)[i * 4 + 0];
+	green = ((GLubyte *)img->buf)[i * 4 + 1];
+	blue = ((GLubyte *)img->buf)[i * 4 + 2];
+	alpha = ((GLubyte *)img->buf)[i * 4 + 3];
 	if (is_shadow)
 		alpha = 255 - red;
 	return (get_color_rgba(red, green, blue, alpha));

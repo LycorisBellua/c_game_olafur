@@ -179,8 +179,8 @@ static void	render_sprite(t_frame *f, t_map *m, t_sprite *s, double grid_dist, d
 				d = (y - v_move_screen) * 256 - f->size.y * 128 + sprite_height
 					* 128;
 				tex.y = ((d * tex_height) / sprite_height) / 256;
-				t_color color = ((t_color *)m->img[s->texture]->buf)[tex_width
-					* tex.y + tex.x];
+				t_color color = m->img[s->texture]->buf[tex_width * tex.y
+					+ tex.x];
 				apply_wall_fog(&color, m->fog_color, grid_dist, m->dof);
 				draw_point(f, color, stripe, y);
 				++y;

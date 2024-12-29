@@ -13,7 +13,7 @@ t_img	*compose_background(t_map *m)
 		return (0);
 	img->size.x = g_man.res.window_size_default.x;
 	img->size.y = g_man.res.window_size_default.y;
-	img->buf = calloc(img->size.x * img->size.y * 4, sizeof(GLubyte));
+	img->buf = calloc(img->size.x * img->size.y, sizeof(t_color));
 	if (!img->buf)
 	{
 		free_image(img);
@@ -27,7 +27,7 @@ void	update_background(t_map *m, t_img *bg)
 {
 	size_t	len;
 
-	len = bg->size.x * bg->size.y * 4 * sizeof(GLubyte);
+	len = bg->size.x * bg->size.y * sizeof(t_color);
 	memcpy(bg->buf, m->skybox->buf, len);
 	add_fog_overlay(bg, m->fog_width, m->fog_color);
 	return ;

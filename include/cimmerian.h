@@ -92,8 +92,8 @@ typedef struct s_img
 	t_ivec2		size;
 	int			is_see_through;
 	t_color		average_color;
-	GLubyte		*buf;
-	GLubyte		*buf_shadow;
+	t_color		*buf;
+	t_color		*buf_shadow;
 	size_t		segment_len;
 	t_img_seg	*seg;
 }	t_img;
@@ -151,7 +151,7 @@ typedef struct s_frame
 	t_ivec2	size;
 	t_ivec2	real_size;
 	int		thickness;
-	GLubyte	*buf;
+	t_color	*buf;
 }	t_frame;
 
 typedef struct s_res

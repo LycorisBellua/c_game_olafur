@@ -100,8 +100,7 @@ static void	cut_sprite(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc)
 	while (line < s->size.y)
 	{
 		cycle_ptr = &s->cycle[i_cyc][s->size.x * line];
-		file_ptr = &((t_color *)file->buf)[file->size.x * (pos.y + line)
-			+ pos.x];
+		file_ptr = &file->buf[file->size.x * (pos.y + line) + pos.x];
 		i = -1;
 		while (++i < s->size.x)
 			cycle_ptr[i] = file_ptr[i];
@@ -127,8 +126,7 @@ static void	cut_sprite_shadow(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc)
 	while (line < s->size.y)
 	{
 		cycle_ptr = &s->cycle_shadow[i_cyc][s->size.x * line];
-		file_ptr = &((t_color *)file->buf_shadow)[file->size.x * (pos.y + line)
-			+ pos.x];
+		file_ptr = &file->buf_shadow[file->size.x * (pos.y + line) + pos.x];
 		i = -1;
 		while (++i < s->size.x)
 			cycle_ptr[i] = file_ptr[i];

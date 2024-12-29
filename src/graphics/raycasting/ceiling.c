@@ -51,7 +51,7 @@ void	cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x)
 			{
 				t.x = (int)(tex->size.x * (floor.x - cell.x)) % tex->size.x;
 				t.y = (int)(tex->size.y * (floor.y - cell.y)) % tex->size.y;
-				color = ((t_color *)tex->buf)[tex->size.x * t.y + t.x];
+				color = tex->buf[tex->size.x * t.y + t.x];
 				color.r /= 2;
 				color.g /= 2;
 				color.b /= 2;
