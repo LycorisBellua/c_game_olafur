@@ -284,9 +284,9 @@ void		update_global_coordinates(void);
 
 void		raycasting(t_frame *f, t_map *m);
 void		cast_floor(t_frame *f, t_map *m);
-void		cast_ceiling(t_frame *f, t_map *m, double *z_buffer);
-void		draw_wall(t_frame *f, t_map *m, t_ray *r);
+void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		cast_sprites(t_frame *f, t_map *m, double *z_buffer);
+void		draw_wall(t_frame *f, t_map *m, t_ray *r);
 
 /* Input -------------------------------------------------------------------- */
 

@@ -1,8 +1,7 @@
 #include "cimmerian.h"
 
-void	cast_ceiling(t_frame *f, t_map *m, double *z_buffer)
+void	cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x)
 {
-	int		x;
 	int		y;
 	t_vec2	ray_dir0;
 	t_vec2	ray_dir1;
@@ -15,7 +14,7 @@ void	cast_ceiling(t_frame *f, t_map *m, double *z_buffer)
 	t_ivec2	cell;
 	t_img	*tex;
 	t_ivec2	t;
-	t_color color;
+	t_color	color;
 
 	ray_dir0.x = g_man.player.dir.x - g_man.player.plane.x;
 	ray_dir0.y = g_man.player.dir.y - g_man.player.plane.y;
@@ -35,43 +34,30 @@ void	cast_ceiling(t_frame *f, t_map *m, double *z_buffer)
 			++y;
 			continue ;
 		}
-
 		floor_step.x = row_dist * ray_dir_step.x;
 		floor_step.y = row_dist * ray_dir_step.y;
 		floor.x = g_man.player.pos.x + row_dist * ray_dir0.x;
 		floor.y = g_man.player.pos.y + row_dist * ray_dir0.y;
 
-		x = 0;
-		while (x < f->size.x)
+		floor.x += x * floor_step.x;
+		floor.y += x * floor_step.y;
+		cell.x = (int)floor.x;
+		cell.y = (int)floor.y;
+		if (cell.x >= 0 && cell.x < m->size.x && cell.y >= 0
+				&& cell.y < m->size.y && row_dist < z_buffer[x])
 		{
-			// Stop rendering if outside the map
-			if (!(floor.x < 0 || floor.x > m->size.x
-				|| floor.y < 0 || floor.y > m->size.y))
+			tex = m->cells[cell.y * m->size.x + cell.x].tex_ceiling;
+			if (tex)
 			{
-				cell.x = (int)floor.x;
-				cell.y = (int)floor.y;
-
-				// Only draw if farther than what's in the depth buffer
-				if (row_dist < z_buffer[x])
-				{
-					tex = m->cells[cell.y * m->size.x + cell.x].tex_ceiling;
-					if (tex)
-					{
-						t.x = (int)(tex->size.x * (floor.x - cell.x)) % tex->size.x;
-						t.y = (int)(tex->size.y * (floor.y - cell.y)) % tex->size.y;
-						color = ((t_color *)tex->buf)[tex->size.x * t.y + t.x];
-						color.r /= 2;
-						color.g /= 2;
-						color.b /= 2;
-						apply_wall_fog(&color, m->fog_color, row_dist, m->dof);
-						draw_point(f, color, x, f->size.y - y - 1);
-					}
-				}
+				t.x = (int)(tex->size.x * (floor.x - cell.x)) % tex->size.x;
+				t.y = (int)(tex->size.y * (floor.y - cell.y)) % tex->size.y;
+				color = ((t_color *)tex->buf)[tex->size.x * t.y + t.x];
+				color.r /= 2;
+				color.g /= 2;
+				color.b /= 2;
+				apply_wall_fog(&color, m->fog_color, row_dist, m->dof);
+				draw_point(f, color, x, f->size.y - y - 1);
 			}
-
-			floor.x += floor_step.x;
-			floor.y += floor_step.y;
-			++x;
 		}
 		++y;
 	}

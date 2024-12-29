@@ -32,15 +32,17 @@ void	raycasting(t_frame *f, t_map *m)
 		while (list)
 		{
 			t_ray *ray = (t_ray *)list->data;
+			if (is_obstacle_see_through(m, ray))
+				cast_ceiling_x(f, m, z_buffer, x);
 			if (ray->perp_wall_dist < z_buffer[x])
 				z_buffer[x] = ray->perp_wall_dist;
 			set_line(f, m, x, ray);
 			draw_wall(f, m, ray);
 			list_del_one(&list, free);
 		}
+		cast_ceiling_x(f, m, z_buffer, x);
 		++x;
 	}
-	cast_ceiling(f, m, z_buffer);
 	if (z_buffer)
 		cast_sprites(f, m, z_buffer);
 	free(z_buffer);
