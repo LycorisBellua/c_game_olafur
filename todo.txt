@@ -1,14 +1,13 @@
+- Minimap.
+- Animated sprite.
+
 - Fix sprite not showing through doors.
 - The goal is to reach a tall monolith. It can cycle through different colors 
 or even have an animated texture.
 - Use a colored glass or something to showcase transparency. Maybe an enemy.
 - Center the door in the middle of the cell.
-- Certain transparent cells can show their backfaces too (e.g. door without 
+- Make certain transparent cells show their backfaces too (e.g. door without 
 walls).
-
-- Minimap.
-- Animated sprite.
-- Rotate with the mouse.
 
 - Sound.
 - Enter a seed to generate a level, or maybe you can send a map file. Support 

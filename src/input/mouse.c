@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+static void	rotate_on_click(void);
+
 void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 {
 	(void)window;
@@ -30,5 +32,35 @@ void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 		return ;
 	}
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	rotate_on_click();
+	return ;
+}
+
+static void	rotate_on_click(void)
+{
+	static int	x_first_click;
+	static int	x_max_diff;
+	int			diff;
+
+	if (!g_man.click_action)
+		x_first_click = -1;
+	else if (x_first_click < 0)
+	{
+		x_first_click = g_man.cursor.x;
+		x_max_diff = 0;
+	}
+	if (x_first_click >= 0)
+	{
+		diff = g_man.cursor.x - x_first_click;
+		if ((diff > 0 && diff > x_max_diff) || (diff < 0 && diff < x_max_diff))
+			x_max_diff = diff;
+		if ((diff > 0 && diff < x_max_diff) || (diff < 0 && diff > x_max_diff))
+		{
+			x_first_click += x_max_diff;
+			diff = g_man.cursor.x - x_first_click;
+			x_max_diff = diff;
+		}
+		rotate_player(RAD_1 * 10 * norm(diff) * g_man.dt);
+	}
 	return ;
 }
