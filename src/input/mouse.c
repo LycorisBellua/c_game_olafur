@@ -9,9 +9,16 @@ void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_LEFT)
 	{
 		if (action == GLFW_PRESS)
-			g_man.click_action = 1;
+			g_man.l_click_action = 1;
 		else if (action == GLFW_RELEASE)
-			g_man.click_action = 0;
+			g_man.l_click_action = 0;
+	}
+	else if (button == GLFW_MOUSE_BUTTON_RIGHT)
+	{
+		if (action == GLFW_PRESS)
+			g_man.r_click_action = 1;
+		else if (action == GLFW_RELEASE)
+			g_man.r_click_action = 0;
 	}
 	return ;
 }
@@ -42,7 +49,7 @@ static void	rotate_on_click(void)
 	static int	x_max_diff;
 	int			diff;
 
-	if (!g_man.click_action)
+	if (!g_man.r_click_action)
 		x_first_click = -1;
 	else if (x_first_click < 0)
 	{

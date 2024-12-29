@@ -183,7 +183,8 @@ typedef struct s_manager
 	double		rotate_speed;
 	t_ivec2		move_action;
 	int			rotate_action;
-	int			click_action;
+	int			l_click_action;
+	int			r_click_action;
 	t_ivec2		cursor;
 	t_spr		sprites[SPRITE_LEN];
 	t_map		*map;

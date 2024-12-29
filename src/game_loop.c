@@ -24,6 +24,6 @@ static void	display_gui(t_frame *f)
 	pos.y += 14;
 	display_fps(f, pos);
 	if (g_man.cursor.x >= 0 && g_man.cursor.y >= 0)
-		draw_cursor(f, &g_man.sprites[0], g_man.cursor, g_man.click_action);
+		draw_cursor(f, &g_man.sprites[0], g_man.cursor, g_man.l_click_action);
 	return ;
 }
