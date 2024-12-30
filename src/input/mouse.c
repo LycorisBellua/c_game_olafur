@@ -1,6 +1,7 @@
 #include "cimmerian.h"
 
 static void	rotate_on_click(void);
+static int	get_diff_perc(int diff);
 
 void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 {
@@ -67,7 +68,12 @@ static void	rotate_on_click(void)
 			diff = g_man.cursor.x - x_first_click;
 			x_max_diff = diff;
 		}
-		rotate_player(RAD_1 * 10 * norm(diff) * g_man.dt);
+		rotate_player(RAD_1 * get_diff_perc(diff) * norm(diff) * g_man.dt);
 	}
 	return ;
+}
+
+static int	get_diff_perc(int diff)
+{
+	return (max(10, abs(diff) * 100 / g_man.res.window_size_default.x));
 }
