@@ -163,9 +163,6 @@ static t_map	*create_map(void)
 		free_map(&map);
 		return (0);
 	}
-	i = 1;
-	while (i < 6)
-		apply_vertical_gradient(map->img[i++], map->fog_color);
 	map->cells = malloc(map->size.x * map->size.y * sizeof(t_cell));
 	if (!map->cells)
 	{
@@ -182,13 +179,13 @@ static t_map	*create_map(void)
 		if (map_walls[i] == 6)
 			map->cells[i].height = 3.0;
 		if (i == 22 * map->size.x + 19)
-			map->cells[i].height = 0.25;
-		else if (i == 22 * map->size.x + 20)
 			map->cells[i].height = 0.5;
-		else if (i == 22 * map->size.x + 21)
-			map->cells[i].height = 0.75;
-		else if (i == 22 * map->size.x + 22)
+		else if (i == 22 * map->size.x + 20)
 			map->cells[i].height = 1.0;
+		else if (i == 22 * map->size.x + 21)
+			map->cells[i].height = 1.5;
+		else if (i == 22 * map->size.x + 22)
+			map->cells[i].height = 2.0;
 		map->cells[i].tex_floor = map_buildings[i] ? map->img[8] : map->img[7];
 		map->cells[i].tex_ceiling = map_buildings[i] ? map->img[9] : 0;
 		map->cells[i].tex_north = map_walls[i] ? map->img[map_walls[i]] : 0;

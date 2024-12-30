@@ -102,6 +102,7 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 			color.g /= 2;
 			color.b /= 2;
 		}
+		apply_wall_shadow(&color, m->fog_color, y, r->unclamped_line_height);
 		apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
 		draw_point(f, color, r->coord1.x, y);
 		++y;

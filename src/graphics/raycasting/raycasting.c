@@ -162,9 +162,11 @@ static void	set_line(t_frame *f, t_map *m, int x, t_ray *r)
 	r->line_height_cubic = (int)(f->size.y / r->perp_wall_dist * g_man.res.h_mod);
 	r->line_height = r->line_height_cubic * cell->height;
 	offset = r->line_height_cubic * (1.0 - cell->height) * 0.5;
+	r->unclamped_line_height.x = -r->line_height / 2 + f->size.y / 2 + offset;
+	r->unclamped_line_height.y = r->line_height / 2 + f->size.y / 2 + offset;
 	r->coord1.x = x;
-	r->coord1.y = max(-r->line_height / 2 + f->size.y / 2 + offset, 0);
+	r->coord1.y = max(r->unclamped_line_height.x, 0);
 	r->coord2.x = x;
-	r->coord2.y = min(r->line_height / 2 + f->size.y / 2 + offset, f->size.y - 1);
+	r->coord2.y = min(r->unclamped_line_height.y, f->size.y - 1);
 	return ;
 }

@@ -106,6 +106,7 @@ typedef struct s_ray
 	double	perp_wall_dist;
 	int		line_height;
 	int		line_height_cubic;
+	t_ivec2	unclamped_line_height;
 	t_ivec2	coord1;
 	t_ivec2	coord2;
 }	t_ray;
@@ -236,7 +237,8 @@ t_spr		*get_sprite(char *id);
 
 void		update_dof(t_map *m, double increment);
 double		get_fog_width(double dof);
-void		apply_wall_fog(t_color *wall, t_color fog, double dist, double dof);
+void		apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height);
+void		apply_wall_fog(t_color *wall, t_color c, double dist, double dof);
 void		update_background(t_map *m, t_img *bg);
 
 /* Files -------------------------------------------------------------------- */
