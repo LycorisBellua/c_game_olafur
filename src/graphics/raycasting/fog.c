@@ -55,6 +55,26 @@ void	apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height)
 	return ;
 }
 
+void	apply_corner_shadow(t_color *wall, t_color c, int img_coord_x,
+	int img_size_x)
+{
+	int		ten_percent;
+	int		corner_boundary;
+	double	dist_from_corner;
+	double	intensity;
+
+	ten_percent = img_size_x * 0.1;
+	corner_boundary = img_size_x - 1;
+	if (img_coord_x < ten_percent)
+		corner_boundary = 0;
+	dist_from_corner = f_abs((double)img_coord_x - corner_boundary);
+	intensity = f_max(0.0, 1.0 - (dist_from_corner / ten_percent)) * 0.4;
+	wall->r = wall->r + intensity * (c.r - wall->r);
+	wall->g = wall->g + intensity * (c.g - wall->g);
+	wall->b = wall->b + intensity * (c.b - wall->b);
+	return ;
+}
+
 void	apply_wall_fog(t_color *wall, t_color c, double dist, double dof)
 {
 	double	factor;

@@ -85,6 +85,8 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 	img_pos = (y_offset
 		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * img_step);
 
+	int	is_a_corner = is_corner(m, r, img_coord.x, img->size.x);
+
 	y = r->coord1.y;
 	while (y < r->coord2.y)
 	{
@@ -96,13 +98,9 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 			img_coord.y += img->size.y;
 
 		color = img->buf[img_coord.y * img->size.x + img_coord.x];
-		if (r->side == 1)
-		{
-			color.r /= 2;
-			color.g /= 2;
-			color.b /= 2;
-		}
 		apply_wall_shadow(&color, m->fog_color, y, r->unclamped_line_height);
+		if (is_a_corner)
+			apply_corner_shadow(&color, m->fog_color, img_coord.x, img->size.x);
 		apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
 		draw_point(f, color, r->coord1.x, y);
 		++y;

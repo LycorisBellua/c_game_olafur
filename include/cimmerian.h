@@ -238,6 +238,8 @@ t_spr		*get_sprite(char *id);
 void		update_dof(t_map *m, double increment);
 double		get_fog_width(double dof);
 void		apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height);
+void		apply_corner_shadow(t_color *wall, t_color c, int img_coord_x,
+				int img_size_x);
 void		apply_wall_fog(t_color *wall, t_color c, double dist, double dof);
 void		update_background(t_map *m, t_img *bg);
 
@@ -290,6 +292,7 @@ void		cast_floor(t_frame *f, t_map *m);
 void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		cast_sprites(t_frame *f, t_map *m, double *z_buffer);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
+int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
 
 /* Input -------------------------------------------------------------------- */
 
