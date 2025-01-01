@@ -99,15 +99,6 @@ void	set_minimap_display(int remove_from_factor)
 	return ;
 }
 
-/*
-void	draw_minimap(t_map *map)
-{
-	draw_map(map);
-	draw_player();
-	return ;
-}
-*/
-
 void	free_maps(void)
 {
 	free_map(&g_man.map);
@@ -174,6 +165,7 @@ static t_map	*create_map(void)
 	{
 		map->cells[i].is_obstacle = map_walls[i] > 0;
 		map->cells[i].is_door = map_walls[i] == 5;
+		map->cells[i].is_goal = map_walls[i] == 6;
 		map->cells[i].is_indoors = map_buildings[i];
 		map->cells[i].height = !map->cells[i].is_obstacle ? 0 : 1.0;
 		if (map_walls[i] == 6)

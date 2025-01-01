@@ -1,14 +1,10 @@
 - Minimap.
+
 - Animated sprite.
-
 - Fix sprite not showing through doors.
-- The goal is to reach a tall monolith. It can cycle through different colors 
-or even have an animated texture.
-- Center the door in the middle of the cell.
-
-- If a wall's height is below 0.5, add a top face.
-- Make certain transparent cells show their backfaces too (e.g. door without 
-walls).
+- Pathfinding for an enemy sprite.
+- Collision with a decor sprite.
+- Collectible sprite.
 
 - Sound.
 - Enter a seed to generate a level, or maybe you can send a map file. Support 

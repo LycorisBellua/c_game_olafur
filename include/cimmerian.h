@@ -115,6 +115,7 @@ typedef struct s_cell
 {
 	int		is_obstacle;
 	int		is_door;
+	int		is_goal;
 	int		is_indoors;
 	double	height;
 	t_img	*tex_floor;
@@ -308,7 +309,6 @@ void		cursor_pos_callback(GLFWwindow *window, double xpos, double ypos);
 
 int			initialize_maps(void);
 void		set_minimap_display(int remove_from_factor);
-void		draw_minimap(t_map *map);
 void		free_maps(void);
 
 /* Mesh --------------------------------------------------------------------- */

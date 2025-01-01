@@ -57,9 +57,9 @@ void	cast_floor(t_frame *f, t_map *m)
 					t.x = (int)(tex->size.x * (floor.x - cell.x)) % tex->size.x;
 					t.y = (int)(tex->size.y * (floor.y - cell.y)) % tex->size.y;
 					color = tex->buf[tex->size.x * t.y + t.x];
-					color.r /= 2;
-					color.g /= 2;
-					color.b /= 2;
+					color.r *= 0.75;
+					color.g *= 0.75;
+					color.b *= 0.75;
 					apply_wall_fog(&color, m->fog_color, row_dist, m->dof);
 					draw_point(f, color, x, y);
 				}
