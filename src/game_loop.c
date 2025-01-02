@@ -36,55 +36,84 @@ static void	draw_minimap(t_frame *f, t_map *m)
 	t_ivec2	offset;
 	t_ivec2	padding;
 	t_ivec2 cell_size;
+	t_vert	v;
+
+	/*
+		8x8 display
+	*/
 
 	set_ivec2(&cell_size, 9, 9);
 	set_ivec2(&padding, 5, 5);
-	set_ivec2(&offset, f->size.x - m->size.x * cell_size.x - padding.x,
+	set_ivec2(&offset, f->size.x - 8 * cell_size.x - padding.x,
 		padding.y);
-	coord.y = 0;
-	while (coord.y < m->size.y)
+
+	// Debug - Border
+	v.coord.x = offset.x;
+	v.coord.y = offset.y;
+	v.color = get_color_rgba(255, 0, 0, 255);
+	t_ivec2 size_debug;
+	size_debug.x = 8 * cell_size.x;
+	size_debug.y = 8 * cell_size.y;
+	draw_rectangle(f, v, size_debug);
+	//
+
+	int y, x;
+
+	y = 0;
+	coord.y = (int)g_man.player.pos.y - 4;
+	while (coord.y < (int)g_man.player.pos.y + 5)
 	{
-		coord.x = 0;
-		while (coord.x < m->size.x)
+		x = 0;
+		coord.x = (int)g_man.player.pos.x - 4;
+		while (coord.x < (int)g_man.player.pos.x + 5)
 		{
-			t_vert v;
-			v.coord.x = offset.x + coord.x * cell_size.x;
-			v.coord.y = offset.y + coord.y * cell_size.y;
-			v.color = get_color_hex("264653", 255); //empty
-			if (m->cells[coord.y * m->size.x + coord.x].is_goal)
-				v.color = get_color_hex("1CD2C0", 255); //obelisk
-			else if (m->cells[coord.y * m->size.x + coord.x].is_door)
-				v.color = get_color_hex("f4a261", 255); //door
-			else if (m->cells[coord.y * m->size.x + coord.x].is_obstacle)
-				v.color = get_color_hex("287271", 255); //wall
-			// e76f51 enemy
-			--cell_size.x;
-			--cell_size.y;
-			draw_rectangle_full(f, v, cell_size);
-			++cell_size.x;
-			++cell_size.y;
+			v.coord.x = offset.x + (x + ((int)g_man.player.pos.x - g_man.player.pos.x)) * cell_size.x;
+			v.coord.y = offset.y + (y + ((int)g_man.player.pos.y - g_man.player.pos.y)) * cell_size.y;
+
+			//if (v.coord.x >= offset.x && v.coord.y >= offset.y
+			//	&& v.coord.x < offset.x + 8 * cell_size.x && v.coord.y < offset.y + 8 * cell_size.y)
+			/*
+				What size for first cell?
+			*/
+			if (x == 0)
+			{
+				//printf("pos.x = %f / pos.x - (int)pos.x = %f\n", g_man.player.pos.x, 
+				//	g_man.player.pos.x - (int)g_man.player.pos.x);
+				//cell_size.x = 9 * (g_man.player.pos.x - (int)g_man.player.pos.x);
+			}
+			else
+				cell_size.x = 9;
+
+			if (coord.x >= 0 && coord.y >= 0
+				&& coord.x < m->size.x && coord.y < m->size.y)
+			{
+				v.color = get_color_hex("264653", 255); //empty
+				if (m->cells[coord.y * m->size.x + coord.x].is_goal)
+					v.color = get_color_hex("1CD2C0", 255); //obelisk
+				else if (m->cells[coord.y * m->size.x + coord.x].is_door)
+					v.color = get_color_hex("f4a261", 255); //door
+				else if (m->cells[coord.y * m->size.x + coord.x].is_obstacle)
+					v.color = get_color_hex("287271", 255); //wall
+				// e76f51 enemy
+				cell_size.x = 9 - 1;
+				cell_size.y = 9 - 1;
+				draw_rectangle_full(f, v, cell_size);
+			}
+			cell_size.x = 9;
+			cell_size.y = 9;
+			++x;
 			++coord.x;
 		}
+		++y;
 		++coord.y;
 	}
 
-	t_vec2	player_size_factor;
-	set_vec2(&player_size_factor, 0.5, 0.5);
-	coord.x = g_man.player.pos.x;
-	coord.y = g_man.player.pos.y;
-	t_vert v;
-	v.coord.x = offset.x + coord.x * cell_size.x
-		+ (g_man.player.pos.x - (0.5 * player_size_factor.x)) * cell_size.x
-		- (int)g_man.player.pos.x * cell_size.x;
-	v.coord.y = offset.y + coord.y * cell_size.y
-		+ (g_man.player.pos.y - (0.5 * player_size_factor.y)) * cell_size.y
-		- (int)g_man.player.pos.y * cell_size.y;
+	// DRAW PLAYER IN THE CENTER
+	v.coord.x = offset.x + 3.75 * cell_size.x;
+	v.coord.y = offset.y + 3.75 * cell_size.y;
 	v.color = get_color_hex("e9c46a", 255); //player
-	cell_size.x *= player_size_factor.x;
-	cell_size.y *= player_size_factor.y;
-	cell_size.x = f_min(4, cell_size.x);
-	cell_size.y = f_min(4, cell_size.y);
+	cell_size.x *= 0.5;
+	cell_size.y *= 0.5;
 	draw_rectangle_full(f, v, cell_size);
-
 	return ;
 }
