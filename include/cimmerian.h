@@ -281,6 +281,7 @@ int			set_sprite_array(char *path);
 
 void		set_dt_and_fps(void);
 void		display_fps(t_frame *f, t_ivec2 pos);
+void		draw_minimap(t_frame *f, t_map *m);
 void		run_game_loop(t_map *m);
 void		door_routine(t_map *m);
 void		reset_global_coordinates(void);
