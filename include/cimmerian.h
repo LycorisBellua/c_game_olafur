@@ -21,6 +21,8 @@
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 
+typedef unsigned char	t_ubyte;
+
 typedef struct s_list
 {
 	struct s_list	*prev;
@@ -48,10 +50,10 @@ typedef struct s_uivec2
 
 typedef struct s_color
 {
-	GLubyte	r;
-	GLubyte	g;
-	GLubyte	b;
-	GLubyte	a;
+	t_ubyte	r;
+	t_ubyte	g;
+	t_ubyte	b;
+	t_ubyte	a;
 }	t_color;
 
 typedef struct s_vert
@@ -204,8 +206,8 @@ void		list_del_one(t_list **list, void (*del)(void*));
 
 /* Colors ------------------------------------------------------------------- */
 
-t_color		get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a);
-t_color		get_color_hex(const char *str, GLubyte alpha);
+t_color		get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a);
+t_color		get_color_hex(const char *str, t_ubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
 t_color		get_frame_color(t_frame *f, int x, int y);
 

@@ -2,7 +2,7 @@
 
 static int	hex_char_to_int(char c);
 
-t_color	get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
+t_color	get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a)
 {
 	t_color	c;
 
@@ -13,7 +13,7 @@ t_color	get_color_rgba(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
 	return (c);
 }
 
-t_color	get_color_hex(const char *str, GLubyte alpha)
+t_color	get_color_hex(const char *str, t_ubyte alpha)
 {
 	int		i;
 	t_color	c;

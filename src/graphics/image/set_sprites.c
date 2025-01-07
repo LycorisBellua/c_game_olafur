@@ -74,15 +74,17 @@ static t_color	*get_pixel_data(t_img *file, int is_shadow)
 
 static t_color	get_pixel(t_img *img, size_t i, int is_shadow)
 {
-	GLubyte	red;
-	GLubyte	green;
-	GLubyte	blue;
-	GLubyte	alpha;
+	t_ubyte	*pixel;
+	t_ubyte	red;
+	t_ubyte	green;
+	t_ubyte	blue;
+	t_ubyte	alpha;
 
-	red = ((GLubyte *)img->buf)[i * 4 + 0];
-	green = ((GLubyte *)img->buf)[i * 4 + 1];
-	blue = ((GLubyte *)img->buf)[i * 4 + 2];
-	alpha = ((GLubyte *)img->buf)[i * 4 + 3];
+	pixel = (t_ubyte *)(img->buf + i);
+	red = pixel[0];
+	green = pixel[1];
+	blue = pixel[2];
+	alpha = pixel[3];
 	if (is_shadow)
 		alpha = 255 - red;
 	return (get_color_rgba(red, green, blue, alpha));

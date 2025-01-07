@@ -11,7 +11,7 @@ t_img	*load_image_from_file(const char *png_path)
 	img = malloc(sizeof(t_img));
 	if (!img)
 		return (0);
-	err = lodepng_decode32_file((GLubyte **)&img->buf, &size.x, &size.y,
+	err = lodepng_decode32_file((t_ubyte **)&img->buf, &size.x, &size.y,
 			png_path);
 	if (err)
 	{
@@ -78,10 +78,10 @@ void	apply_vertical_gradient(t_img *img, t_color color)
 		while (v.x < img->size.x)
 		{
 			pixel = &img->buf[v.y * img->size.x + v.x];
-			pixel->r = (GLubyte)((1.0 - factor) * pixel->r + factor * color.r);
-			pixel->g = (GLubyte)((1.0 - factor) * pixel->g + factor * color.g);
-			pixel->b = (GLubyte)((1.0 - factor) * pixel->b + factor * color.b);
-			pixel->a = (GLubyte)((1.0 - factor) * pixel->a + factor * color.a);
+			pixel->r = (t_ubyte)((1.0 - factor) * pixel->r + factor * color.r);
+			pixel->g = (t_ubyte)((1.0 - factor) * pixel->g + factor * color.g);
+			pixel->b = (t_ubyte)((1.0 - factor) * pixel->b + factor * color.b);
+			pixel->a = (t_ubyte)((1.0 - factor) * pixel->a + factor * color.a);
 			++v.x;
 		}
 		++v.y;
