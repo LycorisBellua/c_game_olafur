@@ -77,7 +77,7 @@ void	draw_minimap(t_frame *f, t_map *m)
 				if (i_cell.x == 8)
 				{
 					double diff = g_man.player.pos.x - (int)g_man.player.pos.x;
-					cell_size.x = 9 * diff;
+					cell_size.x = 9 * diff + 1;
 				}
 				// LEFT
 				if (i_cell.x == 0)
@@ -91,19 +91,19 @@ void	draw_minimap(t_frame *f, t_map *m)
 				// TOP
 				if (i_cell.y == 0)
 				{
-					double diff = 1.0 - f_abs(g_man.player.pos.y - (int)g_man.player.pos.y);
-					cell_size.y = 9 * diff - 1;
-					if (cell_size.y < 0)
-						cell_size.y = 9 - 1;
-					v.coord.y += 9 * f_abs(diff - 1.0);
-					// When to increment and when not to?
-					//++v.coord.y;
+					double diff = g_man.player.pos.y - (int)g_man.player.pos.y;
+					cell_size.y = 9 - 9 * diff - 2;
+					v.coord.y += 9 * diff + 1;
+					if (cell_size.y > 1 && cell_size.y < 7)
+						++v.coord.y;
 				}
 				// BOTTOM
 				if (i_cell.y == 8)
 				{
 					double diff = g_man.player.pos.y - (int)g_man.player.pos.y;
 					cell_size.y = 9 * diff;
+					if (diff > 0 && cell_size.y < 8)
+						++cell_size.y;
 				}
 
 				if (cell_size.x > 0 && cell_size.y > 0)
@@ -128,6 +128,6 @@ void	draw_minimap(t_frame *f, t_map *m)
 	*/
 
 	draw_player(f, map_offset, cell_amount, cell_size);
-	//draw_bubble(f, map_offset, cell_amount, cell_size, m->fog_color);
+	draw_bubble(f, map_offset, cell_amount, cell_size, m->fog_color);
 	return ;
 }
