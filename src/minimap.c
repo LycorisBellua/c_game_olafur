@@ -1,5 +1,31 @@
 #include "cimmerian.h"
 
+static void draw_rectangle_minimap(t_frame *f, t_vert v, t_ivec2 size,
+	t_ivec2 circle_center, int circle_radius)
+{
+	t_ivec2	max;
+	t_ivec2	point;
+	t_ivec2	delta;
+	int		circle_radius_sq;
+
+	circle_radius_sq = circle_radius * circle_radius;
+	max.x = v.coord.x + size.x - 1;
+	max.y = v.coord.y + size.y - 1;
+	point.y = v.coord.y - 1;
+	while (++point.y <= max.y)
+	{
+		point.x = v.coord.x - 1;
+		while (++point.x <= max.x)
+		{
+			delta.x = point.x - circle_center.x;
+			delta.y = point.y - circle_center.y;
+			if (delta.x * delta.x + delta.y * delta.y <= circle_radius_sq)
+				draw_point(f, v.color, point.x, point.y);
+		}
+	}
+	return ;
+}
+
 static t_color	get_cell_color(t_map *m, t_ivec2 i_map)
 {
 	if (m->cells[i_map.y * m->size.x + i_map.x].is_goal)
@@ -58,6 +84,15 @@ void	draw_minimap(t_frame *f, t_map *m)
 		f->size.x - cell_amount.x * cell_size.x - map_padding.x,
 		map_padding.y);
 
+	t_ivec2	circle_center;
+	int		circle_radius;
+
+	set_ivec2(&circle_center, map_offset.x + cell_amount.x / 2 * cell_size.x,
+		map_offset.y + cell_amount.y / 2 * cell_size.y);
+	circle_radius = f_max(cell_amount.x / 2 * cell_size.x,
+		cell_amount.y / 2 * cell_size.y);
+
+
 	i_cell.y = 0;
 	i_map.y = (int)g_man.player.pos.y - cell_amount.y / 2;
 	while (i_map.y < (int)g_man.player.pos.y + cell_amount.y / 2 + 1)
@@ -107,7 +142,7 @@ void	draw_minimap(t_frame *f, t_map *m)
 				}
 
 				if (cell_size.x > 0 && cell_size.y > 0)
-					draw_rectangle_full(f, v, cell_size);
+					draw_rectangle_minimap(f, v, cell_size, circle_center, circle_radius);
 				set_ivec2(&cell_size, 9, 9);
 			}
 			++i_map.x;
@@ -116,16 +151,6 @@ void	draw_minimap(t_frame *f, t_map *m)
 		++i_map.y;
 		++i_cell.y;
 	}
-
-	/*
-	// DEBUG
-	t_vert debug;
-	debug.coord.x = map_offset.x;
-	debug.coord.y = map_offset.y;
-	debug.color = get_color_rgba(255, 0, 0, 255 / 2);
-	t_ivec2 debug_size = {8 * 9, 8 * 9};
-	draw_rectangle(f, debug, debug_size);
-	*/
 
 	draw_player(f, map_offset, cell_amount, cell_size);
 	draw_bubble(f, map_offset, cell_amount, cell_size, m->fog_color);
