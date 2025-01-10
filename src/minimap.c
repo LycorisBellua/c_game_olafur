@@ -1,14 +1,21 @@
 #include "cimmerian.h"
 
-static void draw_rectangle_minimap(t_frame *f, t_vert v, t_ivec2 size,
-	t_ivec2 circle_center, int circle_radius)
+static void draw_rectangle_minimap(t_frame *f, t_map *m, t_vert v)
 {
 	t_ivec2	max;
 	t_ivec2	point;
 	t_ivec2	delta;
+	t_ivec2	size;
 	int		circle_radius_sq;
 
-	circle_radius_sq = circle_radius * circle_radius;
+	set_ivec2(&size, m->minimap_zoom - 1, m->minimap_zoom - 1);
+	if (!size.x)
+		set_ivec2(&size, 1, 1);
+	//if (v.coord.x <= 0)
+	//	--size.x;
+	if (v.coord.y <= 0)
+		--size.y;
+	circle_radius_sq = m->minimap_radius * m->minimap_radius;
 	max.x = v.coord.x + size.x - 1;
 	max.y = v.coord.y + size.y - 1;
 	point.y = v.coord.y - 1;
@@ -17,9 +24,9 @@ static void draw_rectangle_minimap(t_frame *f, t_vert v, t_ivec2 size,
 		point.x = v.coord.x - 1;
 		while (++point.x <= max.x)
 		{
-			delta.x = point.x - circle_center.x;
-			delta.y = point.y - circle_center.y;
-			if (delta.x * delta.x + delta.y * delta.y <= circle_radius_sq)
+			delta.x = point.x - m->minimap_center.x;
+			delta.y = point.y - m->minimap_center.y;
+			if (delta.x * delta.x + delta.y * delta.y <= circle_radius_sq + m->minimap_zoom)
 				draw_point(f, v.color, point.x, point.y);
 		}
 	}
@@ -38,112 +45,57 @@ static t_color	get_cell_color(t_map *m, t_ivec2 i_map)
 	return (get_color_rgba(38, 70, 83, 255)); //empty cell
 }
 
-static void	draw_player(t_frame *f, t_ivec2 map_offset, t_ivec2 cell_amount,
-	t_ivec2 cell_size)
+static void	draw_player(t_frame *f, t_map *m)
 {
 	t_vert	center;
 
-	set_ivec2(&center.coord, map_offset.x + cell_amount.x / 2 * cell_size.x - 1,
-		map_offset.y + cell_amount.y / 2 * cell_size.y - 1);
+	set_ivec2(&center.coord, m->minimap_center.x - 1, m->minimap_center.y - 1);
 	center.color = get_color_rgba(233, 196, 106, 255);
-	draw_circle_full(f, center, min(cell_size.x, cell_size.y) * 0.25);
+	draw_circle_full(f, center, m->minimap_zoom * 0.25);
 	return ;
 }
 
-static void	draw_bubble(t_frame *f, t_ivec2 map_offset, t_ivec2 cell_amount,
-	t_ivec2 cell_size, t_color fog)
+static void	draw_bubble(t_frame *f, t_map *m)
 {
 	t_vert	center;
-	int		radius;
 
-	set_ivec2(&center.coord, map_offset.x + cell_amount.x / 2 * cell_size.x,
-		map_offset.y + cell_amount.y / 2 * cell_size.y);
-	center.color = get_color_rgba(255 * 0.5, 255 * 0.5, 255 * 0.5, 255 * 0.25);
-	radius = f_max(cell_amount.x / 2 * cell_size.x,
-		cell_amount.y / 2 * cell_size.y);
-	draw_circle_full_gradient(f, center, radius, fog);
+	set_ivec2(&center.coord, m->minimap_center.x, m->minimap_center.y);
+	center.color = get_color_rgba(255 * 0.25, 255 * 0.25, 255 * 0.25, 255 * 0.25);
+	draw_circle_full_gradient(f, center, m->minimap_radius, m->fog_color);
 	center.color = get_color_rgba(38, 70, 83, 255); //empty cell
-	draw_circle(f, center, radius);
+	draw_circle(f, center, m->minimap_radius);
 	return ;
 }
 
 void	draw_minimap(t_frame *f, t_map *m)
 {
-	t_ivec2 cell_size;
-	t_ivec2	cell_amount;
-	t_ivec2	map_padding;
-	t_ivec2	map_offset;
 	t_ivec2	i_map;
 	t_ivec2	i_cell;
 	t_vert	v;
 
-	set_ivec2(&cell_size, 9, 9);
-	set_ivec2(&cell_amount, 8, 8);
-	set_ivec2(&map_padding, 5, 5);
-	set_ivec2(&map_offset,
-		f->size.x - cell_amount.x * cell_size.x - map_padding.x,
-		map_padding.y);
+	//
+	set_ivec2(&m->minimap_offset, 563 - 563, 5);
+	set_ivec2(&m->minimap_center, 599 - 563, 41);
+	m->minimap_radius = 36;
+	m->minimap_zoom = 9; //1, 2, 3, 4, 6, 9, 12, 18
+	//
 
-	t_ivec2	circle_center;
-	int		circle_radius;
-
-	set_ivec2(&circle_center, map_offset.x + cell_amount.x / 2 * cell_size.x,
-		map_offset.y + cell_amount.y / 2 * cell_size.y);
-	circle_radius = f_max(cell_amount.x / 2 * cell_size.x,
-		cell_amount.y / 2 * cell_size.y);
-
+	int cell_amount = m->minimap_radius / m->minimap_zoom * 2;
 
 	i_cell.y = 0;
-	i_map.y = (int)g_man.player.pos.y - cell_amount.y / 2;
-	while (i_map.y < (int)g_man.player.pos.y + cell_amount.y / 2 + 1)
+	i_map.y = (int)g_man.player.pos.y - cell_amount / 2;
+	while (i_map.y < (int)g_man.player.pos.y + cell_amount / 2 + 1)
 	{
 		i_cell.x = 0;
-		i_map.x = (int)g_man.player.pos.x - cell_amount.x / 2;
-		while (i_map.x < (int)g_man.player.pos.x + cell_amount.x / 2 + 1)
+		i_map.x = (int)g_man.player.pos.x - cell_amount / 2;
+		while (i_map.x < (int)g_man.player.pos.x + cell_amount / 2 + 1)
 		{
 			if (i_map.x >= 0 && i_map.y >= 0 && i_map.x < m->size.x && i_map.y < m->size.y)
 			{
-				v.coord.x = map_offset.x + (i_cell.x + ((int)g_man.player.pos.x - g_man.player.pos.x)) * cell_size.x;
-				v.coord.y = map_offset.y + (i_cell.y + ((int)g_man.player.pos.y - g_man.player.pos.y)) * cell_size.y;
+				v.coord.x = m->minimap_offset.x + (i_cell.x + ((int)g_man.player.pos.x - g_man.player.pos.x)) * m->minimap_zoom;
+				v.coord.y = m->minimap_offset.y + (i_cell.y + ((int)g_man.player.pos.y - g_man.player.pos.y)) * m->minimap_zoom;
 				v.color = get_cell_color(m, i_map);
-				set_ivec2(&cell_size, 9 - 1, 9 - 1);
-
-				// RIGHT
-				if (i_cell.x == 8)
-				{
-					double diff = g_man.player.pos.x - (int)g_man.player.pos.x;
-					cell_size.x = 9 * diff + 1;
-				}
-				// LEFT
-				if (i_cell.x == 0)
-				{
-					double diff = g_man.player.pos.x - (int)g_man.player.pos.x;
-					cell_size.x = 9 - 9 * diff - 1;
-					if (diff == 0)
-						--cell_size.x;
-					v.coord.x += 9 * diff + 1;
-				}
-				// TOP
-				if (i_cell.y == 0)
-				{
-					double diff = g_man.player.pos.y - (int)g_man.player.pos.y;
-					cell_size.y = 9 - 9 * diff - 2;
-					v.coord.y += 9 * diff + 1;
-					if (cell_size.y > 1 && cell_size.y < 7)
-						++v.coord.y;
-				}
-				// BOTTOM
-				if (i_cell.y == 8)
-				{
-					double diff = g_man.player.pos.y - (int)g_man.player.pos.y;
-					cell_size.y = 9 * diff;
-					if (diff > 0 && cell_size.y < 8)
-						++cell_size.y;
-				}
-
-				if (cell_size.x > 0 && cell_size.y > 0)
-					draw_rectangle_minimap(f, v, cell_size, circle_center, circle_radius);
-				set_ivec2(&cell_size, 9, 9);
+				draw_rectangle_minimap(f, m, v);
 			}
 			++i_map.x;
 			++i_cell.x;
@@ -152,7 +104,7 @@ void	draw_minimap(t_frame *f, t_map *m)
 		++i_cell.y;
 	}
 
-	draw_player(f, map_offset, cell_amount, cell_size);
-	draw_bubble(f, map_offset, cell_amount, cell_size, m->fog_color);
+	draw_player(f, m);
+	draw_bubble(f, m);
 	return ;
 }

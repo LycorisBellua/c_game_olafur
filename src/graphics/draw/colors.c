@@ -34,7 +34,9 @@ t_color	get_alpha_blended_color(t_color prev, t_color new)
 {
 	t_color	blend;
 
-	if (new.a == 255)
+	if (new.a == 0)
+		return (prev);
+	else if (new.a == 255)
 		return (new);
 	blend.a = new.a + (255 - new.a) * prev.a / 255;
 	if (!blend.a)

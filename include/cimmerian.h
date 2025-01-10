@@ -140,6 +140,10 @@ typedef struct s_map
 	int		img_len;
 	t_img	**img;
 	t_cell	*cells;
+	t_ivec2	minimap_offset;
+	t_ivec2	minimap_center;
+	int		minimap_radius;
+	int		minimap_zoom;
 }	t_map;
 
 typedef struct s_player
