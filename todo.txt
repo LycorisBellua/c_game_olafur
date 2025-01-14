@@ -1,7 +1,7 @@
-- Minimap.
-
 - Animated sprite.
 - Fix sprite not showing through doors.
+- Enter end goal and see from within + Fade out effect + Fade in effect to 
+another map or a victory message.
 - Pathfinding for an enemy sprite.
 - Collision with a decor sprite.
 - Collectible sprite.

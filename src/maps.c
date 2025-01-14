@@ -1,15 +1,9 @@
 #include "cimmerian.h"
 
-#define MINIMAP_FACTOR_MIN 1
-#define MINIMAP_FACTOR_MAX 5
-
 #define MAP_SIZE_X 24
 #define MAP_SIZE_Y 24
 #define PLAYER_POS_X 22
 #define PLAYER_POS_Y 12
-
-static int		minimap_factor = MINIMAP_FACTOR_MAX;
-static t_ivec2	display_offset = {0};
 
 static t_map	*create_map(void);
 static void		free_map(t_map **map);
@@ -74,29 +68,7 @@ static int		map_buildings[] =
 int	initialize_maps(void)
 {
 	g_man.map = create_map();
-	if (!g_man.map)
-		return (0);
-	set_minimap_display(0);
-	return (1);
-}
-
-void	set_minimap_display(int remove_from_factor)
-{
-	int		cell;
-	t_frame	*f;
-	int		MAP_CELL_LEN = 64;
-	int		MAX_CELL_AMOUNT = 8;
-
-	if (!remove_from_factor)
-		minimap_factor = MINIMAP_FACTOR_MAX;
-	else
-		minimap_factor = clamp(minimap_factor - remove_from_factor,
-				MINIMAP_FACTOR_MIN, MINIMAP_FACTOR_MAX);
-	f = g_man.frame[g_man.curr_frame];
-	cell = MAP_CELL_LEN / minimap_factor;
-	display_offset.x = f->size.x - cell * MAX_CELL_AMOUNT - 50;
-	display_offset.y = f->size.y - cell * MAX_CELL_AMOUNT - 50;
-	return ;
+	return (!!g_man.map);
 }
 
 void	free_maps(void)
@@ -121,6 +93,11 @@ static t_map	*create_map(void)
 	map->dof = 8;
 	map->fog_width = get_fog_width(map->dof);
 	map->fog_color = get_color_rgba(17, 15, 35, 255);
+	set_ivec2(&map->minimap_offset, 563, 7);
+	set_ivec2(&map->minimap_center, 599, 43);
+	map->minimap_radius = 36;
+	map->minimap_zoom = 9;
+	map->minimap_cell_amount = map->minimap_radius / map->minimap_zoom * 2;
 	map->cells = 0;
 	map->img_len = 13;
 	map->img = malloc(map->img_len * sizeof(t_img *));
@@ -217,149 +194,3 @@ static t_vec2	get_cardinal_dir(char c)
 		dir.x = 1;
 	return (dir);
 }
-
-/*
-static void	draw_map(t_map *m)
-{
-	int		max_len_cell;
-	int		max_len_map;
-	t_ivec2	len;
-	t_ivec2	rect_size;
-	t_vec2	pos;
-	int		x;
-	int		y;
-	t_vert	v;
-
-	max_len_cell = MAP_CELL_LEN/minimap_factor;
-	max_len_map = max_len_cell * MAX_CELL_AMOUNT;
-	v.coord.x = display_offset.x;
-	v.coord.y = display_offset.y;
-	v.color = get_color_rgba(255, 0, 0, 255);
-	rect_size.x = max_len_map;
-	rect_size.y = max_len_map;
-	draw_rectangle(g_man.frame[g_man.curr_frame], v, rect_size);
-
-	//SMALLEST MAP
-	//- MAX LEN FOR THE MAP: 96
-	//- DISPLAY OFFSET (544, 264)
-
-	len.x = max_len_cell;
-	len.y = max_len_cell;
-	pos.x = g_man.player.pos.x/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
-	pos.y = g_man.player.pos.y/MAP_CELL_LEN - MAX_CELL_AMOUNT/2;
-
-	v.coord.y = display_offset.y;
-	y = pos.y;
-	while (y < m->size.y)
-	{
-		if (y == (int)pos.y)
-			len.y = max_len_cell - (pos.y - (int)pos.y) * max_len_cell;
-
-		if (y < 0)
-		{
-			v.coord.y += len.y;
-			len.y = max_len_cell;
-			continue ;
-		}
-		else if (y == 0 && len.y > max_len_cell)
-		{
-			v.coord.y += len.y - max_len_cell;
-			len.y = max_len_cell;
-		}
-
-		v.coord.x = display_offset.x;
-		x = pos.x;
-		while (x < m->size.x)
-		{
-			if (x == (int)pos.x)
-				len.x = max_len_cell - (pos.x - (int)pos.x) * max_len_cell;
-
-			if (x < 0)
-			{
-				v.coord.x += len.x;
-				len.x = max_len_cell;
-				continue ;
-			}
-			else if (x == 0 && len.x > max_len_cell)
-			{
-				v.coord.x += len.x - max_len_cell;
-				len.x = max_len_cell;
-			}
-
-			if (m->data[y * m->size.x + x] == 1)
-				v.color = get_color_rgba(255, 255, 255, 255);
-			else
-				v.color = get_color_rgba(0, 0, 0, 0);
-
-			// Remove 1 pixel in order to see grid lines
-			rect_size.x = len.x - 1;
-			rect_size.y = len.y - 1;
-			draw_rectangle_full(g_man.frame[g_man.curr_frame], v, rect_size);
-			v.coord.x += len.x;
-			len.x = max_len_cell;
-			if (v.coord.x > display_offset.x + max_len_map)
-				len.x -= v.coord.x - (display_offset.x + max_len_map);
-
-			++x;
-		}
-
-		v.coord.y += len.y;
-		len.y = max_len_cell;
-		++y;
-	}
-	return ;
-}
-
-static void	draw_player(void)
-{
-	int		player_size;
-	int		forward_vector_len;
-	double	map_center;
-	double	offset;
-	t_vert	pos;
-	t_vert	end;
-	t_ivec2	rect_size;
-
-	player_size = max(1, MAP_CELL_LEN/4.0/minimap_factor);
-	forward_vector_len = max(2, MAP_CELL_LEN/8.0/minimap_factor);
-	map_center = MAX_CELL_AMOUNT/2 * MAP_CELL_LEN / minimap_factor;
-	offset = get_minimap_factor_offset(minimap_factor);
-
-	pos.coord.x = map_center + display_offset.x - offset;
-	pos.coord.y = map_center + display_offset.y - offset;
-	pos.color = get_color_rgba(255, 255, 0, 255);
-
-	end.coord.x = pos.coord.x + g_man.player.delta.x * forward_vector_len;
-	end.coord.y = pos.coord.y + g_man.player.delta.y * forward_vector_len;
-	end.color = pos.color;
-
-	// Forward vector
-	draw_line(g_man.frame[g_man.curr_frame], pos, end);
-
-	pos.coord.x -= player_size/2;
-	pos.coord.y -= player_size/2;
-	pos.color = get_color_rgba(255, 0, 0, 255);
-
-	// Position
-	rect_size.x = player_size;
-	rect_size.y = player_size;
-	draw_rectangle_full(g_man.frame[g_man.curr_frame], pos, rect_size);
-	return ;
-}
-
-static double	get_minimap_factor_offset(int factor)
-{
-	double	offset;
-	double	quotient;
-	double	modulus;
-
-	offset = 0;
-	if (factor > 1 && factor % 2)
-	{
-		quotient = factor/2.0;
-		modulus = factor % 2;
-		offset = quotient + modulus + (quotient-modulus) - 1;
-	}
-	return (offset);
-}
-*/
