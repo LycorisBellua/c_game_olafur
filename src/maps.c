@@ -90,7 +90,7 @@ static t_map	*create_map(void)
 	map->start_pos.x = PLAYER_POS_X;
 	map->start_pos.y = PLAYER_POS_Y;
 	map->start_dir = get_cardinal_dir('N');
-	map->dof = 8;
+	map->dof = 0;
 	map->fog_width = get_fog_width(map->dof);
 	map->fog_color = get_color_rgba(17, 15, 35, 255);
 	set_ivec2(&map->minimap_offset, 563, 7);

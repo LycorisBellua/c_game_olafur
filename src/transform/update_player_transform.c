@@ -21,6 +21,7 @@ void	update_player_transform(t_map *m)
 	prevent_out_of_bounds(m, g_man.rotate_speed);
 	adjust_position_on_collision(m, g_man.rotate_speed);
 	rotate_player(RAD_45 * norm(g_man.rotate_action) * g_man.dt);
+	echolocation(forward_speed || lateral_speed);
 	return ;
 }
 

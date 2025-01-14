@@ -331,6 +331,7 @@ void		free_mesh(void);
 void		reset_player_transform(t_map *m);
 void		update_player_transform(t_map *m);
 void		rotate_player(double angle);
+void		echolocation(int has_player_moved);
 
 /* Shader Program ----------------------------------------------------------- */
 
