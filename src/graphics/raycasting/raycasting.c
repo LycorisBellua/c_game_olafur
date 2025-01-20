@@ -10,6 +10,8 @@ void	raycasting(t_frame *f, t_map *m)
 	int		x;
 	t_list	*list;
 	double	*z_buffer;
+	int		sprite_order[NUM_SPRITES];
+	double	sprite_dist[NUM_SPRITES];
 
 	cast_floor(f, m);
 
@@ -19,21 +21,21 @@ void	raycasting(t_frame *f, t_map *m)
 	while (i < f->size.x)
 		z_buffer[i++] = DBL_MAX;
 
+	sort_sprites(sprite_order, sprite_dist, NUM_SPRITES);
+
 	list = 0;
 	x = 0;
 	while (x < f->size.x)
 	{
 		perform_dda(m, 2 * x / (double)f->size.x - 1, &list);
-		/*
-			TODO:
-			For transparency, draw the sprite before drawing the alpha walls.
-		*/
-
 		while (list)
 		{
 			t_ray *ray = (t_ray *)list->data;
 			if (is_obstacle_see_through(m, ray))
+			{
 				cast_ceiling_x(f, m, z_buffer, x);
+				cast_sprites(f, m, z_buffer, sprite_order, sprite_dist, x);
+			}
 			if (ray->perp_wall_dist < z_buffer[x])
 				z_buffer[x] = ray->perp_wall_dist;
 			set_line(f, m, x, ray);
@@ -41,10 +43,9 @@ void	raycasting(t_frame *f, t_map *m)
 			list_del_one(&list, free);
 		}
 		cast_ceiling_x(f, m, z_buffer, x);
+		cast_sprites(f, m, z_buffer, sprite_order, sprite_dist, x);
 		++x;
 	}
-	if (z_buffer)
-		cast_sprites(f, m, z_buffer);
 	free(z_buffer);
 	return ;
 }

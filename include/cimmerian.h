@@ -298,9 +298,13 @@ void		update_global_coordinates(void);
 void		raycasting(t_frame *f, t_map *m);
 void		cast_floor(t_frame *f, t_map *m);
 void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
-void		cast_sprites(t_frame *f, t_map *m, double *z_buffer);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
+
+#define NUM_SPRITES 20
+void	sort_sprites(int *sprite_order, double *sprite_dist, int sprite_amount);
+void	cast_sprites(t_frame *f, t_map *m, double *z_buffer, int *sprite_order,
+	double *sprite_dist, int x);
 
 /* Input -------------------------------------------------------------------- */
 
