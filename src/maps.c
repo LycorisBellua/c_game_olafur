@@ -99,7 +99,7 @@ static t_map	*create_map(void)
 	map->minimap_zoom = 9;
 	map->minimap_cell_amount = map->minimap_radius / map->minimap_zoom * 2;
 	map->cells = 0;
-	map->img_len = 13;
+	map->img_len = 10;
 	map->img = malloc(map->img_len * sizeof(t_img *));
 	if (!map->img)
 	{
@@ -120,13 +120,9 @@ static t_map	*create_map(void)
 	map->img[7] = load_image_from_file("img/textures/floor.png");
 	map->img[8] = load_image_from_file("img/textures/floor_indoors.png");
 	map->img[9] = load_image_from_file("img/textures/ceiling.png");
-	map->img[10] = load_image_from_file("img/sprites/wf_barrel.png");
-	map->img[11] = load_image_from_file("img/sprites/wf_pillar.png");
-	map->img[12] = load_image_from_file("img/sprites/wf_greenlight.png");
 	if (!map->skybox || !map->img[0] || !map->img[1] || !map->img[2]
 		|| !map->img[3] || !map->img[4] || !map->img[5] || !map->img[6]
-		|| !map->img[7] || !map->img[8] || !map->img[9] || !map->img[10]
-		|| !map->img[11] || !map->img[12])
+		|| !map->img[7] || !map->img[8] || !map->img[9])
 	{
 		free_map(&map);
 		return (0);
@@ -155,6 +151,51 @@ static t_map	*create_map(void)
 		map->cells[i].tex_west = map_walls[i] ? map->img[map_walls[i]] : 0;
 		++i;
 	}
+	map->objects = malloc(NBR_OBJ * sizeof(t_obj));
+	if (!map->objects)
+	{
+		free_map(&map);
+		return (0);
+	}
+	//green lights
+	i = 0;
+	while (i < 8)
+	{
+		map->objects[i].spr = g_man.sprites + 8; //7
+		++i;
+	}
+	set_vec2(&map->objects[0].pos,  20.5, 11.5);
+	set_vec2(&map->objects[1].pos,  18.5,  4.5);
+	set_vec2(&map->objects[2].pos,  10.0,  4.5);
+	set_vec2(&map->objects[3].pos,  10.0, 12.5);
+	set_vec2(&map->objects[4].pos,   3.5,  6.5);
+	set_vec2(&map->objects[5].pos,   3.5, 20.5);
+	set_vec2(&map->objects[6].pos,   3.5, 14.5);
+	set_vec2(&map->objects[7].pos,  14.5, 20.5);
+	//pillars
+	while (i < 12)
+	{
+		map->objects[i].spr = g_man.sprites + 6;
+		++i;
+	}
+	set_vec2(&map->objects[8].pos,  18.5, 10.5);
+	set_vec2(&map->objects[9].pos,  18.5, 11.5);
+	set_vec2(&map->objects[10].pos, 18.5, 12.5);
+	set_vec2(&map->objects[11].pos,  8.5,  7.0);
+	//barrels
+	while (i < 20)
+	{
+		map->objects[i].spr = g_man.sprites + 5;
+		++i;
+	}
+	set_vec2(&map->objects[12].pos, 21.5,  1.5);
+	set_vec2(&map->objects[13].pos, 15.5,  1.5);
+	set_vec2(&map->objects[14].pos, 16.0,  1.8);
+	set_vec2(&map->objects[15].pos, 16.2,  1.2);
+	set_vec2(&map->objects[16].pos,  3.5,  2.5);
+	set_vec2(&map->objects[17].pos,  9.5, 15.5);
+	set_vec2(&map->objects[18].pos, 10.0, 15.1);
+	set_vec2(&map->objects[19].pos, 10.5, 15.8);
 	return (map);
 }
 
@@ -171,6 +212,7 @@ static void	free_map(t_map **map)
 		++i;
 	}
 	free((*map)->img);
+	free((*map)->objects);
 	free(*map);
 	*map = 0;
 	return ;

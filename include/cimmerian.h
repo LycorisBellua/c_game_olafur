@@ -17,7 +17,8 @@
 
 # define FOV 60
 # define NBR_FRAMES 3
-# define SPRITE_LEN 6
+# define SPRITE_LEN 10
+# define NBR_OBJ 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 
@@ -128,6 +129,12 @@ typedef struct s_cell
 	t_img	*tex_west;
 }	t_cell;
 
+typedef struct s_obj
+{
+	t_vec2	pos;
+	t_spr	*spr;
+}	t_obj;
+
 typedef struct s_map
 {
 	t_ivec2	size;
@@ -140,6 +147,7 @@ typedef struct s_map
 	int		img_len;
 	t_img	**img;
 	t_cell	*cells;
+	t_obj	*objects;
 	t_ivec2	minimap_offset;
 	t_ivec2	minimap_center;
 	int		minimap_radius;
@@ -301,10 +309,10 @@ void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
 
-#define NUM_SPRITES 20
-void	sort_sprites(int *sprite_order, double *sprite_dist, int sprite_amount);
-void	cast_sprites(t_frame *f, t_map *m, double *z_buffer, int *sprite_order,
-	double *sprite_dist, int x);
+void		sort_objects(int *object_order, double *object_dist,
+				int object_amount);
+void		cast_objects(t_frame *f, t_map *m, double *z_buffer,
+				int *object_order, double *object_dist, int x);
 
 /* Input -------------------------------------------------------------------- */
 

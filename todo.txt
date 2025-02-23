@@ -1,4 +1,4 @@
-- Animated sprite.
+- Animated sprite: Advance sprite cycle outside of `draw_sprite`.
 
 - Enter end goal and see from within + Fade out effect + Fade in effect to 
 another map or a victory message.

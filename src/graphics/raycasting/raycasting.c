@@ -10,8 +10,8 @@ void	raycasting(t_frame *f, t_map *m)
 	int		x;
 	t_list	*list;
 	double	*z_buffer;
-	int		sprite_order[NUM_SPRITES];
-	double	sprite_dist[NUM_SPRITES];
+	int		object_order[NBR_OBJ];
+	double	object_dist[NBR_OBJ];
 
 	cast_floor(f, m);
 
@@ -21,7 +21,7 @@ void	raycasting(t_frame *f, t_map *m)
 	while (i < f->size.x)
 		z_buffer[i++] = DBL_MAX;
 
-	sort_sprites(sprite_order, sprite_dist, NUM_SPRITES);
+	sort_objects(object_order, object_dist, NBR_OBJ);
 
 	list = 0;
 	x = 0;
@@ -34,7 +34,7 @@ void	raycasting(t_frame *f, t_map *m)
 			if (is_obstacle_see_through(m, ray))
 			{
 				cast_ceiling_x(f, m, z_buffer, x);
-				cast_sprites(f, m, z_buffer, sprite_order, sprite_dist, x);
+				cast_objects(f, m, z_buffer, object_order, object_dist, x);
 			}
 			if (ray->perp_wall_dist < z_buffer[x])
 				z_buffer[x] = ray->perp_wall_dist;
@@ -43,7 +43,7 @@ void	raycasting(t_frame *f, t_map *m)
 			list_del_one(&list, free);
 		}
 		cast_ceiling_x(f, m, z_buffer, x);
-		cast_sprites(f, m, z_buffer, sprite_order, sprite_dist, x);
+		cast_objects(f, m, z_buffer, object_order, object_dist, x);
 		++x;
 	}
 	free(z_buffer);

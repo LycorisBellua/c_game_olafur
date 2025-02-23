@@ -179,5 +179,76 @@
                 ]
             }
         ]
+    },
+    {
+        "path": "img/sprites/wf_barrel.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "barrel",
+                "size": [64, 64],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/sprites/wf_pillar.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "pillar",
+                "size": [64, 64],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/sprites/wf_greenlight.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "greenlight",
+                "size": [64, 64],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/sprites/rm_chalice.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "chalice",
+                "size": [64, 64],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 150,
+                "cycle": [
+                    [0, 0],
+                    [64, 0],
+                    [128, 0],
+                    [192, 0],
+                    [256, 0],
+                    [320, 0],
+                    [384, 0],
+                    [448, 0]
+                ]
+            }
+        ]
     }
 ]
