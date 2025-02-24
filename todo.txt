@@ -1,19 +1,31 @@
-- Animated sprite: Advance sprite cycle outside of `draw_sprite`.
+- Instead of having `map->img` and `g_man.sprites`, have only `img` but it's an 
+array of `t_spr` instances. This allows animated textures.
 
-- Enter end goal and see from within + Fade out effect + Fade in effect to 
-another map or a victory message.
-- Pathfinding for an enemy sprite.
+Norm:
+src/door.c
+src/main.c
+src/maps.c
+src/graphics/raycasting/ceiling.c
+src/graphics/raycasting/floor.c
+src/graphics/raycasting/objects.c
+src/graphics/raycasting/raycasting.c
+src/graphics/raycasting/texturing.c
+
+---
+
 - Collision with a decor sprite.
 - Collectible sprite.
 
-- Sound.
-- Enter a seed to generate a level, or maybe you can send a map file. Support 
-for both?
-- Main menu.
+- Enter end goal and see from within + Fade out effect + Fade in effect to 
+another map or a victory message.
 
-Norm:
-main.c
-maps.c
-door.c
-graphics/draw/draw_shape.c
-graphics/raycasting/*
+- Pathfinding for an enemy sprite.
+- The enemy is displayed on the minimap.
+- The enemy is visible beyond the dark veil.
+
+- Sound.
+- Main menu, at least for sound options (silence / volume).
+
+- Load a level from a file. Maybe something like Grim Fetcher, with a folder 
+containing numbered levels.
+- Generate a level from a seed.

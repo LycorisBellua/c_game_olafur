@@ -234,7 +234,7 @@
         "segments": [
             {
                 "id": "chalice",
-                "size": [64, 64],
+                "size": [64, 58],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 150,

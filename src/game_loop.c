@@ -20,7 +20,7 @@ static void	display_gui(t_frame *f, t_map *m)
 
 	draw_minimap(f, m);
 	set_ivec2(&pos, 0, 0);
-	draw_sprite(f, g_man.sprites + 2, pos, g_man.dt_ms);
+	draw_sprite(f, g_man.sprites + 2, pos);
 	pos.x += g_man.sprites[2].size.x;
 	pos.y += 14;
 	display_fps(f, pos);

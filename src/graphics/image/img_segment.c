@@ -44,8 +44,9 @@ static int	set_sprite_from_segment(t_spr *s, t_img *file, size_t i_seg)
 	s->shadow_offset.x = file->seg[i_seg].shadow_offset.x;
 	s->shadow_offset.y = file->seg[i_seg].shadow_offset.y;
 	s->still_frame = file->seg[i_seg].still_frame;
-	s->cycle_time_in_ms = file->seg[i_seg].cycle_time_in_ms;
 	s->cycle_len = file->seg[i_seg].cycle_len;
+	s->cycle_index = s->still_frame;
+	s->cycle_time_in_ms = file->seg[i_seg].cycle_time_in_ms;
 	s->cycle = calloc(s->cycle_len, sizeof(t_color *));
 	if (!s->cycle)
 		return (0);

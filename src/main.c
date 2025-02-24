@@ -26,6 +26,7 @@ int	main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		set_dt_and_fps();
+		advance_all_sprite_cycles(g_man.dt_ms);
 		clear_buffer();
 		draw_into_buffer(g_man.map);
 		swap_buffer(window);

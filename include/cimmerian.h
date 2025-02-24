@@ -245,9 +245,10 @@ void		draw_shape_full(t_frame *f, t_vert arr[], int len);
 void		draw_image(t_frame *f, t_img *img);
 void		draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset);
 void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
-void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos, long dt_ms);
+void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos);
 void		draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc);
 t_spr		*get_sprite(char *id);
+void		advance_all_sprite_cycles(long dt_ms);
 
 /* Fog ---------------------------------------------------------------------- */
 
@@ -308,7 +309,6 @@ void		cast_floor(t_frame *f, t_map *m);
 void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
-
 void		sort_objects(int *object_order, double *object_dist,
 				int object_amount);
 void		cast_objects(t_frame *f, t_map *m, double *z_buffer,
