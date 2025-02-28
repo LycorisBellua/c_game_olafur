@@ -106,20 +106,20 @@ static t_map	*create_map(void)
 		free(map);
 		return (0);
 	}
-	map->skybox = compose_skybox("img/textures/skybox.png", map->fog_color);
+	map->skybox = compose_skybox("img/tex_skybox.png", map->fog_color);
 	map->img[0] = compose_background(map);
-	map->img[1] = load_image_from_file("img/textures/wall_01.png");
-	map->img[2] = load_image_from_file("img/textures/wall_02.png");
-	map->img[3] = load_image_from_file("img/textures/wall_03.png");
-	map->img[4] = load_image_from_file("img/textures/wall_04.png");
-	map->img[5] = load_image_from_file("img/textures/doors.png");
+	map->img[1] = load_image_from_file("img/tex_wall_01.png");
+	map->img[2] = load_image_from_file("img/tex_wall_02.png");
+	map->img[3] = load_image_from_file("img/tex_wall_03.png");
+	map->img[4] = load_image_from_file("img/tex_wall_04.png");
+	map->img[5] = load_image_from_file("img/tex_doors.png");
 
 	t_ivec2	obelisk_size = { 128, 128 };
 	map->img[6] = create_image(get_color_rgba(88, 69, 84, 255 * 0.75), obelisk_size);
 
-	map->img[7] = load_image_from_file("img/textures/floor.png");
-	map->img[8] = load_image_from_file("img/textures/floor_indoors.png");
-	map->img[9] = load_image_from_file("img/textures/ceiling.png");
+	map->img[7] = load_image_from_file("img/tex_floor.png");
+	map->img[8] = load_image_from_file("img/tex_floor_indoors.png");
+	map->img[9] = load_image_from_file("img/tex_ceiling.png");
 	if (!map->skybox || !map->img[0] || !map->img[1] || !map->img[2]
 		|| !map->img[3] || !map->img[4] || !map->img[5] || !map->img[6]
 		|| !map->img[7] || !map->img[8] || !map->img[9])

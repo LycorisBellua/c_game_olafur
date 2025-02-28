@@ -1,6 +1,6 @@
 [
     {
-        "path": "img/sprites/mg_cursor.png",
+        "path": "img/mg_cursor.png",
         "path_shadow": "",
         "segments": [
             {
@@ -17,7 +17,7 @@
         ]
     },
     {
-        "path": "img/sprites/monogram.png",
+        "path": "img/monogram.png",
         "path_shadow": "",
         "segments": [
             {
@@ -128,8 +128,8 @@
         ]
     },
     {
-        "path": "img/sprites/mc_soul.png",
-        "path_shadow": "img/sprites/mc_soul_shadow.png",
+        "path": "img/mc_soul.png",
+        "path_shadow": "img/mc_soul_shadow.png",
         "segments": [
             {
                 "id": "soul_idle",
@@ -181,7 +181,7 @@
         ]
     },
     {
-        "path": "img/sprites/wf_barrel.png",
+        "path": "img/wf_barrel.png",
         "path_shadow": "",
         "segments": [
             {
@@ -197,7 +197,7 @@
         ]
     },
     {
-        "path": "img/sprites/wf_pillar.png",
+        "path": "img/wf_pillar.png",
         "path_shadow": "",
         "segments": [
             {
@@ -213,7 +213,7 @@
         ]
     },
     {
-        "path": "img/sprites/wf_greenlight.png",
+        "path": "img/wf_greenlight.png",
         "path_shadow": "",
         "segments": [
             {
@@ -229,7 +229,7 @@
         ]
     },
     {
-        "path": "img/sprites/rm_chalice.png",
+        "path": "img/rm_chalice.png",
         "path_shadow": "",
         "segments": [
             {
