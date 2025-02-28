@@ -1,5 +1,20 @@
-- Instead of having `map->img` and `g_man.sprites`, have only `img` but it's an 
-array of `t_spr` instances. This allows animated textures.
+ANIMATED TEXTURE
+
+- For each sprite frame:
+	average_color
+	is_see_through (we need this for the door and portal)
+
+- The portal texture is a placeholder. Use an actual portal texture, but with 
+an alpha of 0.75 and not 1.0.
+
+---
+
+ANIMATED SKYBOX
+
+- For the map's skybox and background, use t_spr instead of t_img so that we 
+can have an animated background.
+
+---
 
 Norm:
 src/door.c
@@ -13,11 +28,11 @@ src/graphics/raycasting/texturing.c
 
 ---
 
+- Enter the portal and see from within + Fade out effect + Fade in effect to 
+another map or a victory message.
+
 - Collision with a decor sprite.
 - Collectible sprite.
-
-- Enter end goal and see from within + Fade out effect + Fade in effect to 
-another map or a victory message.
 
 - Pathfinding for an enemy sprite.
 - The enemy is displayed on the minimap.

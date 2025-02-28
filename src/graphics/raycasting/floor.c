@@ -13,7 +13,7 @@ void	cast_floor(t_frame *f, t_map *m)
 	t_vec2	floor_step;
 	t_vec2	floor;
 	t_ivec2	cell;
-	t_img	*tex;
+	t_spr	*tex;
 	t_ivec2	t;
 	t_color color;
 
@@ -56,7 +56,7 @@ void	cast_floor(t_frame *f, t_map *m)
 				{
 					t.x = (int)(tex->size.x * (floor.x - cell.x)) % tex->size.x;
 					t.y = (int)(tex->size.y * (floor.y - cell.y)) % tex->size.y;
-					color = tex->buf[tex->size.x * t.y + t.x];
+					color = tex->cycle[tex->cycle_index][tex->size.x * t.y + t.x];
 					color.r *= 0.75;
 					color.g *= 0.75;
 					color.b *= 0.75;

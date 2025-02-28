@@ -2,7 +2,7 @@
 
 static void		wall_flat_color(t_frame *f, t_map *m, t_ray *r);
 static void		wall_texturing(t_frame *f, t_map *m, t_ray *r);
-static t_img	*get_texture(t_map *m, t_ray *r);
+static t_spr	*get_texture(t_map *m, t_ray *r);
 
 void	draw_wall(t_frame *f, t_map *m, t_ray *r)
 {
@@ -36,7 +36,7 @@ static void	wall_flat_color(t_frame *f, t_map *m, t_ray *r)
 	return ;
 }
 
-static t_img	*get_texture(t_map *m, t_ray *r)
+static t_spr	*get_texture(t_map *m, t_ray *r)
 {
 	if (r->side == 1 && r->ray_dir.y > 0)
 		return (m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_north);
@@ -51,56 +51,56 @@ static t_img	*get_texture(t_map *m, t_ray *r)
 
 static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 {
-	t_img	*img;
-	t_ivec2	img_coord;
-	double	img_step;
-	double	img_pos;
+	t_spr	*tex;
+	t_ivec2	tex_coord;
+	double	tex_step;
+	double	tex_pos;
 	t_color	color;
 	int		y;
 
-	img = get_texture(m, r);
-	if (!img)
+	tex = get_texture(m, r);
+	if (!tex)
 		return ;
 
-	// img_coord.x
+	// tex_coord.x
 	double	wall_x;
 	if (r->side == 0)
 		wall_x = g_man.player.pos.y + r->perp_wall_dist * r->ray_dir.y;
 	else
 		wall_x = g_man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
 	wall_x -= f_floor(wall_x);
-	img_coord.x = (int)(wall_x * img->size.x);
+	tex_coord.x = (int)(wall_x * tex->size.x);
 	if ((r->side == 0 && r->ray_dir.x < 0)
 		|| (r->side == 1 && r->ray_dir.y > 0))
-		img_coord.x = img->size.x - img_coord.x - 1;
+		tex_coord.x = tex->size.x - tex_coord.x - 1;
 
-	// img_step
-	img_step = (double)img->size.y / r->line_height_cubic;
+	// tex_step
+	tex_step = (double)tex->size.y / r->line_height_cubic;
 
-	// img_pos
+	// tex_pos
 	t_cell	*cell;
 	double	y_offset;
 	cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
-	y_offset = img->size.y * (1.0 - cell->height) * 0.5;
-	img_pos = (y_offset
-		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * img_step);
+	y_offset = tex->size.y * (1.0 - cell->height) * 0.5;
+	tex_pos = (y_offset
+		+ (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5)) * tex_step);
 
-	int	is_a_corner = is_corner(m, r, img_coord.x, img->size.x);
+	int	is_a_corner = is_corner(m, r, tex_coord.x, tex->size.x);
 
 	y = r->coord1.y;
 	while (y < r->coord2.y)
 	{
 		// Cast the image coordinate to integer, and clamp to [0, IMG_H - 1]
-		img_coord.y = (int)img_pos % img->size.y;
-		img_pos += img_step;
+		tex_coord.y = (int)tex_pos % tex->size.y;
+		tex_pos += tex_step;
 		// Clamp the texture coordinate to within bounds
-		if (img_coord.y < 0)
-			img_coord.y += img->size.y;
+		if (tex_coord.y < 0)
+			tex_coord.y += tex->size.y;
 
-		color = img->buf[img_coord.y * img->size.x + img_coord.x];
+		color = tex->cycle[tex->cycle_index][tex_coord.y * tex->size.x + tex_coord.x];
 		apply_wall_shadow(&color, m->fog_color, y, r->unclamped_line_height);
 		if (is_a_corner)
-			apply_corner_shadow(&color, m->fog_color, img_coord.x, img->size.x);
+			apply_corner_shadow(&color, m->fog_color, tex_coord.x, tex->size.x);
 		apply_wall_fog(&color, m->fog_color, r->perp_wall_dist, m->dof);
 		draw_point(f, color, r->coord1.x, y);
 		++y;

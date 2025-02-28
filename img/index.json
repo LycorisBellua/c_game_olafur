@@ -128,6 +128,166 @@
         ]
     },
     {
+        "path": "img/tex_skybox.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_skybox",
+                "size": [640, 360],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_doors.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_doors",
+                "size": [64, 64],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_ceiling.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_ceiling",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_floor.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_floor",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_floor_indoors.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_floor_indoors",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_wall_01.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_wall_01",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_wall_02.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_wall_02",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_wall_03.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_wall_03",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/tex_wall_04.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "tex_wall_04",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/solid_color_75.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "solid_color_75",
+                "size": [128, 128],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
         "path": "img/mc_soul.png",
         "path_shadow": "img/mc_soul_shadow.png",
         "segments": [

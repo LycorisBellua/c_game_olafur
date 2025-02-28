@@ -17,7 +17,7 @@
 
 # define FOV 60
 # define NBR_FRAMES 3
-# define SPRITE_LEN 10
+# define SPRITE_LEN 20
 # define NBR_OBJ 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
@@ -75,6 +75,8 @@ typedef struct s_spr
 	long	cycle_time_in_ms;
 	t_color	**cycle;
 	t_color	**cycle_shadow;
+	int		is_see_through;
+	t_color	average_color;
 }	t_spr;
 
 typedef struct s_img_seg
@@ -121,12 +123,12 @@ typedef struct s_cell
 	int		is_goal;
 	int		is_indoors;
 	double	height;
-	t_img	*tex_floor;
-	t_img	*tex_ceiling;
-	t_img	*tex_north;
-	t_img	*tex_east;
-	t_img	*tex_south;
-	t_img	*tex_west;
+	t_spr	*tex_floor;
+	t_spr	*tex_ceiling;
+	t_spr	*tex_north;
+	t_spr	*tex_east;
+	t_spr	*tex_south;
+	t_spr	*tex_west;
 }	t_cell;
 
 typedef struct s_obj
@@ -144,8 +146,7 @@ typedef struct s_map
 	double	fog_width;
 	t_color	fog_color;
 	t_img	*skybox;
-	int		img_len;
-	t_img	**img;
+	t_img	*background;
 	t_cell	*cells;
 	t_obj	*objects;
 	t_ivec2	minimap_offset;

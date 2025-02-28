@@ -140,18 +140,22 @@ static void	perform_dda(t_map *m, double cam_x, t_list **list)
 
 static int	is_obstacle_see_through(t_map *m, t_ray *r)
 {
+	t_spr	*tex;
 	t_cell	*cell;
 
+	tex = 0;
 	cell = &m->cells[r->m_index.y * m->size.x + r->m_index.x];
 	if (r->side == 1 && r->ray_dir.y > 0)
-		return (cell->tex_north->is_see_through);
+		tex = cell->tex_north;
 	else if (r->side == 1 && r->ray_dir.y < 0)
-		return (cell->tex_south->is_see_through);
+		tex = cell->tex_south;
 	else if (r->side == 0 && r->ray_dir.x > 0)
-		return (cell->tex_west->is_see_through);
+		tex = cell->tex_west;
 	else if (r->side == 0 && r->ray_dir.x < 0)
-		return (cell->tex_east->is_see_through);
-	return (0);
+		tex = cell->tex_east;
+	if (!tex)
+		return (0);
+	return (tex->is_see_through);
 }
 
 static void	set_line(t_frame *f, t_map *m, int x, t_ray *r)

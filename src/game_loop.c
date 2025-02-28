@@ -16,15 +16,21 @@ void	run_game_loop(t_map *m)
 
 static void	display_gui(t_frame *f, t_map *m)
 {
+	static t_spr	*cursor;
+	static t_spr	*soul_icon;
 	t_ivec2	pos;
 
+	if (!cursor)
+		cursor = get_sprite("cursor");
+	if (!soul_icon)
+		soul_icon = get_sprite("soul_idle");
 	draw_minimap(f, m);
 	set_ivec2(&pos, 0, 0);
-	draw_sprite(f, g_man.sprites + 2, pos);
-	pos.x += g_man.sprites[2].size.x;
+	draw_sprite(f, soul_icon, pos);
+	pos.x += soul_icon->size.x;
 	pos.y += 14;
 	display_fps(f, pos);
 	if (g_man.cursor.x >= 0 && g_man.cursor.y >= 0)
-		draw_cursor(f, &g_man.sprites[0], g_man.cursor, g_man.l_click_action);
+		draw_cursor(f, cursor, g_man.cursor, g_man.l_click_action);
 	return ;
 }

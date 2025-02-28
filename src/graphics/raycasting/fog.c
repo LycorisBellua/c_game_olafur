@@ -9,7 +9,7 @@ void	update_dof(t_map *m, double increment)
 	if (prev_dof != m->dof)
 	{
 		m->fog_width = get_fog_width(m->dof);
-		update_background(m, m->img[0]);
+		update_background(m, m->background);
 	}
 	return ;
 }
