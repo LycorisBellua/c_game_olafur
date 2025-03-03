@@ -75,8 +75,8 @@ typedef struct s_spr
 	long	cycle_time_in_ms;
 	t_color	**cycle;
 	t_color	**cycle_shadow;
-	int		is_see_through;
-	t_color	average_color;
+	t_color	*average_color;
+	int		*is_see_through;
 }	t_spr;
 
 typedef struct s_img_seg
@@ -224,6 +224,7 @@ t_color		get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a);
 t_color		get_color_hex(const char *str, t_ubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
 t_color		get_frame_color(t_frame *f, int x, int y);
+t_color		calculate_average_color(t_color *buf, size_t len);
 
 /* Vectors ------------------------------------------------------------------ */
 
@@ -293,6 +294,7 @@ void		add_outline_to_font(t_spr *font);
 int			create_sprites_from_file(t_img *file, size_t *i_spr);
 void		free_sprites(void);
 int			set_sprite_array(char *path);
+int			calculate_sprite_average_color(t_spr *s);
 
 /* Game --------------------------------------------------------------------- */
 

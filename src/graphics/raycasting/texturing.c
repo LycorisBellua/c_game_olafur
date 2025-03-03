@@ -22,7 +22,7 @@ static void	wall_flat_color(t_frame *f, t_map *m, t_ray *r)
 	v1.coord = r->coord1;
 	v2.coord = r->coord2;
 	color = m->cells[r->m_index.y * m->size.x + r->m_index.x]
-		.tex_north->average_color;
+		.tex_north->average_color[0];
 	if (r->side == 1)
 	{
 		color.r /= 2;

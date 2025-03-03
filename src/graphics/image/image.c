@@ -1,7 +1,5 @@
 #include "cimmerian.h"
 
-static t_color	calculate_average_color(t_img *img);
-
 t_img	*load_image_from_file(const char *png_path)
 {
 	t_img			*img;
@@ -22,32 +20,8 @@ t_img	*load_image_from_file(const char *png_path)
 	}
 	img->size.x = size.x;
 	img->size.y = size.y;
-	img->average_color = calculate_average_color(img);
-	img->is_see_through = img->average_color.a < 255;
-	return (img);
-}
-
-/* Size can be 128x128 */
-t_img	*create_image(t_color c, t_ivec2 size)
-{
-	int		i;
-	t_img	*img;
-
-	img = malloc(sizeof(t_img));
-	if (!img)
-		return (0);
-	img->size.x = size.x;
-	img->size.y = size.y;
-	img->buf = malloc(img->size.x * img->size.y * sizeof(t_color));
-	if (!img->buf)
-	{
-		free_image(img);
-		return (0);
-	}
-	i = 0;
-	while (i < img->size.x * img->size.y)
-		img->buf[i++] = c;
-	img->average_color = c;
+	img->average_color = calculate_average_color(img->buf,
+			img->size.x * img->size.y);
 	img->is_see_through = img->average_color.a < 255;
 	return (img);
 }
@@ -87,27 +61,4 @@ void	apply_vertical_gradient(t_img *img, t_color color)
 		++v.y;
 	}
 	return ;
-}
-
-static t_color	calculate_average_color(t_img *img)
-{
-	size_t	i;
-	size_t	len;
-	double	alpha;
-	int		total_color[4];
-
-	bzero(&total_color, 4 * sizeof(int));
-	i = 0;
-	len = img->size.x * img->size.y;
-	while (i < len)
-	{
-		alpha = img->buf[i].a / 255.0;
-		total_color[0] += img->buf[i].r * alpha;
-		total_color[1] += img->buf[i].g * alpha;
-		total_color[2] += img->buf[i].b * alpha;
-		total_color[3] += img->buf[i].a;
-		++i;
-	}
-	return (get_color_rgba(total_color[0] / len, total_color[1] / len,
-			total_color[2] / len, total_color[3] / len));
 }

@@ -60,7 +60,7 @@ static int	set_sprite_from_segment(t_spr *s, t_img *file, size_t i_seg)
 			return (0);
 		}
 	}
-	return (allocate_cycles(s));
+	return (allocate_cycles(s) && calculate_sprite_average_color(s));
 }
 
 static int	allocate_cycles(t_spr *s)

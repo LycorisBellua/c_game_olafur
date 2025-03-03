@@ -272,17 +272,18 @@
         ]
     },
     {
-        "path": "img/solid_color_75.png",
+        "path": "img/solid_color.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "solid_color_75",
+                "id": "solid_color",
                 "size": [128, 128],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
-                "cycle_time_in_ms": 0,
+                "cycle_time_in_ms": 300,
                 "cycle": [
-                    [0, 0]
+                    [0, 0],
+                    [128, 0]
                 ]
             }
         ]

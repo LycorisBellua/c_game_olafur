@@ -137,7 +137,7 @@ static t_map	*create_map(void)
 		else if (map_walls[i] == 5)
 			spr = get_sprite("tex_doors");
 		else if (map_walls[i] == 6)
-			spr = get_sprite("solid_color_75");
+			spr = get_sprite("solid_color");
 		map->cells[i].tex_north = spr;
 		map->cells[i].tex_east = spr;
 		map->cells[i].tex_south = spr;

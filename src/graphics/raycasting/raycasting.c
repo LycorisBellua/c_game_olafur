@@ -155,7 +155,7 @@ static int	is_obstacle_see_through(t_map *m, t_ray *r)
 		tex = cell->tex_east;
 	if (!tex)
 		return (0);
-	return (tex->is_see_through);
+	return (tex->is_see_through[tex->cycle_index]);
 }
 
 static void	set_line(t_frame *f, t_map *m, int x, t_ray *r)

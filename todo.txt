@@ -1,14 +1,3 @@
-ANIMATED TEXTURE
-
-- For each sprite frame:
-	average_color
-	is_see_through (we need this for the door and portal)
-
-- The portal texture is a placeholder. Use an actual portal texture, but with 
-an alpha of 0.75 and not 1.0.
-
----
-
 ANIMATED SKYBOX
 
 - For the map's skybox and background, use t_spr instead of t_img so that we 
@@ -40,6 +29,7 @@ another map or a victory message.
 
 - Sound.
 - Main menu, at least for sound options (silence / volume).
+- Should I add sound (and therefore a menu) to Grim Fetcher?
 
 - Load a level from a file. Maybe something like Grim Fetcher, with a folder 
 containing numbered levels.
