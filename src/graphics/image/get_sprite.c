@@ -11,5 +11,7 @@ t_spr	*get_sprite(char *id)
 			return (&g_man.sprites[i]);
 		++i;
 	}
+	if (!strcmp(g_man.map->skybox->id, id))
+		return (g_man.map->skybox);
 	return (0);
 }

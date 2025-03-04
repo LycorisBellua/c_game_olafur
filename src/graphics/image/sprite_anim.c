@@ -12,6 +12,7 @@ void	advance_all_sprite_cycles(long dt_ms)
 		advance_sprite_cycle(g_man.sprites + i, dt_ms);
 		++i;
 	}
+	advance_sprite_cycle(g_man.map->skybox, dt_ms);
 	return ;
 }
 

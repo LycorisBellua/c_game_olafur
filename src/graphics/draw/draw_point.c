@@ -2,10 +2,10 @@
 
 void	draw_point(t_frame *f, t_color c, int x, int y)
 {
-	int		row;
-	int		col;
+	int	row;
+	int	col;
 
-	if (x < 0 || y < 0 || x >= f->size.x || y >= f->size.y)
+	if (!f || x < 0 || y < 0 || x >= f->size.x || y >= f->size.y)
 		return ;
 	x *= f->thickness;
 	y *= f->thickness;
@@ -21,14 +21,5 @@ void	draw_point(t_frame *f, t_color c, int x, int y)
 		}
 		++row;
 	}
-	return ;
-}
-
-void	draw_point_img(t_img *img, t_color c, int x, int y)
-{
-	t_color	*buf;
-
-	buf = img->buf + (y * img->size.x + x);
-	*buf = get_alpha_blended_color(*buf, c);
 	return ;
 }

@@ -99,9 +99,28 @@ static t_map	*create_map(void)
 	map->minimap_zoom = 9;
 	map->minimap_cell_amount = map->minimap_radius / map->minimap_zoom * 2;
 	map->cells = 0;
-	map->skybox = compose_skybox("img/tex_skybox.png", map->fog_color);
+	map->background = 0;
+	map->skybox = compose_skybox(get_sprite("src_skybox"), map->fog_color);
+	if (!map->skybox)
+	{
+		free_map(&map);
+		return (0);
+	}
 	map->background = compose_background(map);
-	if (!map->skybox || !map->background)
+	/*
+		`compose_background` is about creating an image from scratch. It's just 
+		a buffer. And then, `update_background` is called and it copies the 
+		skybox data. So, basically, there's only one frame for the background, 
+		because it can just copy the current skybox cycle frame.
+
+		I wonder if I shouldn't just have a t_png object for this one, since it 
+		would be a bother to add an image to the general list.
+
+		EDIT: Keep in mind that currently the background is only updated when 
+		the fog width changes. It needs to be updated every frame in case the 
+		skybox has an animation.
+	*/
+	if (!map->background)
 	{
 		free_map(&map);
 		return (0);
@@ -195,7 +214,7 @@ static t_map	*create_map(void)
 static void	free_map(t_map **map)
 {
 	free((*map)->cells);
-	free_image((*map)->skybox);
+	free_sprite((*map)->skybox);
 	free_image((*map)->background);
 	free((*map)->objects);
 	free(*map);

@@ -2,6 +2,7 @@ ANIMATED SKYBOX
 
 - For the map's skybox and background, use t_spr instead of t_img so that we 
 can have an animated background.
+- t_img -> t_png / t_img_seg -> t_png_seg / t_spr -> t_img.
 
 ---
 

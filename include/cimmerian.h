@@ -95,8 +95,6 @@ typedef struct s_img
 	char		*path;
 	char		*path_shadow;
 	t_ivec2		size;
-	int			is_see_through;
-	t_color		average_color;
 	t_color		*buf;
 	t_color		*buf_shadow;
 	size_t		segment_len;
@@ -145,7 +143,7 @@ typedef struct s_map
 	double	dof;
 	double	fog_width;
 	t_color	fog_color;
-	t_img	*skybox;
+	t_spr	*skybox;
 	t_img	*background;
 	t_cell	*cells;
 	t_obj	*objects;
@@ -233,8 +231,8 @@ void		set_ivec2(t_ivec2 *v, int x, int y);
 
 /* Draw --------------------------------------------------------------------- */
 
+void		draw_pixel(t_color *buf, t_color c, t_ivec2 coord, t_ivec2 size);
 void		draw_point(t_frame *f, t_color color, int x, int y);
-void		draw_point_img(t_img *img, t_color c, int x, int y);
 void		draw_line(t_frame *f, t_vert v1, t_vert v2);
 void		draw_rectangle(t_frame *f, t_vert v, t_ivec2 size);
 void		draw_rectangle_full(t_frame *f, t_vert v, t_ivec2 size);
@@ -285,7 +283,7 @@ void		parse_segments(t_img *file, char **lines, size_t *i);
 
 t_img		*load_image_from_file(const char *png_path);
 t_img		*create_image(t_color c, t_ivec2 size);
-t_img		*compose_skybox(const char *path_skybox, t_color fog);
+t_spr		*compose_skybox(t_spr *src, t_color fog);
 t_img		*compose_background(t_map *m);
 void		draw_background(t_frame *f, t_map *m);
 void		apply_vertical_gradient(t_img *img, t_color color);
@@ -293,8 +291,10 @@ void		free_image(t_img *s);
 void		add_outline_to_font(t_spr *font);
 int			create_sprites_from_file(t_img *file, size_t *i_spr);
 void		free_sprites(void);
+void		free_sprite(t_spr *s);
 int			set_sprite_array(char *path);
 int			calculate_sprite_average_color(t_spr *s);
+t_spr		*duplicate_sprite(const char *dst_id, t_spr *src);
 
 /* Game --------------------------------------------------------------------- */
 

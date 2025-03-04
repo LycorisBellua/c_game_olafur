@@ -3,27 +3,34 @@
 void	free_sprites(void)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 0;
 	while (i < SPRITE_LEN)
 	{
-		free(g_man.sprites[i].id);
-		j = 0;
-		while (j < g_man.sprites[i].cycle_len)
-		{
-			if (g_man.sprites[i].cycle)
-				free(g_man.sprites[i].cycle[j]);
-			if (g_man.sprites[i].cycle_shadow)
-				free(g_man.sprites[i].cycle_shadow[j]);
-			++j;
-		}
-		free(g_man.sprites[i].cycle);
-		free(g_man.sprites[i].cycle_shadow);
-		free(g_man.sprites[i].average_color);
-		free(g_man.sprites[i].is_see_through);
-		bzero(g_man.sprites + i, sizeof(t_spr));
+		free_sprite(g_man.sprites + i);
 		++i;
 	}
+	return ;
+}
+
+void	free_sprite(t_spr *s)
+{
+	if (!s)
+		return ;
+	free(s->id);
+	s->cycle_index = 0;
+	while (s->cycle_index < s->cycle_len)
+	{
+		if (s->cycle)
+			free(s->cycle[s->cycle_index]);
+		if (s->cycle_shadow)
+			free(s->cycle_shadow[s->cycle_index]);
+		++s->cycle_index;
+	}
+	free(s->cycle);
+	free(s->cycle_shadow);
+	free(s->average_color);
+	free(s->is_see_through);
+	bzero(s, sizeof(t_spr));
 	return ;
 }

@@ -132,7 +132,7 @@
         "path_shadow": "",
         "segments": [
             {
-                "id": "tex_skybox",
+                "id": "src_skybox",
                 "size": [640, 360],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

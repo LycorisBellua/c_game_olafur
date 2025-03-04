@@ -28,7 +28,7 @@ void	update_background(t_map *m, t_img *bg)
 	size_t	len;
 
 	len = bg->size.x * bg->size.y * sizeof(t_color);
-	memcpy(bg->buf, m->skybox->buf, len);
+	memcpy(bg->buf, m->skybox->cycle[m->skybox->cycle_index], len);
 	add_fog_overlay(bg, m->fog_width, m->fog_color);
 	return ;
 }
@@ -48,7 +48,7 @@ static void	add_fog_overlay(t_img *img, double fog_width, t_color fog)
 		v.coord.x = 0;
 		while (v.coord.x < img->size.x)
 		{
-			draw_point_img(img, v.color, v.coord.x, v.coord.y);
+			draw_pixel(img->buf, v.color, v.coord, img->size);
 			++v.coord.x;
 		}
 		++v.coord.y;
@@ -72,7 +72,7 @@ static void	upper_gradient(t_img *img, t_color fog, int h_gradient, t_vert *v)
 			v->color.g = fog.g;
 			v->color.b = fog.b;
 			v->color.a = (unsigned char)(factor * fog.a);
-			draw_point_img(img, v->color, v->coord.x, v->coord.y);
+			draw_pixel(img->buf, v->color, v->coord, img->size);
 			++v->coord.x;
 		}
 		++v->coord.y;
@@ -96,7 +96,7 @@ static void	lower_gradient(t_img *img, int h_solid, int h_gradient, t_vert *v)
 			v->color.g = fog.g;
 			v->color.b = fog.b;
 			v->color.a = (unsigned char)((1 - factor) * fog.a);
-			draw_point_img(img, v->color, v->coord.x, v->coord.y);
+			draw_pixel(img->buf, v->color, v->coord, img->size);
 			++v->coord.x;
 		}
 		++v->coord.y;

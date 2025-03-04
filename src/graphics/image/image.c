@@ -20,9 +20,6 @@ t_img	*load_image_from_file(const char *png_path)
 	}
 	img->size.x = size.x;
 	img->size.y = size.y;
-	img->average_color = calculate_average_color(img->buf,
-			img->size.x * img->size.y);
-	img->is_see_through = img->average_color.a < 255;
 	return (img);
 }
 
