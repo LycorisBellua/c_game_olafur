@@ -9,7 +9,7 @@ int	norm(int n)
 	return (0);
 }
 
-double	f_norm(double n)
+double	norm_f(double n)
 {
 	if (n < 0)
 		return (-1);

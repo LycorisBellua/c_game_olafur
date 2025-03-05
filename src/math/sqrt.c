@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-double	f_sqrt(double n)
+double	sqrt_f(double n)
 {
 	double	x;
 	double	xhalf;
@@ -17,7 +17,7 @@ double	f_sqrt(double n)
 	return (x * n);
 }
 
-float	f32_sqrt(float n)
+float	sqrt_f32(float n)
 {
 	float	x;
 	float	xhalf;

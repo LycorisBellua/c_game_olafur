@@ -21,20 +21,20 @@ t_color	calculate_average_color(t_color *buf, size_t len)
 			total_color[2] / len, total_color[3] / len));
 }
 
-int	calculate_sprite_average_color(t_spr *s)
+int	calculate_image_average_color(t_img *img)
 {
 	size_t	i;
 
-	s->average_color = calloc(s->cycle_len, sizeof(t_color));
-	s->is_see_through = calloc(s->cycle_len, sizeof(int));
-	if (!s->average_color || !s->is_see_through)
+	img->average_color = calloc(img->cycle_len, sizeof(t_color));
+	img->is_see_through = calloc(img->cycle_len, sizeof(int));
+	if (!img->average_color || !img->is_see_through)
 		return (0);
 	i = 0;
-	while (i < s->cycle_len)
+	while (i < img->cycle_len)
 	{
-		s->average_color[i] = calculate_average_color(s->cycle[i],
-				s->size.x * s->size.y);
-		s->is_see_through[i] = s->average_color[i].a < 255;
+		img->average_color[i] = calculate_average_color(img->cycle[i],
+				img->size.x * img->size.y);
+		img->is_see_through[i] = img->average_color[i].a < 255;
 		++i;
 	}
 	return (1);

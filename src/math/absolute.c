@@ -7,7 +7,7 @@ int	abs(int n)
 	return (n);
 }
 
-double	f_abs(double n)
+double	abs_f(double n)
 {
 	if (n < 0)
 		return (-n);

@@ -7,7 +7,7 @@ int	clamp_max(int n, int max)
 	return (n);
 }
 
-double	f_clamp_max(double n, double max)
+double	clamp_max_f(double n, double max)
 {
 	if (n > max)
 		return (max);

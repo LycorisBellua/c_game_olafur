@@ -17,8 +17,8 @@
 
 # define FOV 60
 # define NBR_FRAMES 3
-# define SPRITE_LEN 20
-# define NBR_OBJ 20
+# define NBR_IMG 20
+# define NBR_SPR 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 
@@ -63,7 +63,7 @@ typedef struct s_vert
 	t_color	color;
 }	t_vert;
 
-typedef struct s_spr
+typedef struct s_img
 {
 	char	*id;
 	t_ivec2	size;
@@ -77,9 +77,9 @@ typedef struct s_spr
 	t_color	**cycle_shadow;
 	t_color	*average_color;
 	int		*is_see_through;
-}	t_spr;
+}	t_img;
 
-typedef struct s_img_seg
+typedef struct s_png_seg
 {
 	char	*id;
 	t_ivec2	size;
@@ -88,9 +88,9 @@ typedef struct s_img_seg
 	long	cycle_time_in_ms;
 	size_t	cycle_len;
 	t_ivec2	*cycle;
-}	t_img_seg;
+}	t_png_seg;
 
-typedef struct s_img
+typedef struct s_png
 {
 	char		*path;
 	char		*path_shadow;
@@ -98,8 +98,8 @@ typedef struct s_img
 	t_color		*buf;
 	t_color		*buf_shadow;
 	size_t		segment_len;
-	t_img_seg	*seg;
-}	t_img;
+	t_png_seg	*seg;
+}	t_png;
 
 typedef struct s_ray
 {
@@ -121,19 +121,19 @@ typedef struct s_cell
 	int		is_goal;
 	int		is_indoors;
 	double	height;
-	t_spr	*tex_floor;
-	t_spr	*tex_ceiling;
-	t_spr	*tex_north;
-	t_spr	*tex_east;
-	t_spr	*tex_south;
-	t_spr	*tex_west;
+	t_img	*tex_floor;
+	t_img	*tex_ceiling;
+	t_img	*tex_north;
+	t_img	*tex_east;
+	t_img	*tex_south;
+	t_img	*tex_west;
 }	t_cell;
 
-typedef struct s_obj
+typedef struct s_spr
 {
 	t_vec2	pos;
-	t_spr	*spr;
-}	t_obj;
+	t_img	*img;
+}	t_spr;
 
 typedef struct s_map
 {
@@ -143,10 +143,10 @@ typedef struct s_map
 	double	dof;
 	double	fog_width;
 	t_color	fog_color;
-	t_spr	*skybox;
-	t_img	*background;
+	t_img	*skybox;
+	t_png	*background;
 	t_cell	*cells;
-	t_obj	*objects;
+	t_spr	*sprites;
 	t_ivec2	minimap_offset;
 	t_ivec2	minimap_center;
 	int		minimap_radius;
@@ -202,7 +202,7 @@ typedef struct s_manager
 	int			l_click_action;
 	int			r_click_action;
 	t_ivec2		cursor;
-	t_spr		sprites[SPRITE_LEN];
+	t_img		images[NBR_IMG];
 	t_map		*map;
 }	t_manager;
 
@@ -242,13 +242,11 @@ void		draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
 				t_color edge);
 void		draw_shape(t_frame *f, t_vert arr[], int len);
 void		draw_shape_full(t_frame *f, t_vert arr[], int len);
-void		draw_image(t_frame *f, t_img *img);
-void		draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset);
 void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
-void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos);
-void		draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc);
-t_spr		*get_sprite(char *id);
-void		advance_all_sprite_cycles(long dt_ms);
+void		draw_image(t_frame *frame, t_img *img, t_ivec2 pos);
+void		draw_cursor(t_frame *frame, t_img *img, t_ivec2 p, int cyc);
+t_img		*get_image(const char *id);
+void		advance_all_image_cycles(long dt_ms);
 
 /* Fog ---------------------------------------------------------------------- */
 
@@ -258,7 +256,7 @@ void		apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height);
 void		apply_corner_shadow(t_color *wall, t_color c, int img_coord_x,
 				int img_size_x);
 void		apply_wall_fog(t_color *wall, t_color c, double dist, double dof);
-void		update_background(t_map *m, t_img *bg);
+void		update_background(t_map *m);
 
 /* Files -------------------------------------------------------------------- */
 
@@ -271,30 +269,30 @@ char		*itoa_dec(int number);
 
 char		**get_json_content(const char *filepath);
 void		free_json_content(char **content);
-int			set_img_file_obj(t_img *file, char **lines);
-void		free_and_reset_img_file_obj(t_img *file);
+int			set_png_file_obj(t_png *file, char **lines);
+void		free_and_reset_png_file_obj(t_png *file);
 int			is_field(char *line, const char *field);
 char		*get_string_value(char *line);
 int			get_int_value(char *line);
 t_ivec2		get_ivec2_value(char *line);
-void		parse_segments(t_img *file, char **lines, size_t *i);
+void		parse_segments(t_png *file, char **lines, size_t *i);
 
 /* Images ------------------------------------------------------------------- */
 
-t_img		*load_image_from_file(const char *png_path);
-t_img		*create_image(t_color c, t_ivec2 size);
-t_spr		*compose_skybox(t_spr *src, t_color fog);
-t_img		*compose_background(t_map *m);
+t_png		*load_png_from_path(const char *path);
+t_png		*create_empty_png(t_ivec2 size);
+void		compose_skybox(t_map *m, t_img *src, t_color fog);
+void		compose_background(t_map *m);
 void		draw_background(t_frame *f, t_map *m);
-void		apply_vertical_gradient(t_img *img, t_color color);
-void		free_image(t_img *s);
-void		add_outline_to_font(t_spr *font);
-int			create_sprites_from_file(t_img *file, size_t *i_spr);
-void		free_sprites(void);
-void		free_sprite(t_spr *s);
-int			set_sprite_array(char *path);
-int			calculate_sprite_average_color(t_spr *s);
-t_spr		*duplicate_sprite(const char *dst_id, t_spr *src);
+void		apply_vertical_gradient(t_png *img, t_color color);
+void		free_png(t_png *png);
+void		add_outline_to_font(t_img *font);
+int			create_images_from_file(t_png *file, size_t *i_img);
+void		free_images(void);
+void		free_image(t_img *img);
+int			set_image_array(const char *path);
+int			calculate_image_average_color(t_img *img);
+t_img		*duplicate_image(const char *dst_id, t_img *src);
 
 /* Game --------------------------------------------------------------------- */
 
@@ -312,10 +310,9 @@ void		cast_floor(t_frame *f, t_map *m);
 void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
-void		sort_objects(int *object_order, double *object_dist,
-				int object_amount);
-void		cast_objects(t_frame *f, t_map *m, double *z_buffer,
-				int *object_order, double *object_dist, int x);
+void		sort_sprites(int *spr_order, double *spr_dist, int spr_amount);
+void		cast_sprites(t_frame *f, t_map *m, double *z_buffer,
+				int *spr_order, double *spr_dist, int x);
 
 /* Input -------------------------------------------------------------------- */
 

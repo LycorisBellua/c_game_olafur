@@ -1,82 +1,83 @@
 #include "cimmerian.h"
 
-static int	set_sprite_from_segment(t_spr *s, t_img *file, size_t i_seg);
-static int	allocate_cycles(t_spr *s);
-static void	cut_sprite(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc);
-static void	cut_sprite_shadow(t_img *file, t_spr *s, size_t i_seg,
+static int	set_image_from_segment(t_img *img, t_png *file, size_t i_seg);
+static int	allocate_cycles(t_img *img);
+static void	cut_image(t_png *file, t_img *img, size_t i_seg, size_t i_cyc);
+static void	cut_image_shadow(t_png *file, t_img *img, size_t i_seg,
 				size_t i_cyc);
 
-int	create_sprites_from_file(t_img *file, size_t *i_spr)
+int	create_images_from_file(t_png *file, size_t *i_img)
 {
 	size_t	i;
 	size_t	j;
-	t_spr	*s;
+	t_img	*img;
 
 	i = 0;
-	s = &g_man.sprites[*i_spr];
+	img = &g_man.images[*i_img];
 	while (i < file->segment_len)
 	{
-		s = &g_man.sprites[*i_spr];
-		if (!set_sprite_from_segment(s, file, i))
+		img = &g_man.images[*i_img];
+		if (!set_image_from_segment(img, file, i))
 		{
-			free_sprites();
+			free_images();
 			return (0);
 		}
 		j = 0;
-		while (j < s->cycle_len)
+		while (j < img->cycle_len)
 		{
-			cut_sprite(file, s, i, j);
-			cut_sprite_shadow(file, s, i, j);
+			cut_image(file, img, i, j);
+			cut_image_shadow(file, img, i, j);
 			++j;
 		}
 		++i;
-		++*i_spr;
+		++*i_img;
 	}
 	return (1);
 }
 
-static int	set_sprite_from_segment(t_spr *s, t_img *file, size_t i_seg)
+static int	set_image_from_segment(t_img *img, t_png *file, size_t i_seg)
 {
-	s->id = strdup(file->seg[i_seg].id);
-	if (!s->id)
+	img->id = strdup(file->seg[i_seg].id);
+	if (!img->id)
 		return (0);
-	set_ivec2(&s->size, file->seg[i_seg].size.x, file->seg[i_seg].size.y);
-	s->shadow_offset.x = file->seg[i_seg].shadow_offset.x;
-	s->shadow_offset.y = file->seg[i_seg].shadow_offset.y;
-	s->still_frame = file->seg[i_seg].still_frame;
-	s->cycle_len = file->seg[i_seg].cycle_len;
-	s->cycle_index = s->still_frame;
-	s->cycle_time_in_ms = file->seg[i_seg].cycle_time_in_ms;
-	s->cycle = calloc(s->cycle_len, sizeof(t_color *));
-	if (!s->cycle)
+	set_ivec2(&img->size, file->seg[i_seg].size.x, file->seg[i_seg].size.y);
+	img->shadow_offset.x = file->seg[i_seg].shadow_offset.x;
+	img->shadow_offset.y = file->seg[i_seg].shadow_offset.y;
+	img->still_frame = file->seg[i_seg].still_frame;
+	img->cycle_len = file->seg[i_seg].cycle_len;
+	img->cycle_index = img->still_frame;
+	img->cycle_time_in_ms = file->seg[i_seg].cycle_time_in_ms;
+	img->cycle = calloc(img->cycle_len, sizeof(t_color *));
+	if (!img->cycle)
 		return (0);
 	if (file->path_shadow)
 	{
-		s->cycle_shadow = calloc(s->cycle_len, sizeof(t_color *));
-		if (!s->cycle_shadow)
+		img->cycle_shadow = calloc(img->cycle_len, sizeof(t_color *));
+		if (!img->cycle_shadow)
 		{
-			free(s->cycle);
-			s->cycle = 0;
+			free(img->cycle);
+			img->cycle = 0;
 			return (0);
 		}
 	}
-	return (allocate_cycles(s) && calculate_sprite_average_color(s));
+	return (allocate_cycles(img) && calculate_image_average_color(img));
 }
 
-static int	allocate_cycles(t_spr *s)
+static int	allocate_cycles(t_img *img)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < s->cycle_len)
+	while (i < img->cycle_len)
 	{
-		s->cycle[i] = calloc(s->size.x * s->size.y, sizeof(t_color));
-		if (!s->cycle[i])
+		img->cycle[i] = calloc(img->size.x * img->size.y, sizeof(t_color));
+		if (!img->cycle[i])
 			return (0);
-		if (s->cycle_shadow)
+		if (img->cycle_shadow)
 		{
-			s->cycle_shadow[i] = calloc(s->size.x * s->size.y, sizeof(t_color));
-			if (!s->cycle_shadow[i])
+			img->cycle_shadow[i] = calloc(img->size.x * img->size.y,
+					sizeof(t_color));
+			if (!img->cycle_shadow[i])
 				return (0);
 		}
 		++i;
@@ -84,7 +85,7 @@ static int	allocate_cycles(t_spr *s)
 	return (1);
 }
 
-static void	cut_sprite(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc)
+static void	cut_image(t_png *file, t_img *img, size_t i_seg, size_t i_cyc)
 {
 	int		i;
 	int		line;
@@ -98,19 +99,20 @@ static void	cut_sprite(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc)
 	pos.y = file->seg[i_seg].cycle[i_cyc].y;
 	file_ptr = 0;
 	line = 0;
-	while (line < s->size.y)
+	while (line < img->size.y)
 	{
-		cycle_ptr = &s->cycle[i_cyc][s->size.x * line];
+		cycle_ptr = &img->cycle[i_cyc][img->size.x * line];
 		file_ptr = &file->buf[file->size.x * (pos.y + line) + pos.x];
 		i = -1;
-		while (++i < s->size.x)
+		while (++i < img->size.x)
 			cycle_ptr[i] = file_ptr[i];
 		++line;
 	}
 	return ;
 }
 
-static void	cut_sprite_shadow(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc)
+static void	cut_image_shadow(t_png *file, t_img *img, size_t i_seg,
+	size_t i_cyc)
 {
 	int		i;
 	int		line;
@@ -118,18 +120,18 @@ static void	cut_sprite_shadow(t_img *file, t_spr *s, size_t i_seg, size_t i_cyc)
 	t_color	*file_ptr;
 	t_color	*cycle_ptr;
 
-	if (!file->seg[i_seg].cycle || !s->cycle_shadow)
+	if (!file->seg[i_seg].cycle || !img->cycle_shadow)
 		return ;
 	pos.x = file->seg[i_seg].cycle[i_cyc].x + file->seg[i_seg].shadow_offset.x;
 	pos.y = file->seg[i_seg].cycle[i_cyc].y + file->seg[i_seg].shadow_offset.y;
 	file_ptr = 0;
 	line = 0;
-	while (line < s->size.y)
+	while (line < img->size.y)
 	{
-		cycle_ptr = &s->cycle_shadow[i_cyc][s->size.x * line];
+		cycle_ptr = &img->cycle_shadow[i_cyc][img->size.x * line];
 		file_ptr = &file->buf_shadow[file->size.x * (pos.y + line) + pos.x];
 		i = -1;
-		while (++i < s->size.x)
+		while (++i < img->size.x)
 			cycle_ptr[i] = file_ptr[i];
 		++line;
 	}

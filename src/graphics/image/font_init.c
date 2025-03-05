@@ -1,12 +1,12 @@
 #include "cimmerian.h"
 
 static t_ivec2	*get_outline_offsets(void);
-static void		set_text_to_white(t_spr *s, size_t cycle_index);
-static void		add_outline(t_spr *s, size_t cycle_index, t_ivec2 *offsets);
+static void		set_text_to_white(t_img *img, size_t cycle_index);
+static void		add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets);
 static int		cmpc(t_color a, t_color b);
 
 /* White text and black outline */
-void	add_outline_to_font(t_spr *font)
+void	add_outline_to_font(t_img *font)
 {
 	size_t	cycle_index;
 	t_ivec2	*offsets;
@@ -43,47 +43,46 @@ static t_ivec2	*get_outline_offsets(void)
 	return (offsets);
 }
 
-static void	set_text_to_white(t_spr *s, size_t cycle_index)
+static void	set_text_to_white(t_img *img, size_t cycle_index)
 {
 	size_t	i;
 	size_t	len;
 
 	i = 0;
-	len = s->size.x * s->size.y;
+	len = img->size.x * img->size.y;
 	while (i < len)
 	{
-		if (s->cycle[cycle_index][i].a)
-			s->cycle[cycle_index][i] = get_color_rgba(255, 255, 255, 255);
+		if (img->cycle[cycle_index][i].a)
+			img->cycle[cycle_index][i] = get_color_rgba(255, 255, 255, 255);
 		++i;
 	}
 	return ;
 }
 
-static void	add_outline(t_spr *s, size_t cycle_index, t_ivec2 *offsets)
+static void	add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets)
 {
 	int		i;
 	int		j;
 	t_ivec2	p;
 
-	i = 0;
-	while (i < s->size.x * s->size.y)
+	i = -1;
+	while (++i < img->size.x * img->size.y)
 	{
-		if (cmpc(s->cycle[cycle_index][i], get_color_rgba(255, 255, 255, 255)))
+		if (cmpc(img->cycle[cycle_index][i],
+			get_color_rgba(255, 255, 255, 255)))
 		{
-			j = 0;
-			while (j < 8)
+			j = -1;
+			while (++j < 8)
 			{
-				p.y = i / s->size.x;
-				p.x = i - p.y * s->size.x;
+				p.y = i / img->size.x;
+				p.x = i - p.y * img->size.x;
 				set_ivec2(&p, p.x + offsets[j].x, p.y + offsets[j].y);
-				if (!cmpc(s->cycle[cycle_index][p.y * s->size.x + p.x],
+				if (!cmpc(img->cycle[cycle_index][p.y * img->size.x + p.x],
 					get_color_rgba(255, 255, 255, 255)))
-					s->cycle[cycle_index][p.y * s->size.x + p.x] = \
+					img->cycle[cycle_index][p.y * img->size.x + p.x] = \
 						get_color_rgba(0, 0, 0, 255);
-				++j;
 			}
 		}
-		++i;
 	}
 	return ;
 }

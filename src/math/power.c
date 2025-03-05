@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-double	f_pow(double base, int exponent)
+double	pow_f(double base, int exponent)
 {
 	int		i;
 	double	result;

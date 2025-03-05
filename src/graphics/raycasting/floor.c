@@ -13,7 +13,7 @@ void	cast_floor(t_frame *f, t_map *m)
 	t_vec2	floor_step;
 	t_vec2	floor;
 	t_ivec2	cell;
-	t_spr	*tex;
+	t_img	*tex;
 	t_ivec2	t;
 	t_color color;
 

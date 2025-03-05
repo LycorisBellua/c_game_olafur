@@ -112,7 +112,7 @@ static void	set_res(const GLFWvidmode *vid_mode)
 
 	/* Height modifier for raycasting rendering */
 	g_man.res.h_mod = g_man.res.aspect_ratio
-		- (f_round(g_man.res.aspect_ratio) - g_man.res.aspect_ratio);
+		- (round_f(g_man.res.aspect_ratio) - g_man.res.aspect_ratio);
 	return ;
 }
 

@@ -24,7 +24,7 @@
 /* Absolute ----------------------------------------------------------------- */
 
 int		abs(int n);
-double	f_abs(double n);
+double	abs_f(double n);
 
 /* Angles ------------------------------------------------------------------- */
 
@@ -35,18 +35,18 @@ double	get_angle_from_dir(double dir_x, double dir_y);
 /* Clamp -------------------------------------------------------------------- */
 
 int		clamp(int n, int min, int max);
-double	f_clamp(double n, double min, double max);
+double	clamp_f(double n, double min, double max);
 double	clamp_rad(double rad);
 
 /* Clamp max ---------------------------------------------------------------- */
 
 int		clamp_max(int n, int max);
-double	f_clamp_max(double n, double max);
+double	clamp_max_f(double n, double max);
 
 /* Clamp min ---------------------------------------------------------------- */
 
 int		clamp_min(int n, int min);
-double	f_clamp_min(double n, double min);
+double	clamp_min_f(double n, double min);
 
 /* Distance ----------------------------------------------------------------- */
 
@@ -60,29 +60,29 @@ double	factorial(int n);
 
 /* Float -------------------------------------------------------------------- */
 
-double	f_floor(double n);
-double	f_ceil(double n);
-double	f_round(double n);
+double	floor_f(double n);
+double	ceil_f(double n);
+double	round_f(double n);
 int		double_equality(double a, double b);
 
 /* Max ---------------------------------------------------------------------- */
 
 int		max(int a, int b);
-double	f_max(double a, double b);
+double	max_f(double a, double b);
 
 /* Min ---------------------------------------------------------------------- */
 
 int		min(int a, int b);
-double	f_min(double a, double b);
+double	min_f(double a, double b);
 
 /* Normalize */
 
 int		norm(int n);
-double	f_norm(double n);
+double	norm_f(double n);
 
 /* Power -------------------------------------------------------------------- */
 
-double	f_pow(double base, int exponent);
+double	pow_f(double base, int exponent);
 
 /* RNG ---------------------------------------------------------------------- */
 
@@ -90,8 +90,8 @@ int		rng_minmax(int *seed, int min, int max);
 
 /* Sqrt --------------------------------------------------------------------- */
 
-double	f_sqrt(double n);
-float	f32_sqrt(float n);
+double	sqrt_f(double n);
+float	sqrt_f32(float n);
 
 /* Swap --------------------------------------------------------------------- */
 
@@ -99,8 +99,8 @@ void	swap(int *a, int *b);
 
 /* Trigonometry ------------------------------------------------------------- */
 
-double	f_cos(double rad);
-double	f_sin(double rad);
-double	f_tan(double rad);
+double	cos_f(double rad);
+double	sin_f(double rad);
+double	tan_f(double rad);
 
 #endif

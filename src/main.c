@@ -26,7 +26,7 @@ int	main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		set_dt_and_fps();
-		advance_all_sprite_cycles(g_man.dt_ms);
+		advance_all_image_cycles(g_man.dt_ms);
 		clear_buffer();
 		draw_into_buffer(g_man.map);
 		swap_buffer(window);
@@ -42,14 +42,14 @@ static GLFWwindow	*init(const char *title)
 	GLFWwindow	*window;
 
 	bzero(&g_man, sizeof(t_manager));
-	if (!set_sprite_array("img/index.json"))
+	if (!set_image_array("img/index.json"))
 		return (0);
 	window = get_window(title);
 	g_man.shader_program = create_shader_program();
 	if (!window || !g_man.shader_program || !create_uniform() || !create_mesh()
 		|| !create_frames() || !initialize_maps())
 		return (0);
-	add_outline_to_font(&g_man.sprites[1]);
+	add_outline_to_font(&g_man.images[1]);
 	set_ivec2(&g_man.cursor, -1, -1);
 	g_man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
 	use_frame(g_man.frame[g_man.curr_frame]);
@@ -90,7 +90,7 @@ static void	deinit(void)
 	free_uniform();
 	free_mesh();
 	free_frames();
-	free_sprites();
+	free_images();
 	free_maps();
 	return ;
 }

@@ -2,7 +2,7 @@
 
 static void		wall_flat_color(t_frame *f, t_map *m, t_ray *r);
 static void		wall_texturing(t_frame *f, t_map *m, t_ray *r);
-static t_spr	*get_texture(t_map *m, t_ray *r);
+static t_img	*get_texture(t_map *m, t_ray *r);
 
 void	draw_wall(t_frame *f, t_map *m, t_ray *r)
 {
@@ -36,7 +36,7 @@ static void	wall_flat_color(t_frame *f, t_map *m, t_ray *r)
 	return ;
 }
 
-static t_spr	*get_texture(t_map *m, t_ray *r)
+static t_img	*get_texture(t_map *m, t_ray *r)
 {
 	if (r->side == 1 && r->ray_dir.y > 0)
 		return (m->cells[r->m_index.y * m->size.x + r->m_index.x].tex_north);
@@ -51,7 +51,7 @@ static t_spr	*get_texture(t_map *m, t_ray *r)
 
 static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 {
-	t_spr	*tex;
+	t_img	*tex;
 	t_ivec2	tex_coord;
 	double	tex_step;
 	double	tex_pos;
@@ -68,7 +68,7 @@ static void	wall_texturing(t_frame *f, t_map *m, t_ray *r)
 		wall_x = g_man.player.pos.y + r->perp_wall_dist * r->ray_dir.y;
 	else
 		wall_x = g_man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
-	wall_x -= f_floor(wall_x);
+	wall_x -= floor_f(wall_x);
 	tex_coord.x = (int)(wall_x * tex->size.x);
 	if ((r->side == 0 && r->ray_dir.x < 0)
 		|| (r->side == 1 && r->ray_dir.y > 0))

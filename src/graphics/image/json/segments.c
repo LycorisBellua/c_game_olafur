@@ -1,12 +1,12 @@
 #include "cimmerian.h"
 
 static size_t	get_segment_len(char **lines, size_t start, size_t end);
-static void		fill_seg_array(t_img *file, char **lines, size_t start,
+static void		fill_seg_array(t_png *file, char **lines, size_t start,
 					size_t end);
-static void		parse_cycle(t_img_seg *seg, char **lines, size_t *start,
+static void		parse_cycle(t_png_seg *seg, char **lines, size_t *start,
 					size_t end);
 
-void	parse_segments(t_img *file, char **lines, size_t *i)
+void	parse_segments(t_png *file, char **lines, size_t *i)
 {
 	size_t	start;
 	size_t	end;
@@ -22,7 +22,7 @@ void	parse_segments(t_img *file, char **lines, size_t *i)
 		--*i;
 	end = *i;
 	file->segment_len = get_segment_len(lines, start, end);
-	file->seg = calloc(file->segment_len, sizeof(t_img_seg));
+	file->seg = calloc(file->segment_len, sizeof(t_png_seg));
 	if (file->seg)
 		fill_seg_array(file, lines, start, end);
 	return ;
@@ -42,7 +42,7 @@ static size_t	get_segment_len(char **lines, size_t start, size_t end)
 	return (len);
 }
 
-static void	fill_seg_array(t_img *file, char **lines, size_t start, size_t end)
+static void	fill_seg_array(t_png *file, char **lines, size_t start, size_t end)
 {
 	size_t	i_seg;
 
@@ -68,7 +68,7 @@ static void	fill_seg_array(t_img *file, char **lines, size_t start, size_t end)
 	return ;
 }
 
-static void	parse_cycle(t_img_seg *seg, char **lines, size_t *start, size_t end)
+static void	parse_cycle(t_png_seg *seg, char **lines, size_t *start, size_t end)
 {
 	size_t	i;
 

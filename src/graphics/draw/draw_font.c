@@ -7,7 +7,7 @@
 #define MOD_Y  4
 
 static void	fix_initial_pos(t_ivec2 *pos);
-static void	draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos);
+static void	draw_char(t_frame *frame, t_img *image, t_ivec2 pos);
 static void	alignment_left(char *str, size_t *i, t_ivec2 *pos);
 
 /*
@@ -18,19 +18,19 @@ void	draw_font_default(t_frame *frame, t_ivec2 *pos, char *str)
 {
 	size_t	i;
 	size_t	len;
-	t_spr	*s;
+	t_img	*img;
 
 	if (!str)
 		return ;
 	i = 0;
 	len = strlen(str);
-	s = &g_man.sprites[1];
+	img = &g_man.images[1];
 	fix_initial_pos(pos);
 	while (i <= len)
 	{
-		s->cycle_index = (size_t)clamp(str[i] - ' ', 0, (int)s->cycle_len - 1);
+		img->cycle_index = clamp(str[i] - ' ', 0, img->cycle_len - 1);
 		alignment_left(str, &i, pos);
-		draw_char(frame, s, *pos);
+		draw_char(frame, img, *pos);
 		pos->x += SIZE_X;
 		if (str[i] == '\n')
 			set_ivec2(pos, PAD, pos->y + SIZE_Y * 2);
@@ -56,20 +56,20 @@ static void	fix_initial_pos(t_ivec2 *pos)
 	return ;
 }
 
-static void	draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos)
+static void	draw_char(t_frame *frame, t_img *image, t_ivec2 pos)
 {
 	size_t	i;
 	size_t	len;
 	t_ivec2	p;
 
 	i = 0;
-	len = sprite->size.x * sprite->size.y;
+	len = image->size.x * image->size.y;
 	while (i < len)
 	{
-		p.y = i / sprite->size.x;
-		p.x = i - p.y * sprite->size.x;
+		p.y = i / image->size.x;
+		p.x = i - p.y * image->size.x;
 		set_ivec2(&p, p.x + pos.x, p.y + pos.y);
-		draw_point(frame, sprite->cycle[sprite->cycle_index][i], p.x, p.y);
+		draw_point(frame, image->cycle[image->cycle_index][i], p.x, p.y);
 		++i;
 	}
 	return ;

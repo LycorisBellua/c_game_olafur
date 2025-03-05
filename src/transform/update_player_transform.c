@@ -39,8 +39,8 @@ static void	prevent_out_of_bounds(t_map *m, double radius)
 	t_vec2	pos;
 
 	pos = g_man.player.pos;
-	pos.x = f_clamp(pos.x, 1 + radius, m->size.x - 1 - radius);
-	pos.y = f_clamp(pos.y, 1 + radius, m->size.y - 1 - radius);
+	pos.x = clamp_f(pos.x, 1 + radius, m->size.x - 1 - radius);
+	pos.y = clamp_f(pos.y, 1 + radius, m->size.y - 1 - radius);
 	g_man.player.pos = pos;
 	return ;
 }
@@ -51,13 +51,13 @@ static void	adjust_position_on_collision(t_map *m, double radius)
 
 	pos = g_man.player.pos;
 	if (m->cells[(int)pos.y * m->size.x + (int)(pos.x + radius)].is_obstacle)
-		pos.x = f_floor(pos.x + radius) - radius;
+		pos.x = floor_f(pos.x + radius) - radius;
 	if (m->cells[(int)pos.y * m->size.x + (int)(pos.x - radius)].is_obstacle)
-		pos.x = f_ceil(pos.x - radius) + radius;
+		pos.x = ceil_f(pos.x - radius) + radius;
 	if (m->cells[(int)(pos.y + radius) *m->size.x + (int)pos.x].is_obstacle)
-		pos.y = f_floor(pos.y + radius) - radius;
+		pos.y = floor_f(pos.y + radius) - radius;
 	if (m->cells[(int)(pos.y - radius) *m->size.x + (int)pos.x].is_obstacle)
-		pos.y = f_ceil(pos.y - radius) + radius;
+		pos.y = ceil_f(pos.y - radius) + radius;
 	g_man.player.pos = pos;
 	return ;
 }

@@ -5,12 +5,9 @@ void	update_dof(t_map *m, double increment)
 	double	prev_dof;
 
 	prev_dof = m->dof;
-	m->dof = f_clamp(m->dof + increment, 0, 30);
+	m->dof = clamp_f(m->dof + increment, 0, 30);
 	if (prev_dof != m->dof)
-	{
 		m->fog_width = get_fog_width(m->dof);
-		update_background(m, m->background);
-	}
 	return ;
 }
 
@@ -47,7 +44,7 @@ void	apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height)
 		edge_dist = (double)(height.y - y) / (height.y - middle_y);
 	if (edge_dist < 0.0 || edge_dist > 1.0)
 		return ;
-	factor = f_pow(1.0 - edge_dist, 2.0) * gradient_strength;
+	factor = pow_f(1.0 - edge_dist, 2.0) * gradient_strength;
 	wall->r = (1.0 - factor) * wall->r + factor * c.r;
 	wall->g = (1.0 - factor) * wall->g + factor * c.g;
 	wall->b = (1.0 - factor) * wall->b + factor * c.b;
@@ -67,8 +64,8 @@ void	apply_corner_shadow(t_color *wall, t_color c, int img_coord_x,
 	corner_boundary = img_size_x - 1;
 	if (img_coord_x < ten_percent)
 		corner_boundary = 0;
-	dist_from_corner = f_abs((double)img_coord_x - corner_boundary);
-	intensity = f_max(0.0, 1.0 - (dist_from_corner / ten_percent)) * 0.4;
+	dist_from_corner = abs_f((double)img_coord_x - corner_boundary);
+	intensity = max_f(0.0, 1.0 - (dist_from_corner / ten_percent)) * 0.4;
 	wall->r = wall->r + intensity * (c.r - wall->r);
 	wall->g = wall->g + intensity * (c.g - wall->g);
 	wall->b = wall->b + intensity * (c.b - wall->b);
@@ -79,7 +76,7 @@ void	apply_wall_fog(t_color *wall, t_color c, double dist, double dof)
 {
 	double	factor;
 
-	factor = f_min(dist / dof, 1);
+	factor = min_f(dist / dof, 1);
 	wall->r = wall->r + factor * (c.r - wall->r);
 	wall->g = wall->g + factor * (c.g - wall->g);
 	wall->b = wall->b + factor * (c.b - wall->b);

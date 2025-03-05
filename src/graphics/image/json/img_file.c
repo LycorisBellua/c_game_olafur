@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-int	set_img_file_obj(t_img *file, char **lines)
+int	set_png_file_obj(t_png *file, char **lines)
 {
 	static size_t	i;
 
@@ -22,7 +22,7 @@ int	set_img_file_obj(t_img *file, char **lines)
 	return (!!lines[i]);
 }
 
-void	free_and_reset_img_file_obj(t_img *file)
+void	free_and_reset_png_file_obj(t_png *file)
 {
 	size_t	i;
 
@@ -38,6 +38,6 @@ void	free_and_reset_img_file_obj(t_img *file)
 		++i;
 	}
 	free(file->seg);
-	bzero(file, sizeof(t_img));
+	bzero(file, sizeof(t_png));
 	return ;
 }

@@ -98,28 +98,13 @@ static t_map	*create_map(void)
 	map->minimap_radius = 36;
 	map->minimap_zoom = 9;
 	map->minimap_cell_amount = map->minimap_radius / map->minimap_zoom * 2;
-	map->cells = 0;
-	map->background = 0;
-	map->skybox = compose_skybox(get_sprite("src_skybox"), map->fog_color);
+	compose_skybox(map, get_image("src_skybox"), map->fog_color);
 	if (!map->skybox)
 	{
 		free_map(&map);
 		return (0);
 	}
-	map->background = compose_background(map);
-	/*
-		`compose_background` is about creating an image from scratch. It's just 
-		a buffer. And then, `update_background` is called and it copies the 
-		skybox data. So, basically, there's only one frame for the background, 
-		because it can just copy the current skybox cycle frame.
-
-		I wonder if I shouldn't just have a t_png object for this one, since it 
-		would be a bother to add an image to the general list.
-
-		EDIT: Keep in mind that currently the background is only updated when 
-		the fog width changes. It needs to be updated every frame in case the 
-		skybox has an animation.
-	*/
+	compose_background(map);
 	if (!map->background)
 	{
 		free_map(&map);
@@ -131,7 +116,7 @@ static t_map	*create_map(void)
 		free_map(&map);
 		return (0);
 	}
-	t_spr *spr;
+	t_img *img;
 	i = 0;
 	while (i < map->size.x * map->size.y)
 	{
@@ -142,81 +127,81 @@ static t_map	*create_map(void)
 		map->cells[i].height = !map->cells[i].is_obstacle ? 0 : 1.0;
 		if (map_walls[i] == 6)
 			map->cells[i].height = 3.0;
-		map->cells[i].tex_floor = map_buildings[i] ? get_sprite("tex_floor_indoors") : get_sprite("tex_floor");
-		map->cells[i].tex_ceiling = map_buildings[i] ? get_sprite("tex_ceiling") : 0;
-		spr = 0;
+		map->cells[i].tex_floor = map_buildings[i] ? get_image("tex_floor_indoors") : get_image("tex_floor");
+		map->cells[i].tex_ceiling = map_buildings[i] ? get_image("tex_ceiling") : 0;
+		img = 0;
 		if (map_walls[i] == 1)
-			spr = get_sprite("tex_wall_01");
+			img = get_image("tex_wall_01");
 		else if (map_walls[i] == 2)
-			spr = get_sprite("tex_wall_02");
+			img = get_image("tex_wall_02");
 		else if (map_walls[i] == 3)
-			spr = get_sprite("tex_wall_03");
+			img = get_image("tex_wall_03");
 		else if (map_walls[i] == 4)
-			spr = get_sprite("tex_wall_04");
+			img = get_image("tex_wall_04");
 		else if (map_walls[i] == 5)
-			spr = get_sprite("tex_doors");
+			img = get_image("tex_doors");
 		else if (map_walls[i] == 6)
-			spr = get_sprite("solid_color");
-		map->cells[i].tex_north = spr;
-		map->cells[i].tex_east = spr;
-		map->cells[i].tex_south = spr;
-		map->cells[i].tex_west = spr;
+			img = get_image("solid_color");
+		map->cells[i].tex_north = img;
+		map->cells[i].tex_east = img;
+		map->cells[i].tex_south = img;
+		map->cells[i].tex_west = img;
 		++i;
 	}
-	map->objects = malloc(NBR_OBJ * sizeof(t_obj));
-	if (!map->objects)
+	map->sprites = malloc(NBR_SPR * sizeof(t_spr));
+	if (!map->sprites)
 	{
 		free_map(&map);
 		return (0);
 	}
-	spr = get_sprite("chalice");
+	img = get_image("chalice");
 	i = 0;
 	while (i < 8)
 	{
-		map->objects[i].spr = spr;
+		map->sprites[i].img = img;
 		++i;
 	}
-	set_vec2(&map->objects[0].pos,  20.5, 11.5);
-	set_vec2(&map->objects[1].pos,  18.5,  4.5);
-	set_vec2(&map->objects[2].pos,  10.0,  4.5);
-	set_vec2(&map->objects[3].pos,  10.0, 12.5);
-	set_vec2(&map->objects[4].pos,   3.5,  6.5);
-	set_vec2(&map->objects[5].pos,   3.5, 20.5);
-	set_vec2(&map->objects[6].pos,   3.5, 14.5);
-	set_vec2(&map->objects[7].pos,  14.5, 20.5);
-	spr = get_sprite("pillar");
+	set_vec2(&map->sprites[0].pos,  20.5, 11.5);
+	set_vec2(&map->sprites[1].pos,  18.5,  4.5);
+	set_vec2(&map->sprites[2].pos,  10.0,  4.5);
+	set_vec2(&map->sprites[3].pos,  10.0, 12.5);
+	set_vec2(&map->sprites[4].pos,   3.5,  6.5);
+	set_vec2(&map->sprites[5].pos,   3.5, 20.5);
+	set_vec2(&map->sprites[6].pos,   3.5, 14.5);
+	set_vec2(&map->sprites[7].pos,  14.5, 20.5);
+	img = get_image("pillar");
 	while (i < 12)
 	{
-		map->objects[i].spr = spr;
+		map->sprites[i].img = img;
 		++i;
 	}
-	set_vec2(&map->objects[8].pos,  18.5, 10.5);
-	set_vec2(&map->objects[9].pos,  18.5, 11.5);
-	set_vec2(&map->objects[10].pos, 18.5, 12.5);
-	set_vec2(&map->objects[11].pos,  8.5,  7.0);
-	spr = get_sprite("barrel");
+	set_vec2(&map->sprites[8].pos,  18.5, 10.5);
+	set_vec2(&map->sprites[9].pos,  18.5, 11.5);
+	set_vec2(&map->sprites[10].pos, 18.5, 12.5);
+	set_vec2(&map->sprites[11].pos,  8.5,  7.0);
+	img = get_image("barrel");
 	while (i < 20)
 	{
-		map->objects[i].spr = spr;
+		map->sprites[i].img = img;
 		++i;
 	}
-	set_vec2(&map->objects[12].pos, 21.5,  1.5);
-	set_vec2(&map->objects[13].pos, 15.5,  1.5);
-	set_vec2(&map->objects[14].pos, 16.0,  1.8);
-	set_vec2(&map->objects[15].pos, 16.2,  1.2);
-	set_vec2(&map->objects[16].pos,  3.5,  2.5);
-	set_vec2(&map->objects[17].pos,  9.5, 15.5);
-	set_vec2(&map->objects[18].pos, 10.0, 15.1);
-	set_vec2(&map->objects[19].pos, 10.5, 15.8);
+	set_vec2(&map->sprites[12].pos, 21.5,  1.5);
+	set_vec2(&map->sprites[13].pos, 15.5,  1.5);
+	set_vec2(&map->sprites[14].pos, 16.0,  1.8);
+	set_vec2(&map->sprites[15].pos, 16.2,  1.2);
+	set_vec2(&map->sprites[16].pos,  3.5,  2.5);
+	set_vec2(&map->sprites[17].pos,  9.5, 15.5);
+	set_vec2(&map->sprites[18].pos, 10.0, 15.1);
+	set_vec2(&map->sprites[19].pos, 10.5, 15.8);
 	return (map);
 }
 
 static void	free_map(t_map **map)
 {
 	free((*map)->cells);
-	free_sprite((*map)->skybox);
-	free_image((*map)->background);
-	free((*map)->objects);
+	free_image((*map)->skybox);
+	free_png((*map)->background);
+	free((*map)->sprites);
 	free(*map);
 	*map = 0;
 	return ;

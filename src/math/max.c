@@ -7,7 +7,7 @@ int	max(int a, int b)
 	return (b);
 }
 
-double	f_max(double a, double b)
+double	max_f(double a, double b)
 {
 	if (a > b)
 		return (a);

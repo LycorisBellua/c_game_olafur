@@ -7,7 +7,7 @@ int	clamp_min(int n, int min)
 	return (n);
 }
 
-double	f_clamp_min(double n, double min)
+double	clamp_min_f(double n, double min)
 {
 	if (n < min)
 		return (min);

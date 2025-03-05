@@ -2,7 +2,7 @@
 
 static double	is_close_to_zero(double n);
 
-double	f_cos(double rad)
+double	cos_f(double rad)
 {
 	int		n;
 	double	result;
@@ -14,13 +14,13 @@ double	f_cos(double rad)
 	{
 		fact = factorial(2 * n);
 		if (!is_close_to_zero(fact))
-			result += f_pow(-1, n) * f_pow(rad, 2 * n) / fact;
+			result += pow_f(-1, n) * pow_f(rad, 2 * n) / fact;
 		++n;
 	}
 	return (result);
 }
 
-double	f_sin(double rad)
+double	sin_f(double rad)
 {
 	int		n;
 	double	result;
@@ -32,23 +32,23 @@ double	f_sin(double rad)
 	{
 		fact = factorial(2 * n + 1);
 		if (!is_close_to_zero(fact))
-			result += f_pow(-1, n) * f_pow(rad, 2 * n + 1) / fact;
+			result += pow_f(-1, n) * pow_f(rad, 2 * n + 1) / fact;
 		++n;
 	}
 	return (result);
 }
 
-double	f_tan(double rad)
+double	tan_f(double rad)
 {
 	double	cos;
 
-	cos = f_cos(rad);
+	cos = cos_f(rad);
 	if (is_close_to_zero(cos))
 		return (0.0);
-	return (f_sin(rad) / cos);
+	return (sin_f(rad) / cos);
 }
 
 static double	is_close_to_zero(double n)
 {
-	return (f_abs(n) < 1e-15);
+	return (abs_f(n) < 1e-15);
 }

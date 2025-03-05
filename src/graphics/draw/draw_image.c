@@ -1,61 +1,48 @@
 #include "cimmerian.h"
 
-void	draw_image(t_frame *f, t_img *img)
-{
-	t_color	c;
-	t_ivec2	f_coord;
+static void	draw_shadow(t_frame *frame, t_img *img, t_ivec2 pos);
 
-	f_coord.y = 0;
-	while (f_coord.y < img->size.y)
+void	draw_image(t_frame *frame, t_img *img, t_ivec2 pos)
+{
+	size_t	i;
+	size_t	len;
+	t_ivec2	p;
+
+	if (!img)
+		return ;
+	if (img->cycle_shadow)
+		draw_shadow(frame, img, pos);
+	i = 0;
+	len = img->size.x * img->size.y;
+	while (i < len)
 	{
-		f_coord.x = 0;
-		while (f_coord.x < img->size.x)
-		{
-			c = img->buf[f_coord.y * img->size.x + f_coord.x];
-			draw_point(f, c, f_coord.x, f_coord.y);
-			++f_coord.x;
-		}
-		++f_coord.y;
+		p.y = i / img->size.x;
+		p.x = i - p.y * img->size.x;
+		set_ivec2(&p, p.x + pos.x, p.y + pos.y);
+		draw_point(frame, img->cycle[img->cycle_index][i], p.x, p.y);
+		++i;
 	}
 	return ;
 }
 
-void	draw_image_with_x_offset(t_frame *f, t_img *img, int x_offset)
+static void	draw_shadow(t_frame *frame, t_img *img, t_ivec2 pos)
 {
-	t_color	c;
-	t_ivec2	f_coord;
-	t_ivec2	i_coord;
+	size_t	i;
+	size_t	len;
+	t_ivec2	p;
 
-	x_offset %= img->size.x;
-	f_coord.y = 0;
-	while (f_coord.y < img->size.y)
+	pos.x += img->shadow_offset.x;
+	pos.y += img->shadow_offset.y;
+	i = 0;
+	len = img->size.x * img->size.y;
+	while (i < len)
 	{
-		i_coord.y = f_coord.y;
-		i_coord.x = x_offset;
-		f_coord.x = 0;
-		while (f_coord.x < img->size.x)
-		{
-			if (i_coord.x >= img->size.x)
-				i_coord.x = 0;
-			c = img->buf[i_coord.y * img->size.x + i_coord.x];
-			draw_point(f, c, f_coord.x, f_coord.y);
-			++i_coord.x;
-			++f_coord.x;
-		}
-		++f_coord.y;
+		p.y = i / img->size.x;
+		p.x = i - p.y * img->size.x;
+		set_ivec2(&p, p.x + pos.x, p.y + pos.y);
+		draw_point(frame, img->cycle_shadow[img->cycle_index][i], p.x,
+			p.y);
+		++i;
 	}
-	return ;
-}
-
-void	draw_background(t_frame *f, t_map *m)
-{
-	t_player	*p;
-	double		angle;
-	int			offset;
-
-	p = &g_man.player;
-	angle = get_angle_from_dir(p->dir.x, p->dir.y);
-	offset = (angle + PI) / RAD_360 * m->background->size.x;
-	draw_image_with_x_offset(f, m->background, offset);
 	return ;
 }
