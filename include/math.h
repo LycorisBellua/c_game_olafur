@@ -21,6 +21,24 @@
 # define RAD_270 4.71238898
 # define RAD_360 6.283185307
 
+typedef struct s_vec2
+{
+	double	x;
+	double	y;
+}	t_vec2;
+
+typedef struct s_ivec2
+{
+	int	x;
+	int	y;
+}	t_ivec2;
+
+typedef struct s_uivec2
+{
+	unsigned int	x;
+	unsigned int	y;
+}	t_uivec2;
+
 /* Absolute ----------------------------------------------------------------- */
 
 int		abs(int n);
@@ -53,6 +71,7 @@ double	clamp_min_f(double n, double min);
 double	get_dist_euclidean(double ax, double ay, double bx, double by);
 double	get_squared_dist_euclidean(double ax, double ay, double bx, double by);
 double	get_dist_manhattan(double ax, double ay, double bx, double by);
+int		is_within_threshold(t_ivec2 a, t_ivec2 b, int threshold);
 
 /* Factorial ---------------------------------------------------------------- */
 
@@ -102,5 +121,11 @@ void	swap(int *a, int *b);
 double	cos_f(double rad);
 double	sin_f(double rad);
 double	tan_f(double rad);
+
+/* Vectors ------------------------------------------------------------------ */
+
+void	set_vec2(t_vec2 *v, double x, double y);
+void	set_ivec2(t_ivec2 *v, int x, int y);
+void	set_uivec2(t_uivec2 *v, unsigned int x, unsigned int y);
 
 #endif

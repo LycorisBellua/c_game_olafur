@@ -31,24 +31,6 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-typedef struct s_vec2
-{
-	double	x;
-	double	y;
-}	t_vec2;
-
-typedef struct s_ivec2
-{
-	int	x;
-	int	y;
-}	t_ivec2;
-
-typedef struct s_uivec2
-{
-	unsigned int	x;
-	unsigned int	y;
-}	t_uivec2;
-
 typedef struct s_color
 {
 	t_ubyte	r;
@@ -223,11 +205,6 @@ t_color		get_color_hex(const char *str, t_ubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
 t_color		get_frame_color(t_frame *f, int x, int y);
 t_color		calculate_average_color(t_color *buf, size_t len);
-
-/* Vectors ------------------------------------------------------------------ */
-
-void		set_vec2(t_vec2 *v, double x, double y);
-void		set_ivec2(t_ivec2 *v, int x, int y);
 
 /* Draw --------------------------------------------------------------------- */
 

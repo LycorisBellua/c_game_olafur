@@ -1,5 +1,4 @@
 Norm:
-src/door.c
 src/main.c
 src/level/maps.c
 src/graphics/raycasting/ceiling.c

@@ -2,12 +2,14 @@
 
 static void	close_last_door(t_map *m, t_list **opened_doors, int max_dist);
 static void	open_new_door(t_map *m, t_list **opened_doors, int max_dist);
+static int	is_door_and_obstacle(t_map *m, int x, int y);
+static void	add_door_to_list(t_map *m, int x, int y, t_list **list);
 
 void	door_routine(t_map *m)
 {
 	static t_list	*opened_doors;
 
-	close_last_door(m, &opened_doors, 3);
+	close_last_door(m, &opened_doors, 2);
 	open_new_door(m, &opened_doors, 2);
 	return ;
 }
@@ -16,37 +18,24 @@ static void	close_last_door(t_map *m, t_list **opened_doors, int max_dist)
 {
 	t_list	*head;
 	t_list	*curr;
+	t_ivec2	player;
 	t_ivec2	door;
-	int		i;
-	int		x;
-	int		y;
 
-	x = (int)g_man.player.pos.x;
-	y = (int)g_man.player.pos.y;
+	set_ivec2(&player, (int)g_man.player.pos.x, (int)g_man.player.pos.y);
 	curr = *opened_doors;
 	head = curr;
 	while (curr)
 	{
 		door = *((t_ivec2 *)curr->data);
-		i = -max_dist;
-		while (i <= max_dist + 1)
+		if (!is_within_threshold(player, door, max_dist))
 		{
-			if (i == max_dist + 1)
-			{
-				m->cells[door.y * m->size.x + door.x].is_obstacle = 1;
-				if (curr == head)
-					head = curr->next;
-				list_del_one(&curr, free);
-				break ;
-			}
-			if ((x == door.x + i && y == door.y)
-				|| (x == door.x && y == door.y + i))
-			{
-				curr = curr->next;
-				break ;
-			}
-			++i;
+			m->cells[door.y * m->size.x + door.x].is_obstacle = 1;
+			if (curr == head)
+				head = (curr)->next;
+			list_del_one(&curr, free);
 		}
+		else
+			curr = curr->next;
 	}
 	*opened_doors = head;
 	return ;
@@ -54,50 +43,49 @@ static void	close_last_door(t_map *m, t_list **opened_doors, int max_dist)
 
 static void	open_new_door(t_map *m, t_list **opened_doors, int max_dist)
 {
-	t_ivec2	*coord;
-	t_list	*node;
 	int		i;
-	int		x;
-	int		y;
+	t_ivec2	player;
 
-	x = (int)g_man.player.pos.x;
-	y = (int)g_man.player.pos.y;
+	set_ivec2(&player, (int)g_man.player.pos.x, (int)g_man.player.pos.y);
 	i = -max_dist;
 	while (i <= max_dist)
 	{
-		if (m->cells[y * m->size.x + (x + i)].is_door
-			&& m->cells[y * m->size.x + (x + i)].is_obstacle)
+		if (is_door_and_obstacle(m, player.x + i, player.y))
 		{
-			coord = calloc(1, sizeof(t_ivec2));
-			if (coord)
-			{
-				set_ivec2(coord, x + i, y);
-				node = list_new(coord);
-				if (!node)
-					free(coord);
-				else
-					list_add_back(opened_doors, node);
-			}
-			m->cells[y * m->size.x + (x + i)].is_obstacle = 0;
+			add_door_to_list(m, player.x + i, player.y, opened_doors);
 			break ;
 		}
-		else if (m->cells[(y + i) * m->size.x + x].is_door
-			&& m->cells[(y + i) * m->size.x + x].is_obstacle)
+		else if (is_door_and_obstacle(m, player.x, player.y + i))
 		{
-			coord = calloc(1, sizeof(t_ivec2));
-			if (coord)
-			{
-				set_ivec2(coord, x, y + i);
-				node = list_new(coord);
-				if (!node)
-					free(coord);
-				else
-					list_add_back(opened_doors, node);
-			}
-			m->cells[(y + i) * m->size.x + x].is_obstacle = 0;
+			add_door_to_list(m, player.x, player.y + i, opened_doors);
 			break ;
 		}
 		++i;
 	}
+	return ;
+}
+
+static int	is_door_and_obstacle(t_map *m, int x, int y)
+{
+	return (m->cells[y * m->size.x + x].is_door
+		&& m->cells[y * m->size.x + x].is_obstacle);
+}
+
+static void	add_door_to_list(t_map *m, int x, int y, t_list **list)
+{
+	t_ivec2	*coord;
+	t_list	*node;
+
+	coord = calloc(1, sizeof(t_ivec2));
+	if (coord)
+	{
+		set_ivec2(coord, x, y);
+		node = list_new(coord);
+		if (!node)
+			free(coord);
+		else
+			list_add_back(list, node);
+	}
+	m->cells[y * m->size.x + x].is_obstacle = 0;
 	return ;
 }
