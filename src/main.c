@@ -51,7 +51,6 @@ static GLFWwindow	*init(const char *title)
 		return (0);
 	add_outline_to_font(&g_man.images[1]);
 	set_ivec2(&g_man.cursor, -1, -1);
-	g_man.tex_in_dof = 1.0; // [0.0 - 1.0] percentage
 	use_frame(g_man.frame[g_man.curr_frame]);
 	return (window);
 }

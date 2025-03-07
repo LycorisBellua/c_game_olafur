@@ -1,25 +1,6 @@
 #include "cimmerian.h"
 
-t_color	calculate_average_color(t_color *buf, size_t len)
-{
-	size_t	i;
-	double	alpha;
-	int		total_color[4];
-
-	bzero(&total_color, 4 * sizeof(int));
-	i = 0;
-	while (i < len)
-	{
-		alpha = buf[i].a / 255.0;
-		total_color[0] += buf[i].r * alpha;
-		total_color[1] += buf[i].g * alpha;
-		total_color[2] += buf[i].b * alpha;
-		total_color[3] += buf[i].a;
-		++i;
-	}
-	return (get_color_rgba(total_color[0] / len, total_color[1] / len,
-			total_color[2] / len, total_color[3] / len));
-}
+static t_color	calculate_average_color(t_color *buf, size_t len);
 
 int	calculate_image_average_color(t_img *img)
 {
@@ -38,4 +19,25 @@ int	calculate_image_average_color(t_img *img)
 		++i;
 	}
 	return (1);
+}
+
+static t_color	calculate_average_color(t_color *buf, size_t len)
+{
+	size_t	i;
+	double	alpha;
+	int		total_color[4];
+
+	bzero(&total_color, 4 * sizeof(int));
+	i = 0;
+	while (i < len)
+	{
+		alpha = buf[i].a / 255.0;
+		total_color[0] += buf[i].r * alpha;
+		total_color[1] += buf[i].g * alpha;
+		total_color[2] += buf[i].b * alpha;
+		total_color[3] += buf[i].a;
+		++i;
+	}
+	return (get_color_rgba(total_color[0] / len, total_color[1] / len,
+			total_color[2] / len, total_color[3] / len));
 }

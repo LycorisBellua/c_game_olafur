@@ -60,7 +60,7 @@ static int	set_image_from_segment(t_img *img, t_png *file, size_t i_seg)
 			return (0);
 		}
 	}
-	return (allocate_cycles(img) && calculate_image_average_color(img));
+	return (allocate_cycles(img));
 }
 
 static int	allocate_cycles(t_img *img)
@@ -108,6 +108,7 @@ static void	cut_image(t_png *file, t_img *img, size_t i_seg, size_t i_cyc)
 			cycle_ptr[i] = file_ptr[i];
 		++line;
 	}
+	calculate_image_average_color(img);
 	return ;
 }
 

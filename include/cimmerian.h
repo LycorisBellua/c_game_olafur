@@ -6,6 +6,7 @@
 # include <string.h>
 # include <strings.h>
 # include <ctype.h>
+# include <limits.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/time.h>
@@ -175,7 +176,6 @@ typedef struct s_manager
 	t_res		res;
 	t_frame		*frame[NBR_FRAMES + 1];
 	int			curr_frame;
-	double		tex_in_dof;
 	t_player	player;
 	double		move_speed;
 	double		rotate_speed;
@@ -204,7 +204,6 @@ t_color		get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a);
 t_color		get_color_hex(const char *str, t_ubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
 t_color		get_frame_color(t_frame *f, int x, int y);
-t_color		calculate_average_color(t_color *buf, size_t len);
 
 /* Draw --------------------------------------------------------------------- */
 

@@ -1,5 +1,4 @@
 #include "cimmerian.h"
-#include <float.h>
 
 static void	perform_dda(t_map *m, double cam_x, t_list **list);
 static int	is_obstacle_see_through(t_map *m, t_ray *r);
@@ -15,11 +14,10 @@ void	raycasting(t_frame *f, t_map *m)
 
 	cast_floor(f, m);
 
-	// #include <float.h>
 	z_buffer = malloc(f->size.x * sizeof(double));
 	int i = 0;
 	while (i < f->size.x)
-		z_buffer[i++] = DBL_MAX;
+		z_buffer[i++] = LLONG_MAX;
 
 	sort_sprites(spr_order, spr_dist, NBR_SPR);
 
@@ -154,7 +152,7 @@ static int	is_obstacle_see_through(t_map *m, t_ray *r)
 	else if (r->side == 0 && r->ray_dir.x < 0)
 		tex = cell->tex_east;
 	if (!tex)
-		return (0);
+		return (1);
 	return (tex->is_see_through[tex->cycle_index]);
 }
 
