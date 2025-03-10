@@ -95,6 +95,7 @@ typedef struct s_ray
 	t_ivec2	unclamped_line_height;
 	t_ivec2	coord1;
 	t_ivec2	coord2;
+	int		is_see_through;
 }	t_ray;
 
 typedef struct s_row
@@ -292,6 +293,7 @@ void		update_global_coordinates(void);
 /* Raycasting --------------------------------------------------------------- */
 
 void		raycasting(t_frame *f, t_map *m);
+void		perform_dda(t_map *m, double cam_x, t_list **list);
 void		cast_floor(t_frame *f, t_map *m);
 void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
