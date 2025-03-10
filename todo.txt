@@ -1,10 +1,8 @@
 Norm:
 src/main.c
 src/level/maps.c
-src/graphics/raycasting/ceiling.c
-src/graphics/raycasting/floor.c
-src/graphics/raycasting/raycasting.c
 src/graphics/raycasting/sprites.c
+src/graphics/raycasting/raycasting.c
 
 ---
 

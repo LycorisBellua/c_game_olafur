@@ -97,6 +97,16 @@ typedef struct s_ray
 	t_ivec2	coord2;
 }	t_ray;
 
+typedef struct s_row
+{
+	t_vec2	ray_dir;
+	t_vec2	ray_dir_step;
+	double	pos_z;
+	double	row_dist;
+	t_vec2	floor_step;
+	t_vec2	floor;
+}	t_row;
+
 typedef struct s_cell
 {
 	int		is_obstacle;
