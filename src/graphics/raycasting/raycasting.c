@@ -15,7 +15,7 @@ void	raycasting(t_frame *f, t_map *m)
 	z_buffer = malloc(f->size.x * sizeof(double));
 	int i = 0;
 	while (i < f->size.x)
-		z_buffer[i++] = LLONG_MAX;
+		z_buffer[i++] = INF;
 
 	sort_sprites(spr_order, spr_dist, NBR_SPR);
 

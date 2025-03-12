@@ -94,10 +94,11 @@ static t_color	calculate_color(t_map *m, t_row *row, int is_floor)
 	t_color	color;
 
 	color.a = 0;
+	if (row->floor.x < 0 || row->floor.x >= m->size.x
+		|| row->floor.y < 0 || row->floor.y >= m->size.y)
+		return (color);
 	cell.x = (int)row->floor.x;
 	cell.y = (int)row->floor.y;
-	if (cell.x < 0 || cell.x >= m->size.x || cell.y < 0 || cell.y >= m->size.y)
-		return (color);
 	if (is_floor)
 		tex = m->cells[cell.y * m->size.x + cell.x].tex_floor;
 	else

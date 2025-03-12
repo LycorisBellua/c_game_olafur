@@ -6,7 +6,6 @@
 # include <string.h>
 # include <strings.h>
 # include <ctype.h>
-# include <limits.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/time.h>
@@ -22,6 +21,7 @@
 # define NBR_SPR 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
+# define INF 1e30
 
 typedef unsigned char	t_ubyte;
 
@@ -87,7 +87,10 @@ typedef struct s_png
 typedef struct s_ray
 {
 	t_vec2	ray_dir;
+	t_vec2	delta_dist;
 	t_ivec2	m_index;
+	t_ivec2	step;
+	t_vec2	side_dist;
 	int		side;
 	double	perp_wall_dist;
 	int		line_height;
@@ -294,6 +297,7 @@ void		update_global_coordinates(void);
 
 void		raycasting(t_frame *f, t_map *m);
 void		perform_dda(t_map *m, double cam_x, t_list **list);
+int			dda_add_to_list(t_map *m, t_ray *r, double *biggest_height);
 void		cast_floor(t_frame *f, t_map *m);
 void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
 void		draw_wall(t_frame *f, t_map *m, t_ray *r);
