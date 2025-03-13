@@ -1,8 +1,9 @@
 #include "cimmerian.h"
 
-static void	move_in_local_dir(double forward_speed, double lateral_speed);
-static void	prevent_out_of_bounds(t_map *m, double radius);
-static void	adjust_position_on_collision(t_map *m, double radius);
+static void	move_in_local_dir(t_man *man, double forward_speed,
+				double lateral_speed);
+static void	prevent_out_of_bounds(t_man *man);
+static void	adjust_position_on_collision(t_man *man);
 
 /*
 	Movement speed is in cell per second.
@@ -10,46 +11,53 @@ static void	adjust_position_on_collision(t_map *m, double radius);
 	Rotation angle is in radian per second.
 */
 
-void	update_player_transform(t_map *m)
+void	update_player_transform(t_man *man)
 {
 	double	forward_speed;
 	double	lateral_speed;
 
-	forward_speed = g_man.move_speed * norm(g_man.move_action.y) * g_man.dt;
-	lateral_speed = g_man.move_speed * norm(g_man.move_action.x) * g_man.dt;
-	move_in_local_dir(forward_speed, lateral_speed);
-	prevent_out_of_bounds(m, g_man.rotate_speed);
-	adjust_position_on_collision(m, g_man.rotate_speed);
-	rotate_player(RAD_45 * norm(g_man.rotate_action) * g_man.dt);
-	echolocation(forward_speed || lateral_speed);
+	forward_speed = man->move_speed * norm(man->move_action.y) * man->dt;
+	lateral_speed = man->move_speed * norm(man->move_action.x) * man->dt;
+	move_in_local_dir(man, forward_speed, lateral_speed);
+	prevent_out_of_bounds(man);
+	adjust_position_on_collision(man);
+	rotate_player(man, RAD_45 * norm(man->rotate_action) * man->dt);
+	echolocation(man, forward_speed || lateral_speed);
 	return ;
 }
 
-static void	move_in_local_dir(double forward_speed, double lateral_speed)
+static void	move_in_local_dir(t_man *man, double forward_speed,
+	double lateral_speed)
 {
-	g_man.player.pos.x += g_man.player.dir.x * forward_speed;
-	g_man.player.pos.y += g_man.player.dir.y * forward_speed;
-	g_man.player.pos.x -= g_man.player.dir.y * lateral_speed;
-	g_man.player.pos.y += g_man.player.dir.x * lateral_speed;
+	man->player.pos.x += man->player.dir.x * forward_speed;
+	man->player.pos.y += man->player.dir.y * forward_speed;
+	man->player.pos.x -= man->player.dir.y * lateral_speed;
+	man->player.pos.y += man->player.dir.x * lateral_speed;
 	return ;
 }
 
-static void	prevent_out_of_bounds(t_map *m, double radius)
+static void	prevent_out_of_bounds(t_man *man)
 {
+	double	radius;
 	t_vec2	pos;
 
-	pos = g_man.player.pos;
-	pos.x = clamp_f(pos.x, 1 + radius, m->size.x - 1 - radius);
-	pos.y = clamp_f(pos.y, 1 + radius, m->size.y - 1 - radius);
-	g_man.player.pos = pos;
+	radius = man->player.radius;
+	pos = man->player.pos;
+	pos.x = clamp_f(pos.x, 1 + radius, man->map->size.x - 1 - radius);
+	pos.y = clamp_f(pos.y, 1 + radius, man->map->size.y - 1 - radius);
+	man->player.pos = pos;
 	return ;
 }
 
-static void	adjust_position_on_collision(t_map *m, double radius)
+static void	adjust_position_on_collision(t_man *man)
 {
+	double	radius;
+	t_map	*m;
 	t_vec2	pos;
 
-	pos = g_man.player.pos;
+	radius = man->player.radius;
+	m = man->map;
+	pos = man->player.pos;
 	if (m->cells[(int)pos.y * m->size.x + (int)(pos.x + radius)].is_obstacle)
 		pos.x = floor_f(pos.x + radius) - radius;
 	if (m->cells[(int)pos.y * m->size.x + (int)(pos.x - radius)].is_obstacle)
@@ -58,6 +66,6 @@ static void	adjust_position_on_collision(t_map *m, double radius)
 		pos.y = floor_f(pos.y + radius) - radius;
 	if (m->cells[(int)(pos.y - radius) *m->size.x + (int)pos.x].is_obstacle)
 		pos.y = ceil_f(pos.y - radius) + radius;
-	g_man.player.pos = pos;
+	man->player.pos = pos;
 	return ;
 }

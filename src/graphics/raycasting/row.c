@@ -1,26 +1,26 @@
 #include "cimmerian.h"
 
-static void		init_row(t_frame *f, t_row *row);
-static int		update_row(t_frame *f, t_map *m, t_row *row, int *y);
+static void		init_row(t_man *man, t_frame *f, t_row *row);
+static int		update_row(t_man *man, t_frame *f, t_row *row, int *y);
 static t_color	calculate_color(t_map *m, t_row *row, int is_floor);
 
-void	cast_floor(t_frame *f, t_map *m)
+void	cast_floor(t_man *man, t_frame *f)
 {
 	int		x;
 	int		y;
 	t_row	row;
 	t_color	color;
 
-	init_row(f, &row);
+	init_row(man, f, &row);
 	y = f->size.y / 2 + 1;
 	while (y < f->size.y)
 	{
-		if (!update_row(f, m, &row, &y))
+		if (!update_row(man, f, &row, &y))
 			continue ;
 		x = 0;
 		while (x < f->size.x)
 		{
-			color = calculate_color(m, &row, 1);
+			color = calculate_color(man->map, &row, 1);
 			if (color.a)
 				draw_point(f, color, x, y);
 			row.floor.x += row.floor_step.x;
@@ -32,23 +32,23 @@ void	cast_floor(t_frame *f, t_map *m)
 	return ;
 }
 
-void	cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x)
+void	cast_ceiling_x(t_man *man, t_frame *f, double *z_buffer, int x)
 {
 	int		y;
 	t_row	row;
 	t_color	color;
 
-	init_row(f, &row);
+	init_row(man, f, &row);
 	y = f->size.y / 2 + 1;
 	while (y < f->size.y)
 	{
-		if (!update_row(f, m, &row, &y))
+		if (!update_row(man, f, &row, &y))
 			continue ;
 		row.floor.x += x * row.floor_step.x;
 		row.floor.y += x * row.floor_step.y;
 		if (row.row_dist < z_buffer[x])
 		{
-			color = calculate_color(m, &row, 0);
+			color = calculate_color(man->map, &row, 0);
 			if (color.a)
 				draw_point(f, color, x, f->size.y - y - 1);
 		}
@@ -57,32 +57,32 @@ void	cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x)
 	return ;
 }
 
-static void	init_row(t_frame *f, t_row *row)
+static void	init_row(t_man *man, t_frame *f, t_row *row)
 {
 	t_vec2	tmp_ray_dir;
 
-	row->ray_dir.x = g_man.player.dir.x - g_man.player.plane.x;
-	row->ray_dir.y = g_man.player.dir.y - g_man.player.plane.y;
-	tmp_ray_dir.x = g_man.player.dir.x + g_man.player.plane.x;
-	tmp_ray_dir.y = g_man.player.dir.y + g_man.player.plane.y;
+	row->ray_dir.x = man->player.dir.x - man->player.plane.x;
+	row->ray_dir.y = man->player.dir.y - man->player.plane.y;
+	tmp_ray_dir.x = man->player.dir.x + man->player.plane.x;
+	tmp_ray_dir.y = man->player.dir.y + man->player.plane.y;
 	row->ray_dir_step.x = (tmp_ray_dir.x - row->ray_dir.x) / f->size.x;
 	row->ray_dir_step.y = (tmp_ray_dir.y - row->ray_dir.y) / f->size.x;
-	row->pos_z = 0.5 * g_man.res.h_mod * f->size.y;
+	row->pos_z = 0.5 * man->res.h_mod * f->size.y;
 	return ;
 }
 
-static int	update_row(t_frame *f, t_map *m, t_row *row, int *y)
+static int	update_row(t_man *man, t_frame *f, t_row *row, int *y)
 {
 	row->row_dist = row->pos_z / (*y - f->size.y / 2 + 1);
-	if (row->row_dist > m->dof)
+	if (row->row_dist > man->map->dof)
 	{
 		++*y;
 		return (0);
 	}
 	row->floor_step.x = row->row_dist * row->ray_dir_step.x;
 	row->floor_step.y = row->row_dist * row->ray_dir_step.y;
-	row->floor.x = g_man.player.pos.x + row->row_dist * row->ray_dir.x;
-	row->floor.y = g_man.player.pos.y + row->row_dist * row->ray_dir.y;
+	row->floor.x = man->player.pos.x + row->row_dist * row->ray_dir.x;
+	row->floor.y = man->player.pos.y + row->row_dist * row->ray_dir.y;
 	return (1);
 }
 

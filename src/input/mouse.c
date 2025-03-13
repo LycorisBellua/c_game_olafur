@@ -1,7 +1,8 @@
 #include "cimmerian.h"
 
-static void	rotate_on_click(void);
-static int	get_diff_perc(int diff);
+static void	rotate_on_click(t_man *man);
+static void	init_rotate_click(t_man *man, int *x_first_click, int *x_max_diff);
+static int	get_diff_perc(t_man *man, int diff);
 
 void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 {
@@ -40,40 +41,45 @@ void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 		return ;
 	}
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-	rotate_on_click();
+	rotate_on_click(&g_man);
 	return ;
 }
 
-static void	rotate_on_click(void)
+static void	rotate_on_click(t_man *man)
 {
 	static int	x_first_click;
 	static int	x_max_diff;
 	int			diff;
 
-	if (!g_man.r_click_action)
+	if (!man->r_click_action)
 		x_first_click = -1;
 	else if (x_first_click < 0)
-	{
-		x_first_click = g_man.cursor.x;
-		x_max_diff = 0;
-	}
+		init_rotate_click(man, &x_first_click, &x_max_diff);
 	if (x_first_click >= 0)
 	{
-		diff = g_man.cursor.x - x_first_click;
+		diff = man->cursor.x - x_first_click;
 		if ((diff > 0 && diff > x_max_diff) || (diff < 0 && diff < x_max_diff))
 			x_max_diff = diff;
 		if ((diff > 0 && diff < x_max_diff) || (diff < 0 && diff > x_max_diff))
 		{
 			x_first_click += x_max_diff;
-			diff = g_man.cursor.x - x_first_click;
+			diff = man->cursor.x - x_first_click;
 			x_max_diff = diff;
 		}
-		rotate_player(RAD_1 * get_diff_perc(diff) * norm(diff) * g_man.dt);
+		rotate_player(man,
+			RAD_1 * get_diff_perc(man, diff) * norm(diff) * man->dt);
 	}
 	return ;
 }
 
-static int	get_diff_perc(int diff)
+static void	init_rotate_click(t_man *man, int *x_first_click, int *x_max_diff)
 {
-	return (max(10, abs(diff) * 100 / g_man.res.window_size_default.x));
+	*x_first_click = man->cursor.x;
+	*x_max_diff = 0;
+	return ;
+}
+
+static int	get_diff_perc(t_man *man, int diff)
+{
+	return (max(10, abs(diff) * 100 / man->res.window_size_default.x));
 }

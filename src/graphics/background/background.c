@@ -2,24 +2,24 @@
 
 static void	draw_png_with_x_offset(t_frame *f, t_png *png, int x_offset);
 
-void	compose_background(t_map *m)
+void	compose_background(t_man *man)
 {
-	m->background = create_empty_png(g_man.res.window_size_default);
-	if (m->background)
-		update_background(m);
+	man->map->background = create_empty_png(man->res.window_size_default);
+	if (man->map->background)
+		update_background(man->map);
 	return ;
 }
 
-void	draw_background(t_frame *f, t_map *m)
+void	draw_background(t_man *man, t_frame *f)
 {
 	t_player	*p;
 	double		angle;
 	int			offset;
 
-	p = &g_man.player;
+	p = &man->player;
 	angle = get_angle_from_dir(p->dir.x, p->dir.y);
-	offset = (angle + PI) / RAD_360 * m->background->size.x;
-	draw_png_with_x_offset(f, m->background, offset);
+	offset = (angle + PI) / RAD_360 * man->map->background->size.x;
+	draw_png_with_x_offset(f, man->map->background, offset);
 	return ;
 }
 

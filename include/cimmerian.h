@@ -15,12 +15,14 @@
 # include "math.h"
 # include "lodepng.h"
 
+# define TITLE "Cimmerian"
 # define FOV 60
 # define NBR_FRAMES 3
 # define NBR_IMG 20
 # define NBR_SPR 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
+# define DEFAULT_PLAYER_RADIUS 0.25
 # define INF 1e30
 
 typedef unsigned char	t_ubyte;
@@ -153,6 +155,7 @@ typedef struct s_map
 
 typedef struct s_player
 {
+	double	radius;
 	t_vec2	pos;
 	t_vec2	dir;
 	t_vec2	plane;
@@ -180,7 +183,7 @@ typedef struct s_res
 	t_ivec2	fullscreen;
 }	t_res;
 
-typedef struct s_manager
+typedef struct s_man
 {
 	GLuint		shader_program;
 	GLint		uniform_loc;
@@ -200,9 +203,9 @@ typedef struct s_manager
 	t_ivec2		cursor;
 	t_img		images[NBR_IMG];
 	t_map		*map;
-}	t_manager;
+}	t_man;
 
-extern t_manager	g_man;
+extern t_man	g_man;
 
 /* Linked List -------------------------------------------------------------- */
 
@@ -232,11 +235,12 @@ void		draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
 				t_color edge);
 void		draw_shape(t_frame *f, t_vert arr[], int len);
 void		draw_shape_full(t_frame *f, t_vert arr[], int len);
-void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
+void		draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos,
+				char *str);
 void		draw_image(t_frame *frame, t_img *img, t_ivec2 pos);
 void		draw_cursor(t_frame *frame, t_img *img, t_ivec2 p, int cyc);
-t_img		*get_image(const char *id);
-void		advance_all_image_cycles(long dt_ms);
+t_img		*get_image(t_man *man, const char *id);
+void		advance_all_image_cycles(t_man *man);
 
 /* Fog ---------------------------------------------------------------------- */
 
@@ -272,38 +276,39 @@ void		parse_segments(t_png *file, char **lines, size_t *i);
 t_png		*load_png_from_path(const char *path);
 t_png		*create_empty_png(t_ivec2 size);
 void		compose_skybox(t_map *m, t_img *src, t_color fog);
-void		compose_background(t_map *m);
-void		draw_background(t_frame *f, t_map *m);
+void		compose_background(t_man *man);
+void		draw_background(t_man *man, t_frame *f);
 void		apply_vertical_gradient(t_png *img, t_color color);
 void		free_png(t_png *png);
 void		add_outline_to_font(t_img *font);
-int			create_images_from_file(t_png *file, size_t *i_img);
-void		free_images(void);
+int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
+void		free_images(t_man *man);
 void		free_image(t_img *img);
-int			set_image_array(const char *path);
+int			set_image_array(t_man *man, const char *path);
 int			calculate_image_average_color(t_img *img);
 t_img		*duplicate_image(const char *dst_id, t_img *src);
 
 /* Game --------------------------------------------------------------------- */
 
-void		set_dt_and_fps(void);
-void		display_fps(t_frame *f, t_ivec2 pos);
-void		run_game_loop(t_map *m);
-void		door_routine(t_map *m);
+void		set_dt_and_fps(t_man *man);
+void		display_fps(t_man *man, t_frame *f, t_ivec2 pos);
+void		run_game_loop(t_man *man);
+void		door_routine(t_man *man);
 void		reset_global_coordinates(void);
 void		update_global_coordinates(void);
 
 /* Raycasting --------------------------------------------------------------- */
 
-void		raycasting(t_frame *f, t_map *m);
-void		perform_dda(t_map *m, double cam_x, t_list **list);
+void		raycasting(t_man *man, t_frame *f);
+void		perform_dda(t_man *man, double cam_x, t_list **list);
 int			dda_add_to_list(t_map *m, t_ray *r, double *biggest_height);
-void		cast_floor(t_frame *f, t_map *m);
-void		cast_ceiling_x(t_frame *f, t_map *m, double *z_buffer, int x);
-void		draw_wall(t_frame *f, t_map *m, t_ray *r);
+void		cast_floor(t_man *man, t_frame *f);
+void		cast_ceiling_x(t_man *man, t_frame *f, double *z_buffer, int x);
+void		draw_wall(t_man *man, t_frame *f, t_ray *r);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
-void		sort_sprites(int *spr_order, double *spr_dist, int spr_amount);
-void		cast_sprites(t_frame *f, t_map *m, double *z_buffer,
+void		sort_sprites(t_man *man, int *spr_order, double *spr_dist,
+				int spr_amount);
+void		cast_sprites(t_man *man, t_frame *f, double *z_buffer,
 				int *spr_order, double *spr_dist, int x);
 
 /* Input -------------------------------------------------------------------- */
@@ -318,11 +323,11 @@ void		cursor_pos_callback(GLFWwindow *window, double xpos, double ypos);
 
 /* Maps --------------------------------------------------------------------- */
 
-int			initialize_maps(void);
-void		free_maps(void);
-void		draw_minimap(t_frame *f, t_map *m);
-void		decrease_minimap_zoom(void);
-void		increase_minimap_zoom(void);
+int			create_map(t_man *man);
+void		free_map(t_man *man);
+void		draw_minimap(t_man *man, t_frame *f);
+void		decrease_minimap_zoom(t_man *man);
+void		increase_minimap_zoom(t_man *man);
 
 /* Mesh --------------------------------------------------------------------- */
 
@@ -332,32 +337,32 @@ void		free_mesh(void);
 
 /* Transform ---------------------------------------------------------------- */
 
-void		reset_player_transform(t_map *m);
-void		update_player_transform(t_map *m);
-void		rotate_player(double angle);
-void		echolocation(int has_player_moved);
+void		reset_player_transform(t_man *man);
+void		update_player_transform(t_man *man);
+void		rotate_player(t_man *man, double angle);
+void		echolocation(t_man *man, int has_player_moved);
 
 /* Shader Program ----------------------------------------------------------- */
 
 int			create_shader_program(void);
-void		free_shader_program(void);
+void		free_shader_program(t_man *man);
 
 /* Frames ------------------------------------------------------------------- */
 
-int			create_frames(void);
+int			create_frames(t_man *man);
 void		use_frame(t_frame *f);
 void		clear_drawing(t_frame *f);
 void		save_drawing(t_frame *f);
-void		free_frames(void);
+void		free_frames(t_man *man);
 
 /* Uniform ------------------------------------------------------------------ */
 
-int			create_uniform(void);
-void		free_uniform(void);
+int			create_uniform(t_man *man);
+void		free_uniform(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */
 
-GLFWwindow	*get_window(const char *title);
-void		toggle_fullscreen(GLFWwindow *window);
+GLFWwindow	*get_window(t_man *man, const char *title);
+void		toggle_fullscreen(t_man *man, GLFWwindow *window);
 
 #endif

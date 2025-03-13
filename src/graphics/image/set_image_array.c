@@ -1,10 +1,10 @@
 #include "cimmerian.h"
 
-static int		set_pixel_data(t_png *file, size_t *i_img);
+static int		set_pixel_data(t_man *man, t_png *file, size_t *i_img);
 static t_color	*get_pixel_data(t_png *file, int is_shadow);
 static t_color	get_pixel(t_png *png, size_t i, int is_shadow);
 
-int	set_image_array(const char *path)
+int	set_image_array(t_man *man, const char *path)
 {
 	char	**lines;
 	t_png	file;
@@ -23,14 +23,14 @@ int	set_image_array(const char *path)
 	{
 		is_parsing_ongoing = set_png_file_obj(&file, lines);
 		if (is_parsing_ongoing)
-			is_success = set_pixel_data(&file, &i_img);
+			is_success = set_pixel_data(man, &file, &i_img);
 		free_and_reset_png_file_obj(&file);
 	}
 	free_json_content(lines);
 	return (is_success);
 }
 
-static int	set_pixel_data(t_png *file, size_t *i_img)
+static int	set_pixel_data(t_man *man, t_png *file, size_t *i_img)
 {
 	file->buf = get_pixel_data(file, 0);
 	if (!file->buf)
@@ -41,7 +41,7 @@ static int	set_pixel_data(t_png *file, size_t *i_img)
 		if (!file->buf_shadow)
 			return (0);
 	}
-	return (create_images_from_file(file, i_img));
+	return (create_images_from_file(man, file, i_img));
 }
 
 static t_color	*get_pixel_data(t_png *file, int is_shadow)

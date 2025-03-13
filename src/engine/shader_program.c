@@ -44,11 +44,11 @@ int	create_shader_program(void)
 	return (shader_program);
 }
 
-void	free_shader_program(void)
+void	free_shader_program(t_man *man)
 {
 	glUseProgram(0);
-	glDeleteProgram(g_man.shader_program);
-	g_man.shader_program = 0;
+	glDeleteProgram(man->shader_program);
+	man->shader_program = 0;
 	return ;
 }
 

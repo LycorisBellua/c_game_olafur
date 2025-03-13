@@ -1,32 +1,32 @@
 #include "cimmerian.h"
 
 static t_img	*get_texture(t_map *m, t_ray *r);
-static int		calculate_tex_coord_x(t_img *tex, t_ray *r);
+static int		calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r);
 static double	calculate_initial_tex_pos(t_frame *f, t_map *m, t_ray *r,
 					t_img *tex);
 static t_color	calculate_color(t_map *m, t_ray *r, t_img *tex,
 					t_ivec2 tex_coord);
 
-void	draw_wall(t_frame *f, t_map *m, t_ray *r)
+void	draw_wall(t_man *man, t_frame *f, t_ray *r)
 {
 	t_img	*tex;
 	t_ivec2	tex_coord;
 	double	tex_step;
 	double	tex_pos;
 
-	tex = get_texture(m, r);
+	tex = get_texture(man->map, r);
 	if (!tex)
 		return ;
-	tex_coord.x = calculate_tex_coord_x(tex, r);
+	tex_coord.x = calculate_tex_coord_x(man, tex, r);
 	tex_step = (double)tex->size.y / r->line_height_cubic;
-	tex_pos = calculate_initial_tex_pos(f, m, r, tex);
+	tex_pos = calculate_initial_tex_pos(f, man->map, r, tex);
 	while (r->coord1.y <= r->coord2.y)
 	{
 		tex_coord.y = (int)tex_pos % tex->size.y;
 		tex_pos += tex_step;
 		if (tex_coord.y < 0)
 			tex_coord.y += tex->size.y;
-		draw_point(f, calculate_color(m, r, tex, tex_coord), r->coord1.x,
+		draw_point(f, calculate_color(man->map, r, tex, tex_coord), r->coord1.x,
 			r->coord1.y);
 		++r->coord1.y;
 	}
@@ -46,15 +46,15 @@ static t_img	*get_texture(t_map *m, t_ray *r)
 	return (0);
 }
 
-static int	calculate_tex_coord_x(t_img *tex, t_ray *r)
+static int	calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r)
 {
 	int		tex_coord_x;
 	double	wall_x;
 
 	if (r->side == 0)
-		wall_x = g_man.player.pos.y + r->perp_wall_dist * r->ray_dir.y;
+		wall_x = man->player.pos.y + r->perp_wall_dist * r->ray_dir.y;
 	else
-		wall_x = g_man.player.pos.x + r->perp_wall_dist * r->ray_dir.x;
+		wall_x = man->player.pos.x + r->perp_wall_dist * r->ray_dir.x;
 	wall_x -= floor_f(wall_x);
 	tex_coord_x = (int)(wall_x * tex->size.x);
 	if ((r->side == 0 && r->ray_dir.x < 0)

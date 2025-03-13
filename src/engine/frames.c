@@ -1,26 +1,26 @@
 #include "cimmerian.h"
 
-static t_frame	*create_frame(void);
+static t_frame	*create_frame(t_man *man);
 static void		free_frame(t_frame **f);
 
-int	create_frames(void)
+int	create_frames(t_man *man)
 {
 	size_t	i;
 	int		success;
 
 	success = 1;
-	g_man.curr_frame = 0;
+	man->curr_frame = 0;
 	i = 0;
 	while (i < NBR_FRAMES)
 	{
-		g_man.frame[i] = create_frame();
-		if (!g_man.frame[i])
+		man->frame[i] = create_frame(man);
+		if (!man->frame[i])
 			success = 0;
 		++i;
 	}
-	g_man.frame[i] = 0;
+	man->frame[i] = 0;
 	if (!success)
-		free_frames();
+		free_frames(man);
 	return (success);
 }
 
@@ -53,7 +53,7 @@ void	save_drawing(t_frame *f)
 	return ;
 }
 
-void	free_frames(void)
+void	free_frames(t_man *man)
 {
 	size_t	i;
 
@@ -61,13 +61,13 @@ void	free_frames(void)
 	i = 0;
 	while (i < NBR_FRAMES)
 	{
-		free_frame(&g_man.frame[i]);
+		free_frame(man->frame + i);
 		++i;
 	}
 	return ;
 }
 
-static t_frame	*create_frame(void)
+static t_frame	*create_frame(t_man *man)
 {
 	t_frame	*f;
 	long	buf_length;
@@ -81,9 +81,9 @@ static t_frame	*create_frame(void)
 	}
 
 	f->id = -1;
-	f->real_size.x = g_man.res.monitor_size.x;
-	f->real_size.y = g_man.res.monitor_size.y;
-	f->thickness = f->real_size.x / g_man.res.window_size_default.x;
+	f->real_size.x = man->res.monitor_size.x;
+	f->real_size.y = man->res.monitor_size.y;
+	f->thickness = f->real_size.x / man->res.window_size_default.x;
 	f->size.x = f->real_size.x / f->thickness;
 	f->size.y = f->real_size.y / f->thickness;
 

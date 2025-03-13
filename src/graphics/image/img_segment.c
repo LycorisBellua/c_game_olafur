@@ -6,20 +6,20 @@ static void	cut_image(t_png *file, t_img *img, size_t i_seg, size_t i_cyc);
 static void	cut_image_shadow(t_png *file, t_img *img, size_t i_seg,
 				size_t i_cyc);
 
-int	create_images_from_file(t_png *file, size_t *i_img)
+int	create_images_from_file(t_man *man, t_png *file, size_t *i_img)
 {
 	size_t	i;
 	size_t	j;
 	t_img	*img;
 
 	i = 0;
-	img = &g_man.images[*i_img];
+	img = &man->images[*i_img];
 	while (i < file->segment_len)
 	{
-		img = &g_man.images[*i_img];
+		img = &man->images[*i_img];
 		if (!set_image_from_segment(img, file, i))
 		{
-			free_images();
+			free_images(man);
 			return (0);
 		}
 		j = 0;

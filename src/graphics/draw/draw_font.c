@@ -14,7 +14,7 @@ static void	alignment_left(char *str, size_t *i, t_ivec2 *pos);
 	The capacity is 90 characters per line ([0-89]).
 	The index is the result of `(pos->x - PAD) / SIZE_X`.
 */
-void	draw_font_default(t_frame *frame, t_ivec2 *pos, char *str)
+void	draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos, char *str)
 {
 	size_t	i;
 	size_t	len;
@@ -24,7 +24,7 @@ void	draw_font_default(t_frame *frame, t_ivec2 *pos, char *str)
 		return ;
 	i = 0;
 	len = strlen(str);
-	img = &g_man.images[1];
+	img = &man->images[1];
 	fix_initial_pos(pos);
 	while (i <= len)
 	{
@@ -34,9 +34,9 @@ void	draw_font_default(t_frame *frame, t_ivec2 *pos, char *str)
 		pos->x += SIZE_X;
 		if (str[i] == '\n')
 			set_ivec2(pos, PAD, pos->y + SIZE_Y * 2);
-		if ((pos->x + SIZE_X + PAD) >= g_man.res.window_size_default.x)
+		if ((pos->x + SIZE_X + PAD) >= man->res.window_size_default.x)
 			set_ivec2(pos, PAD, pos->y + SIZE_Y);
-		if ((pos->y + SIZE_Y + PAD) >= g_man.res.window_size_default.y)
+		if ((pos->y + SIZE_Y + PAD) >= man->res.window_size_default.y)
 			break ;
 		++i;
 	}

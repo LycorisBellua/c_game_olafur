@@ -1,13 +1,13 @@
 #include "cimmerian.h"
 
-void	free_images(void)
+void	free_images(t_man *man)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < NBR_IMG)
 	{
-		free_image(g_man.images + i);
+		free_image(man->images + i);
 		++i;
 	}
 	return ;

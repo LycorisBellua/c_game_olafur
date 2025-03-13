@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-void	set_dt_and_fps(void)
+void	set_dt_and_fps(t_man *man)
 {
 	static struct timeval	prev_time;
 	struct timeval			curr_time;
@@ -17,32 +17,32 @@ void	set_dt_and_fps(void)
 		delta_s -= 1.0;
 		delta_ms += 1.0;
 	}
-	g_man.dt = delta_s + delta_ms;
-	g_man.dt_ms = g_man.dt * 1000;
-	if (!g_man.dt)
-		g_man.fps = 0;
+	man->dt = delta_s + delta_ms;
+	man->dt_ms = man->dt * 1000;
+	if (!man->dt)
+		man->fps = 0;
 	else
-		g_man.fps = (int)(1 / g_man.dt);
+		man->fps = (int)(1 / man->dt);
 	prev_time = curr_time;
 	return ;
 }
 
-void	display_fps(t_frame *f, t_ivec2 pos)
+void	display_fps(t_man *man, t_frame *f, t_ivec2 pos)
 {
 	static long	dt_ms;
 	static int	smoothed_fps;
 	char		*s;
 	char		*num;
 
-	dt_ms += g_man.dt_ms;
+	dt_ms += man->dt_ms;
 	if (dt_ms >= 250)
 	{
-		smoothed_fps = g_man.fps;
+		smoothed_fps = man->fps;
 		dt_ms -= 250;
 	}
 	num = itoa_dec(smoothed_fps);
 	s = strjoin("FPS: ", num);
-	draw_font_default(f, &pos, s);
+	draw_font_default(man, f, &pos, s);
 	free(s);
 	free(num);
 	return ;

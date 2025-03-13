@@ -2,17 +2,17 @@
 
 static void	advance_image_cycle(t_img *image, long dt_ms);
 
-void	advance_all_image_cycles(long dt_ms)
+void	advance_all_image_cycles(t_man *man)
 {
 	size_t	i;
 
 	i = 0;
-	while (g_man.images[i].id)
+	while (man->images[i].id)
 	{
-		advance_image_cycle(g_man.images + i, dt_ms);
+		advance_image_cycle(man->images + i, man->dt_ms);
 		++i;
 	}
-	advance_image_cycle(g_man.map->skybox, dt_ms);
+	advance_image_cycle(man->map->skybox, man->dt_ms);
 	return ;
 }
 

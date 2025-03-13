@@ -1,9 +1,9 @@
 #include "cimmerian.h"
 
-static void render_sprite_column(t_frame *f, t_map *m, t_spr *s,
-	double grid_dist, double *z_buffer, int x);
+static void render_sprite_column(t_man *man, t_frame *f, t_spr *s,
+				double grid_dist, double *z_buffer, int x);
 
-void	sort_sprites(int *spr_order, double *spr_dist, int spr_amount)
+void	sort_sprites(t_man *man, int *spr_order, double *spr_dist, int spr_amount)
 {
 	int		i;
 	int		j;
@@ -14,8 +14,8 @@ void	sort_sprites(int *spr_order, double *spr_dist, int spr_amount)
 	while (i < NBR_SPR)
 	{
 		spr_order[i] = i;
-		spr_dist[i] = get_squared_dist_euclidean(g_man.player.pos.x,
-			g_man.player.pos.y, g_man.map->sprites[i].pos.x, g_man.map->sprites[i].pos.y);
+		spr_dist[i] = get_squared_dist_euclidean(man->player.pos.x,
+			man->player.pos.y, man->map->sprites[i].pos.x, man->map->sprites[i].pos.y);
 		++i;
 	}
 	i = 0;
@@ -40,7 +40,7 @@ void	sort_sprites(int *spr_order, double *spr_dist, int spr_amount)
 	return ;
 }
 
-void cast_sprites(t_frame *f, t_map *m, double *z_buffer, int *spr_order,
+void cast_sprites(t_man *man, t_frame *f, double *z_buffer, int *spr_order,
 	double *spr_dist, int x)
 {
 	int	i;
@@ -52,15 +52,15 @@ void cast_sprites(t_frame *f, t_map *m, double *z_buffer, int *spr_order,
 		double grid_dist = sqrt_f(spr_dist[i]);
 
 		// Only render the sprite if it's within the distance of focus
-		if (grid_dist <= m->dof)
-			render_sprite_column(f, m, g_man.map->sprites + spr_order[i], grid_dist, z_buffer, x);
+		if (grid_dist <= man->map->dof)
+			render_sprite_column(man, f, man->map->sprites + spr_order[i], grid_dist, z_buffer, x);
 		++i;
 	}
 	return ;
 }
 
 // Render only a specific column of the sprite
-static void render_sprite_column(t_frame *f, t_map *m, t_spr *s,
+static void render_sprite_column(t_man *man, t_frame *f, t_spr *s,
 	double grid_dist, double *z_buffer, int x)
 {
 	t_vec2 sprite;
@@ -79,15 +79,15 @@ static void render_sprite_column(t_frame *f, t_map *m, t_spr *s,
 	int d;
 
 	// Translate sprite position to relative to camera
-	sprite.x = s->pos.x - g_man.player.pos.x;
-	sprite.y = s->pos.y - g_man.player.pos.y;
+	sprite.x = s->pos.x - man->player.pos.x;
+	sprite.y = s->pos.y - man->player.pos.y;
 
 	// Transform sprite with the inverse camera matrix
-	inv_det = 1.0 / ((g_man.player.plane.x * g_man.player.dir.y
-		- g_man.player.dir.x * g_man.player.plane.y) * g_man.res.h_mod);
+	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
+		- man->player.dir.x * man->player.plane.y) * man->res.h_mod);
 
-	transform.x = inv_det * (g_man.player.dir.y * sprite.x - g_man.player.dir.x * sprite.y);
-	transform.y = inv_det * (-g_man.player.plane.y * sprite.x + g_man.player.plane.x * sprite.y);
+	transform.x = inv_det * (man->player.dir.y * sprite.x - man->player.dir.x * sprite.y);
+	transform.y = inv_det * (-man->player.plane.y * sprite.x + man->player.plane.x * sprite.y);
 
 	spr_screen_x = (int)((f->size.x / 2) * (1 + transform.x / transform.y));
 
@@ -111,7 +111,7 @@ static void render_sprite_column(t_frame *f, t_map *m, t_spr *s,
 		tex.x = (int)(256 * (x - (-spr_width / 2 + spr_screen_x))
 			* tex_width / spr_width) / 256;
 
-		if (transform.y > 0 && transform.y < z_buffer[x] / g_man.res.h_mod)
+		if (transform.y > 0 && transform.y < z_buffer[x] / man->res.h_mod)
 		{
 			y = draw_start.y;
 			while (y < draw_end.y)
@@ -119,7 +119,7 @@ static void render_sprite_column(t_frame *f, t_map *m, t_spr *s,
 				d = (y - v_move_screen) * 256 - f->size.y * 128 + spr_height * 128;
 				tex.y = ((d * tex_height) / spr_height) / 256;
 				t_color color = s->img->cycle[s->img->cycle_index][tex_width * tex.y + tex.x];
-				apply_wall_fog(&color, m->fog_color, grid_dist, m->dof);
+				apply_wall_fog(&color, man->map->fog_color, grid_dist, man->map->dof);
 				draw_point(f, color, x, y);
 				++y;
 			}

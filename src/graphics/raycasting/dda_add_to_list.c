@@ -8,7 +8,7 @@ int	dda_add_to_list(t_map *m, t_ray *r, double *biggest_height)
 	int		add_to_list;
 
 	if (r->m_index.x < 0 || r->m_index.x >= m->size.x
-			|| r->m_index.y < 0 || r->m_index.y >= m->size.y)
+		|| r->m_index.y < 0 || r->m_index.y >= m->size.y)
 		return (-1);
 	add_to_list = 0;
 	cell = m->cells + (r->m_index.y * m->size.x + r->m_index.x);
