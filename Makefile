@@ -1,25 +1,53 @@
-CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -pedantic -g#-fsanitize=address
-LDFLAGS = -lGL -Llib -lglfw34 -lm
+CC = cc
+CFLAGS = -Iinclude -I.mlx -Wall -Wextra -Werror -pedantic -g#-fsanitize=address
+LDFLAGS = -lm
+MLX_DIR = .mlx
+MLX_LIB = $(MLX_DIR)/libmlx.a
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
+GL_FLAGS = -lGL -Llib -lglfw34
+NAME = cimmerian
 
-BIN = cimmerian
-SRC = $(shell find . -name '*.c')
+SRC_COMMON = $(shell find lib -name '*.c') \
+	$(shell find src -path "src/engine" -prune -o -name '*.c' -print)
+ENGINE ?= mlx
+ifeq ($(ENGINE), gl)
+	ENGINE_SRC = $(shell find src/engine/gl -name '*.c')
+	ENGINE_FLAGS = $(GL_FLAGS)
+else
+	ENGINE_SRC = $(shell find src/engine/mlx -name '*.c')
+	ENGINE_FLAGS = $(MLX_FLAGS)
+endif
+SRC = $(SRC_COMMON) $(ENGINE_SRC)
 OBJ = $(SRC:.c=.o)
+LDFLAGS += $(ENGINE_FLAGS)
 
-all: $(BIN)
+all: $(MLX_LIB) $(NAME)
 
-$(BIN): $(OBJ)
+mlx: $(MLX_LIB)
+	@$(MAKE) ENGINE=mlx
+
+gl:
+	@$(MAKE) ENGINE=gl
+
+$(MLX_LIB):
+	@if [ "$(ENGINE)" = "mlx" ]; then \
+		git clone -q https://github.com/42Paris/minilibx-linux.git $(MLX_DIR) && \
+		echo "Downloaded Linux version of MLX library: $(MLX_DIR)" && \
+		make -s -C $(MLX_DIR); \
+	fi
+
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(shell find . -name '*.o')
 
 fclean: clean
-	rm -rf $(BIN)
+	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all mlx gl clean fclean re

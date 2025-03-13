@@ -9,8 +9,8 @@ static void		free_shader(GLuint *id);
 
 int	create_shader_program(void)
 {
-	const char	*vs_filepath = "src/engine/shaders/vs.glsl";
-	const char	*fs_filepath = "src/engine/shaders/fs.glsl";
+	const char	*vs_filepath = "src/engine/gl/shaders/vs.glsl";
+	const char	*fs_filepath = "src/engine/gl/shaders/fs.glsl";
 	GLuint		vs;
 	GLuint		fs;
 	int			shader_program;

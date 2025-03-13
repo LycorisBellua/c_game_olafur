@@ -99,8 +99,8 @@ static void	set_res(t_man *man, const GLFWvidmode *vid_mode)
 			man->res.aspect_ratio;
 	}
 
-	man->res.window_size_default.x = min(640, man->res.monitor_size.x);
-	man->res.window_size_default.y = min(640 / man->res.aspect_ratio,
+	man->res.window_size_default.x = min(RES_WIDTH, man->res.monitor_size.x);
+	man->res.window_size_default.y = min(RES_WIDTH / man->res.aspect_ratio,
 			man->res.monitor_size.y);
 	man->res.window_size.x = man->res.window_size_default.x;
 	man->res.window_size.y = man->res.window_size_default.y;

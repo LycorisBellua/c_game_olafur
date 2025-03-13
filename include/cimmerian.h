@@ -16,6 +16,8 @@
 # include "lodepng.h"
 
 # define TITLE "Cimmerian"
+# define RES_WIDTH  640
+# define RES_HEIGHT 360
 # define FOV 60
 # define NBR_FRAMES 3
 # define NBR_IMG 20
