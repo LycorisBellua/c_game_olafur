@@ -8,7 +8,7 @@ int	create_frames(t_man *man)
 	size_t	i;
 	int		success;
 
-	success = 1;
+	success = NBR_FRAMES > 0;
 	man->curr_frame = 0;
 	i = 0;
 	while (i < NBR_FRAMES)
@@ -19,15 +19,11 @@ int	create_frames(t_man *man)
 		++i;
 	}
 	man->frame[i] = 0;
-	if (!success)
+	if (success)
+		glBindTexture(GL_TEXTURE_2D, man->frame[0]->id);
+	else
 		free_frames(man);
 	return (success);
-}
-
-void	use_frame(t_frame *f)
-{
-	glBindTexture(GL_TEXTURE_2D, f ? f->id : 0);
-	return ;
 }
 
 void	clear_drawing(t_frame *f)
@@ -57,7 +53,7 @@ void	free_frames(t_man *man)
 {
 	size_t	i;
 
-	use_frame(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	i = 0;
 	while (i < NBR_FRAMES)
 	{
@@ -112,7 +108,7 @@ static t_frame	*create_frame(t_man *man)
 
 static void	free_frame(t_frame **f)
 {
-	if (!f)
+	if (!f || !*f)
 		return ;
 	glDeleteTextures(1, &(*f)->id);
 	free((*f)->buf);

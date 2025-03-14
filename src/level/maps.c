@@ -183,6 +183,8 @@ int	create_map(t_man *man)
 
 void	free_map(t_man *man)
 {
+	if (!man->map)
+		return ;
 	free(man->map->cells);
 	free_image(man->map->skybox);
 	free_png(man->map->background);

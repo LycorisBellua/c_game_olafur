@@ -1,6 +1,7 @@
 #ifndef MATH_H
 # define MATH_H
 
+# define INF 1e30
 # define PI 3.1415926535
 /* # define PI_OVER_180 (PI / 180) */
 /* # define PI_OVER_180_INVERSE (180 / PI) */

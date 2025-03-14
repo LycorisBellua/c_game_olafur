@@ -2,21 +2,22 @@
 
 static void	draw_cursor(t_spr *sprite, t_frame *frame, t_ivec2 p, int cyc);
 
-int	on_mouse_move(t_win *win)
+int	on_mouse_move(t_man *man)
 {
 	t_ivec2	pos;
 	t_frame	*f;
 
-	mlx_mouse_get_pos(win->mlx, win->win, &pos.x, &pos.y);
-	if (pos.x < 0 || pos.y < 0 || pos.x >= win->size.x || pos.y >= win->size.y)
+	mlx_mouse_get_pos(man->mlx, man->window, &pos.x, &pos.y);
+	if (pos.x < 0 || pos.y < 0 || pos.x >= man->res.window_size.x
+		|| pos.y >= man->res.window_size.y)
 	{
-		set_ivec2(&win->cursor, -1, -1);
+		set_ivec2(&man->cursor, -1, -1);
 		return (0);
 	}
-	f = &win->frame[win->curr_frame];
-	set_ivec2(&win->cursor, pos.x / f->thickness, pos.y / f->thickness);
-	draw_cursor(&win->sprites[1], f, win->cursor, win->click);
-	win->click = 0;
+	f = &man->frame[man->curr_frame];
+	set_ivec2(&man->cursor, pos.x / f->thickness, pos.y / f->thickness);
+	draw_cursor(&man->sprites[1], f, man->cursor, man->click);
+	man->click = 0;
 	return (0);
 }
 

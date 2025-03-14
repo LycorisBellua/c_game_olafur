@@ -18,7 +18,7 @@
 typedef struct s_frame
 {
 	void	*img;
-	char	*addr;
+	t_ubyte	*addr; // was `char *`
 	int		bpp;
 	int		line_length;
 	int		endian;
@@ -26,7 +26,7 @@ typedef struct s_frame
 	t_ivec2	size;
 }	t_frame;
 
-typedef struct s_manager
+typedef struct s_man
 {
 	void		*mlx;
 	void		*window;
@@ -36,56 +36,41 @@ typedef struct s_manager
 	t_ivec2		click_pos;
 	t_frame		frame[2];
 	int			curr_frame;
-}	t_manager;
+}	t_man;
 
-static int	init_frame(t_win *win, int index);
-static void	set_hooks(t_win *win);
+static int	init_frame(t_man *man, int index);
+static void	set_hooks(t_man *man);
 
 int	main(int argc, char **argv)
 {
-	t_win	win;
+	t_man	man;
 
-	bzero(&win, sizeof(t_win));
-	win.mlx = mlx_init();
-	if (!win.mlx)
+	bzero(&man, sizeof(t_man));
+	if (!create_window(&g_man, TITLE, RES_WIDTH, RES_HEIGHT))
 		return (1);
-	if (!set_sprite_array(&win, "img/index.json")
-		|| !set_map_and_player(&win, argc, argv[1])
-		|| !create_window(&win, RES_WIDTH, RES_HEIGHT))
+	if (!init_frame(man, 0) || !init_frame(man, 1))
+		return (0);
+	set_hooks(man);
+	if (!set_image_array(&man, "img/index.json") || !set_map_and_player(&man, argc, argv[1]))
 	{
 		dprintf(2, "Error: Failure during initialization\n");
-		release_resources(&win);
+		deinit(&man);
 		return (1);
 	}
-	add_outline_to_font(&win.sprites[2]);
-	mlx_loop(win.mlx);
+	add_outline_to_font(&man.images[1]);
+	mlx_loop(man.mlx);
 	return (0);
 }
 
-/*
-	I had to remove `mlx_mouse_hide(win->mlx, win->win)` because it was 
-	causing a leak.
-*/
-int	create_window(t_win *win, int width, int height)
-{
-	set_ivec2(&win->size, width, height);
-	win->win = mlx_new_window(win->mlx, win->size.x, win->size.y, TITLE);
-	if (!win->win)
-		return (0);
-	if (!init_frame(win, 0) || !init_frame(win, 1))
-		return (0);
-	set_hooks(win);
-	return (1);
-}
-
-static int	init_frame(t_win *win, int index)
+static int	init_frame(t_man *man, int index)
 {
 	t_frame	*frame;
 
-	frame = &win->frame[index];
-	set_ivec2(&frame->size, win->size.x, win->size.y);
-	frame->thickness = frame->size.x / RES_WIDTH;
-	frame->img = mlx_new_image(win->mlx, frame->size.x, frame->size.y);
+	frame = &man->frame[index];
+	set_ivec2(&frame->size, man->res.window_size_default.x, man->res.window_size_default.y);
+	set_ivec2(&frame->real_size, man->res.window_size.x, man->res.window_size.y);
+	frame->thickness = frame->real_size.x / frame->size.x;
+	frame->img = mlx_new_image(man->mlx, frame->real_size.x, frame->real_size.y);
 	if (!frame->img)
 		return (0);
 	frame->addr = mlx_get_data_addr(frame->img, &frame->bpp,
@@ -93,39 +78,30 @@ static int	init_frame(t_win *win, int index)
 	return (1);
 }
 
-static void	set_hooks(t_win *win)
+/*
+	I had to remove `mlx_mouse_hide(man->mlx, man->window)` because it was 
+	causing a leak.
+*/
+static void	set_hooks(t_man *man)
 {
-	mlx_hook(win->win, 17, 0L, on_close, win);
-	mlx_hook(win->win, 4, 1L << 2, on_mouse_button, win);
-	mlx_key_hook(win->win, on_key_press, win);
-	mlx_loop_hook(win->mlx, render_loop, win);
+	mlx_hook(man->window, 17, 0L, on_close, man);
+	mlx_hook(man->window, 4, 1L << 2, on_mouse_button, man);
+	mlx_key_hook(man->window, on_key_press, man);
+	mlx_loop_hook(man->mlx, render_loop, man);
 	return ;
 }
 
-void	release_resources(t_win *win)
-{
-	if (win->win)
-		mlx_destroy_window(win->mlx, win->win);
-	if (win->frame[0].img)
-		mlx_destroy_image(win->mlx, win->frame[0].img);
-	if (win->frame[1].img)
-		mlx_destroy_image(win->mlx, win->frame[1].img);
-	mlx_destroy_display(win->mlx);
-	free(win->mlx);
-	return ;
-}
-
-int	render_loop(t_win *win)
+int	render_loop(t_man *man)
 {
 	long	dt;
 	t_frame	*frame;
 
 	dt = get_delta_time();
-	frame = &win->frame[win->curr_frame];
-	bzero(frame->addr, frame->size.x * frame->size.y * (frame->bpp / 8));
-	//render_game(win, frame, dt);
-	on_mouse_move(win);
-	win->curr_frame = (win->curr_frame + 1) % 2;
-	mlx_put_image_to_window(win->mlx, win->win, frame->img, 0, 0);
+	frame = &man->frame[man->curr_frame];
+	bzero(frame->addr, frame->real_size.x * frame->real_size.y * (frame->bpp / 8));
+	//render_game(man, frame, dt);
+	on_mouse_move(man);
+	man->curr_frame = (man->curr_frame + 1) % 2;
+	mlx_put_image_to_window(man->mlx, man->man, frame->img, 0, 0);
 	return (0);
 }

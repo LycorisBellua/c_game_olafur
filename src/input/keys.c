@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
 static void	handle_player_speed(t_man *man, int mods);
-static void	handle_key_press(t_man *man, GLFWwindow *window, int key, int mods);
+static void	handle_key_press(t_man *man, int key, int mods);
 static void	handle_key_release(t_man *man, int key, int mods);
 
 /*
@@ -12,10 +12,11 @@ static void	handle_key_release(t_man *man, int key, int mods);
 void	physical_key_callback(GLFWwindow *window, int key, int scancode,
 	int action, int mods)
 {
+	(void)window;
 	(void)scancode;
 	handle_player_speed(&g_man, mods);
 	if (action == GLFW_PRESS)
-		handle_key_press(&g_man, window, key, mods);
+		handle_key_press(&g_man, key, mods);
 	else if (action == GLFW_RELEASE)
 		handle_key_release(&g_man, key, mods);
 	return ;
@@ -36,12 +37,12 @@ static void	handle_player_speed(t_man *man, int mods)
 	return ;
 }
 
-static void	handle_key_press(t_man *man, GLFWwindow *window, int key, int mods)
+static void	handle_key_press(t_man *man, int key, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
+		glfwSetWindowShouldClose(man->window, GLFW_TRUE);
 	else if (key == GLFW_KEY_F11)
-		toggle_fullscreen(man, window);
+		toggle_fullscreen(man);
 	else if (key == GLFW_KEY_DOWN || key == GLFW_KEY_S
 		|| (!(mods & GLFW_MOD_NUM_LOCK) && key == GLFW_KEY_KP_2))
 		man->move_action.y += -1;

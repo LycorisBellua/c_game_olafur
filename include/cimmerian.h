@@ -25,7 +25,6 @@
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 # define DEFAULT_PLAYER_RADIUS 0.25
-# define INF 1e30
 
 typedef unsigned char	t_ubyte;
 
@@ -163,7 +162,7 @@ typedef struct s_player
 	t_vec2	plane;
 }	t_player;
 
-typedef struct s_frame
+/**/typedef struct s_frame
 {
 	GLuint	id;
 	t_ivec2	size;
@@ -187,14 +186,15 @@ typedef struct s_res
 
 typedef struct s_man
 {
-	GLuint		shader_program;
-	GLint		uniform_loc;
+	/**/GLFWwindow	*window;
+	/**/GLuint		shader_program;
+	/**/GLint		uniform_loc;
+	/**/t_frame		*frame[NBR_FRAMES + 1];
+	int			curr_frame;
 	double		dt;
 	long		dt_ms;
 	int			fps;
 	t_res		res;
-	t_frame		*frame[NBR_FRAMES + 1];
-	int			curr_frame;
 	t_player	player;
 	double		move_speed;
 	double		rotate_speed;
@@ -352,7 +352,6 @@ void		free_shader_program(t_man *man);
 /* Frames ------------------------------------------------------------------- */
 
 int			create_frames(t_man *man);
-void		use_frame(t_frame *f);
 void		clear_drawing(t_frame *f);
 void		save_drawing(t_frame *f);
 void		free_frames(t_man *man);
@@ -364,7 +363,16 @@ void		free_uniform(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */
 
-GLFWwindow	*get_window(t_man *man, const char *title);
-void		toggle_fullscreen(t_man *man, GLFWwindow *window);
+void		set_resolution(t_man *man, t_ivec2 monitor_size, int width,
+				int height);
+void		set_viewport(t_man *man, t_ivec2 framebuffer_size);
+void		toggle_fullscreen(t_man *man);
+
+/* Engine ------------------------------------------------------------------- */
+
+int			create_window(t_man *man, const char *title, int width, int height);
+void		deinit(t_man *man);
+t_color		get_frame_pixel(t_frame *f, int x, int y);
+void		set_frame_pixel(t_frame *f, t_color c, int x, int y);
 
 #endif
