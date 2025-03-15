@@ -9,24 +9,53 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/time.h>
-# include <GL/gl.h>
-# include "glfw3.h"
-# include "gl_functions.h"
 # include "math.h"
 # include "lodepng.h"
+# ifdef GL
+#  include <GL/gl.h>
+#  include "glfw3.h"
+#  include "gl_functions.h"
+# else
+#  include "mlx.h"
+# endif
+
 
 # define TITLE "Cimmerian"
 # define RES_WIDTH  640
 # define RES_HEIGHT 360
 # define FOV 60
-# define NBR_FRAMES 3
+# define NBR_FRAMES 2
 # define NBR_IMG 20
 # define NBR_SPR 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 # define DEFAULT_PLAYER_RADIUS 0.25
 
+# ifndef GL
+#  define BTN_CLICK_LEFT  1
+#  define BTN_CLICK_WHEEL 2
+#  define BTN_CLICK_RIGHT 3
+#  define BTN_SCROLL_UP   4
+#  define BTN_SCROLL_DOWN 5
+#  define KEY_W 119
+#  define KEY_A 97
+#  define KEY_S 115
+#  define KEY_D 100
+#  define KEY_Q 113
+#  define KEY_E 101
+#  define KEY_ENTER  65293
+#  define KEY_ESCAPE 65307
+#  define KEY_LEFT   65361
+#  define KEY_UP     65362
+#  define KEY_RIGHT  65363
+#  define KEY_DOWN   65364
+#  define KEY_F11    65480
+#  define KEY_SHIFT  65505
+
+# endif
+
 typedef unsigned char	t_ubyte;
+typedef unsigned int	t_uint;
 
 typedef struct s_list
 {
@@ -162,7 +191,8 @@ typedef struct s_player
 	t_vec2	plane;
 }	t_player;
 
-/**/typedef struct s_frame
+#ifdef GL
+typedef struct s_frame
 {
 	GLuint	id;
 	t_ivec2	size;
@@ -170,6 +200,19 @@ typedef struct s_player
 	int		thickness;
 	t_color	*buf;
 }	t_frame;
+#else
+typedef struct s_frame
+{
+	void	*img;
+	t_ubyte	*addr; // was `char *`
+	int		bpp;
+	int		line_length;
+	int		endian;
+	t_ivec2	size;
+	t_ivec2	real_size;
+	int		thickness;
+}	t_frame;
+#endif
 
 typedef struct s_res
 {
@@ -186,10 +229,15 @@ typedef struct s_res
 
 typedef struct s_man
 {
-	/**/GLFWwindow	*window;
-	/**/GLuint		shader_program;
-	/**/GLint		uniform_loc;
-	/**/t_frame		*frame[NBR_FRAMES + 1];
+	#ifdef GL
+	GLFWwindow	*window;
+	GLuint		shader_program;
+	GLint		uniform_loc;
+	#else
+	void		*mlx;
+	void		*window;
+	#endif
+	t_frame		frame[NBR_FRAMES];
 	int			curr_frame;
 	double		dt;
 	long		dt_ms;
@@ -222,7 +270,6 @@ void		list_del_one(t_list **list, void (*del)(void*));
 t_color		get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a);
 t_color		get_color_hex(const char *str, t_ubyte alpha);
 t_color		get_alpha_blended_color(t_color prev, t_color new);
-t_color		get_frame_color(t_frame *f, int x, int y);
 
 /* Draw --------------------------------------------------------------------- */
 
@@ -294,7 +341,7 @@ t_img		*duplicate_image(const char *dst_id, t_img *src);
 
 void		set_dt_and_fps(t_man *man);
 void		display_fps(t_man *man, t_frame *f, t_ivec2 pos);
-void		run_game_loop(t_man *man);
+void		render_game(t_man *man, t_frame *f);
 void		door_routine(t_man *man);
 void		reset_global_coordinates(void);
 void		update_global_coordinates(void);
@@ -312,16 +359,6 @@ void		sort_sprites(t_man *man, int *spr_order, double *spr_dist,
 				int spr_amount);
 void		cast_sprites(t_man *man, t_frame *f, double *z_buffer,
 				int *spr_order, double *spr_dist, int x);
-
-/* Input -------------------------------------------------------------------- */
-
-void		physical_key_callback(GLFWwindow *window, int key, int scancode,
-				int action, int mods);
-void		scroll_callback(GLFWwindow *window, double x_offset,
-				double y_offset);
-void		mouse_callback(GLFWwindow *window, int button, int action,
-				int mods);
-void		cursor_pos_callback(GLFWwindow *window, double xpos, double ypos);
 
 /* Maps --------------------------------------------------------------------- */
 
@@ -341,6 +378,7 @@ void		free_mesh(void);
 
 void		reset_player_transform(t_man *man);
 void		update_player_transform(t_man *man);
+void		handle_player_speed(t_man *man, int shift_pressed);
 void		rotate_player(t_man *man, double angle);
 void		echolocation(t_man *man, int has_player_moved);
 
@@ -351,9 +389,9 @@ void		free_shader_program(t_man *man);
 
 /* Frames ------------------------------------------------------------------- */
 
-int			create_frames(t_man *man);
-void		clear_drawing(t_frame *f);
-void		save_drawing(t_frame *f);
+int			init_frames(t_man *man);
+void		clear_frame(t_frame *f);
+void		display_frame(t_man *man, t_frame *f);
 void		free_frames(t_man *man);
 
 /* Uniform ------------------------------------------------------------------ */
@@ -371,6 +409,10 @@ void		toggle_fullscreen(t_man *man);
 /* Engine ------------------------------------------------------------------- */
 
 int			create_window(t_man *man, const char *title, int width, int height);
+void		init_input_handling(t_man *man);
+void		run_game_loop(t_man *man);
+int			game_loop(t_man *man);
+void		handle_input(t_man *man);
 void		deinit(t_man *man);
 t_color		get_frame_pixel(t_frame *f, int x, int y);
 void		set_frame_pixel(t_frame *f, t_color c, int x, int y);

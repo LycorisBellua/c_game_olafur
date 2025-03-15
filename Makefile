@@ -9,8 +9,8 @@ NAME = cimmerian
 
 SRC_COMMON = $(shell find lib -name '*.c') \
 	$(shell find src -path "src/engine" -prune -o -name '*.c' -print)
-ENGINE ?= mlx
-ifeq ($(ENGINE), gl)
+ENGINE ?= MLX
+ifeq ($(ENGINE), GL)
 	ENGINE_SRC = $(shell find src/engine/gl -name '*.c')
 	ENGINE_FLAGS = $(GL_FLAGS)
 else
@@ -24,10 +24,10 @@ LDFLAGS += $(ENGINE_FLAGS)
 all: $(MLX_LIB) $(NAME)
 
 mlx: $(MLX_LIB)
-	@$(MAKE) ENGINE=mlx
+	@$(MAKE) ENGINE=MLX
 
 gl:
-	@$(MAKE) ENGINE=gl
+	@$(MAKE) ENGINE=GL
 
 $(MLX_LIB):
 	@if [ "$(ENGINE)" = "mlx" ]; then \
@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -D$(ENGINE) -o $@ -c $<
 
 clean:
 	rm -rf $(shell find . -name '*.o')

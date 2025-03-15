@@ -1,92 +1,69 @@
 #include "cimmerian.h"
 
-static int	on_resize(t_man *man);
-
-int	on_close(t_man *man)
+int	cross_window_button_callback(t_man *man)
 {
-	release_resources(man);
+	deinit(man);
 	exit(0);
 	return (0);
 }
 
-int	on_mouse_button(int button, int x, int y, t_man *man)
+int	mouse_callback(int button, int x, int y, t_man *man)
 {
-	int	thickness;
-
+	(void)x;
+	(void)y;
 	if (button == BTN_CLICK_LEFT)
 	{
-		thickness = man->frame[0].thickness;
-		man->click = 1;
-		set_ivec2(&man->click_pos, x / thickness, y / thickness);
+		//TODO
 	}
-	else if (button == BTN_SCROLL_UP && man->zoom < 10)
+	else if (button == BTN_CLICK_RIGHT)
 	{
-		if (man->zoom < 3)
-			man->zoom += 1;
-		else
-			man->zoom += 2;
+		//TODO
 	}
-	else if (button == BTN_SCROLL_DOWN && man->zoom > 1)
-	{
-		if (man->zoom <= 3)
-			man->zoom -= 1;
-		else
-			man->zoom -= 2;
-	}
+	else if (button == BTN_SCROLL_UP)
+		increase_minimap_zoom(man);
+	else if (button == BTN_SCROLL_DOWN)
+		decrease_minimap_zoom(man);
 	return (0);
 }
 
-/*
-	else if (keycode >= KEY_A && keycode <= (KEY_A + 25))
-	printf("%c (%d)\n", keycode - KEY_A + 'A', keycode);
-*/
-int	on_key_press(int keycode, t_man *man)
+int	key_press_callback(int key, t_man *man)
 {
-	t_ivec2	move;
-
-	if (keycode == KEY_ESCAPE)
-		return (on_close(man));
-	else if (keycode == KEY_F11)
-		return (on_resize(man));
-	else
-	{
-		set_ivec2(&move, 0, 0);
-		if (keycode == KEY_W || keycode == KEY_UP)
-			move.y = -1;
-		else if (keycode == KEY_A || keycode == KEY_LEFT)
-			move.x = -1;
-		else if (keycode == KEY_S || keycode == KEY_DOWN)
-			move.y = 1;
-		else if (keycode == KEY_D || keycode == KEY_RIGHT)
-			move.x = 1;
-		if (!man->click_pos.x && !man->click_pos.y)
-			move_player(man, move);
-	}
+	if (key == KEY_SHIFT)
+		handle_player_speed(man, 1);
+	else if (key == KEY_ESCAPE)
+		cross_window_button_callback(man);
+	else if (key == KEY_F11)
+		toggle_fullscreen(man);
+	else if (key == KEY_DOWN || key == KEY_S)
+		man->move_action.y += -1;
+	else if (key == KEY_UP || key == KEY_W)
+		man->move_action.y += 1;
+	else if (key == KEY_Q)
+		man->move_action.x += -1;
+	else if (key == KEY_E)
+		man->move_action.x += 1;
+	else if (key == KEY_LEFT || key == KEY_A)
+		man->rotate_action += -1;
+	else if (key == KEY_RIGHT || key == KEY_D)
+		man->rotate_action += 1;
 	return (0);
 }
 
-static int	on_resize(t_man *man)
+int	key_release_callback(int key, t_man *man)
 {
-	t_ivec2	size;
-	int		thickness;
-
-	mlx_get_screen_size(man->mlx, &size.x, &size.y);
-	thickness = size.x / RES_WIDTH;
-	if (thickness > 1)
-	{
-		--thickness;
-		set_ivec2(&size, RES_WIDTH * thickness, RES_HEIGHT * thickness);
-	}
-	if (man->size.x == size.x)
-		set_ivec2(&size, RES_WIDTH, RES_HEIGHT);
-	mlx_destroy_mandow(man->mlx, man->window);
-	mlx_destroy_image(man->mlx, man->frame[0].img);
-	mlx_destroy_image(man->mlx, man->frame[1].img);
-	mlx_destroy_image(man->mlx, man->frame[2].img);
-	if (!create_mandow(man, size.x, size.y))
-	{
-		release_resources(man);
-		exit(1);
-	}
+	if (key == KEY_SHIFT)
+		handle_player_speed(man, 0);
+	else if (key == KEY_DOWN || key == KEY_S)
+		man->move_action.y += 1;
+	else if (key == KEY_UP || key == KEY_W)
+		man->move_action.y += -1;
+	else if (key == KEY_Q)
+		man->move_action.x += 1;
+	else if (key == KEY_E)
+		man->move_action.x += -1;
+	else if (key == KEY_LEFT || key == KEY_A)
+		man->rotate_action += 1;
+	else if (key == KEY_RIGHT || key == KEY_D)
+		man->rotate_action += -1;
 	return (0);
 }

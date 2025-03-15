@@ -47,13 +47,6 @@ t_color	get_alpha_blended_color(t_color prev, t_color new)
 	return (blend);
 }
 
-t_color	get_frame_color(t_frame *f, int x, int y)
-{
-	x *= f->thickness;
-	y *= f->thickness;
-	return (f->buf[y * f->real_size.x + x]);
-}
-
 static int	hex_char_to_int(char c)
 {
 	if (isdigit(c))

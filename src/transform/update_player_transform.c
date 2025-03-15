@@ -26,6 +26,21 @@ void	update_player_transform(t_man *man)
 	return ;
 }
 
+void	handle_player_speed(t_man *man, int shift_pressed)
+{
+	if (shift_pressed)
+	{
+		man->move_speed = DEFAULT_MOVE_SPEED * 2;
+		man->rotate_speed = DEFAULT_ROTATE_SPEED * 2;
+	}
+	else
+	{
+		man->move_speed = DEFAULT_MOVE_SPEED;
+		man->rotate_speed = DEFAULT_ROTATE_SPEED;
+	}
+	return ;
+}
+
 static void	move_in_local_dir(t_man *man, double forward_speed,
 	double lateral_speed)
 {

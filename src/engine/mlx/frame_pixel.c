@@ -20,7 +20,7 @@ void	set_frame_pixel(t_frame *f, t_color c, int x, int y)
 		c = get_color_rgba(c.a, c.r, c.g, c.b);
 	else
 		c = get_color_rgba(c.b, c.g, c.r, c.a);
-	*(t_uint *)dst = c;
+	*(t_uint *)dst = *((t_uint *)&c);
 	//f->buf[y * f->real_size.x + x] = c;
 	/*
 	t_ubyte	color[4];

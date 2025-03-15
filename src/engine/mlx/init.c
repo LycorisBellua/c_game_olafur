@@ -9,7 +9,7 @@ int	create_window(t_man *man, const char *title, int width, int height)
 		return (0);
 	set_resolution(man, get_monitor_size(man), width, height);
 	man->window = mlx_new_window(man->mlx, man->res.window_size.x,
-		man->res.window_size.y, title);
+			man->res.window_size.y, (char *)title);
 	set_viewport(man, man->res.window_size);
 	if (!man->window)
 	{
