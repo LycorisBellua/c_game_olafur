@@ -65,7 +65,7 @@ static int		map_buildings[] =
 
 int	create_map(t_man *man)
 {
-	int		i;
+	int	i;
 
 	man->map = calloc(1, sizeof(t_map));
 	if (!man->map)
@@ -75,7 +75,8 @@ int	create_map(t_man *man)
 	man->map->start_pos.x = PLAYER_POS_X;
 	man->map->start_pos.y = PLAYER_POS_Y;
 	man->map->start_dir = get_cardinal_dir('N');
-	man->map->dof = 0;
+	man->map->has_echolocation = 1;
+	man->map->dof = man->map->has_echolocation ? 0 : 20;
 	man->map->fog_width = get_fog_width(man->map->dof);
 	man->map->fog_color = get_color_rgba(17, 15, 35, 255);
 	set_ivec2(&man->map->minimap_offset, 563, 7);

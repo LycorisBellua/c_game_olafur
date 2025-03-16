@@ -22,7 +22,8 @@ void	update_player_transform(t_man *man)
 	prevent_out_of_bounds(man);
 	adjust_position_on_collision(man);
 	rotate_player(man, RAD_45 * norm(man->rotate_action) * man->dt);
-	echolocation(man, forward_speed || lateral_speed);
+	if (man->map->has_echolocation)
+		echolocation(man, forward_speed || lateral_speed);
 	return ;
 }
 

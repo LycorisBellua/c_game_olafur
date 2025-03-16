@@ -168,6 +168,7 @@ typedef struct s_map
 	t_ivec2	size;
 	t_vec2	start_pos;
 	t_vec2	start_dir;
+	int		has_echolocation;
 	double	dof;
 	double	fog_width;
 	t_color	fog_color;
