@@ -6,6 +6,9 @@
 
 void			framebuffer_size_callback(GLFWwindow *window, int x, int y);
 void			window_pos_callback(GLFWwindow *window, int xpos, int ypos);
+int				create_shader_program(void);
+int				create_uniform(t_man *man);
+int				create_mesh(void);
 
 static int		init_graphics_lib(void);
 static t_ivec2	get_monitor_size(void);
@@ -16,9 +19,10 @@ int	create_window(t_man *man, const char *title, int width, int height)
 {
 	if (!init_graphics_lib())
 		return (0);
+	man->title = (char *)title;
 	set_resolution(man, get_monitor_size(), width, height);
 	man->window = glfwCreateWindow(man->res.window_size.x,
-		man->res.window_size.y, title, NULL, NULL);
+		man->res.window_size.y, man->title, NULL, NULL);
 	if (!man->window)
 	{
 		dprintf(STDERR_FILENO, ERR_WINDOW"\n");

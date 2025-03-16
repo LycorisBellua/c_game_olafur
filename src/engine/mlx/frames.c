@@ -57,6 +57,6 @@ static int	set_frame(t_man *man, t_frame *f)
 	if (!f->img)
 		return (0);
 	f->addr = (t_ubyte *)mlx_get_data_addr(f->img, &f->bpp, &f->line_length,
-		&f->endian);
+			&f->endian);
 	return (1);
 }

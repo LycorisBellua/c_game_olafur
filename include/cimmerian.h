@@ -51,7 +51,6 @@
 #  define KEY_DOWN   65364
 #  define KEY_F11    65480
 #  define KEY_SHIFT  65505
-
 # endif
 
 typedef unsigned char	t_ubyte;
@@ -204,7 +203,7 @@ typedef struct s_frame
 typedef struct s_frame
 {
 	void	*img;
-	t_ubyte	*addr; // was `char *`
+	t_ubyte	*addr;
 	int		bpp;
 	int		line_length;
 	int		endian;
@@ -237,6 +236,7 @@ typedef struct s_man
 	void		*mlx;
 	void		*window;
 	#endif
+	char		*title;
 	t_frame		frame[NBR_FRAMES];
 	int			curr_frame;
 	double		dt;
@@ -290,6 +290,8 @@ void		draw_image(t_frame *frame, t_img *img, t_ivec2 pos);
 void		draw_cursor(t_frame *frame, t_img *img, t_ivec2 p, int cyc);
 t_img		*get_image(t_man *man, const char *id);
 void		advance_all_image_cycles(t_man *man);
+t_color		get_frame_pixel(t_frame *f, int x, int y);
+void		set_frame_pixel(t_frame *f, t_color c, int x, int y);
 
 /* Fog ---------------------------------------------------------------------- */
 
@@ -329,12 +331,13 @@ void		compose_background(t_man *man);
 void		draw_background(t_man *man, t_frame *f);
 void		apply_vertical_gradient(t_png *img, t_color color);
 void		free_png(t_png *png);
-void		add_outline_to_font(t_img *font);
-int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
-void		free_images(t_man *man);
-void		free_image(t_img *img);
 int			set_image_array(t_man *man, const char *path);
+int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
+void		cut_image(t_png *file, t_img *img, size_t i);
+void		free_images(t_man *man);
+void		free_image(t_img *img, void (free_fct)(void *));
 int			calculate_image_average_color(t_img *img);
+void		add_outline_to_font(t_img *font);
 t_img		*duplicate_image(const char *dst_id, t_img *src);
 
 /* Game --------------------------------------------------------------------- */
@@ -343,8 +346,6 @@ void		set_dt_and_fps(t_man *man);
 void		display_fps(t_man *man, t_frame *f, t_ivec2 pos);
 void		render_game(t_man *man, t_frame *f);
 void		door_routine(t_man *man);
-void		reset_global_coordinates(void);
-void		update_global_coordinates(void);
 
 /* Raycasting --------------------------------------------------------------- */
 
@@ -368,12 +369,6 @@ void		draw_minimap(t_man *man, t_frame *f);
 void		decrease_minimap_zoom(t_man *man);
 void		increase_minimap_zoom(t_man *man);
 
-/* Mesh --------------------------------------------------------------------- */
-
-int			create_mesh(void);
-void		render_mesh(void);
-void		free_mesh(void);
-
 /* Transform ---------------------------------------------------------------- */
 
 void		reset_player_transform(t_man *man);
@@ -382,22 +377,12 @@ void		handle_player_speed(t_man *man, int shift_pressed);
 void		rotate_player(t_man *man, double angle);
 void		echolocation(t_man *man, int has_player_moved);
 
-/* Shader Program ----------------------------------------------------------- */
-
-int			create_shader_program(void);
-void		free_shader_program(t_man *man);
-
 /* Frames ------------------------------------------------------------------- */
 
 int			init_frames(t_man *man);
 void		clear_frame(t_frame *f);
 void		display_frame(t_man *man, t_frame *f);
 void		free_frames(t_man *man);
-
-/* Uniform ------------------------------------------------------------------ */
-
-int			create_uniform(t_man *man);
-void		free_uniform(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */
 
@@ -406,15 +391,13 @@ void		set_resolution(t_man *man, t_ivec2 monitor_size, int width,
 void		set_viewport(t_man *man, t_ivec2 framebuffer_size);
 void		toggle_fullscreen(t_man *man);
 
-/* Engine ------------------------------------------------------------------- */
+/* Init --------------------------------------------------------------------- */
 
 int			create_window(t_man *man, const char *title, int width, int height);
 void		init_input_handling(t_man *man);
 void		run_game_loop(t_man *man);
 int			game_loop(t_man *man);
-void		handle_input(t_man *man);
+void		poll_input_events(t_man *man);
 void		deinit(t_man *man);
-t_color		get_frame_pixel(t_frame *f, int x, int y);
-void		set_frame_pixel(t_frame *f, t_color c, int x, int y);
 
 #endif

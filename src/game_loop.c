@@ -11,7 +11,8 @@ int	game_loop(t_man *man)
 	render_game(man, f);
 	display_frame(man, f);
 	man->curr_frame = (man->curr_frame + 1) % 2;
-	handle_input(man);
+	update_player_transform(man);
 	door_routine(man);
+	poll_input_events(man);
 	return (0);
 }

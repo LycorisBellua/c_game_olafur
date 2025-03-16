@@ -42,13 +42,13 @@ void	set_viewport(t_man *man, t_ivec2 framebuffer_size)
 */
 static void	set_aspect_ratio(t_man *man)
 {
-	man->res.aspect_ratio = (double)man->res.monitor_size.x /
-		man->res.monitor_size.y;
+	man->res.aspect_ratio = (double)man->res.monitor_size.x
+		/ man->res.monitor_size.y;
 	if (man->res.aspect_ratio > 16.0 / 9)
 	{
 		man->res.aspect_ratio = 16.0 / 9;
-		man->res.monitor_size.x = man->res.monitor_size.y *
-			man->res.aspect_ratio;
+		man->res.monitor_size.x = man->res.monitor_size.y
+			* man->res.aspect_ratio;
 	}
 	man->res.h_mod = man->res.aspect_ratio
 		- (round_f(man->res.aspect_ratio) - man->res.aspect_ratio);

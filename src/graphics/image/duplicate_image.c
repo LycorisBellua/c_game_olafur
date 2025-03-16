@@ -15,7 +15,7 @@ t_img	*duplicate_image(const char *dst_id, t_img *src)
 	dst->id = strdup(dst_id);
 	if (!dst->id)
 	{
-		free_image(dst);
+		free_image(dst, free);
 		return (0);
 	}
 	set_ivec2(&dst->size, src->size.x, src->size.y);
@@ -26,7 +26,7 @@ t_img	*duplicate_image(const char *dst_id, t_img *src)
 	if (!duplicate_cycles(dst, src)
 		|| !duplicate_average_color_and_is_see_through(dst, src))
 	{
-		free_image(dst);
+		free_image(dst, free);
 		return (0);
 	}
 	return (dst);

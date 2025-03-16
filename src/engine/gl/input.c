@@ -17,9 +17,9 @@ void	init_input_handling(t_man *man)
 	return ;
 }
 
-void	handle_input(t_man *man)
+void	poll_input_events(t_man *man)
 {
+	(void)man;
 	glfwPollEvents();
-	update_player_transform(man);
 	return ;
 }

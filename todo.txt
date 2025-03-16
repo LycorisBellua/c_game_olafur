@@ -1,5 +1,11 @@
+Diffs between the GL and MLX versions:
+- The MLX version doesn't use the key pad arrows.
+- The MLX version doesn't have fullscreen mode, only big or smaller res.
+- The MLX version has a slower mouse-based rotation.
+
+---
+
 Norm:
-src/main.c
 src/level/maps.c
 src/graphics/raycasting/dda_add_to_list.c
 src/graphics/raycasting/sprites.c

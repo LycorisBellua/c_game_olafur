@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+void		render_mesh(void);
+
 static int	set_frame(t_man *man, t_frame *f);
 
 int	init_frames(t_man *man)

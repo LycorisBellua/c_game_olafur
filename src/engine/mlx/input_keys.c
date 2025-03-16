@@ -1,30 +1,6 @@
 #include "cimmerian.h"
 
-int	cross_window_button_callback(t_man *man)
-{
-	deinit(man);
-	exit(0);
-	return (0);
-}
-
-int	mouse_callback(int button, int x, int y, t_man *man)
-{
-	(void)x;
-	(void)y;
-	if (button == BTN_CLICK_LEFT)
-	{
-		//TODO
-	}
-	else if (button == BTN_CLICK_RIGHT)
-	{
-		//TODO
-	}
-	else if (button == BTN_SCROLL_UP)
-		increase_minimap_zoom(man);
-	else if (button == BTN_SCROLL_DOWN)
-		decrease_minimap_zoom(man);
-	return (0);
-}
+int	cross_window_button_callback(t_man *man);
 
 int	key_press_callback(int key, t_man *man)
 {

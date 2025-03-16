@@ -67,6 +67,8 @@ static void	open_new_door(t_man *man, t_list **opened_doors, int max_dist)
 
 static int	is_door_and_obstacle(t_man *man, int x, int y)
 {
+	if (x < 0 || x >= man->map->size.x || y < 0 || y >= man->map->size.y)
+		return (0);
 	return (man->map->cells[y * man->map->size.x + x].is_door
 		&& man->map->cells[y * man->map->size.x + x].is_obstacle);
 }
