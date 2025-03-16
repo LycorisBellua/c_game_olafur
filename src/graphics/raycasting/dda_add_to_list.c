@@ -1,6 +1,7 @@
 #include "cimmerian.h"
 
 static int	is_obstacle_see_through(t_map *m, t_ray *r);
+static void	set_perp_wall_dist(t_map *m, t_ray *r, int *add_to_list);
 
 int	dda_add_to_list(t_map *m, t_ray *r, double *biggest_height)
 {
@@ -23,14 +24,7 @@ int	dda_add_to_list(t_map *m, t_ray *r, double *biggest_height)
 			add_to_list = 1;
 		}
 		if (add_to_list)
-		{
-			if (r->side == 0)
-				r->perp_wall_dist = (r->side_dist.x - r->delta_dist.x);
-			else
-				r->perp_wall_dist = (r->side_dist.y - r->delta_dist.y);
-			if (r->perp_wall_dist > m->dof)
-				add_to_list = -1;
-		}
+			set_perp_wall_dist(m, r, &add_to_list);
 	}
 	return (add_to_list);
 }
@@ -53,4 +47,15 @@ static int	is_obstacle_see_through(t_map *m, t_ray *r)
 	if (!tex)
 		return (1);
 	return (tex->is_see_through[tex->cycle_index]);
+}
+
+static void	set_perp_wall_dist(t_map *m, t_ray *r, int *add_to_list)
+{
+	if (r->side == 0)
+		r->perp_wall_dist = (r->side_dist.x - r->delta_dist.x);
+	else
+		r->perp_wall_dist = (r->side_dist.y - r->delta_dist.y);
+	if (r->perp_wall_dist > m->dof)
+		*add_to_list = -1;
+	return ;
 }

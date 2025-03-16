@@ -7,7 +7,6 @@ Diffs between the GL and MLX versions:
 
 Norm:
 src/level/maps.c
-src/graphics/raycasting/dda_add_to_list.c
 src/graphics/raycasting/sprites.c
 src/graphics/raycasting/raycasting.c
 
