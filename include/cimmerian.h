@@ -369,6 +369,7 @@ void		free_map(t_man *man);
 void		draw_minimap(t_man *man, t_frame *f);
 void		decrease_minimap_zoom(t_man *man);
 void		increase_minimap_zoom(t_man *man);
+t_vec2		get_cardinal_dir(char c);
 
 /* Transform ---------------------------------------------------------------- */
 

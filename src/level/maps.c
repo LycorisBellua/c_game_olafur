@@ -5,8 +5,6 @@
 #define PLAYER_POS_X 22
 #define PLAYER_POS_Y 12
 
-static t_vec2	get_cardinal_dir(char c);
-
 static int		map_walls[] =
 {
 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -180,36 +178,4 @@ int	create_map(t_man *man)
 	set_vec2(&man->map->sprites[18].pos, 10.0, 15.1);
 	set_vec2(&man->map->sprites[19].pos, 10.5, 15.8);
 	return (1);
-}
-
-void	free_map(t_man *man)
-{
-	if (!man->map)
-		return ;
-	free(man->map->cells);
-	free_image(man->map->skybox, free);
-	free_png(man->map->background);
-	free(man->map->sprites);
-	free(man->map);
-	man->map = 0;
-	return ;
-}
-
-static t_vec2	get_cardinal_dir(char c)
-{
-	t_vec2	dir;
-
-	dir.x = 0;
-	dir.y = 0;
-	if (c >= 'a' && c <= 'z')
-		c -= 'a' - 'A';
-	if (c == 'N')
-		dir.y = -1;
-	else if (c == 'S')
-		dir.y = 1;
-	else if (c == 'W')
-		dir.x = -1;
-	else if (c == 'E')
-		dir.x = 1;
-	return (dir);
 }
