@@ -5,7 +5,7 @@ Diffs between the GL and MLX versions:
 
 ---
 
-- Norm src/level/maps.c.
+- Norm src/level/maps.c: No hardcoded map, create a file and have basic parsing.
 
 ---
 
