@@ -69,8 +69,7 @@ double	clamp_min_f(double n, double min);
 
 /* Distance ----------------------------------------------------------------- */
 
-double	get_dist_euclidean(double ax, double ay, double bx, double by);
-double	get_squared_dist_euclidean(double ax, double ay, double bx, double by);
+double	get_dist(double ax, double ay, double bx, double by);
 double	get_dist_manhattan(double ax, double ay, double bx, double by);
 int		is_within_threshold(t_ivec2 a, t_ivec2 b, int threshold);
 

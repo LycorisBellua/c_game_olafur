@@ -1,14 +1,13 @@
 #include "cimmerian.h"
 
 /* Euclidean distance (all directions) */
-double	get_dist_euclidean(double ax, double ay, double bx, double by)
+double	get_dist(double ax, double ay, double bx, double by)
 {
-	return (sqrt_f(get_squared_dist_euclidean(ax, ay, bx, by)));
-}
+	t_vec2	delta;
 
-double	get_squared_dist_euclidean(double ax, double ay, double bx, double by)
-{
-	return (pow_f(ax - bx, 2) + pow_f(ay - by, 2));
+	delta.x = ax - bx;
+	delta.y = ay - by;
+	return (sqrt_f(delta.x * delta.x + delta.y * delta.y));
 }
 
 /* Manhattan distance (no diagonal) */

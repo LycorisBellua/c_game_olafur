@@ -161,6 +161,13 @@ typedef struct s_spr
 {
 	t_vec2	pos;
 	t_img	*img;
+	double	dist;
+	t_vec2	transform;
+	int		screen_x;
+	int		v_move_screen;
+	t_ivec2	size;
+	t_ivec2	draw_start;
+	t_ivec2	draw_end;
 }	t_spr;
 
 typedef struct s_map
@@ -175,7 +182,8 @@ typedef struct s_map
 	t_img	*skybox;
 	t_png	*background;
 	t_cell	*cells;
-	t_spr	*sprites;
+	int		sprite_len;
+	t_spr	**sprites;
 	t_ivec2	minimap_offset;
 	t_ivec2	minimap_center;
 	int		minimap_radius;
@@ -357,14 +365,15 @@ void		cast_floor(t_man *man, t_frame *f);
 void		cast_ceiling_x(t_man *man, t_frame *f, double *z_buffer, int x);
 void		draw_wall(t_man *man, t_frame *f, t_ray *r);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
-void		sort_sprites(t_man *man, int *spr_order, double *spr_dist,
-				int spr_amount);
-void		cast_sprites(t_man *man, t_frame *f, double *z_buffer,
-				int *spr_order, double *spr_dist, int x);
+void		sort_sprites_by_dist(t_man *man);
+void		swap_elements(void **a, void **b);
+void		cast_sprites(t_man *man, double *z_buffer, int x);
 
 /* Maps --------------------------------------------------------------------- */
 
 int			create_map(t_man *man);
+int			set_sprite_array(t_man *man, int length);
+void		free_sprite_array(t_man *man);
 void		free_map(t_man *man);
 void		draw_minimap(t_man *man, t_frame *f);
 void		decrease_minimap_zoom(t_man *man);

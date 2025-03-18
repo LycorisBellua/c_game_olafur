@@ -1,38 +1,34 @@
 #include "cimmerian.h"
 
-static void render_sprite_column(t_man *man, t_frame *f, t_spr *s,
-				double grid_dist, double *z_buffer, int x);
+#define U_DIV 1
+#define V_DIV 1
+#define V_MOVE 0.0
 
-void	sort_sprites(t_man *man, int *spr_order, double *spr_dist, int spr_amount)
+static void	set_sprite_values(t_man *man, t_spr *s);
+static void	render_sprite_column(t_man *man, t_spr *s, double *z_buffer, int x);
+
+void	sort_sprites_by_dist(t_man *man)
 {
-	int		i;
-	int		j;
-	double	tmp_dist;
-	double	tmp_order;
+	int	i;
+	int	j;
 
 	i = 0;
-	while (i < NBR_SPR)
+	while (i < man->map->sprite_len)
 	{
-		spr_order[i] = i;
-		spr_dist[i] = get_squared_dist_euclidean(man->player.pos.x,
-			man->player.pos.y, man->map->sprites[i].pos.x, man->map->sprites[i].pos.y);
+		man->map->sprites[i]->dist = get_dist(man->player.pos.x,
+				man->player.pos.y, man->map->sprites[i]->pos.x,
+				man->map->sprites[i]->pos.y);
 		++i;
 	}
 	i = 0;
-	while (i < spr_amount - 1)
+	while (i < man->map->sprite_len - 1)
 	{
 		j = 0;
-		while (j < spr_amount - i - 1)
+		while (j < man->map->sprite_len - i - 1)
 		{
-			if (spr_dist[j] < spr_dist[j + 1])
-			{
-				tmp_dist = spr_dist[j];
-				spr_dist[j] = spr_dist[j + 1];
-				spr_dist[j + 1] = tmp_dist;
-				tmp_order = spr_order[j];
-				spr_order[j] = spr_order[j + 1];
-				spr_order[j + 1] = tmp_order;
-			}
+			if (man->map->sprites[j]->dist < man->map->sprites[j + 1]->dist)
+				swap_elements((void **)(man->map->sprites + j),
+					(void **)(man->map->sprites + j + 1));
 			++j;
 		}
 		++i;
@@ -40,89 +36,79 @@ void	sort_sprites(t_man *man, int *spr_order, double *spr_dist, int spr_amount)
 	return ;
 }
 
-void cast_sprites(t_man *man, t_frame *f, double *z_buffer, int *spr_order,
-	double *spr_dist, int x)
+void	cast_sprites(t_man *man, double *z_buffer, int x)
 {
-	int	i;
+	int		i;
+	t_spr	*s;
 
 	i = 0;
-	// Loop through every sprite
-	while (i < NBR_SPR)
+	while (i < man->map->sprite_len)
 	{
-		double grid_dist = sqrt_f(spr_dist[i]);
-
-		// Only render the sprite if it's within the distance of focus
-		if (grid_dist <= man->map->dof)
-			render_sprite_column(man, f, man->map->sprites + spr_order[i], grid_dist, z_buffer, x);
+		s = man->map->sprites[i];
+		if (s->dist <= man->map->dof)
+		{
+			if (!x)
+				set_sprite_values(man, s);
+			if (s->img && x >= s->draw_start.x && x < s->draw_end.x)
+				render_sprite_column(man, s, z_buffer, x);
+		}
 		++i;
 	}
 	return ;
 }
 
-// Render only a specific column of the sprite
-static void render_sprite_column(t_man *man, t_frame *f, t_spr *s,
-	double grid_dist, double *z_buffer, int x)
+static void	set_sprite_values(t_man *man, t_spr *s)
 {
-	t_vec2 sprite;
-	double inv_det;
-	t_vec2 transform;
-	int spr_screen_x;
-	int v_move_screen;
-	int spr_width;
-	int spr_height;
-	t_ivec2 draw_start;
-	t_ivec2 draw_end;
-	int tex_width;
-	int tex_height;
-	t_ivec2 tex;
-	int y;
-	int d;
+	t_frame	*f;
+	t_vec2	pos;
+	double	inv_det;
+	t_vec2	transform;
 
-	// Translate sprite position to relative to camera
-	sprite.x = s->pos.x - man->player.pos.x;
-	sprite.y = s->pos.y - man->player.pos.y;
-
-	// Transform sprite with the inverse camera matrix
+	f = man->frame + man->curr_frame;
+	set_vec2(&pos, s->pos.x - man->player.pos.x, s->pos.y - man->player.pos.y);
 	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
-		- man->player.dir.x * man->player.plane.y) * man->res.h_mod);
+				- man->player.dir.x * man->player.plane.y) * man->res.h_mod);
+	transform.x = (man->player.dir.y * pos.x - man->player.dir.x * pos.y)
+		* inv_det;
+	transform.y = (-man->player.plane.y * pos.x + man->player.plane.x * pos.y)
+		* inv_det;
+	set_vec2(&s->transform, transform.x, transform.y);
+	s->screen_x = (f->size.x / 2) * (1 + s->transform.x / s->transform.y);
+	s->v_move_screen = V_MOVE / s->transform.y;
+	s->size.y = abs((int)(f->size.y / s->transform.y)) / V_DIV;
+	s->draw_start.y = max(-s->size.y / 2 + f->size.y / 2 + s->v_move_screen, 0);
+	s->draw_end.y = min(s->size.y / 2 + f->size.y / 2 + s->v_move_screen,
+			f->size.y - 1);
+	s->size.x = abs((int)(f->size.y / s->transform.y)) / U_DIV;
+	s->draw_start.x = max(-s->size.x / 2 + s->screen_x, 0);
+	s->draw_end.x = min(s->size.x / 2 + s->screen_x, f->size.x);
+	return ;
+}
 
-	transform.x = inv_det * (man->player.dir.y * sprite.x - man->player.dir.x * sprite.y);
-	transform.y = inv_det * (-man->player.plane.y * sprite.x + man->player.plane.x * sprite.y);
+static void	render_sprite_column(t_man *man, t_spr *s, double *z_buffer, int x)
+{
+	t_frame	*f;
+	t_ivec2	tex;
+	int		y;
+	int		d;
+	t_color	color;
 
-	spr_screen_x = (int)((f->size.x / 2) * (1 + transform.x / transform.y));
-
-	const int u_div = 1;
-	const int v_div = 1;
-	const double v_move = 0.0;
-	v_move_screen = (int)(v_move / transform.y);
-
-	spr_height = abs((int)(f->size.y / transform.y)) / v_div;
-	draw_start.y = max(-spr_height / 2 + f->size.y / 2 + v_move_screen, 0);
-	draw_end.y = min(spr_height / 2 + f->size.y / 2 + v_move_screen, f->size.y - 1);
-
-	spr_width = abs((int)(f->size.y / transform.y)) / u_div;
-	draw_start.x = max(-spr_width / 2 + spr_screen_x, 0);
-	draw_end.x = min(spr_width / 2 + spr_screen_x, f->size.x);
-
-	if (x >= draw_start.x && x < draw_end.x)
+	f = man->frame + man->curr_frame;
+	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x))
+			* s->img->size.x / s->size.x) / 256;
+	if (s->transform.y > 0 && s->transform.y < z_buffer[x] / man->res.h_mod)
 	{
-		tex_width = s->img->size.x;
-		tex_height = s->img->size.y;
-		tex.x = (int)(256 * (x - (-spr_width / 2 + spr_screen_x))
-			* tex_width / spr_width) / 256;
-
-		if (transform.y > 0 && transform.y < z_buffer[x] / man->res.h_mod)
+		y = s->draw_start.y;
+		while (y < s->draw_end.y)
 		{
-			y = draw_start.y;
-			while (y < draw_end.y)
-			{
-				d = (y - v_move_screen) * 256 - f->size.y * 128 + spr_height * 128;
-				tex.y = ((d * tex_height) / spr_height) / 256;
-				t_color color = s->img->cycle[s->img->cycle_index][tex_width * tex.y + tex.x];
-				apply_wall_fog(&color, man->map->fog_color, grid_dist, man->map->dof);
-				draw_point(f, color, x, y);
-				++y;
-			}
+			d = (y - s->v_move_screen) * 256 - f->size.y * 128 + s->size.y
+				* 128;
+			tex.y = ((d * s->img->size.y) / s->size.y) / 256;
+			color = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x
+				+ tex.x];
+			apply_wall_fog(&color, man->map->fog_color, s->dist, man->map->dof);
+			draw_point(f, color, x, y);
+			++y;
 		}
 	}
 	return ;

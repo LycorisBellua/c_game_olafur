@@ -132,50 +132,10 @@ int	create_map(t_man *man)
 		man->map->cells[i].tex_west = img;
 		++i;
 	}
-	man->map->sprites = malloc(NBR_SPR * sizeof(t_spr));
-	if (!man->map->sprites)
+	if (!set_sprite_array(man, NBR_SPR))
 	{
 		free_map(man);
 		return (0);
 	}
-	img = get_image(man, "chalice");
-	i = 0;
-	while (i < 8)
-	{
-		man->map->sprites[i].img = img;
-		++i;
-	}
-	set_vec2(&man->map->sprites[0].pos,  20.5, 11.5);
-	set_vec2(&man->map->sprites[1].pos,  18.5,  4.5);
-	set_vec2(&man->map->sprites[2].pos,  10.0,  4.5);
-	set_vec2(&man->map->sprites[3].pos,  10.0, 12.5);
-	set_vec2(&man->map->sprites[4].pos,   3.5,  6.5);
-	set_vec2(&man->map->sprites[5].pos,   3.5, 20.5);
-	set_vec2(&man->map->sprites[6].pos,   3.5, 14.5);
-	set_vec2(&man->map->sprites[7].pos,  14.5, 20.5);
-	img = get_image(man, "pillar");
-	while (i < 12)
-	{
-		man->map->sprites[i].img = img;
-		++i;
-	}
-	set_vec2(&man->map->sprites[8].pos,  18.5, 10.5);
-	set_vec2(&man->map->sprites[9].pos,  18.5, 11.5);
-	set_vec2(&man->map->sprites[10].pos, 18.5, 12.5);
-	set_vec2(&man->map->sprites[11].pos,  8.5,  7.0);
-	img = get_image(man, "barrel");
-	while (i < 20)
-	{
-		man->map->sprites[i].img = img;
-		++i;
-	}
-	set_vec2(&man->map->sprites[12].pos, 21.5,  1.5);
-	set_vec2(&man->map->sprites[13].pos, 15.5,  1.5);
-	set_vec2(&man->map->sprites[14].pos, 16.0,  1.8);
-	set_vec2(&man->map->sprites[15].pos, 16.2,  1.2);
-	set_vec2(&man->map->sprites[16].pos,  3.5,  2.5);
-	set_vec2(&man->map->sprites[17].pos,  9.5, 15.5);
-	set_vec2(&man->map->sprites[18].pos, 10.0, 15.1);
-	set_vec2(&man->map->sprites[19].pos, 10.5, 15.8);
 	return (1);
 }
