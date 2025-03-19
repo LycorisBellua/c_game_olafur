@@ -6,69 +6,14 @@
 #define PLAYER_POS_Y 12
 
 static void	init_minimap_values(t_man *man);
-static void	set_map_cells(t_man *man);
+static int	set_map_cells(t_man *man);
 
-static int		map_walls[] =
-{
-	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,2,2,5,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1,
-	1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1,
-	1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,2,2,5,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,0,0,0,0,6,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-};
-
-static int		map_buildings[] =
-{
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-};
-
-int	create_map(t_man *man)
+int	create_map(t_man *man, const char *filepath)
 {
 	man->map = calloc(1, sizeof(t_map));
 	if (!man->map)
 		return (0);
+	extract_maps(man->map, filepath);
 	set_ivec2(&man->map->size, MAP_SIZE_X, MAP_SIZE_Y);
 	set_vec2(&man->map->start_pos, PLAYER_POS_X, PLAYER_POS_Y);
 	man->map->start_dir = get_cardinal_dir('N');
@@ -84,7 +29,7 @@ int	create_map(t_man *man)
 		return (0);
 	}
 	compose_background(man);
-	if (!man->map->background || !set_cell_array(man)
+	if (!man->map->background || !set_map_cells(man)
 		|| !set_sprite_array(man, NBR_SPR))
 	{
 		free_map(man);
@@ -129,15 +74,15 @@ static int	set_map_cells(t_man *man)
 	i = 0;
 	while (i < man->map->size.x * man->map->size.y)
 	{
-		man->map->cells[i].is_obstacle = map_walls[i] > 0;
-		man->map->cells[i].is_door = map_walls[i] == 5;
-		man->map->cells[i].is_goal = map_walls[i] == 6;
-		man->map->cells[i].is_indoors = map_buildings[i];
+		man->map->cells[i].is_obstacle = man->map->map_walls[i] > '0' && man->map->map_walls[i] <= '9';
+		man->map->cells[i].is_door = man->map->map_walls[i] == '5';
+		man->map->cells[i].is_goal = man->map->map_walls[i] == '6';
+		man->map->cells[i].is_indoors = !!man->map->map_buildings[i];
 		if (man->map->cells[i].is_obstacle)
 			man->map->cells[i].height = 1.0;
-		if (map_walls[i] == 6)
+		if (man->map->map_walls[i] == '6')
 			man->map->cells[i].height = 3.0;
-		if (map_buildings[i])
+		if (!!man->map->map_buildings[i])
 		{
 			man->map->cells[i].tex_floor = get_image(man, "tex_floor_indoors");
 			man->map->cells[i].tex_ceiling = get_image(man, "tex_ceiling");
@@ -145,17 +90,17 @@ static int	set_map_cells(t_man *man)
 		else
 			man->map->cells[i].tex_floor = get_image(man, "tex_floor");
 		img = 0;
-		if (map_walls[i] == 1)
+		if (man->map->map_walls[i] == '1')
 			img = get_image(man, "tex_wall_01");
-		else if (map_walls[i] == 2)
+		else if (man->map->map_walls[i] == '2')
 			img = get_image(man, "tex_wall_02");
-		else if (map_walls[i] == 3)
+		else if (man->map->map_walls[i] == '3')
 			img = get_image(man, "tex_wall_03");
-		else if (map_walls[i] == 4)
+		else if (man->map->map_walls[i] == '4')
 			img = get_image(man, "tex_wall_04");
-		else if (map_walls[i] == 5)
+		else if (man->map->map_walls[i] == '5')
 			img = get_image(man, "tex_doors");
-		else if (map_walls[i] == 6)
+		else if (man->map->map_walls[i] == '6')
 			img = get_image(man, "solid_color");
 		man->map->cells[i].tex_north = img;
 		man->map->cells[i].tex_east = img;

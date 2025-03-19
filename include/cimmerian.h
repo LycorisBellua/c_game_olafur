@@ -172,6 +172,8 @@ typedef struct s_spr
 
 typedef struct s_map
 {
+	char	*map_walls;
+	char	*map_buildings;
 	t_ivec2	size;
 	t_vec2	start_pos;
 	t_vec2	start_dir;
@@ -318,6 +320,7 @@ char		*read_file(const char *filepath);
 char		*gnl(int fd);
 char		*strjoin(char const *s1, char const *s2);
 char		*itoa_dec(int number);
+char		**split_string(const char *s, char c);
 
 /* JSON --------------------------------------------------------------------- */
 
@@ -371,7 +374,8 @@ void		cast_sprites(t_man *man, double *z_buffer, int x);
 
 /* Maps --------------------------------------------------------------------- */
 
-int			create_map(t_man *man);
+int			create_map(t_man *man, const char *filepath);
+int			extract_maps(t_map *m, const char *filepath);
 int			set_sprite_array(t_man *man, int length);
 void		free_sprite_array(t_man *man);
 void		free_map(t_man *man);
