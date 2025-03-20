@@ -21,7 +21,6 @@ int	main(int argc, char **argv)
 	}
 	add_outline_to_font(&g_man.images[1]);
 	reset_player_transform(&g_man);
-	set_vec2(&g_man.player.pos, 22, 12);
 	init_input_handling(&g_man);
 	run_game_loop(&g_man);
 	return (EXIT_SUCCESS);

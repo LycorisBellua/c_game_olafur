@@ -20,6 +20,17 @@ char	*read_file(const char *filepath)
 	return (content);
 }
 
+char	**read_file_lines(const char *filepath)
+{
+	char	*whole;
+	char	**lines;
+
+	whole = read_file(filepath);
+	lines = split_string(whole, '\n');
+	free(whole);
+	return (lines);
+}
+
 static char	*get_whole_file(const char *filepath, int fd)
 {
 	char	buf[1024];

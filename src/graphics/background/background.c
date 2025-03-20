@@ -4,7 +4,8 @@ static void	draw_png_with_x_offset(t_frame *f, t_png *png, int x_offset);
 
 void	compose_background(t_man *man)
 {
-	man->map->background = create_empty_png(man->res.window_size_default);
+	if (man->map->skybox)
+		man->map->background = create_empty_png(man->res.window_size_default);
 	if (man->map->background)
 		update_background(man->map);
 	return ;

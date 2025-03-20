@@ -317,8 +317,11 @@ void		update_background(t_map *m);
 /* Files -------------------------------------------------------------------- */
 
 char		*read_file(const char *filepath);
+char		**read_file_lines(const char *filepath);
 char		*gnl(int fd);
-char		*strjoin(char const *s1, char const *s2);
+char		*strjoin(const char *s1, const char *s2);
+char		*strjoin_arr(char **arr, size_t start, size_t end);
+void		free_arr(void **arr, void (free_fct)(void *));
 char		*itoa_dec(int number);
 char		**split_string(const char *s, char c);
 
@@ -375,7 +378,7 @@ void		cast_sprites(t_man *man, double *z_buffer, int x);
 /* Maps --------------------------------------------------------------------- */
 
 int			create_map(t_man *man, const char *filepath);
-int			extract_maps(t_map *m, const char *filepath);
+int			extract_maps_and_player_start(t_map *m, const char *filepath);
 int			set_sprite_array(t_man *man, int length);
 void		free_sprite_array(t_man *man);
 void		free_map(t_man *man);

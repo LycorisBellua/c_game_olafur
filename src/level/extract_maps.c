@@ -1,20 +1,70 @@
 #include "cimmerian.h"
 
-int	extract_maps(t_map *m, const char *filepath)
-{
-	char	*data;
+static void	set_start_and_end_indexes(char **lines, size_t *start, size_t *end);
+static void	set_player_start(t_map *m);
 
-	(void)m;
-	data = read_file(filepath);
-	if (!data)
+int	extract_maps_and_player_start(t_map *m, const char *filepath)
+{
+	char	**lines;
+	size_t	start;
+	size_t	end;
+
+	lines = read_file_lines(filepath);
+	if (!lines)
 		return (0);
-	/**/printf("%s\n", data);
-	/*
-		- Delete `split_string` if you don't need it.
-		- Count the size of `map_walls` and set the size in `t_map`.
-		- Separate `map_walls` data to store it in `t_map->map_walls` without 
-		the newlines.
-		- Same thing for `map_buildings`.
-	*/
-	return (1);
+	end = 0;
+	set_start_and_end_indexes(lines, &start, &end);
+	set_ivec2(&m->size, strlen(lines[start]), end - start);
+	m->map_walls = strjoin_arr(lines, start, end);
+	if (!m->map_walls)
+	{
+		free_arr((void **)lines, free);
+		return (0);
+	}
+	set_player_start(m);
+	set_start_and_end_indexes(lines, &start, &end);
+	m->map_buildings = strjoin_arr(lines, start, end);
+	free_arr((void **)lines, free);
+	return (!!m->map_buildings);
+}
+
+static void	set_start_and_end_indexes(char **lines, size_t *start, size_t *end)
+{
+	if (!lines)
+		return ;
+	*start = *end;
+	while (lines[*start] && strncmp(lines[*start], "map_", 4))
+		++*start;
+	++*start;
+	*end = *start;
+	while (lines[*end] && strncmp(lines[*end], "map_", 4))
+		++*end;
+	return ;
+}
+
+static void	set_player_start(t_map *m)
+{
+	t_ivec2	coord;
+
+	coord.x = 0;
+	while (coord.x < m->size.x)
+	{
+		coord.y = 0;
+		while (coord.y < m->size.y)
+		{
+			if (m->map_walls[coord.y * m->size.x + coord.x] == 'N'
+				|| m->map_walls[coord.y * m->size.x + coord.x] == 'S'
+				|| m->map_walls[coord.y * m->size.x + coord.x] == 'W'
+				|| m->map_walls[coord.y * m->size.x + coord.x] == 'E')
+			{
+				set_vec2(&m->start_pos, coord.x, coord.y);
+				m->start_dir = get_cardinal_dir(m->map_walls[coord.y * m->size.x
+						+ coord.x]);
+				return ;
+			}
+			++coord.y;
+		}
+		++coord.x;
+	}
+	return ;
 }
