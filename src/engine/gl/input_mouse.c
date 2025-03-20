@@ -41,7 +41,8 @@ void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 		return ;
 	}
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-	rotate_on_click(&g_man);
+	if (g_man.game_state == GAME_STATE_PLAY)
+		rotate_on_click(&g_man);
 	return ;
 }
 

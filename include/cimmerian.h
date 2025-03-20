@@ -19,7 +19,6 @@
 #  include "mlx.h"
 # endif
 
-
 # define TITLE "Cimmerian"
 # define RES_WIDTH  640
 # define RES_HEIGHT 360
@@ -30,6 +29,11 @@
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 # define DEFAULT_PLAYER_RADIUS 0.25
+# define FONT_PAD    4
+# define FONT_SIZE_X 7
+# define FONT_SIZE_Y 12
+# define FONT_MOD_X  4
+# define FONT_MOD_Y  4
 
 # ifndef GL
 #  define BTN_CLICK_LEFT  1
@@ -52,6 +56,14 @@
 #  define KEY_F11    65480
 #  define KEY_SHIFT  65505
 # endif
+
+typedef enum e_state
+{
+	GAME_STATE_PLAY,
+	GAME_STATE_PAUSE,
+	GAME_STATE_SUCCESS,
+	GAME_STATE_FAILURE,
+}	t_state;
 
 typedef unsigned char	t_ubyte;
 typedef unsigned int	t_uint;
@@ -202,7 +214,7 @@ typedef struct s_player
 	t_vec2	plane;
 }	t_player;
 
-#ifdef GL
+# ifdef GL
 typedef struct s_frame
 {
 	GLuint	id;
@@ -211,7 +223,7 @@ typedef struct s_frame
 	int		thickness;
 	t_color	*buf;
 }	t_frame;
-#else
+# else
 typedef struct s_frame
 {
 	void	*img;
@@ -223,7 +235,7 @@ typedef struct s_frame
 	t_ivec2	real_size;
 	int		thickness;
 }	t_frame;
-#endif
+# endif
 
 typedef struct s_res
 {
@@ -240,14 +252,14 @@ typedef struct s_res
 
 typedef struct s_man
 {
-	#ifdef GL
+	# ifdef GL
 	GLFWwindow	*window;
 	GLuint		shader_program;
 	GLint		uniform_loc;
-	#else
+	# else
 	void		*mlx;
 	void		*window;
-	#endif
+	# endif
 	char		*title;
 	t_frame		frame[NBR_FRAMES];
 	int			curr_frame;
@@ -255,6 +267,7 @@ typedef struct s_man
 	long		dt_ms;
 	int			fps;
 	t_res		res;
+	t_state		game_state;
 	t_player	player;
 	double		move_speed;
 	double		rotate_speed;
@@ -299,6 +312,7 @@ void		draw_shape_full(t_frame *f, t_vert arr[], int len);
 void		draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos,
 				char *str);
 void		draw_image(t_frame *frame, t_img *img, t_ivec2 pos);
+void		fill_frame(t_frame *f, t_color c);
 void		draw_cursor(t_frame *frame, t_img *img, t_ivec2 p, int cyc);
 t_img		*get_image(t_man *man, const char *id);
 void		advance_all_image_cycles(t_man *man);
@@ -359,8 +373,9 @@ t_img		*duplicate_image(const char *dst_id, t_img *src);
 /* Game --------------------------------------------------------------------- */
 
 void		set_dt_and_fps(t_man *man);
-void		display_fps(t_man *man, t_frame *f, t_ivec2 pos);
 void		render_game(t_man *man, t_frame *f);
+void		display_game_gui(t_man *man, t_frame *f);
+void		display_game_over_screen(t_man *man, t_frame *f);
 void		door_routine(t_man *man);
 
 /* Raycasting --------------------------------------------------------------- */

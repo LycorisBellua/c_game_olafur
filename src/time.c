@@ -26,24 +26,3 @@ void	set_dt_and_fps(t_man *man)
 	prev_time = curr_time;
 	return ;
 }
-
-void	display_fps(t_man *man, t_frame *f, t_ivec2 pos)
-{
-	static long	dt_ms;
-	static int	smoothed_fps;
-	char		*s;
-	char		*num;
-
-	dt_ms += man->dt_ms;
-	if (dt_ms >= 250)
-	{
-		smoothed_fps = man->fps;
-		dt_ms -= 250;
-	}
-	num = itoa_dec(smoothed_fps);
-	s = strjoin("FPS: ", num);
-	draw_font_default(man, f, &pos, s);
-	free(s);
-	free(num);
-	return ;
-}

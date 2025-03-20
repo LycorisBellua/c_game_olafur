@@ -8,10 +8,13 @@ int	mouse_press_callback(int button, int x, int y, t_man *man)
 		man->l_click_action = 1;
 	else if (button == BTN_CLICK_RIGHT)
 		man->r_click_action = 1;
-	else if (button == BTN_SCROLL_UP)
-		increase_minimap_zoom(man);
-	else if (button == BTN_SCROLL_DOWN)
-		decrease_minimap_zoom(man);
+	else if (man->game_state == GAME_STATE_PLAY)
+	{
+		if (button == BTN_SCROLL_UP)
+			increase_minimap_zoom(man);
+		else if (button == BTN_SCROLL_DOWN)
+			decrease_minimap_zoom(man);
+	}
 	return (0);
 }
 

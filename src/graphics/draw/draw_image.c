@@ -25,6 +25,24 @@ void	draw_image(t_frame *frame, t_img *img, t_ivec2 pos)
 	return ;
 }
 
+void	fill_frame(t_frame *f, t_color c)
+{
+	t_ivec2	coord;
+
+	coord.x = 0;
+	while (coord.x < f->size.x)
+	{
+		coord.y = 0;
+		while (coord.y < f->size.y)
+		{
+			draw_point(f, c, coord.x, coord.y);
+			++coord.y;
+		}
+		++coord.x;
+	}
+	return ;
+}
+
 static void	draw_shadow(t_frame *frame, t_img *img, t_ivec2 pos)
 {
 	size_t	i;

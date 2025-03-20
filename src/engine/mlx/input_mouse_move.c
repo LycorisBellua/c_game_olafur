@@ -18,7 +18,8 @@ int	mouse_move_callback(int x, int y, t_man *man)
 		set_ivec2(&man->cursor, -1, -1);
 		return (0);
 	}
-	rotate_on_click(man);
+	if (man->game_state == GAME_STATE_PLAY)
+		rotate_on_click(man);
 	return (0);
 }
 
