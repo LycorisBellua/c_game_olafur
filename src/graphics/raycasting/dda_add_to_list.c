@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-static int	is_obstacle_see_through(t_map *m, t_ray *r);
+static int	is_cell_see_through(t_map *m, t_ray *r);
 static void	set_perp_wall_dist(t_map *m, t_ray *r, int *add_to_list);
 
 int	dda_add_to_list(t_map *m, t_ray *r, double *biggest_height)
@@ -13,9 +13,9 @@ int	dda_add_to_list(t_map *m, t_ray *r, double *biggest_height)
 		return (-1);
 	add_to_list = 0;
 	cell = m->cells + (r->m_index.y * m->size.x + r->m_index.x);
-	if (cell->is_obstacle)
+	if (cell->is_visible)
 	{
-		r->is_see_through = is_obstacle_see_through(m, r);
+		r->is_see_through = is_cell_see_through(m, r);
 		if (r->is_see_through)
 			add_to_list = 1;
 		else if (cell->height > *biggest_height)
@@ -29,7 +29,7 @@ int	dda_add_to_list(t_map *m, t_ray *r, double *biggest_height)
 	return (add_to_list);
 }
 
-static int	is_obstacle_see_through(t_map *m, t_ray *r)
+static int	is_cell_see_through(t_map *m, t_ray *r)
 {
 	t_img	*tex;
 	t_cell	*cell;

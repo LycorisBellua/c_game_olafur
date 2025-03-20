@@ -42,17 +42,17 @@ static int	check_north_face(t_map *m, t_ray *r, int img_coord_x,
 	if (img_coord_x < ten_percent)
 	{
 		if (x == m->size.x - 1 || y == 0
-			|| !m->cells[y * m->size.x + (x + 1)].is_obstacle
+			|| !m->cells[y * m->size.x + (x + 1)].is_visible
 			|| m->cells[y * m->size.x + (x + 1)].is_door
-			|| m->cells[(y - 1) * m->size.x + (x + 1)].is_obstacle)
+			|| m->cells[(y - 1) * m->size.x + (x + 1)].is_visible)
 			return (1);
 	}
 	else if (img_coord_x >= img_size_x - ten_percent)
 	{
 		if (x == 0 || y == 0
-			|| !m->cells[y * m->size.x + (x - 1)].is_obstacle
+			|| !m->cells[y * m->size.x + (x - 1)].is_visible
 			|| m->cells[y * m->size.x + (x - 1)].is_door
-			|| m->cells[(y - 1) * m->size.x + (x - 1)].is_obstacle)
+			|| m->cells[(y - 1) * m->size.x + (x - 1)].is_visible)
 			return (1);
 	}
 	return (0);
@@ -71,17 +71,17 @@ static int	check_south_face(t_map *m, t_ray *r, int img_coord_x,
 	if (img_coord_x < ten_percent)
 	{
 		if (x == 0 || y == m->size.y - 1
-			|| !m->cells[y * m->size.x + (x - 1)].is_obstacle
+			|| !m->cells[y * m->size.x + (x - 1)].is_visible
 			|| m->cells[y * m->size.x + (x - 1)].is_door
-			|| m->cells[(y + 1) * m->size.x + (x - 1)].is_obstacle)
+			|| m->cells[(y + 1) * m->size.x + (x - 1)].is_visible)
 			return (1);
 	}
 	else if (img_coord_x >= img_size_x - ten_percent)
 	{
 		if (x == m->size.x - 1 || y == m->size.y - 1
-			|| !m->cells[y * m->size.x + (x + 1)].is_obstacle
+			|| !m->cells[y * m->size.x + (x + 1)].is_visible
 			|| m->cells[y * m->size.x + (x + 1)].is_door
-			|| m->cells[(y + 1) * m->size.x + (x + 1)].is_obstacle)
+			|| m->cells[(y + 1) * m->size.x + (x + 1)].is_visible)
 			return (1);
 	}
 	return (0);
@@ -99,17 +99,17 @@ static int	check_west_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 	if (img_coord_x < ten_percent)
 	{
 		if (x == 0 || y == 0
-			|| !m->cells[(y - 1) * m->size.x + x].is_obstacle
+			|| !m->cells[(y - 1) * m->size.x + x].is_visible
 			|| m->cells[(y - 1) * m->size.x + x].is_door
-			|| m->cells[(y - 1) * m->size.x + (x - 1)].is_obstacle)
+			|| m->cells[(y - 1) * m->size.x + (x - 1)].is_visible)
 			return (1);
 	}
 	else if (img_coord_x >= img_size_x - ten_percent)
 	{
 		if (x == 0 || y == m->size.y - 1
-			|| !m->cells[(y + 1) * m->size.x + x].is_obstacle
+			|| !m->cells[(y + 1) * m->size.x + x].is_visible
 			|| m->cells[(y + 1) * m->size.x + x].is_door
-			|| m->cells[(y + 1) * m->size.x + (x - 1)].is_obstacle)
+			|| m->cells[(y + 1) * m->size.x + (x - 1)].is_visible)
 			return (1);
 	}
 	return (0);
@@ -127,17 +127,17 @@ static int	check_east_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 	if (img_coord_x < ten_percent)
 	{
 		if (x == m->size.x - 1 || y == m->size.y - 1
-			|| !m->cells[(y + 1) * m->size.x + x].is_obstacle
+			|| !m->cells[(y + 1) * m->size.x + x].is_visible
 			|| m->cells[(y + 1) * m->size.x + x].is_door
-			|| m->cells[(y + 1) * m->size.x + (x + 1)].is_obstacle)
+			|| m->cells[(y + 1) * m->size.x + (x + 1)].is_visible)
 			return (1);
 	}
 	else if (img_coord_x >= img_size_x - ten_percent)
 	{
 		if (x == m->size.x - 1 || y == 0
-			|| !m->cells[(y - 1) * m->size.x + x].is_obstacle
+			|| !m->cells[(y - 1) * m->size.x + x].is_visible
 			|| m->cells[(y - 1) * m->size.x + x].is_door
-			|| m->cells[(y - 1) * m->size.x + (x + 1)].is_obstacle)
+			|| m->cells[(y - 1) * m->size.x + (x + 1)].is_visible)
 			return (1);
 	}
 	return (0);

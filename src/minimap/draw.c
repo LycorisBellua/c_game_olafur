@@ -47,7 +47,7 @@ static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell)
 		v.color = get_color_rgba(28, 210, 192, 255);
 	else if (man->map->cells[i_map.y * man->map->size.x + i_map.x].is_door)
 		v.color = get_color_rgba(244, 162, 97, 255);
-	else if (man->map->cells[i_map.y * man->map->size.x + i_map.x].is_obstacle)
+	else if (man->map->cells[i_map.y * man->map->size.x + i_map.x].is_visible)
 		v.color = get_color_rgba(40, 114, 113, 255);
 	else
 		v.color = get_color_rgba(38, 70, 83, 255);

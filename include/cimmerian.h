@@ -144,6 +144,7 @@ typedef struct s_row
 
 typedef struct s_cell
 {
+	int		is_visible;
 	int		is_obstacle;
 	int		is_door;
 	int		is_goal;

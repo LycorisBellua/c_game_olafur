@@ -77,10 +77,13 @@ static int	set_map_cells(t_man *man)
 	{
 		man->map->cells[i].is_obstacle = man->map->map_walls[i] > '0'
 			&& man->map->map_walls[i] <= '9';
+		man->map->cells[i].is_visible = man->map->cells[i].is_obstacle;
 		man->map->cells[i].is_door = man->map->map_walls[i] == '5';
 		man->map->cells[i].is_goal = man->map->map_walls[i] == '6';
+		if (man->map->cells[i].is_goal)
+			man->map->cells[i].is_obstacle = 0;
 		man->map->cells[i].is_indoors = man->map->map_buildings[i] == '1';
-		if (man->map->cells[i].is_obstacle)
+		if (man->map->cells[i].is_visible)
 			man->map->cells[i].height = 1.0;
 		if (man->map->map_walls[i] == '6')
 			man->map->cells[i].height = 3.0;

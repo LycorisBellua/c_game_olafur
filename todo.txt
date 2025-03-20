@@ -5,13 +5,15 @@ Diffs between the GL and MLX versions:
 
 ---
 
-- Enter the portal and see from within + Fade out effect + Fade in effect to 
-another map or a victory message.
+- See from within the portal + Fade out effect + Fade in effect to a victory 
+message.
+
 - Load a level from a file. Maybe something like Grim Fetcher, with a folder 
-containing numbered levels.
+containing numbered levels. Make it so that the level exits either to another 
+map if it exists, or otherwise to the victory message.
+
 - Indicate sprite positions in the map file, instead of harcoding them. Make it 
 a list of vec2 values under each sprite name.
-
 - Collision with a decor sprite.
 - Collectible sprite. Collect souls to open the exit door, because why not. 
 There's not much of a gameplay, I want to quickly finish it.
