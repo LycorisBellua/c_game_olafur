@@ -1,28 +1,75 @@
 #include "cimmerian.h"
 
+static int	count_sprites(char **lines);
+
 static void	set_chalice_sprites(t_spr **spr, t_img *img);
 static void	set_pillar_sprites(t_spr **spr, t_img *img);
 static void	set_barrel_sprites(t_spr **spr, t_img *img);
 
-int	set_sprite_array(t_man *man, int length)
+int	extract_sprites(t_man *man, const char *filepath)
 {
-	int	i;
+	char	**lines;
 
-	man->map->sprite_len = length;
+	lines = read_file_lines(filepath);
+	if (!lines)
+		return (0);
+	man->map->sprite_len = count_sprites(lines);
+	if (!man->map->sprite_len)
+	{
+		free_arr((void **)lines, free);
+		return (1);
+	}
 	man->map->sprites = calloc(man->map->sprite_len, sizeof(t_spr *));
 	if (!man->map->sprites)
+	{
+		free_arr((void **)lines, free);
 		return (0);
+	}
+
+	/*
+sprite_chalice:
+20.5, 11.5
+18.5,  4.5
+10.0,  4.5
+10.0, 12.5
+ 3.5,  6.5
+ 3.5, 20.5
+ 3.5, 14.5
+14.5, 20.5
+
+sprite_pillar:
+18.5, 10.5
+18.5, 11.5
+18.5, 12.5
+ 8.5,  7.0
+
+sprite_barrel:
+21.5,  1.5
+15.5,  1.5
+16.0,  1.8
+16.2,  1.2
+ 3.5,  2.5
+ 9.5, 15.5
+10.0, 15.1
+10.5, 15.8
+	*/
+
+	int		i;
 	i = 0;
 	while (i < man->map->sprite_len)
 	{
 		man->map->sprites[i] = calloc(1, sizeof(t_spr));
 		if (!man->map->sprites[i])
+		{
+			free_arr((void **)lines, free);
 			return (0);
+		}
 		++i;
 	}
 	set_chalice_sprites(man->map->sprites, get_image(man, "chalice"));
 	set_pillar_sprites(man->map->sprites, get_image(man, "pillar"));
 	set_barrel_sprites(man->map->sprites, get_image(man, "barrel"));
+	free_arr((void **)lines, free);
 	return (1);
 }
 
@@ -44,6 +91,31 @@ void	free_sprite_array(t_man *man)
 	free(man->map->sprites);
 	man->map->sprite_len = 0;
 	return ;
+}
+
+static int	count_sprites(char **lines)
+{
+	int	i;
+	int	count;
+
+	if (!lines)
+		return (0);
+	i = 0;
+	count = 0;
+	while (lines[i])
+	{
+		while (lines[i] && strncmp(lines[i], "sprite_", 7))
+			++i;
+		if (!lines[i++])
+			break ;
+		while (lines[i] && strncmp(lines[i], "map_", 4)
+			&& strncmp(lines[i], "sprite_", 7))
+		{
+			++i;
+			++count;
+		}
+	}
+	return (count);
 }
 
 static void	set_chalice_sprites(t_spr **spr, t_img *img)

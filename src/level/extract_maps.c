@@ -37,7 +37,8 @@ static void	set_start_and_end_indexes(char **lines, size_t *start, size_t *end)
 		++*start;
 	++*start;
 	*end = *start;
-	while (lines[*end] && strncmp(lines[*end], "map_", 4))
+	while (lines[*end] && strncmp(lines[*end], "map_", 4)
+		&& strncmp(lines[*end], "sprite_", 7))
 		++*end;
 	return ;
 }

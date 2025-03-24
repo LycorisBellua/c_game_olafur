@@ -8,7 +8,8 @@ int	create_map(t_man *man, const char *filepath)
 	man->map = calloc(1, sizeof(t_map));
 	if (!man->map)
 		return (0);
-	if (!extract_maps_and_player_start(man->map, filepath))
+	if (!extract_maps_and_player_start(man->map, filepath)
+		|| !extract_sprites(man, filepath))
 	{
 		free_map(man);
 		return (0);
@@ -20,8 +21,7 @@ int	create_map(t_man *man, const char *filepath)
 	init_minimap_values(man);
 	compose_skybox(man->map, get_image(man, "src_skybox"), man->map->fog_color);
 	compose_background(man);
-	if (!man->map->skybox || !man->map->background || !set_map_cells(man)
-		|| !set_sprite_array(man, NBR_SPR))
+	if (!man->map->skybox || !man->map->background || !set_map_cells(man))
 	{
 		free_map(man);
 		return (0);

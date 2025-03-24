@@ -25,7 +25,6 @@
 # define FOV 60
 # define NBR_FRAMES 2
 # define NBR_IMG 20
-# define NBR_SPR 20
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 0.25
 # define DEFAULT_PLAYER_RADIUS 0.25
@@ -395,7 +394,7 @@ void		cast_sprites(t_man *man, double *z_buffer, int x);
 
 int			create_map(t_man *man, const char *filepath);
 int			extract_maps_and_player_start(t_map *m, const char *filepath);
-int			set_sprite_array(t_man *man, int length);
+int			extract_sprites(t_man *man, const char *filepath);
 void		free_sprite_array(t_man *man);
 void		free_map(t_man *man);
 void		draw_minimap(t_man *man, t_frame *f);
