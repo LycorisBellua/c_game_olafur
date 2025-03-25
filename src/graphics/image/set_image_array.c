@@ -2,7 +2,6 @@
 
 static int		set_pixel_data(t_man *man, t_png *file, size_t *i_img);
 static t_color	*get_pixel_data(t_png *file, int is_shadow);
-static t_color	get_pixel(t_png *png, size_t i, int is_shadow);
 
 int	set_image_array(t_man *man, const char *path)
 {
@@ -46,7 +45,6 @@ static int	set_pixel_data(t_man *man, t_png *file, size_t *i_img)
 
 static t_color	*get_pixel_data(t_png *file, int is_shadow)
 {
-	int		i;
 	char	*path;
 	t_png	*png;
 	t_color	*data;
@@ -58,34 +56,8 @@ static t_color	*get_pixel_data(t_png *file, int is_shadow)
 	if (!png)
 		return (0);
 	set_ivec2(&file->size, png->size.x, png->size.y);
-	data = calloc(png->size.x * png->size.y, sizeof(t_color));
-	if (data)
-	{
-		i = 0;
-		while (i < png->size.x * png->size.y)
-		{
-			data[i] = get_pixel(png, i, is_shadow);
-			++i;
-		}
-	}
+	data = malloc(png->size.x * png->size.y * sizeof(t_color));
+	memcpy(data, png->buf, png->size.x * png->size.y * sizeof(t_color));
 	free_png(png);
 	return (data);
-}
-
-static t_color	get_pixel(t_png *png, size_t i, int is_shadow)
-{
-	t_ubyte	*pixel;
-	t_ubyte	red;
-	t_ubyte	green;
-	t_ubyte	blue;
-	t_ubyte	alpha;
-
-	pixel = (t_ubyte *)(png->buf + i);
-	red = pixel[0];
-	green = pixel[1];
-	blue = pixel[2];
-	alpha = pixel[3];
-	if (is_shadow)
-		alpha = 255 - red;
-	return (get_color_rgba(red, green, blue, alpha));
 }
