@@ -30,7 +30,7 @@ gl:
 	@$(MAKE) ENGINE=GL
 
 $(MLX_LIB):
-	@if [ "$(ENGINE)" = "mlx" ]; then \
+	@if [ "$(ENGINE)" = "MLX" ]; then \
 		git clone -q https://github.com/42Paris/minilibx-linux.git $(MLX_DIR) && \
 		echo "Downloaded Linux version of MLX library: $(MLX_DIR)" && \
 		make -s -C $(MLX_DIR); \
