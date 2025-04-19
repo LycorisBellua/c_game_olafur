@@ -1,9 +1,9 @@
 #include "cimmerian.h"
 
-char	*strjoin(const char *s1, const char *s2)
+char	*strjoin(char const *s1, char const *s2)
 {
-	size_t	len1;
-	size_t	len2;
+	int		len1;
+	int		len2;
 	char	*joined;
 
 	if (!s1 || !s2)

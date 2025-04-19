@@ -2,15 +2,15 @@
 
 void	draw_cursor(t_frame *frame, t_img *image, t_ivec2 p, int cyc)
 {
-	size_t	i;
-	size_t	len;
+	int		i;
 	t_ivec2	q;
 	t_ivec2	r;
 	t_ivec2	zoom_p;
 
-	i = 0;
-	len = image->size.x * image->size.y;
-	while (i < len)
+	if (!image)
+		return ;
+	i = -1;
+	while (++i < image->size.x * image->size.y)
 	{
 		q.y = i / image->size.x;
 		q.x = i - q.y * image->size.x;
@@ -24,7 +24,6 @@ void	draw_cursor(t_frame *frame, t_img *image, t_ivec2 p, int cyc)
 				draw_point(frame, image->cycle[cyc][i], zoom_p.x, zoom_p.y);
 			}
 		}
-		++i;
 	}
 	return ;
 }

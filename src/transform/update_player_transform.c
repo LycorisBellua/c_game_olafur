@@ -2,8 +2,8 @@
 
 static void	move_in_local_dir(t_man *man, double forward_speed,
 				double lateral_speed);
-static void	prevent_out_of_bounds(t_man *man);
-static void	adjust_position_on_collision(t_man *man);
+static void	adjust_position_on_wall_collision(t_man *man);
+static void	adjust_position_on_sprite_collision(t_man *man, t_map *map);
 
 /*
 	Movement speed is in cell per second.
@@ -20,31 +20,32 @@ void	update_player_transform(t_man *man)
 	lateral_speed = man->move_speed * norm(man->move_action.x) * man->dt;
 	move_in_local_dir(man, forward_speed, lateral_speed);
 	prevent_out_of_bounds(man);
-	adjust_position_on_collision(man);
+	adjust_position_on_wall_collision(man);
+	adjust_position_on_sprite_collision(man, man->maps[man->curr_map]);
+	prevent_out_of_bounds(man);
 	rotate_player(man, RAD_45 * norm(man->rotate_action) * man->dt);
-	if (man->map->has_echolocation)
+	if (man->echolocation)
 		echolocation(man, forward_speed || lateral_speed);
 	return ;
 }
 
-void	handle_player_speed(t_man *man, int shift_pressed)
+void	prevent_out_of_bounds(t_man *man)
 {
-	if (shift_pressed)
-	{
-		man->move_speed = DEFAULT_MOVE_SPEED * 2;
-		man->rotate_speed = DEFAULT_ROTATE_SPEED * 2;
-	}
-	else
-	{
-		man->move_speed = DEFAULT_MOVE_SPEED;
-		man->rotate_speed = DEFAULT_ROTATE_SPEED;
-	}
+	t_vec2	pos;
+
+	pos = man->player.pos;
+	pos.x = fclamp(pos.x, 0.01, man->maps[man->curr_map]->size.x - 0.01);
+	pos.y = fclamp(pos.y, 0.01, man->maps[man->curr_map]->size.y - 0.01);
+	if (pos.x != man->player.pos.x || pos.y != man->player.pos.y)
+		man->player.prev_pos = pos;
+	man->player.pos = pos;
 	return ;
 }
 
 static void	move_in_local_dir(t_man *man, double forward_speed,
 	double lateral_speed)
 {
+	man->player.prev_pos = man->player.pos;
 	man->player.pos.x += man->player.dir.x * forward_speed;
 	man->player.pos.y += man->player.dir.y * forward_speed;
 	man->player.pos.x -= man->player.dir.y * lateral_speed;
@@ -52,36 +53,47 @@ static void	move_in_local_dir(t_man *man, double forward_speed,
 	return ;
 }
 
-static void	prevent_out_of_bounds(t_man *man)
+static void	adjust_position_on_wall_collision(t_man *man)
 {
-	double	radius;
 	t_vec2	pos;
+	t_vec2	delta;
+	t_map	*m;
 
-	radius = man->player.radius;
 	pos = man->player.pos;
-	pos.x = clamp_f(pos.x, 1 + radius, man->map->size.x - 1 - radius);
-	pos.y = clamp_f(pos.y, 1 + radius, man->map->size.y - 1 - radius);
-	man->player.pos = pos;
+	delta.x = pos.x - man->player.prev_pos.x;
+	delta.y = pos.y - man->player.prev_pos.y;
+	m = man->maps[man->curr_map];
+	cross_goal_if_unlocked(man);
+	disable_collision_with_dst_portal_if_within(man, m, pos);
+	if (!push_back_on_collision(man, m, pos, delta))
+		unstuck_from_wall(man, m);
 	return ;
 }
 
-static void	adjust_position_on_collision(t_man *man)
+static void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 {
-	double	radius;
-	t_map	*m;
+	int		i;
 	t_vec2	pos;
+	double	s_dist;
+	double	overlap;
+	t_vec2	push;
 
-	radius = man->player.radius;
-	m = man->map;
 	pos = man->player.pos;
-	if (m->cells[(int)pos.y * m->size.x + (int)(pos.x + radius)].is_obstacle)
-		pos.x = floor_f(pos.x + radius) - radius;
-	if (m->cells[(int)pos.y * m->size.x + (int)(pos.x - radius)].is_obstacle)
-		pos.x = ceil_f(pos.x - radius) + radius;
-	if (m->cells[(int)(pos.y + radius) *m->size.x + (int)pos.x].is_obstacle)
-		pos.y = floor_f(pos.y + radius) - radius;
-	if (m->cells[(int)(pos.y - radius) *m->size.x + (int)pos.x].is_obstacle)
-		pos.y = ceil_f(pos.y - radius) + radius;
+	i = 0;
+	while (i < map->sprite_len)
+	{
+		s_dist = map->sprites[i]->dist;
+		if (s_dist < man->player.radius + SPRITE_RADIUS)
+		{
+			if (collect_sprite(man, i))
+				continue ;
+			overlap = man->player.radius + SPRITE_RADIUS - s_dist;
+			push.x = (pos.x - map->sprites[i]->pos.x) / s_dist * overlap;
+			push.y = (pos.y - map->sprites[i]->pos.y) / s_dist * overlap;
+			set_vec2(&pos, pos.x + push.x, pos.y + push.y);
+		}
+		++i;
+	}
 	man->player.pos = pos;
 	return ;
 }

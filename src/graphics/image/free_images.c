@@ -4,12 +4,16 @@ void	free_images(t_man *man)
 {
 	size_t	i;
 
+	if (!man->images)
+		return ;
 	i = 0;
-	while (i < NBR_IMG)
+	while (man->images[i])
 	{
-		free_image(man->images + i, 0);
+		free_image(man->images[i], free);
 		++i;
 	}
+	free(man->images);
+	man->images = 0;
 	return ;
 }
 

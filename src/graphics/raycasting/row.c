@@ -2,7 +2,7 @@
 
 static void		init_row(t_man *man, t_frame *f, t_row *row);
 static int		update_row(t_man *man, t_frame *f, t_row *row, int *y);
-static t_color	calculate_color(t_map *m, t_row *row, int is_floor);
+static t_color	calculate_color(t_man *man, t_map *m, t_row *row, int is_floor);
 
 void	cast_floor(t_man *man, t_frame *f)
 {
@@ -20,7 +20,7 @@ void	cast_floor(t_man *man, t_frame *f)
 		x = 0;
 		while (x < f->size.x)
 		{
-			color = calculate_color(man->map, &row, 1);
+			color = calculate_color(man, man->maps[man->curr_map], &row, 1);
 			if (color.a)
 				draw_point(f, color, x, y);
 			row.floor.x += row.floor_step.x;
@@ -32,7 +32,7 @@ void	cast_floor(t_man *man, t_frame *f)
 	return ;
 }
 
-void	cast_ceiling_x(t_man *man, t_frame *f, double *z_buffer, int x)
+void	cast_ceiling_x(t_man *man, t_frame *f, int x)
 {
 	int		y;
 	t_row	row;
@@ -46,9 +46,9 @@ void	cast_ceiling_x(t_man *man, t_frame *f, double *z_buffer, int x)
 			continue ;
 		row.floor.x += x * row.floor_step.x;
 		row.floor.y += x * row.floor_step.y;
-		if (row.row_dist < z_buffer[x])
+		if (row.row_dist < man->z_buf[x])
 		{
-			color = calculate_color(man->map, &row, 0);
+			color = calculate_color(man, man->maps[man->curr_map], &row, 0);
 			if (color.a)
 				draw_point(f, color, x, f->size.y - y - 1);
 		}
@@ -74,7 +74,7 @@ static void	init_row(t_man *man, t_frame *f, t_row *row)
 static int	update_row(t_man *man, t_frame *f, t_row *row, int *y)
 {
 	row->row_dist = row->pos_z / (*y - f->size.y / 2 + 1);
-	if (row->row_dist > man->map->dof)
+	if (row->row_dist > man->dof)
 	{
 		++*y;
 		return (0);
@@ -86,7 +86,7 @@ static int	update_row(t_man *man, t_frame *f, t_row *row, int *y)
 	return (1);
 }
 
-static t_color	calculate_color(t_map *m, t_row *row, int is_floor)
+static t_color	calculate_color(t_man *man, t_map *m, t_row *row, int is_floor)
 {
 	t_ivec2	cell;
 	t_img	*tex;
@@ -100,9 +100,9 @@ static t_color	calculate_color(t_map *m, t_row *row, int is_floor)
 	cell.x = (int)row->floor.x;
 	cell.y = (int)row->floor.y;
 	if (is_floor)
-		tex = m->cells[cell.y * m->size.x + cell.x].tex_floor;
+		tex = m->cells[cell.y][cell.x].tex_floor;
 	else
-		tex = m->cells[cell.y * m->size.x + cell.x].tex_ceiling;
+		tex = m->cells[cell.y][cell.x].tex_ceiling;
 	if (!tex)
 		return (color);
 	coord.x = (int)(tex->size.x * (row->floor.x - cell.x)) % tex->size.x;
@@ -111,6 +111,6 @@ static t_color	calculate_color(t_map *m, t_row *row, int is_floor)
 	color.r *= 0.7;
 	color.g *= 0.7;
 	color.b *= 0.7;
-	apply_wall_fog(&color, m->fog_color, row->row_dist, m->dof);
+	apply_wall_fog(&color, m->fog_color, row->row_dist, man->dof);
 	return (color);
 }

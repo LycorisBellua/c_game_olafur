@@ -9,10 +9,10 @@ int	create_images_from_file(t_man *man, t_png *file, size_t *i_img)
 	t_img	*img;
 
 	i = 0;
-	img = &man->images[*i_img];
+	img = man->images[*i_img];
 	while (i < file->segment_len)
 	{
-		img = &man->images[*i_img];
+		img = man->images[*i_img];
 		if (!set_image_from_segment(img, file, i))
 		{
 			free_images(man);

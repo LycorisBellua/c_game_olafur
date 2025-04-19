@@ -1,7 +1,6 @@
 #include "cimmerian.h"
 
-static char	*get_whole_file(const char *filepath, int fd);
-static void	join_lines(const char *buf, char **tmp);
+static char	*get_whole_file(int fd);
 
 char	*read_file(const char *filepath)
 {
@@ -11,11 +10,10 @@ char	*read_file(const char *filepath)
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Couldn't open file \"%s\" for reading\n",
-			filepath);
+		printf("Error: Couldn't open file \"%s\" for reading\n", filepath);
 		return (0);
 	}
-	content = get_whole_file(filepath, fd);
+	content = get_whole_file(fd);
 	close(fd);
 	return (content);
 }
@@ -26,48 +24,26 @@ char	**read_file_lines(const char *filepath)
 	char	**lines;
 
 	whole = read_file(filepath);
-	lines = split_string(whole, '\n');
+	lines = split(whole, '\n');
 	free(whole);
 	return (lines);
 }
 
-static char	*get_whole_file(const char *filepath, int fd)
+static char	*get_whole_file(int fd)
 {
-	char	buf[1024];
-	ssize_t	len;
-	char	*tmp;
-
-	tmp = 0;
-	len = read(fd, buf, sizeof(buf) - 1);
-	while (len > 0)
-	{
-		buf[len] = 0;
-		join_lines(buf, &tmp);
-		len = read(fd, buf, sizeof(buf) - 1);
-	}
-	if (len < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: Couldn't read file \"%s\"\n", filepath);
-		free(tmp);
-		tmp = 0;
-	}
-	return (tmp);
-}
-
-static void	join_lines(const char *buf, char **tmp)
-{
+	char	*tmp1;
 	char	*tmp2;
 	char	*tmp3;
 
-	if (!*tmp)
-		*tmp = strdup(buf);
-	else
+	tmp1 = gnl(fd);
+	tmp2 = gnl(fd);
+	while (tmp2)
 	{
-		tmp2 = strdup(buf);
-		tmp3 = strjoin(*tmp, tmp2);
-		free(*tmp);
+		tmp3 = strjoin(tmp1, tmp2);
+		free(tmp1);
 		free(tmp2);
-		*tmp = tmp3;
+		tmp1 = tmp3;
+		tmp2 = gnl(fd);
 	}
-	return ;
+	return (tmp1);
 }

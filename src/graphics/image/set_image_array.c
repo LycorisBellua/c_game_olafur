@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+static int		allocate_array(t_man *man, char **lines);
 static int		set_pixel_data(t_man *man, t_png *file, size_t *i_img);
 static t_color	*get_pixel_data(t_png *file, int is_shadow);
 
@@ -12,8 +13,8 @@ int	set_image_array(t_man *man, const char *path)
 	int		is_parsing_ongoing;
 
 	lines = get_json_content(path);
-	if (!lines)
-		return (0);
+	if (!lines || !allocate_array(man, lines))
+		put_error_and_exit(man, "", EXIT_FAILURE);
 	i_img = 0;
 	is_success = 1;
 	is_parsing_ongoing = 1;
@@ -26,11 +27,42 @@ int	set_image_array(t_man *man, const char *path)
 		free_and_reset_png_file_obj(&file);
 	}
 	free_json_content(lines);
+	add_outline_to_font(man->images[1]);
 	return (is_success);
+}
+
+static int	allocate_array(t_man *man, char **lines)
+{
+	int	i;
+	int	count;
+
+	i = -1;
+	count = 0;
+	while (lines && lines[++i])
+	{
+		if (strstr(lines[i], "\"id\":"))
+			++count;
+	}
+	if (!count)
+		return (0);
+	man->images = calloc(count + 1, sizeof(t_img *));
+	i = -1;
+	while (man->images && ++i < count)
+	{
+		man->images[i] = calloc(1, sizeof(t_img));
+		if (!man->images[i])
+		{
+			free_images(man);
+			return (0);
+		}
+	}
+	return (!!man->images);
 }
 
 static int	set_pixel_data(t_man *man, t_png *file, size_t *i_img)
 {
+	size_t	i;
+
 	file->buf = get_pixel_data(file, 0);
 	if (!file->buf)
 		return (0);
@@ -39,6 +71,13 @@ static int	set_pixel_data(t_man *man, t_png *file, size_t *i_img)
 		file->buf_shadow = get_pixel_data(file, 1);
 		if (!file->buf_shadow)
 			return (0);
+	}
+	i = 0;
+	while (i < file->segment_len)
+	{
+		file->seg[i].size.x = clamp(file->seg[i].size.x, 0, file->size.x);
+		file->seg[i].size.y = clamp(file->seg[i].size.y, 0, file->size.y);
+		++i;
 	}
 	return (create_images_from_file(man, file, i_img));
 }

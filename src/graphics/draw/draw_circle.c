@@ -79,7 +79,7 @@ void	draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
 			distance_squared = p.x * p.x + p.y * p.y;
 			if (distance_squared <= radius * radius)
 			{
-				linear_ratio = sqrt_f((double)distance_squared) / radius;
+				linear_ratio = sqrt_approx((double)distance_squared) / radius;
 				adjusted_ratio = linear_ratio * linear_ratio;
 				c = interpolate_color(center.color, edge, adjusted_ratio);
 				draw_point(f, c, center.coord.x + p.x, center.coord.y + p.y);

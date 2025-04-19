@@ -89,14 +89,12 @@ static char	*add_to_line(char *line, char *added, int free_added)
 	char	*joined;
 
 	if (!line)
-	{
-		line = malloc(1 * sizeof(char));
-		if (line)
-			line[0] = 0;
-	}
+		line = calloc(1,sizeof(char));
 	if (line)
 	{
-		len = strlen(line) + strlen(added);
+		len = strlen(line);
+		if (added)
+			len += strlen(added);
 		joined = malloc((len + 1) * sizeof(char));
 		if (joined)
 		{

@@ -1,6 +1,7 @@
 #include "cimmerian.h"
 
-static void	close_last_door(t_man *man, t_list **opened_doors, int max_dist);
+static void	close_last_door(t_man *man, t_map *map, t_list **opened_doors,
+				int max_dist);
 static void	open_new_door(t_man *man, t_list **opened_doors, int max_dist);
 static int	is_closed_door(t_man *man, int x, int y);
 static void	add_door_to_list(t_man *man, int x, int y, t_list **list);
@@ -9,12 +10,13 @@ void	door_routine(t_man *man)
 {
 	static t_list	*opened_doors;
 
-	close_last_door(man, &opened_doors, 2);
+	close_last_door(man, man->maps[man->curr_map], &opened_doors, 2);
 	open_new_door(man, &opened_doors, 2);
 	return ;
 }
 
-static void	close_last_door(t_man *man, t_list **opened_doors, int max_dist)
+static void	close_last_door(t_man *man, t_map *map, t_list **opened_doors,
+	int max_dist)
 {
 	t_list	*head;
 	t_list	*curr;
@@ -27,10 +29,10 @@ static void	close_last_door(t_man *man, t_list **opened_doors, int max_dist)
 	while (curr)
 	{
 		door = *((t_ivec2 *)curr->data);
-		if (!is_within_threshold(player, door, max_dist))
+		if (!is_dist_grid_aligned_and_within_threshold(player, door, max_dist))
 		{
-			man->map->cells[door.y * man->map->size.x + door.x].is_visible = 1;
-			man->map->cells[door.y * man->map->size.x + door.x].is_obstacle = 1;
+			map->cells[door.y][door.x].is_visible = 1;
+			map->cells[door.y][door.x].is_obstacle = 1;
 			if (curr == head)
 				head = (curr)->next;
 			list_del_one(&curr, free);
@@ -68,17 +70,21 @@ static void	open_new_door(t_man *man, t_list **opened_doors, int max_dist)
 
 static int	is_closed_door(t_man *man, int x, int y)
 {
-	if (x < 0 || x >= man->map->size.x || y < 0 || y >= man->map->size.y)
+	t_map	*map;
+
+	map = man->maps[man->curr_map];
+	if (x < 0 || x >= map->size.x || y < 0 || y >= map->size.y)
 		return (0);
-	return (man->map->cells[y * man->map->size.x + x].is_door
-		&& man->map->cells[y * man->map->size.x + x].is_obstacle);
+	return (map->cells[y][x].is_door && map->cells[y][x].is_obstacle);
 }
 
 static void	add_door_to_list(t_man *man, int x, int y, t_list **list)
 {
+	t_map	*map;
 	t_ivec2	*coord;
 	t_list	*node;
 
+	map = man->maps[man->curr_map];
 	coord = calloc(1, sizeof(t_ivec2));
 	if (coord)
 	{
@@ -89,7 +95,7 @@ static void	add_door_to_list(t_man *man, int x, int y, t_list **list)
 		else
 			list_add_back(list, node);
 	}
-	man->map->cells[y * man->map->size.x + x].is_visible = 0;
-	man->map->cells[y * man->map->size.x + x].is_obstacle = 0;
+	map->cells[y][x].is_visible = 0;
+	map->cells[y][x].is_obstacle = 0;
 	return ;
 }

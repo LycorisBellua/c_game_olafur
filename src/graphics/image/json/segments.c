@@ -68,7 +68,8 @@ static void	fill_seg_array(t_png *file, char **lines, size_t start, size_t end)
 	return ;
 }
 
-static void	parse_cycle(t_png_seg *seg, char **lines, size_t *start, size_t end)
+static void	parse_cycle(t_png_seg *seg, char **lines, size_t *start,
+	size_t end)
 {
 	size_t	i;
 

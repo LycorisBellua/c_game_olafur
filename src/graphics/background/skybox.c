@@ -1,40 +1,86 @@
 #include "cimmerian.h"
 
-static void	add_floor_to_skybox(t_img *img, t_color fog);
-static void	apply_modif_to_curr_cycle_frame(t_img *img, t_color fog,
+static void	add_ceiling_and_floor_to_skybox(t_map *map);
+static void	apply_ceiling_to_curr_cycle_frame(t_img *img, t_color fog,
+				int h_gradient, t_color top);
+static void	apply_floor_to_curr_cycle_frame(t_img *img, t_color fog,
 				int h_gradient, t_color bottom);
 
-void	compose_skybox(t_map *m, t_img *src, t_color fog)
+void	compose_skybox(t_man *man, t_map *map, t_img *src)
 {
-	m->skybox = duplicate_image("skybox", src);
-	add_floor_to_skybox(m->skybox, fog);
-	return ;
-}
+	t_ivec2	size;
 
-static void	add_floor_to_skybox(t_img *img, t_color fog)
-{
-	int		h_gradient;
-	t_color	bottom;
-
-	if (!img)
-		return ;
-	h_gradient = img->size.y / 2;
-	bottom = get_color_rgba(42, 30, 30, 255);
-	while (img->cycle_index < img->cycle_len)
+	if (map->skybox)
 	{
-		apply_modif_to_curr_cycle_frame(img, fog, h_gradient, bottom);
-		++img->cycle_index;
+		free_image(map->skybox, free);
+		map->skybox = 0;
 	}
-	img->cycle_index = 0;
+	map->skybox = duplicate_image("skybox", src);
+	if (!map->skybox)
+	{
+		size.x = man->res.window_size_default.x * 4;
+		size.y = man->res.window_size_default.y;
+		map->skybox = create_empty_image("skybox", size);
+	}
+	add_ceiling_and_floor_to_skybox(map);
 	return ;
 }
 
-static void	apply_modif_to_curr_cycle_frame(t_img *img, t_color fog,
+static void	add_ceiling_and_floor_to_skybox(t_map *map)
+{
+	int	h_gradient;
+
+	if (!map->skybox)
+		return ;
+	h_gradient = map->skybox->size.y / 2;
+	while (map->skybox->cycle_index < map->skybox->cycle_len)
+	{
+		apply_ceiling_to_curr_cycle_frame(map->skybox, map->fog_color,
+			h_gradient, map->ceiling_color);
+		apply_floor_to_curr_cycle_frame(map->skybox, map->fog_color,
+			h_gradient, map->floor_color);
+		++map->skybox->cycle_index;
+	}
+	map->skybox->cycle_index = 0;
+	return ;
+}
+
+static void	apply_ceiling_to_curr_cycle_frame(t_img *img, t_color fog,
+	int h_gradient, t_color top)
+{
+	t_vert	v;
+	double	factor;
+
+	if (!top.a)
+		return ;
+	v.coord.y = 0;
+	while (v.coord.y < img->size.y / 2)
+	{
+		v.coord.x = 0;
+		factor = (double)(v.coord.y) / h_gradient;
+		while (v.coord.x < img->size.x)
+		{
+			v.color.r = (1 - factor) * top.r + factor * fog.r;
+			v.color.g = (1 - factor) * top.g + factor * fog.g;
+			v.color.b = (1 - factor) * top.b + factor * fog.b;
+			v.color.a = 255;
+			draw_pixel(img->cycle[img->cycle_index], v.color, v.coord,
+				img->size);
+			++v.coord.x;
+		}
+		++v.coord.y;
+	}
+	return ;
+}
+
+static void	apply_floor_to_curr_cycle_frame(t_img *img, t_color fog,
 	int h_gradient, t_color bottom)
 {
 	t_vert	v;
 	double	factor;
 
+	if (!bottom.a)
+		return ;
 	v.coord.y = img->size.y / 2;
 	while (v.coord.y < img->size.y)
 	{

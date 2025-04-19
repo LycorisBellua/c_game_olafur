@@ -45,7 +45,7 @@ static void	rotate_on_click(t_man *man)
 			x_max_diff = diff;
 		}
 		rotate_player(man,
-			RAD_1 * get_diff_perc(man, diff) * norm(diff) * man->dt);
+			RAD_1 * 2 * get_diff_perc(man, diff) * norm(diff) * man->dt);
 	}
 	return ;
 }

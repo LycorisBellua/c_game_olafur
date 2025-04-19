@@ -1,52 +1,102 @@
 #include "cimmerian.h"
 
-static void	draw_png_with_x_offset(t_frame *f, t_png *png, int x_offset);
+static void	add_fog_overlay(t_png *png, double fog_width, t_color fog);
+static void	upper_gradient(t_png *png, t_color fog, int h_gradient,
+				t_vert *v);
+static void	lower_gradient(t_png *png, int h_solid, int h_gradient,
+				t_vert *v);
 
-void	compose_background(t_man *man)
+void	compose_background(t_man *man, t_map *map)
 {
-	if (man->map->skybox)
-		man->map->background = create_empty_png(man->res.window_size_default);
-	if (man->map->background)
-		update_background(man->map);
-	return ;
-}
+	t_ivec2	size;
+	int		min_len;
 
-void	draw_background(t_man *man, t_frame *f)
-{
-	t_player	*p;
-	double		angle;
-	int			offset;
-
-	p = &man->player;
-	angle = get_angle_from_dir(p->dir.x, p->dir.y);
-	offset = (angle + PI) / RAD_360 * man->map->background->size.x;
-	draw_png_with_x_offset(f, man->map->background, offset);
-	return ;
-}
-
-static void	draw_png_with_x_offset(t_frame *f, t_png *png, int x_offset)
-{
-	t_color	c;
-	t_ivec2	f_coord;
-	t_ivec2	i_coord;
-
-	x_offset %= png->size.x;
-	f_coord.y = 0;
-	while (f_coord.y < png->size.y)
+	if (!map)
+		return ;
+	if (map->skybox && !map->background)
 	{
-		i_coord.y = f_coord.y;
-		i_coord.x = x_offset;
-		f_coord.x = 0;
-		while (f_coord.x < png->size.x)
+		size.x = man->res.window_size_default.x * 4;
+		size.y = man->res.window_size_default.y;
+		map->background = create_empty_png(size);
+	}
+	if (!map->background)
+		return ;
+	min_len = min(map->skybox->size.x * map->skybox->size.y,
+			map->background->size.x * map->background->size.y);
+	memcpy(map->background->buf,
+		map->skybox->cycle[map->skybox->cycle_index],
+		min_len * sizeof(t_color));
+	add_fog_overlay(map->background, man->fog_width, map->fog_color);
+	return ;
+}
+
+static void	add_fog_overlay(t_png *png, double fog_width, t_color fog)
+{
+	int		h_solid;
+	int		h_gradient;
+	t_vert	v;
+
+	h_solid = png->size.y / 2 * fog_width;
+	h_gradient = png->size.y / 2 - h_solid;
+	upper_gradient(png, fog, h_gradient, &v);
+	v.color = fog;
+	while (v.coord.y < png->size.y / 2 + h_solid)
+	{
+		v.coord.x = 0;
+		while (v.coord.x < png->size.x)
 		{
-			if (i_coord.x >= png->size.x)
-				i_coord.x = 0;
-			c = png->buf[i_coord.y * png->size.x + i_coord.x];
-			draw_point(f, c, f_coord.x, f_coord.y);
-			++i_coord.x;
-			++f_coord.x;
+			draw_pixel(png->buf, v.color, v.coord, png->size);
+			++v.coord.x;
 		}
-		++f_coord.y;
+		++v.coord.y;
+	}
+	lower_gradient(png, h_solid, h_gradient, &v);
+	return ;
+}
+
+static void	upper_gradient(t_png *png, t_color fog, int h_gradient, t_vert *v)
+{
+	double	factor;
+
+	v->coord.y = 0;
+	while (v->coord.y < h_gradient)
+	{
+		v->coord.x = 0;
+		factor = (double)v->coord.y / h_gradient;
+		while (v->coord.x < png->size.x)
+		{
+			v->color.r = fog.r;
+			v->color.g = fog.g;
+			v->color.b = fog.b;
+			v->color.a = (unsigned char)(factor * fog.a);
+			draw_pixel(png->buf, v->color, v->coord, png->size);
+			++v->coord.x;
+		}
+		++v->coord.y;
+	}
+	return ;
+}
+
+static void	lower_gradient(t_png *png, int h_solid, int h_gradient, t_vert *v)
+{
+	t_color	fog;
+	double	factor;
+
+	fog = v->color;
+	while (v->coord.y < png->size.y)
+	{
+		v->coord.x = 0;
+		factor = (double)(v->coord.y - png->size.y / 2 - h_solid) / h_gradient;
+		while (v->coord.x < png->size.x)
+		{
+			v->color.r = fog.r;
+			v->color.g = fog.g;
+			v->color.b = fog.b;
+			v->color.a = (unsigned char)((1 - factor) * fog.a);
+			draw_pixel(png->buf, v->color, v->coord, png->size);
+			++v->coord.x;
+		}
+		++v->coord.y;
 	}
 	return ;
 }

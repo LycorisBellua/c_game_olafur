@@ -6,12 +6,14 @@ void	free_mesh(void);
 
 void	deinit(t_man *man)
 {
+	if (!man)
+		return ;
 	glfwTerminate();
 	free_shader_program(man);
 	free_uniform(man);
 	free_mesh();
 	free_frames(man);
 	free_images(man);
-	free_map(man);
+	free_maps(man);
 	return ;
 }

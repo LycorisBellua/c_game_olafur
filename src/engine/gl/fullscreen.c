@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-void	toggle_fullscreen(t_man *man)
+void	action_toggle_fullscreen(t_man *man)
 {
 	int					decorated;
 	GLFWmonitor			*monitor;

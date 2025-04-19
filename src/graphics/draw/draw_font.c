@@ -14,11 +14,11 @@ void	draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos, char *str)
 	size_t	len;
 	t_img	*img;
 
-	if (!str)
+	img = get_image(man, "font_default");
+	if (!str || !img)
 		return ;
 	i = 0;
 	len = strlen(str);
-	img = &man->images[1];
 	fix_initial_pos(pos);
 	while (i <= len)
 	{

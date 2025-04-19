@@ -133,7 +133,39 @@
         "segments": [
             {
                 "id": "src_skybox",
-                "size": [640, 360],
+                "size": [2560, 360],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/portal_closed.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "portal_closed",
+                "size": [256, 256],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/portal_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "portal_open",
+                "size": [256, 256],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,

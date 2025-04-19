@@ -2,32 +2,32 @@
 
 static int	count_sprites(char **lines);
 
-static void	set_chalice_sprites(t_spr **spr, t_img *img);
+static void	set_soul_sprites(t_spr **spr, t_img *img);
 static void	set_pillar_sprites(t_spr **spr, t_img *img);
 static void	set_barrel_sprites(t_spr **spr, t_img *img);
 
-int	extract_sprites(t_man *man, const char *filepath)
+int	extract_sprites(t_man *man, t_map *map)
 {
 	char	**lines;
 
-	lines = read_file_lines(filepath);
+	lines = read_file_lines(map->filepath);
 	if (!lines)
 		return (0);
-	man->map->sprite_len = count_sprites(lines);
-	if (!man->map->sprite_len)
+	map->sprite_len = count_sprites(lines);
+	if (!map->sprite_len)
 	{
 		free_arr((void **)lines, free);
 		return (1);
 	}
-	man->map->sprites = calloc(man->map->sprite_len, sizeof(t_spr *));
-	if (!man->map->sprites)
+	map->sprites = calloc(map->sprite_len, sizeof(t_spr *));
+	if (!map->sprites)
 	{
 		free_arr((void **)lines, free);
 		return (0);
 	}
 
 	/*
-sprite_chalice:
+sprite_soul_idle:
 20.5, 11.5
 18.5,  4.5
 10.0,  4.5
@@ -56,40 +56,41 @@ sprite_barrel:
 
 	int		i;
 	i = 0;
-	while (i < man->map->sprite_len)
+	while (i < map->sprite_len)
 	{
-		man->map->sprites[i] = calloc(1, sizeof(t_spr));
-		if (!man->map->sprites[i])
+		map->sprites[i] = calloc(1, sizeof(t_spr));
+		if (!map->sprites[i])
 		{
 			free_arr((void **)lines, free);
 			return (0);
 		}
 		++i;
 	}
-	set_chalice_sprites(man->map->sprites, get_image(man, "chalice"));
-	set_pillar_sprites(man->map->sprites, get_image(man, "pillar"));
-	set_barrel_sprites(man->map->sprites, get_image(man, "barrel"));
+	set_soul_sprites(map->sprites, get_image(man, "soul_idle"));
+	set_pillar_sprites(map->sprites, get_image(man, "pillar"));
+	set_barrel_sprites(map->sprites, get_image(man, "barrel"));
 	free_arr((void **)lines, free);
 	return (1);
 }
 
-void	free_sprite_array(t_man *man)
+void	free_sprite_array(t_map *map)
 {
 	int	i;
 
-	if (!man->map)
+	if (!map)
 		return ;
-	if (man->map->sprites)
+	if (map->sprites)
 	{
 		i = 0;
-		while (i < man->map->sprite_len)
+		while (i < map->sprite_len)
 		{
-			free(man->map->sprites[i]);
+			free(map->sprites[i]);
 			++i;
 		}
 	}
-	free(man->map->sprites);
-	man->map->sprite_len = 0;
+	free(map->sprites);
+	map->sprites = 0;
+	map->sprite_len = 0;
 	return ;
 }
 
@@ -118,7 +119,7 @@ static int	count_sprites(char **lines)
 	return (count);
 }
 
-static void	set_chalice_sprites(t_spr **spr, t_img *img)
+static void	set_soul_sprites(t_spr **spr, t_img *img)
 {
 	int	i;
 
@@ -136,6 +137,17 @@ static void	set_chalice_sprites(t_spr **spr, t_img *img)
 	set_vec2(&spr[5]->pos, 3.5, 20.5);
 	set_vec2(&spr[6]->pos, 3.5, 14.5);
 	set_vec2(&spr[7]->pos, 14.5, 20.5);
+	if (img && !strcmp(img->id, SPRITE_TYPE_TO_COLLECT))
+	{
+		spr[0]->is_collectible = 1;
+		spr[1]->is_collectible = 1;
+		spr[2]->is_collectible = 1;
+		spr[3]->is_collectible = 1;
+		spr[4]->is_collectible = 1;
+		spr[5]->is_collectible = 1;
+		spr[6]->is_collectible = 1;
+		spr[7]->is_collectible = 1;
+	}
 	return ;
 }
 

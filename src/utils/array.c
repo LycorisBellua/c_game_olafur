@@ -25,3 +25,15 @@ void	swap_elements(void **a, void **b)
 	*b = tmp;
 	return ;
 }
+
+size_t	count_arr_elems(void **arr)
+{
+	size_t	count;
+
+	count = 0;
+	if (!arr)
+		return (count);
+	while (arr[count])
+		++count;
+	return (count);
+}

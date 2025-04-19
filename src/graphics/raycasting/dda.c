@@ -7,7 +7,7 @@ static void	update_ray_data(t_ray *r);
 void	perform_dda(t_man *man, double cam_x, t_list **list)
 {
 	t_ray	*r;
-	double	biggest_height;
+	double	max_height;
 	int		add;
 
 	r = calloc(1, sizeof(t_ray));
@@ -15,11 +15,11 @@ void	perform_dda(t_man *man, double cam_x, t_list **list)
 		return ;
 	init_ray_data_x(man, r, cam_x);
 	init_ray_data_y(man, r, cam_x);
-	biggest_height = 0;
+	max_height = 0;
 	while (1)
 	{
 		update_ray_data(r);
-		add = dda_add_to_list(man->map, r, &biggest_height);
+		add = dda_add_to_list(man, man->maps[man->curr_map], r, &max_height);
 		if (add < 0)
 			break ;
 		else if (add)
@@ -36,9 +36,9 @@ void	perform_dda(t_man *man, double cam_x, t_list **list)
 static void	init_ray_data_x(t_man *man, t_ray *r, double cam_x)
 {
 	r->ray_dir.x = man->player.dir.x + man->player.plane.x * cam_x;
-	r->delta_dist.x = INF;
+	r->delta_dist.x = HUGE_VAL;
 	if (r->ray_dir.x)
-		r->delta_dist.x = abs_f(1 / r->ray_dir.x);
+		r->delta_dist.x = fabs(1 / r->ray_dir.x);
 	r->m_index.x = (int)man->player.pos.x;
 	if (r->ray_dir.x < 0)
 	{
@@ -57,9 +57,9 @@ static void	init_ray_data_x(t_man *man, t_ray *r, double cam_x)
 static void	init_ray_data_y(t_man *man, t_ray *r, double cam_x)
 {
 	r->ray_dir.y = man->player.dir.y + man->player.plane.y * cam_x;
-	r->delta_dist.y = INF;
+	r->delta_dist.y = HUGE_VAL;
 	if (r->ray_dir.y)
-		r->delta_dist.y = abs_f(1 / r->ray_dir.y);
+		r->delta_dist.y = fabs(1 / r->ray_dir.y);
 	r->m_index.y = (int)man->player.pos.y;
 	if (r->ray_dir.y < 0)
 	{

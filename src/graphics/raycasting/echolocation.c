@@ -7,12 +7,12 @@ void	echolocation(t_man *man, int has_player_moved)
 	if (has_player_moved)
 	{
 		dof_elapsed_time += man->dt;
-		update_dof(man->map, dof_elapsed_time / 2);
+		update_dof(man, dof_elapsed_time / 2);
 	}
 	else
 	{
 		dof_elapsed_time = 0;
-		update_dof(man->map, -1.5 * man->dt);
+		update_dof(man, -1.5 * man->dt);
 	}
 	return ;
 }

@@ -4,7 +4,7 @@ static size_t	count_split_nmemb(const char *s, char c);
 static char		**populate_split_list(char **list, const char *s, char c);
 static char		*get_substr(const char *s, unsigned int start, size_t len);
 
-char	**split_string(const char *s, char c)
+char	**split(const char *s, char c)
 {
 	char	**list;
 	size_t	nmemb;

@@ -51,6 +51,6 @@ static void	set_aspect_ratio(t_man *man)
 			* man->res.aspect_ratio;
 	}
 	man->res.h_mod = man->res.aspect_ratio
-		- (round_f(man->res.aspect_ratio) - man->res.aspect_ratio);
+		- (round(man->res.aspect_ratio) - man->res.aspect_ratio);
 	return ;
 }

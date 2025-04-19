@@ -6,8 +6,12 @@ int	calculate_image_average_color(t_img *img)
 {
 	size_t	i;
 
-	img->average_color = calloc(img->cycle_len, sizeof(t_color));
-	img->is_see_through = calloc(img->cycle_len, sizeof(int));
+	if (!img)
+		return (0);
+	if (!img->average_color)
+		img->average_color = calloc(img->cycle_len, sizeof(t_color));
+	if (!img->is_see_through)
+		img->is_see_through = calloc(img->cycle_len, sizeof(int));
 	if (!img->average_color || !img->is_see_through)
 		return (0);
 	i = 0;

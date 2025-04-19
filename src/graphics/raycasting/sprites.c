@@ -5,7 +5,7 @@
 #define V_MOVE 0.0
 
 static void	set_sprite_values(t_man *man, t_spr *s);
-static void	render_sprite_column(t_man *man, t_spr *s, double *z_buffer, int x);
+static void	render_sprite_column(t_man *man, t_spr *s, int x);
 
 void	sort_sprites_by_dist(t_man *man)
 {
@@ -13,22 +13,22 @@ void	sort_sprites_by_dist(t_man *man)
 	int	j;
 
 	i = 0;
-	while (i < man->map->sprite_len)
+	while (i < man->maps[man->curr_map]->sprite_len)
 	{
-		man->map->sprites[i]->dist = get_dist(man->player.pos.x,
-				man->player.pos.y, man->map->sprites[i]->pos.x,
-				man->map->sprites[i]->pos.y);
+		man->maps[man->curr_map]->sprites[i]->dist = dist(man->player.pos,
+				man->maps[man->curr_map]->sprites[i]->pos);
 		++i;
 	}
 	i = 0;
-	while (i < man->map->sprite_len - 1)
+	while (i < man->maps[man->curr_map]->sprite_len - 1)
 	{
 		j = 0;
-		while (j < man->map->sprite_len - i - 1)
+		while (j < man->maps[man->curr_map]->sprite_len - i - 1)
 		{
-			if (man->map->sprites[j]->dist < man->map->sprites[j + 1]->dist)
-				swap_elements((void **)(man->map->sprites + j),
-					(void **)(man->map->sprites + j + 1));
+			if (man->maps[man->curr_map]->sprites[j]->dist
+				< man->maps[man->curr_map]->sprites[j + 1]->dist)
+				swap_elements((void **)(man->maps[man->curr_map]->sprites + j),
+					(void **)(man->maps[man->curr_map]->sprites + j + 1));
 			++j;
 		}
 		++i;
@@ -36,21 +36,21 @@ void	sort_sprites_by_dist(t_man *man)
 	return ;
 }
 
-void	cast_sprites(t_man *man, double *z_buffer, int x)
+void	cast_sprites(t_man *man, int x)
 {
 	int		i;
 	t_spr	*s;
 
 	i = 0;
-	while (i < man->map->sprite_len)
+	while (i < man->maps[man->curr_map]->sprite_len)
 	{
-		s = man->map->sprites[i];
-		if (s->dist <= man->map->dof)
+		s = man->maps[man->curr_map]->sprites[i];
+		if (s->dist <= man->dof)
 		{
 			if (!x)
 				set_sprite_values(man, s);
 			if (s->img && x >= s->draw_start.x && x < s->draw_end.x)
-				render_sprite_column(man, s, z_buffer, x);
+				render_sprite_column(man, s, x);
 		}
 		++i;
 	}
@@ -85,7 +85,7 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 	return ;
 }
 
-static void	render_sprite_column(t_man *man, t_spr *s, double *z_buffer, int x)
+static void	render_sprite_column(t_man *man, t_spr *s, int x)
 {
 	t_frame	*f;
 	t_ivec2	tex;
@@ -96,19 +96,19 @@ static void	render_sprite_column(t_man *man, t_spr *s, double *z_buffer, int x)
 	f = man->frame + man->curr_frame;
 	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x))
 			* s->img->size.x / s->size.x) / 256;
-	if (s->transform.y > 0 && s->transform.y < z_buffer[x] / man->res.h_mod)
+	if (s->transform.y > 0 && s->transform.y < man->z_buf[x] / man->res.h_mod)
 	{
-		y = s->draw_start.y;
-		while (y < s->draw_end.y)
+		y = s->draw_start.y - 1;
+		while (++y < s->draw_end.y)
 		{
 			d = (y - s->v_move_screen) * 256 - f->size.y * 128 + s->size.y
 				* 128;
 			tex.y = ((d * s->img->size.y) / s->size.y) / 256;
 			color = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x
 				+ tex.x];
-			apply_wall_fog(&color, man->map->fog_color, s->dist, man->map->dof);
+			apply_wall_fog(&color, man->maps[man->curr_map]->fog_color, s->dist,
+				man->dof);
 			draw_point(f, color, x, y);
-			++y;
 		}
 	}
 	return ;

@@ -4,7 +4,7 @@ void		render_mesh(void);
 
 static int	set_frame(t_man *man, t_frame *f);
 
-int	init_frames(t_man *man)
+void	init_frames(t_man *man)
 {
 	size_t	i;
 
@@ -15,12 +15,16 @@ int	init_frames(t_man *man)
 		if (!set_frame(man, man->frame + i))
 		{
 			free_frames(man);
-			return (0);
+			put_error_and_exit(man, "", EXIT_FAILURE);
+			return ;
 		}
 		++i;
 	}
 	glBindTexture(GL_TEXTURE_2D, man->frame[0].id);
-	return (1);
+	man->z_buf = malloc(man->frame[0].size.x * sizeof(double));
+	if (!man->z_buf)
+		put_error_and_exit(man, "", EXIT_FAILURE);
+	return ;
 }
 
 void	clear_frame(t_frame *f)
@@ -60,6 +64,8 @@ void	free_frames(t_man *man)
 		man->frame[i].buf = 0;
 		++i;
 	}
+	free(man->z_buf);
+	man->z_buf = 0;
 	return ;
 }
 

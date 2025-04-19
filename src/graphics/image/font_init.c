@@ -80,7 +80,7 @@ static void	add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets)
 				if (!cmpc(img->cycle[cycle_index][p.y * img->size.x + p.x],
 					get_color_rgba(255, 255, 255, 255)))
 					img->cycle[cycle_index][p.y * img->size.x + p.x] = \
-						get_color_rgba(0, 0, 0, 255);
+get_color_rgba(0, 0, 0, 255);
 			}
 		}
 	}
