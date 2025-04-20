@@ -2,8 +2,8 @@
 # define MACROS_H
 
 # define TITLE "Cimmerian"
-# define RES_WIDTH  640
-# define RES_HEIGHT 360
+# define RES_WIDTH  (640 * 2)
+# define RES_HEIGHT (360 * 2)
 # define FOV 60
 # define NBR_FRAMES 2
 # define ECHOLOCATION 0
