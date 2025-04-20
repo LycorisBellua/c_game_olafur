@@ -1,46 +1,41 @@
 #include "cimmerian.h"
 
-static int	app_glsl_version = 0;
-
 static GLuint	compile_shader(GLenum type, const char *filepath);
 static int		get_app_glsl_version(void);
-static void		set_glsl_version_in_shader(char *ptr_shader);
+static void		set_glsl_version_in_shader(char *ptr_shader, int version);
 static void		free_shader(GLuint *id);
 
+/*
+	At the end the shaders are freed. This is because they are already compiled 
+	in the shader programs, so no need to keep them around unless you want to 
+	use them in another shader program.
+*/
 int	create_shader_program(void)
 {
-	const char	*vs_filepath = "src/engine/gl/shaders/vs.glsl";
-	const char	*fs_filepath = "src/engine/gl/shaders/fs.glsl";
-	GLuint		vs;
-	GLuint		fs;
-	int			shader_program;
+	GLuint	shaders[2];
+	int		shader_program;
 
-	vs = compile_shader(GL_VERTEX_SHADER, vs_filepath);
-	fs = compile_shader(GL_FRAGMENT_SHADER, fs_filepath);
-	if (!vs || !fs)
+	shaders[0] = compile_shader(GL_VERTEX_SHADER, PATH_VERTEX_SHADER);
+	shaders[1] = compile_shader(GL_FRAGMENT_SHADER, PATH_FRAGMENT_SHADER);
+	if (!shaders[0] || !shaders[1])
 	{
-		free_shader(&vs);
-		free_shader(&fs);
-		return (0);
+		free_shader(shaders + 0);
+		free_shader(shaders + 1);
+		return (put_error(0, E_FAIL_SHADER, 0));
 	}
 	shader_program = glCreateProgram();
 	if (!shader_program)
 	{
-		dprintf(STDERR_FILENO, "Error: Couldn't compile shader program\n");
-		free_shader(&vs);
-		free_shader(&fs);
-		return (0);
+		free_shader(shaders + 0);
+		free_shader(shaders + 1);
+		return (put_error(0, E_FAIL_SHADER_PROG, 0));
 	}
-	glAttachShader(shader_program, vs);
-	glAttachShader(shader_program, fs);
+	glAttachShader(shader_program, shaders[0]);
+	glAttachShader(shader_program, shaders[1]);
 	glLinkProgram(shader_program);
 	glUseProgram(shader_program);
-	/*
-		The shaders are already compiled in the shader programs, so no need to 
-		keep them around unless you want to use them in another shader program.
-	*/
-	free_shader(&vs);
-	free_shader(&fs);
+	free_shader(shaders + 0);
+	free_shader(shaders + 1);
 	return (shader_program);
 }
 
@@ -54,8 +49,9 @@ void	free_shader_program(t_man *man)
 
 static GLuint	compile_shader(GLenum type, const char *filepath)
 {
-	GLuint	id_shader;
-	char	*ptr;
+	static int	app_glsl_version;
+	GLuint		id_shader;
+	char		*ptr;
 
 	ptr = read_file(filepath);
 	if (!ptr)
@@ -67,7 +63,7 @@ static GLuint	compile_shader(GLenum type, const char *filepath)
 	}
 	if (!app_glsl_version)
 		app_glsl_version = get_app_glsl_version();
-	set_glsl_version_in_shader(ptr);
+	set_glsl_version_in_shader(ptr, app_glsl_version);
 	id_shader = glCreateShader(type);
 	glShaderSource(id_shader, 1, (const GLchar **)&ptr, 0);
 	glCompileShader(id_shader);
@@ -95,10 +91,12 @@ static GLuint	compile_shader(GLenum type, const char *filepath)
 	- OpenGL 4 and above   --> GLSL 400
 	- OpenGL 3.3           --> GLSL 330
 	- OpenGL 3.2 and below --> GLSL 150
+
+	`glGetString(GL_VERSION)` returns "4.6.0 [...]". 
 */
 static int	get_app_glsl_version(void)
 {
-	const unsigned char	*gl = glGetString(GL_VERSION); /* "4.6.0 [...]" */
+	const unsigned char	*gl = glGetString(GL_VERSION);
 
 	if (gl[0] - 48 >= 4)
 		return (400);
@@ -107,14 +105,14 @@ static int	get_app_glsl_version(void)
 	return (150);
 }
 
-static void	set_glsl_version_in_shader(char *ptr_shader)
+/* The first line of a shader is something like: "#version 400 core\n" */
+static void	set_glsl_version_in_shader(char *ptr_shader, int version)
 {
 	int	i;
 	int	glsl;
 
-	/* The first line of a shader is something like: "#version 400 core\n" */
 	i = 0;
-	glsl = app_glsl_version;
+	glsl = version;
 	while (ptr_shader[i])
 	{
 		if (isdigit(ptr_shader[i]))

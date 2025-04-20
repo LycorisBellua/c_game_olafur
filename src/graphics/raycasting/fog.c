@@ -1,5 +1,14 @@
 #include "cimmerian.h"
 
+void	init_fog(t_man *man)
+{
+	man->echolocation = ECHOLOCATION;
+	if (!man->echolocation)
+		man->dof = DEFAULT_DOF;
+	man->fog_width = get_fog_width(man->dof);
+	return ;
+}
+
 void	update_dof(t_man *man, double increment)
 {
 	double	prev_dof;

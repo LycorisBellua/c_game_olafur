@@ -2,15 +2,10 @@
 
 int	create_uniform(t_man *man)
 {
-	const char	*name = "frame_texture";
-
-	man->uniform_loc = glGetUniformLocation(man->shader_program, name);
+	man->uniform_loc = glGetUniformLocation(man->shader_program,
+			"frame_texture");
 	if (man->uniform_loc < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: The \"%s\" uniform is either not found "
-			"or unused in shader program ID°%d\n", name, man->shader_program);
-		return (0);
-	}
+		return (put_error(0, E_FAIL_UNIFORM_FRAME_TEXTURE, 0));
 	glUniform1i(man->uniform_loc, 0);
 	return (1);
 }

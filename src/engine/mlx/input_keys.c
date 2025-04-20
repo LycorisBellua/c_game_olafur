@@ -1,7 +1,5 @@
 #include "cimmerian.h"
 
-static void	execute_input_action(t_man *man, int key, t_key_state new_state);
-
 int	key_press_callback(int key, t_man *man)
 {
 	execute_input_action(man, key, KEY_STATE_PRESSED);
@@ -37,20 +35,4 @@ int	focus_loss_callback(t_man *man)
 		++i;
 	}
 	return (0);
-}
-
-static void	execute_input_action(t_man *man, int key, t_key_state new_state)
-{
-	int	i;
-
-	i = 0;
-	while (man->keys[i].key && man->keys[i].key != key)
-		++i;
-	if (!man->keys[i].key || !(man->keys[i].game_states & man->game_state))
-		return ;
-	if (man->keys[i].actions[new_state]
-		&& (key == KEY_F11 || man->keys[i].state != new_state))
-		man->keys[i].actions[new_state](man);
-	man->keys[i].state = new_state;
-	return ;
 }

@@ -89,7 +89,7 @@ static char	*add_to_line(char *line, char *added, int free_added)
 	char	*joined;
 
 	if (!line)
-		line = calloc(1,sizeof(char));
+		line = calloc(1, sizeof(char));
 	if (line)
 	{
 		len = strlen(line);

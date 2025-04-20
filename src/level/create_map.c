@@ -9,12 +9,12 @@ t_map	*create_map(t_man *man, const char *filepath)
 
 	map = calloc(1, sizeof(t_map));
 	if (!map)
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	map->filepath = strdup(filepath);
 	if (!map->filepath)
 	{
 		free_map(map);
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	}
 	/*
 		TODO:
@@ -23,7 +23,7 @@ t_map	*create_map(t_man *man, const char *filepath)
 	if (!extract_maps_and_player_start(map) || !extract_sprites(man, map))
 	{
 		free_map(map);
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	}
 	map->fog_color = get_color_rgba(0, 0, 0, 255);
 	// If 'C' and/or 'F' colors are specified in the file:
@@ -36,11 +36,11 @@ t_map	*create_map(t_man *man, const char *filepath)
 		map->fog_color = src_skybox->average_color[0];
 	compose_skybox(man, map, src_skybox);
 	compose_background(man, map);
-	create_portal_array(man, map);
-	if (!map->skybox || !map->background || !set_map_cells(man, map))
+	if (!map->skybox || !map->background || !create_portal_array(man, map)
+		|| !set_map_cells(man, map))
 	{
 		free_map(map);
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	}
 	return (map);
 }

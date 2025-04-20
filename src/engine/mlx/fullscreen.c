@@ -2,7 +2,7 @@
 
 static void	decide_on_new_window_size(t_man *man);
 
-void	action_toggle_fullscreen(t_man *man)
+void	toggle_fullscreen(t_man *man)
 {
 	decide_on_new_window_size(man);
 	mlx_destroy_window(man->mlx, man->window);
@@ -11,24 +11,9 @@ void	action_toggle_fullscreen(t_man *man)
 			man->res.window_size.y, man->title);
 	set_viewport(man, man->res.window_size);
 	if (!man->window)
-	{
-		deinit(man);
-		exit(1);
-	}
+		exit(put_error(man, 0, EXIT_FAILURE));
 	init_frames(man);
 	init_input_handling(man);
-	return ;
-}
-
-void	action_toggle_debug(t_man *man)
-{
-	man->show_debug = !man->show_debug;
-	return ;
-}
-
-void	action_close_window(t_man *man)
-{
-	cross_window_button_callback(man);
 	return ;
 }
 

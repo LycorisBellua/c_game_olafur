@@ -14,7 +14,7 @@ int	set_image_array(t_man *man, const char *path)
 
 	lines = get_json_content(path);
 	if (!lines || !allocate_array(man, lines))
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	i_img = 0;
 	is_success = 1;
 	is_parsing_ongoing = 1;

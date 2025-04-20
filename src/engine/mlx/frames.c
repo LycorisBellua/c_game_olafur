@@ -2,7 +2,7 @@
 
 static int	set_frame(t_man *man, t_frame *f);
 
-void	init_frames(t_man *man)
+int	init_frames(t_man *man)
 {
 	size_t	i;
 
@@ -11,13 +11,13 @@ void	init_frames(t_man *man)
 	while (i < NBR_FRAMES)
 	{
 		if (!set_frame(man, man->frame + i))
-			put_error_and_exit(man, "", EXIT_FAILURE);
+			return (0);
 		++i;
 	}
 	man->z_buf = malloc(man->frame[0].size.x * sizeof(double));
 	if (!man->z_buf)
-		put_error_and_exit(man, "", EXIT_FAILURE);
-	return ;
+		return (put_error(man, E_FAIL_MEM, 0));
+	return (1);
 }
 
 void	clear_frame(t_frame *f)
@@ -57,7 +57,7 @@ static int	set_frame(t_man *man, t_frame *f)
 	f->thickness = f->real_size.x / f->size.x;
 	f->img = mlx_new_image(man->mlx, f->real_size.x, f->real_size.y);
 	if (!f->img)
-		return (0);
+		return (put_error(man, E_FAIL_MLX_IMG, 0));
 	f->addr = (t_ubyte *)mlx_get_data_addr(f->img, &f->bpp, &f->line_length,
 			&f->endian);
 	return (1);

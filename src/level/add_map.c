@@ -1,28 +1,33 @@
 #include "cimmerian.h"
 
-static t_map	*create_trap_map(t_man *man, const char *filepath);
+static t_map	*create_trap_map(const char *filepath);
 
+/* Not a boolean. Returns the index of the map or -1 if failure. */
 int	add_map(t_man *man, const char *filepath)
 {
+	int		index;
 	t_map	**new_arr;
 	size_t	count;
 
 	if (!filepath)
-		put_error_and_exit(man, "", EXIT_FAILURE);
-	if (find_map_index(man, filepath) >= 0)
-		return (1);
+		return (-1);
+	index = find_map_index(man, filepath);
+	if (index >= 0)
+		return (index);
 	count = count_arr_elems((void **)man->maps);
 	new_arr = calloc(count + 1 + 1, sizeof(t_map *));
 	if (!new_arr)
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (-1);
 	memcpy(new_arr, man->maps, count * sizeof(t_map *));
 	free(man->maps);
 	man->maps = new_arr;
 	if (!strcmp(filepath, "null"))
-		man->maps[count] = create_trap_map(man, filepath);
+		man->maps[count] = create_trap_map(filepath);
 	else
 		man->maps[count] = create_map(man, filepath);
-	return (!!man->maps[count]);
+	if (!man->maps[count])
+		return (-1);
+	return (count);
 }
 
 int	find_map_index(t_man *man, const char *filepath)
@@ -41,18 +46,18 @@ int	find_map_index(t_man *man, const char *filepath)
 	return (-1);
 }
 
-static t_map	*create_trap_map(t_man *man, const char *filepath)
+static t_map	*create_trap_map(const char *filepath)
 {
 	t_map	*map;
 
 	map = calloc(1, sizeof(t_map));
 	if (!map)
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	map->filepath = strdup(filepath);
 	if (!map->filepath)
 	{
 		free_map(map);
-		put_error_and_exit(man, "", EXIT_FAILURE);
+		return (0);
 	}
 	return (map);
 }

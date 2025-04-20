@@ -5,7 +5,7 @@
 	cell, instead of one of its edges. The map's default direction will be used.
 */
 
-void	create_portal_array(t_man *man, t_map *map)
+int	create_portal_array(t_man *man, t_map *map)
 {
 	t_img	*tex_portal;
 
@@ -16,10 +16,7 @@ void	create_portal_array(t_man *man, t_map *map)
 		map->portal_len = 2;
 		map->portals = calloc(map->portal_len, sizeof(t_portal));
 		if (!map->portals)
-		{
-			free_map(map);
-			put_error_and_exit(man, "", EXIT_FAILURE);
-		}
+			return (0);
 
 		map->portals[0].is_corridor = PORTAL_IS_CORRIDOR;
 		map->portals[0].src_cardinal = 'S';
@@ -44,10 +41,7 @@ void	create_portal_array(t_man *man, t_map *map)
 		map->portal_len = 2;
 		map->portals = calloc(map->portal_len, sizeof(t_portal));
 		if (!map->portals)
-		{
-			free_map(map);
-			put_error_and_exit(man, "", EXIT_FAILURE);
-		}
+			return (0);
 
 		map->portals[0].is_corridor = PORTAL_IS_CORRIDOR;
 		map->portals[0].src_cardinal = 'E';
@@ -67,14 +61,14 @@ void	create_portal_array(t_man *man, t_map *map)
 		set_ivec2(&map->portals[1].dst_pos, 12, 0);
 		map->portals[1].tex = tex_portal;
 	}
-	return ;
+	return (1);
 }
 
 t_portal	*find_portal(t_map *map, int x, int y)
 {
 	int	i;
 
-	if (!map || !map->portals)
+	if (!map)
 		return (0);
 	i = 0;
 	while (i < map->portal_len)

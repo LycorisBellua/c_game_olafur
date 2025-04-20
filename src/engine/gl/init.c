@@ -1,9 +1,5 @@
 #include "cimmerian.h"
 
-#define ERR_WINDOW "Error: The window failed to create (the issue may be " \
-	"with the GLFW library, but comes more likely from the OpenGL library / " \
-	"check that your drivers are properly installed)"
-
 void			framebuffer_size_callback(GLFWwindow *window, int x, int y);
 void			window_pos_callback(GLFWwindow *window, int xpos, int ypos);
 int				create_shader_program(void);
@@ -22,46 +18,38 @@ int	create_window(t_man *man, const char *title, int width, int height)
 	man->title = (char *)title;
 	set_resolution(man, get_monitor_size(), width, height);
 	man->window = glfwCreateWindow(man->res.window_size.x,
-		man->res.window_size.y, man->title, NULL, NULL);
+			man->res.window_size.y, man->title, NULL, NULL);
 	if (!man->window)
-	{
-		dprintf(STDERR_FILENO, ERR_WINDOW"\n");
-		glfwTerminate();
-		return (0);
-	}
+		return (put_error(man, E_FAIL_WINDOW_GL, 0));
 	more_window_settings(man);
 	if (!init_gl_functions())
-	{
-		dprintf(STDERR_FILENO, "Error: Failed to load OpenGL functions\n");
-		glfwTerminate();
-		return (0);
-	}
+		return (put_error(man, E_FAIL_GL_FUNC, 0));
 	man->shader_program = create_shader_program();
 	if (!man->shader_program || !create_uniform(man) || !create_mesh())
-	{
-		deinit(man);
-		return (0);
-	}
+		return (put_error(man, 0, 0));
 	return (1);
 }
 
+#ifdef __APPLE__
+/* These window hints are to be called before creating the window */
 static int	init_graphics_lib(void)
 {
 	if (!glfwInit())
-	{
-		dprintf(STDERR_FILENO, "Error: The GLFW library failed to "
-			"initialize\n");
-		return (0);
-	}
-	#ifdef __APPLE__
-	/* These window hints are to be called before creating the window */
+		return (put_error(0, E_FAIL_GLFW, 0));
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	#endif
 	return (1);
 }
+#else
+static int	init_graphics_lib(void)
+{
+	if (!glfwInit())
+		return (put_error(0, E_FAIL_GLFW, 0));
+	return (1);
+}
+#endif
 
 static t_ivec2	get_monitor_size(void)
 {
@@ -77,9 +65,12 @@ static t_ivec2	get_monitor_size(void)
 
 static void	more_window_settings(t_man *man)
 {
-	glfwSetWindowSizeLimits(man->window,
-		/* min */ man->res.window_size.x, man->res.window_size.y,
-		/* max */ man->res.monitor_size.x, man->res.monitor_size.y);
+	t_ivec2	min;
+	t_ivec2	max;
+
+	set_ivec2(&min, man->res.window_size.x, man->res.window_size.y);
+	set_ivec2(&max, man->res.monitor_size.x, man->res.monitor_size.y);
+	glfwSetWindowSizeLimits(man->window, min.x, min.y, max.x, max.y);
 	glfwMakeContextCurrent(man->window);
 	set_initial_viewport(man);
 	glfwSetFramebufferSizeCallback(man->window, framebuffer_size_callback);

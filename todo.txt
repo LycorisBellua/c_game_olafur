@@ -1,5 +1,4 @@
 Diffs between the GL and MLX versions:
-- The MLX version doesn't use the key pad arrows.
 - The MLX version doesn't have fullscreen mode, only a bigger window size.
 - The MLX version has a slower mouse-based rotation.
 

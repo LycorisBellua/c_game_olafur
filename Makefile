@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -I.mlx -Wall -Wextra -Werror -pedantic -O2 -g -fsanitize=address
+CFLAGS = -Iinclude -I.mlx -Wall -Wextra -Werror -pedantic -O2 #-g -fsanitize=address
 LDFLAGS = -lm
 MLX_DIR = .mlx
 MLX_LIB = $(MLX_DIR)/libmlx.a

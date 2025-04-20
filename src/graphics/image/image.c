@@ -12,7 +12,7 @@ t_png	*load_png_from_path(const char *path)
 	err = lodepng_decode32_file((t_ubyte **)&png->buf, &size.x, &size.y, path);
 	if (err)
 	{
-		dprintf(STDERR_FILENO, "Lodepng error n°%u for \"%s\": %s\n",
+		dprintf(2, "Error: Lodepng error n°%u for \"%s\": %s\n",
 			err, path, lodepng_error_text(err));
 		free_png(png);
 		return (0);
