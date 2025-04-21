@@ -3,7 +3,7 @@
 static t_ivec2	get_direction(t_ivec2 v1, t_ivec2 v2);
 static t_color	get_lerp_c(t_color c1, t_color c2, int steps, int total_steps);
 
-void	draw_line(t_frame *f, t_vert v1, t_vert v2)
+void	draw_line(t_man *man, t_vert v1, t_vert v2)
 {
 	int		steps;
 	int		total_steps;
@@ -21,7 +21,7 @@ void	draw_line(t_frame *f, t_vert v1, t_vert v2)
 	total_steps = steps;
 	while (steps-- > 0)
 	{
-		draw_point(f, get_lerp_c(v1.color, v2.color, steps, total_steps),
+		draw_point(man, get_lerp_c(v1.color, v2.color, steps, total_steps),
 			coord.x, coord.y);
 		coord.x += increment.x;
 		coord.y += increment.y;

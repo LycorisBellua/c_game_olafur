@@ -3,6 +3,7 @@
 void	free_shader_program(t_man *man);
 void	free_uniform(t_man *man);
 void	free_mesh(void);
+void	free_frame(t_man *man);
 
 void	deinit(t_man *man)
 {
@@ -12,7 +13,7 @@ void	deinit(t_man *man)
 	free_shader_program(man);
 	free_uniform(man);
 	free_mesh();
-	free_frames(man);
+	free_frame(man);
 	free_images(man);
 	free_maps(man);
 	return ;

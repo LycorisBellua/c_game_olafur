@@ -1,5 +1,17 @@
 #include "cimmerian.h"
 
+t_color	get_frame_pixel(t_frame *f, int x, int y);
+void	set_frame_pixel(t_frame *f, t_color c, int x, int y);
+
+void	draw_point(t_man *man, t_color c, int x, int y)
+{
+	if (x < 0 || y < 0 || x >= man->frame.size.x || y >= man->frame.size.y)
+		return ;
+	c = get_alpha_blended_color(get_frame_pixel(&man->frame, x, y), c);
+	set_frame_pixel(&man->frame, c, x, y);
+	return ;
+}
+
 t_color	get_frame_pixel(t_frame *f, int x, int y)
 {
 	t_ubyte	*dst;

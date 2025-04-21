@@ -2,10 +2,9 @@
 # define MACROS_H
 
 # define TITLE "Cimmerian"
-# define RES_WIDTH  (640 * 2)
-# define RES_HEIGHT (360 * 2)
+# define WINDOW_WIDTH  (640 * 1)
+# define WINDOW_HEIGHT (360 * 1)
 # define FOV 60
-# define NBR_FRAMES 2
 # define ECHOLOCATION 0
 # define DEFAULT_DOF 20
 # define DEFAULT_MOVE_SPEED 2.0

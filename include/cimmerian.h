@@ -31,26 +31,23 @@ t_color		get_alpha_blended_color(t_color prev, t_color new);
 /* Draw --------------------------------------------------------------------- */
 
 void		draw_pixel(t_color *buf, t_color c, t_ivec2 coord, t_ivec2 size);
-void		draw_point(t_frame *f, t_color color, int x, int y);
-void		draw_line(t_frame *f, t_vert v1, t_vert v2);
-void		draw_rectangle(t_frame *f, t_vert v, t_ivec2 size);
-void		draw_rectangle_full(t_frame *f, t_vert v, t_ivec2 size);
-void		draw_circle(t_frame *f, t_vert center, int radius);
-void		draw_circle_full(t_frame *f, t_vert center, int radius);
-void		draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
+void		draw_point(t_man *man, t_color color, int x, int y);
+void		draw_line(t_man *man, t_vert v1, t_vert v2);
+void		draw_rectangle(t_man *man, t_vert v, t_ivec2 size);
+void		draw_rectangle_full(t_man *man, t_vert v, t_ivec2 size);
+void		draw_circle(t_man *man, t_vert center, int radius);
+void		draw_circle_full(t_man *man, t_vert center, int radius);
+void		draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 				t_color edge);
-void		draw_shape(t_frame *f, t_vert arr[], int len);
-void		draw_shape_full(t_frame *f, t_vert arr[], int len);
-void		draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos,
-				char *str);
-void		draw_image(t_frame *frame, t_img *img, t_ivec2 pos);
-void		draw_png_with_x_offset(t_frame *f, t_png *png, int x_offset);
-void		fill_frame(t_frame *f, t_color c);
-void		draw_cursor(t_frame *frame, t_img *img, t_ivec2 p, int cyc);
+void		draw_shape(t_man *man, t_vert arr[], int len);
+void		draw_shape_full(t_man *man, t_vert arr[], int len);
+void		draw_font_default(t_man *man, t_ivec2 *pos, char *str);
+void		draw_image(t_man *man, t_img *img, t_ivec2 pos);
+void		draw_png_with_x_offset(t_man *man, t_png *png, int x_offset);
+void		fill_frame(t_man *man, t_color c);
+void		draw_cursor(t_man *man, t_img *img, t_ivec2 p, int cyc);
 t_img		*get_image(t_man *man, const char *id);
 void		advance_all_image_cycles(t_man *man);
-t_color		get_frame_pixel(t_frame *f, int x, int y);
-void		set_frame_pixel(t_frame *f, t_color c, int x, int y);
 
 /* Fog ---------------------------------------------------------------------- */
 
@@ -89,7 +86,7 @@ t_img		*create_empty_image(const char *id, t_ivec2 size);
 t_img		*add_new_image(t_man *man, const char *path);
 void		compose_skybox(t_man *man, t_map *map, t_img *src);
 void		compose_background(t_man *man, t_map *map);
-void		draw_background(t_man *man, t_frame *f);
+void		draw_background(t_man *man);
 void		free_png(t_png *png);
 int			set_image_array(t_man *man, const char *path);
 int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
@@ -103,21 +100,21 @@ t_img		*duplicate_image(const char *dst_id, t_img *src);
 /* Game --------------------------------------------------------------------- */
 
 void		set_dt_and_fps(t_man *man);
-void		display_fps(t_man *man, t_frame *f);
-void		display_game_gui(t_man *man, t_frame *f);
-void		display_game_over_screen(t_man *man, t_frame *f);
+void		display_fps(t_man *man);
+void		display_game_gui(t_man *man);
+void		display_game_over_screen(t_man *man);
 void		door_routine(t_man *man);
 void		portal_routine(t_man *man);
 t_portal	*get_portal(t_man *man);
 
 /* Raycasting --------------------------------------------------------------- */
 
-void		raycasting(t_man *man, t_frame *f);
+void		raycasting(t_man *man);
 void		perform_dda(t_man *man, double cam_x, t_list **list);
 int			dda_add_to_list(t_man *man, t_map *m, t_ray *r, double *max_height);
-void		cast_floor(t_man *man, t_frame *f);
-void		cast_ceiling_x(t_man *man, t_frame *f, int x);
-void		draw_wall(t_man *man, t_frame *f, t_ray *r, int is_portal);
+void		cast_floor(t_man *man);
+void		cast_ceiling_x(t_man *man, int x);
+void		draw_wall(t_man *man, t_ray *r, int is_portal);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
 void		sort_sprites_by_dist(t_man *man);
 void		swap_elements(void **a, void **b);
@@ -136,7 +133,7 @@ void		free_sprite_array(t_map *map);
 void		free_maps(t_man *man);
 void		free_map(t_map *map);
 void		free_cells(t_map *map);
-void		draw_minimap(t_man *man, t_frame *f, t_map *map);
+void		draw_minimap(t_man *man, t_map *map);
 void		init_minimap_values(t_man *man);
 void		decrease_minimap_zoom(t_man *man);
 void		increase_minimap_zoom(t_man *man);
@@ -162,15 +159,13 @@ int			collect_sprite(t_man *man, int sprite_index);
 /* Frames ------------------------------------------------------------------- */
 
 int			init_frames(t_man *man);
-void		clear_frame(t_frame *f);
-void		display_frame(t_man *man, t_frame *f);
-void		free_frames(t_man *man);
+void		clear_frame(t_man *man);
+void		display_frame(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */
 
-void		set_resolution(t_man *man, t_ivec2 monitor_size, int width,
-				int height);
-void		set_viewport(t_man *man, t_ivec2 framebuffer_size);
+void		set_resolution(t_man *man, int window_width, int window_height);
+void		set_viewport(t_man *man, t_ivec2 window_size);
 
 /* Input -------------------------------------------------------------------- */
 
@@ -201,6 +196,7 @@ void		poll_input_events(t_man *man);
 /* Init --------------------------------------------------------------------- */
 
 int			create_window(t_man *man, const char *title, int width, int height);
+t_ivec2		get_monitor_size(t_man *man);
 void		init_input_handling(t_man *man);
 void		run_game_loop(t_man *man);
 int			game_loop(t_man *man);

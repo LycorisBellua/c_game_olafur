@@ -7,7 +7,6 @@ int				create_uniform(t_man *man);
 int				create_mesh(void);
 
 static int		init_graphics_lib(void);
-static t_ivec2	get_monitor_size(void);
 static void		more_window_settings(t_man *man);
 static void		set_initial_viewport(t_man *man);
 
@@ -16,7 +15,7 @@ int	create_window(t_man *man, const char *title, int width, int height)
 	if (!init_graphics_lib())
 		return (0);
 	man->title = (char *)title;
-	set_resolution(man, get_monitor_size(), width, height);
+	set_resolution(man, width, height);
 	man->window = glfwCreateWindow(man->res.window_size.x,
 			man->res.window_size.y, man->title, NULL, NULL);
 	if (!man->window)
@@ -50,18 +49,6 @@ static int	init_graphics_lib(void)
 	return (1);
 }
 #endif
-
-static t_ivec2	get_monitor_size(void)
-{
-	t_ivec2				monitor_size;
-	const GLFWvidmode	*vid_mode;
-
-	set_ivec2(&monitor_size, 0, 0);
-	vid_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	if (vid_mode)
-		set_ivec2(&monitor_size, vid_mode->width, vid_mode->height);
-	return (monitor_size);
-}
 
 static void	more_window_settings(t_man *man)
 {

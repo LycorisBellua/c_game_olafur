@@ -5,7 +5,7 @@ static void		update_p_and_decision(int in_loop, t_ivec2 *p, int *decision,
 static t_color	interpolate_color(t_color start, t_color end, double ratio);
 
 /* Bresenham/Midpoint Circle Drawing algorithm */
-void	draw_circle(t_frame *f, t_vert center, int radius)
+void	draw_circle(t_man *man, t_vert center, int radius)
 {
 	t_ivec2	p;
 	int		decision;
@@ -15,24 +15,24 @@ void	draw_circle(t_frame *f, t_vert center, int radius)
 	while (p.y <= p.x)
 	{
 		set_ivec2(&point, center.coord.x - p.x, center.coord.y - p.y);
-		draw_point(f, center.color, point.x, point.y);
-		draw_point(f, center.color, center.coord.x + p.x, point.y);
+		draw_point(man, center.color, point.x, point.y);
+		draw_point(man, center.color, center.coord.x + p.x, point.y);
 		set_ivec2(&point, center.coord.x - p.x, center.coord.y + p.y);
-		draw_point(f, center.color, point.x, point.y);
-		draw_point(f, center.color, center.coord.x + p.x, point.y);
+		draw_point(man, center.color, point.x, point.y);
+		draw_point(man, center.color, center.coord.x + p.x, point.y);
 		set_ivec2(&point, center.coord.x - p.y, center.coord.y - p.x);
-		draw_point(f, center.color, point.x, point.y);
-		draw_point(f, center.color, center.coord.x + p.y, point.y);
+		draw_point(man, center.color, point.x, point.y);
+		draw_point(man, center.color, center.coord.x + p.y, point.y);
 		set_ivec2(&point, center.coord.x - p.y, center.coord.y + p.x);
-		draw_point(f, center.color, point.x, point.y);
-		draw_point(f, center.color, center.coord.x + p.y, point.y);
+		draw_point(man, center.color, point.x, point.y);
+		draw_point(man, center.color, center.coord.x + p.y, point.y);
 		update_p_and_decision(1, &p, &decision, radius);
 	}
 	return ;
 }
 
 /* Bresenham/Midpoint Circle Drawing algorithm */
-void	draw_circle_full(t_frame *f, t_vert center, int radius)
+void	draw_circle_full(t_man *man, t_vert center, int radius)
 {
 	t_ivec2	p;
 	int		decision;
@@ -46,22 +46,22 @@ void	draw_circle_full(t_frame *f, t_vert center, int radius)
 	{
 		set_ivec2(&v1.coord, center.coord.x - p.x, center.coord.y - p.y);
 		set_ivec2(&v2.coord, center.coord.x + p.x, v1.coord.y);
-		draw_line(f, v1, v2);
+		draw_line(man, v1, v2);
 		v1.coord.y = center.coord.y + p.y;
 		v2.coord.y = v1.coord.y;
-		draw_line(f, v1, v2);
+		draw_line(man, v1, v2);
 		set_ivec2(&v1.coord, center.coord.x - p.y, center.coord.y - p.x);
 		set_ivec2(&v2.coord, center.coord.x + p.y, v1.coord.y);
-		draw_line(f, v1, v2);
+		draw_line(man, v1, v2);
 		v1.coord.y = center.coord.y + p.x;
 		v2.coord.y = v1.coord.y;
-		draw_line(f, v1, v2);
+		draw_line(man, v1, v2);
 		update_p_and_decision(1, &p, &decision, radius);
 	}
 	return ;
 }
 
-void	draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
+void	draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 	t_color edge)
 {
 	t_ivec2	p;
@@ -82,7 +82,7 @@ void	draw_circle_full_gradient(t_frame *f, t_vert center, int radius,
 				linear_ratio = sqrt_approx((double)distance_squared) / radius;
 				adjusted_ratio = linear_ratio * linear_ratio;
 				c = interpolate_color(center.color, edge, adjusted_ratio);
-				draw_point(f, c, center.coord.x + p.x, center.coord.y + p.y);
+				draw_point(man, c, center.coord.x + p.x, center.coord.y + p.y);
 			}
 			++p.x;
 		}

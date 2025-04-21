@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-void	draw_cursor(t_frame *frame, t_img *image, t_ivec2 p, int cyc)
+void	draw_cursor(t_man *man, t_img *image, t_ivec2 p, int cyc)
 {
 	int		i;
 	t_ivec2	q;
@@ -21,7 +21,7 @@ void	draw_cursor(t_frame *frame, t_img *image, t_ivec2 p, int cyc)
 			while (++r.x < 2)
 			{
 				set_ivec2(&zoom_p, p.x + q.x * 2 + r.x, p.y + q.y * 2 + r.y);
-				draw_point(frame, image->cycle[cyc][i], zoom_p.x, zoom_p.y);
+				draw_point(man, image->cycle[cyc][i], zoom_p.x, zoom_p.y);
 			}
 		}
 	}

@@ -37,18 +37,17 @@ If not indicated, the map's default start pos and direction will be used.
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
 
-- For some reason, in both versions, the FPS drops dramatically if the 
-resolution is greater than 640x360. Allow a greater resolution (x2 and x3), 
-still in 16/9. Also, for the MLX, make sure that the "viewport" is centered 
-instead of starting at the window's origin.
-	* The minimap is almost fixed. The MLX version is done, but the GL version 
-	runs into issues in x2 (perfect in x1 and x3). Why? The minimap has the 
-	same values in both versions in x2, and yet the GL version appears small 
-	and centered instead of anchored to the top right corner. It must have 
-	something to do with the fact that the GL version has a frame whose real 
-	size is the monitor's size, whereas the resolution can be smaller, but the 
-	MLX version's frame size and real size are equal. It's just how GL works, I 
-	have to do this.
+-> MLX: In size x2, the frame size is numerically updated and yet is drawn with 
+a thickness of 1 pixel per point.
+-> MLX: The viewport is centered on the X and Y axis. Check that the cursor 
+matches that (it needs to communicate a position in `man->res.res` scale).
+-> Understand why there's a dramatic FPS drop in both versions with a x2 or x3 
+resolution (x1 is 640x360).
+-> Consider modifying the MLX to hide the window decoration in fullscreen. If 
+this works, make a real fullscreen.
+
 	* Need to adapt the font size, the icon size and the cursor size, then GUI 
 	is done.
-	* Need to adapt background/skybox.
+	* Need to adapt background/skybox. Consider generating the skybox, and 
+	maybe it's the opportunity to have a proper one, with like mountains and 
+	stuff remaining where they should in the world.

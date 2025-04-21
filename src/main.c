@@ -9,7 +9,7 @@ int	main(int argc, char **argv)
 		return (put_error(0, E_NO_ARG, EXIT_FAILURE));
 	else if (argc > 2)
 		return (put_error(0, E_TOO_MANY_ARGS, EXIT_FAILURE));
-	else if (!create_window(&g_man, TITLE, RES_WIDTH, RES_HEIGHT)
+	else if (!create_window(&g_man, TITLE, WINDOW_WIDTH, WINDOW_HEIGHT)
 		|| !init_frames(&g_man) || !set_image_array(&g_man, PATH_IMG_JSON))
 		return (EXIT_FAILURE);
 	init_minimap_values(&g_man);

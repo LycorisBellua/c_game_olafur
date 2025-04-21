@@ -15,8 +15,7 @@ void	compose_background(t_man *man, t_map *map)
 		return ;
 	if (map->skybox && !map->background)
 	{
-		size.x = man->res.window_size_default.x * 4;
-		size.y = man->res.window_size_default.y;
+		set_ivec2(&size, man->res.res.x * 4, man->res.res.y);
 		map->background = create_empty_png(size);
 	}
 	if (!map->background)

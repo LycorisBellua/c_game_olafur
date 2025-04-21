@@ -18,8 +18,7 @@ void	compose_skybox(t_man *man, t_map *map, t_img *src)
 	map->skybox = duplicate_image("skybox", src);
 	if (!map->skybox)
 	{
-		size.x = man->res.window_size_default.x * 4;
-		size.y = man->res.window_size_default.y;
+		set_ivec2(&size, man->res.res.x * 4, man->res.res.y);
 		map->skybox = create_empty_image("skybox", size);
 	}
 	add_ceiling_and_floor_to_skybox(map);

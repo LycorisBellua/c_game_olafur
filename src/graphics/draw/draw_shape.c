@@ -1,36 +1,36 @@
 #include "cimmerian.h"
 
-static void	draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len);
-static void	draw_full_triangle(t_frame *f, t_vert *v);
-static void	draw_blended_p(t_frame *f, t_vert *v, t_ivec2 p, float inv_denom);
+static void	draw_shape_full_unicolor(t_man *man, t_vert arr[], int len);
+static void	draw_full_triangle(t_man *man, t_vert *v);
+static void	draw_blended_p(t_man *man, t_vert *v, t_ivec2 p, float inv_denom);
 
-void	draw_shape(t_frame *f, t_vert arr[], int len)
+void	draw_shape(t_man *man, t_vert arr[], int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len)
 	{
-		draw_line(f, arr[i], arr[(i + 1) % len]);
+		draw_line(man, arr[i], arr[(i + 1) % len]);
 		++i;
 	}
 	return ;
 }
 
 /* TODO: Use Delaunay triangulation for shapes of more than 3 vertices */
-void	draw_shape_full(t_frame *f, t_vert arr[], int len)
+void	draw_shape_full(t_man *man, t_vert arr[], int len)
 {
 	if (len < 3)
-		draw_shape(f, arr, len);
+		draw_shape(man, arr, len);
 	else if (len > 3)
-		draw_shape_full_unicolor(f, arr, len);
+		draw_shape_full_unicolor(man, arr, len);
 	else
-		draw_full_triangle(f, arr);
+		draw_full_triangle(man, arr);
 	return ;
 }
 
 /* Scanline Fill algorithm */
-static void	draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len)
+static void	draw_shape_full_unicolor(t_man *man, t_vert arr[], int len)
 {
 	int		i;
 	int		j;
@@ -59,7 +59,7 @@ static void	draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len)
 	y = ymin;
 	while (y <= ymax)
 	{
-		x1 = f->size.x - 1;
+		x1 = man->frame.size.x - 1;
 		x2 = 0;
 		i = 0;
 		while (i < len)
@@ -82,7 +82,7 @@ static void	draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len)
 		{
 			set_ivec2(&v1.coord, x1, y);
 			set_ivec2(&v2.coord, x2, y);
-			draw_line(f, v1, v2);
+			draw_line(man, v1, v2);
 		}
 		++y;
 	}
@@ -90,7 +90,7 @@ static void	draw_shape_full_unicolor(t_frame *f, t_vert arr[], int len)
 }
 
 /* Barycentric weights for color blending */
-static void	draw_full_triangle(t_frame *f, t_vert *v)
+static void	draw_full_triangle(t_man *man, t_vert *v)
 {
 	t_ivec2	min_coord;
 	t_ivec2	max_coord;
@@ -111,7 +111,7 @@ static void	draw_full_triangle(t_frame *f, t_vert *v)
 		p.x = min_coord.x;
 		while (p.x <= max_coord.x)
 		{
-			draw_blended_p(f, v, p, inv_denom);
+			draw_blended_p(man, v, p, inv_denom);
 			++p.x;
 		}
 		++p.y;
@@ -119,7 +119,7 @@ static void	draw_full_triangle(t_frame *f, t_vert *v)
 	return ;
 }
 
-static void	draw_blended_p(t_frame *f, t_vert *v, t_ivec2 p, float inv_denom)
+static void	draw_blended_p(t_man *man, t_vert *v, t_ivec2 p, float inv_denom)
 {
 	t_color	color;
 	float	w[3];
@@ -135,6 +135,6 @@ static void	draw_blended_p(t_frame *f, t_vert *v, t_ivec2 p, float inv_denom)
 	color.g = v[0].color.g * w[0] + v[1].color.g * w[1] + v[2].color.g * w[2];
 	color.b = v[0].color.b * w[0] + v[1].color.b * w[1] + v[2].color.b * w[2];
 	color.a = v[0].color.a * w[0] + v[1].color.a * w[1] + v[2].color.a * w[2];
-	draw_point(f, color, p.x, p.y);
+	draw_point(man, color, p.x, p.y);
 	return ;
 }

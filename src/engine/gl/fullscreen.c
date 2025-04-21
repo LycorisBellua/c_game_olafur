@@ -16,6 +16,19 @@ void	toggle_fullscreen(t_man *man)
 	return ;
 }
 
+t_ivec2	get_monitor_size(t_man *man)
+{
+	t_ivec2				size;
+	const GLFWvidmode	*mode;
+
+	(void)man;
+	set_ivec2(&size, 0, 0);
+	mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	if (mode)
+		set_ivec2(&size, mode->width, mode->height);
+	return (size);
+}
+
 static void	switch_to_windowed_mode(t_man *man)
 {
 	glfwSetWindowMonitor(man->window, NULL,
@@ -31,8 +44,10 @@ static void	switch_to_fullscreen_mode(t_man *man)
 
 	monitor = glfwGetPrimaryMonitor();
 	mode = glfwGetVideoMode(monitor);
-	glfwSetWindowMonitor(man->window, monitor, man->res.fullscreen.x,
-		man->res.fullscreen.y, man->res.monitor_size.x,
-		man->res.monitor_size.y, mode->refreshRate);
+	if (!mode)
+		return ;
+	glfwSetWindowMonitor(man->window, monitor,
+		0, 0,
+		man->res.monitor_size.x, man->res.monitor_size.y, mode->refreshRate);
 	return ;
 }

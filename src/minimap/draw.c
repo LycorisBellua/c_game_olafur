@@ -1,11 +1,11 @@
 #include "cimmerian.h"
 
 static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell);
-static void		draw_rect_minimap(t_man *man, t_frame *f, t_vert v);
-static void		draw_player(t_man *man, t_frame *f);
-static void		draw_bubble(t_man *man, t_frame *f);
+static void		draw_rect_minimap(t_man *man, t_vert v);
+static void		draw_player(t_man *man);
+static void		draw_bubble(t_man *man);
 
-void	draw_minimap(t_man *man, t_frame *f, t_map *map)
+void	draw_minimap(t_man *man, t_map *map)
 {
 	t_ivec2	i_map;
 	t_ivec2	i_cell;
@@ -22,15 +22,15 @@ void	draw_minimap(t_man *man, t_frame *f, t_map *map)
 		{
 			if (i_map.x >= 0 && i_map.y >= 0 && i_map.x < map->size.x
 				&& i_map.y < map->size.y)
-				draw_rect_minimap(man, f, get_rect_vert(man, i_map, i_cell));
+				draw_rect_minimap(man, get_rect_vert(man, i_map, i_cell));
 			++i_map.x;
 			++i_cell.x;
 		}
 		++i_map.y;
 		++i_cell.y;
 	}
-	draw_player(man, f);
-	draw_bubble(man, f);
+	draw_player(man);
+	draw_bubble(man);
 	return ;
 }
 
@@ -56,7 +56,7 @@ static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell)
 	return (v);
 }
 
-static void	draw_rect_minimap(t_man *man, t_frame *f, t_vert v)
+static void	draw_rect_minimap(t_man *man, t_vert v)
 {
 	t_ivec2	point;
 	t_ivec2	delta;
@@ -79,13 +79,13 @@ static void	draw_rect_minimap(t_man *man, t_frame *f, t_vert v)
 			delta.y = point.y - man->minimap_center.y;
 			if (delta.x * delta.x + delta.y * delta.y <= circle_radius_sq
 				+ man->minimap_zoom)
-				draw_point(f, v.color, point.x, point.y);
+				draw_point(man, v.color, point.x, point.y);
 		}
 	}
 	return ;
 }
 
-static void	draw_player(t_man *man, t_frame *f)
+static void	draw_player(t_man *man)
 {
 	t_vert	center;
 	t_vert	v2;
@@ -94,7 +94,7 @@ static void	draw_player(t_man *man, t_frame *f)
 		man->minimap_center.x - 1,
 		man->minimap_center.y - 1);
 	center.color = get_color_rgba(233, 196, 106, 255);
-	draw_circle_full(f, center, man->minimap_zoom * 0.25);
+	draw_circle_full(man, center, man->minimap_zoom * 0.25);
 	center.color = get_color_rgba(255 * 0.75, 255 * 0.75, 255 * 0.75, 255);
 	center.coord.x += 1 * man->player.dir.x;
 	center.coord.y += 1 * man->player.dir.y;
@@ -102,20 +102,20 @@ static void	draw_player(t_man *man, t_frame *f)
 		center.coord.x + man->minimap_zoom * man->player.dir.x,
 		center.coord.y + man->minimap_zoom * man->player.dir.y);
 	v2.color = center.color;
-	draw_line(f, center, v2);
+	draw_line(man, center, v2);
 	return ;
 }
 
-static void	draw_bubble(t_man *man, t_frame *f)
+static void	draw_bubble(t_man *man)
 {
 	t_vert	center;
 
 	set_ivec2(&center.coord, man->minimap_center.x, man->minimap_center.y);
 	center.color = get_color_rgba(255 * 0.25, 255 * 0.25, 255 * 0.25,
 			255 * 0.25);
-	draw_circle_full_gradient(f, center, man->minimap_radius,
+	draw_circle_full_gradient(man, center, man->minimap_radius,
 		man->maps[man->curr_map]->fog_color);
 	center.color = get_color_rgba(38, 70, 83, 255);
-	draw_circle(f, center, man->minimap_radius);
+	draw_circle(man, center, man->minimap_radius);
 	return ;
 }

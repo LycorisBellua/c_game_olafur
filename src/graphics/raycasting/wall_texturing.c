@@ -2,12 +2,12 @@
 
 static t_img	*get_texture(t_map *m, t_ray *r, int is_portal);
 static int		calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r);
-static double	calculate_initial_tex_pos(t_frame *f, t_map *m, t_ray *r,
+static double	calculate_initial_tex_pos(t_man *man, t_map *m, t_ray *r,
 					t_img *tex);
 static t_color	calculate_color(t_man *man, t_ray *r, t_img *tex,
 					t_ivec2 tex_coord);
 
-void	draw_wall(t_man *man, t_frame *f, t_ray *r, int is_portal)
+void	draw_wall(t_man *man, t_ray *r, int is_portal)
 {
 	int		y;
 	t_img	*tex;
@@ -20,7 +20,7 @@ void	draw_wall(t_man *man, t_frame *f, t_ray *r, int is_portal)
 		return ;
 	tex_coord.x = calculate_tex_coord_x(man, tex, r);
 	tex_step = (double)tex->size.y / r->line_height_cubic;
-	tex_pos = calculate_initial_tex_pos(f, man->maps[man->curr_map], r, tex);
+	tex_pos = calculate_initial_tex_pos(man, man->maps[man->curr_map], r, tex);
 	y = r->coord1.y;
 	while (r->coord1.y <= r->coord2.y)
 	{
@@ -28,7 +28,7 @@ void	draw_wall(t_man *man, t_frame *f, t_ray *r, int is_portal)
 		tex_pos += tex_step;
 		if (tex_coord.y < 0)
 			tex_coord.y += tex->size.y;
-		draw_point(f, calculate_color(man, r, tex, tex_coord), r->coord1.x,
+		draw_point(man, calculate_color(man, r, tex, tex_coord), r->coord1.x,
 			r->coord1.y);
 		++r->coord1.y;
 	}
@@ -82,7 +82,7 @@ static int	calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r)
 	return (tex_coord_x);
 }
 
-static double	calculate_initial_tex_pos(t_frame *f, t_map *m, t_ray *r,
+static double	calculate_initial_tex_pos(t_man *man, t_map *m, t_ray *r,
 	t_img *tex)
 {
 	t_cell	*cell;
@@ -92,8 +92,8 @@ static double	calculate_initial_tex_pos(t_frame *f, t_map *m, t_ray *r,
 	cell = &m->cells[r->m_index.y][r->m_index.x];
 	y_offset = tex->size.y * (1.0 - cell->height) * 0.5;
 	tex_step = (double)tex->size.y / r->line_height_cubic;
-	return (y_offset + (r->coord1.y - (f->size.y * 0.5 - r->line_height * 0.5))
-		* tex_step);
+	return (y_offset + (r->coord1.y - (man->frame.size.y * 0.5 - r->line_height
+		* 0.5)) * tex_step);
 }
 
 static t_color	calculate_color(t_man *man, t_ray *r, t_img *tex,

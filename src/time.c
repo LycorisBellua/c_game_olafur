@@ -20,7 +20,7 @@ void	set_dt_and_fps(t_man *man)
 	return ;
 }
 
-void	display_fps(t_man *man, t_frame *f)
+void	display_fps(t_man *man)
 {
 	static long	dt_ms;
 	static int	smoothed_fps;
@@ -37,7 +37,7 @@ void	display_fps(t_man *man, t_frame *f)
 	num = itoa(smoothed_fps);
 	s = strjoin("FPS: ", num);
 	set_ivec2(&pos, 20, 40);
-	draw_font_default(man, f, &pos, s);
+	draw_font_default(man, &pos, s);
 	free(s);
 	free(num);
 	return ;

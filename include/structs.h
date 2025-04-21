@@ -199,8 +199,6 @@ typedef struct s_frame
 	GLuint	id;
 	t_color	*buf;
 	t_ivec2	size;
-	t_ivec2	real_size;
-	int		thickness;
 }	t_frame;
 # else
 typedef struct s_frame
@@ -211,7 +209,6 @@ typedef struct s_frame
 	int		line_length;
 	int		endian;
 	t_ivec2	size;
-	t_ivec2	real_size;
 	int		thickness;
 }	t_frame;
 # endif
@@ -219,14 +216,14 @@ typedef struct s_frame
 typedef struct s_res
 {
 	t_ivec2	monitor_size;
-	double	aspect_ratio;
-	double	h_mod;
 	t_ivec2	window_size_default;
 	t_ivec2	window_size;
 	t_ivec2	window_position;
+	double	ratio;
+	double	h_mod;
+	t_ivec2	res;
 	t_ivec2	viewport_size;
 	t_ivec2	viewport_offset;
-	t_ivec2	fullscreen;
 }	t_res;
 
 struct s_man
@@ -238,10 +235,10 @@ struct s_man
 	# else
 	void			*mlx;
 	void			*window;
+	t_frame			swap_buf[2];
 	# endif
 	char			*title;
-	t_frame			frame[NBR_FRAMES];
-	int				curr_frame;
+	t_frame			frame;
 	double			*z_buf;
 	double			dt;
 	long			dt_ms;

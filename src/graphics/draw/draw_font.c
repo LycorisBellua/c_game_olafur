@@ -1,14 +1,14 @@
 #include "cimmerian.h"
 
 static void	fix_initial_pos(t_ivec2 *pos);
-static void	draw_char(t_frame *frame, t_img *image, t_ivec2 pos);
+static void	draw_char(t_man *man, t_img *image, t_ivec2 pos);
 static void	alignment_left(char *str, size_t *i, t_ivec2 *pos);
 
 /*
 	The capacity is 90 characters per line ([0-89]).
 	The index is the result of `(pos->x - FONT_PAD) / FONT_SIZE_X`.
 */
-void	draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos, char *str)
+void	draw_font_default(t_man *man, t_ivec2 *pos, char *str)
 {
 	size_t	i;
 	size_t	len;
@@ -24,13 +24,13 @@ void	draw_font_default(t_man *man, t_frame *frame, t_ivec2 *pos, char *str)
 	{
 		img->cycle_index = clamp(str[i] - ' ', 0, img->cycle_len - 1);
 		alignment_left(str, &i, pos);
-		draw_char(frame, img, *pos);
+		draw_char(man, img, *pos);
 		pos->x += FONT_SIZE_X;
 		if (str[i] == '\n')
 			set_ivec2(pos, FONT_PAD, pos->y + FONT_SIZE_Y * 2);
-		if ((pos->x + FONT_SIZE_X + FONT_PAD) >= man->res.window_size_default.x)
+		if ((pos->x + FONT_SIZE_X + FONT_PAD) >= man->res.res.x)
 			set_ivec2(pos, FONT_PAD, pos->y + FONT_SIZE_Y);
-		if ((pos->y + FONT_SIZE_Y + FONT_PAD) >= man->res.window_size_default.y)
+		if ((pos->y + FONT_SIZE_Y + FONT_PAD) >= man->res.res.y)
 			break ;
 		++i;
 	}
@@ -50,7 +50,7 @@ static void	fix_initial_pos(t_ivec2 *pos)
 	return ;
 }
 
-static void	draw_char(t_frame *frame, t_img *image, t_ivec2 pos)
+static void	draw_char(t_man *man, t_img *image, t_ivec2 pos)
 {
 	size_t	i;
 	size_t	len;
@@ -63,7 +63,7 @@ static void	draw_char(t_frame *frame, t_img *image, t_ivec2 pos)
 		p.y = i / image->size.x;
 		p.x = i - p.y * image->size.x;
 		set_ivec2(&p, p.x + pos.x, p.y + pos.y);
-		draw_point(frame, image->cycle[image->cycle_index][i], p.x, p.y);
+		draw_point(man, image->cycle[image->cycle_index][i], p.x, p.y);
 		++i;
 	}
 	return ;

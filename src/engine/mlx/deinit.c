@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+void	free_frames(t_man *man);
+
 void	deinit(t_man *man)
 {
 	if (!man)

@@ -59,12 +59,10 @@ void	cast_sprites(t_man *man, int x)
 
 static void	set_sprite_values(t_man *man, t_spr *s)
 {
-	t_frame	*f;
 	t_vec2	pos;
 	double	inv_det;
 	t_vec2	transform;
 
-	f = man->frame + man->curr_frame;
 	set_vec2(&pos, s->pos.x - man->player.pos.x, s->pos.y - man->player.pos.y);
 	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
 				- man->player.dir.x * man->player.plane.y) * man->res.h_mod);
@@ -73,27 +71,27 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 	transform.y = (-man->player.plane.y * pos.x + man->player.plane.x * pos.y)
 		* inv_det;
 	set_vec2(&s->transform, transform.x, transform.y);
-	s->screen_x = (f->size.x / 2) * (1 + s->transform.x / s->transform.y);
+	s->screen_x = (man->frame.size.x / 2)
+		* (1 + s->transform.x / s->transform.y);
 	s->v_move_screen = V_MOVE / s->transform.y;
-	s->size.y = abs((int)(f->size.y / s->transform.y)) / V_DIV;
-	s->draw_start.y = max(-s->size.y / 2 + f->size.y / 2 + s->v_move_screen, 0);
-	s->draw_end.y = min(s->size.y / 2 + f->size.y / 2 + s->v_move_screen,
-			f->size.y - 1);
-	s->size.x = abs((int)(f->size.y / s->transform.y)) / U_DIV;
+	s->size.y = abs((int)(man->frame.size.y / s->transform.y)) / V_DIV;
+	s->draw_start.y = max(-s->size.y / 2 + man->frame.size.y / 2
+		+ s->v_move_screen, 0);
+	s->draw_end.y = min(s->size.y / 2 + man->frame.size.y / 2
+		+ s->v_move_screen, man->frame.size.y - 1);
+	s->size.x = abs((int)(man->frame.size.y / s->transform.y)) / U_DIV;
 	s->draw_start.x = max(-s->size.x / 2 + s->screen_x, 0);
-	s->draw_end.x = min(s->size.x / 2 + s->screen_x, f->size.x);
+	s->draw_end.x = min(s->size.x / 2 + s->screen_x, man->frame.size.x);
 	return ;
 }
 
 static void	render_sprite_column(t_man *man, t_spr *s, int x)
 {
-	t_frame	*f;
 	t_ivec2	tex;
 	int		y;
 	int		d;
 	t_color	color;
 
-	f = man->frame + man->curr_frame;
 	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x))
 			* s->img->size.x / s->size.x) / 256;
 	if (s->transform.y > 0 && s->transform.y < man->z_buf[x] / man->res.h_mod)
@@ -101,14 +99,14 @@ static void	render_sprite_column(t_man *man, t_spr *s, int x)
 		y = s->draw_start.y - 1;
 		while (++y < s->draw_end.y)
 		{
-			d = (y - s->v_move_screen) * 256 - f->size.y * 128 + s->size.y
-				* 128;
+			d = (y - s->v_move_screen) * 256 - man->frame.size.y * 128
+				+ s->size.y * 128;
 			tex.y = ((d * s->img->size.y) / s->size.y) / 256;
 			color = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x
 				+ tex.x];
 			apply_wall_fog(&color, man->maps[man->curr_map]->fog_color, s->dist,
 				man->dof);
-			draw_point(f, color, x, y);
+			draw_point(man, color, x, y);
 		}
 	}
 	return ;
