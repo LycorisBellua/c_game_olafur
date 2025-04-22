@@ -4,12 +4,15 @@ t_man	g_man;
 
 int	main(int argc, char **argv)
 {
+	t_ivec2	window_size;
+
 	bzero(&g_man, sizeof(t_man));
 	if (argc == 1)
 		return (put_error(0, E_NO_ARG, EXIT_FAILURE));
 	else if (argc > 2)
 		return (put_error(0, E_TOO_MANY_ARGS, EXIT_FAILURE));
-	else if (!create_window(&g_man, TITLE, WINDOW_WIDTH, WINDOW_HEIGHT)
+	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
+	if (!create_window(&g_man, TITLE, window_size, 16.0 / 9)
 		|| !init_frames(&g_man) || !set_image_array(&g_man, PATH_IMG_JSON))
 		return (EXIT_FAILURE);
 	init_minimap_values(&g_man);

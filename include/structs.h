@@ -220,7 +220,6 @@ typedef struct s_res
 	t_ivec2	window_size;
 	t_ivec2	window_position;
 	double	ratio;
-	double	h_mod;
 	t_ivec2	res;
 	t_ivec2	viewport_size;
 	t_ivec2	viewport_offset;

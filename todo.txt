@@ -2,6 +2,11 @@ Diffs between the GL and MLX versions:
 - The MLX version doesn't have fullscreen mode, only a bigger window size.
 - The MLX version has a slower mouse-based rotation.
 
+Notes:
+- The minimum window size is 128x128 while the maximum is the monitor size.
+- Use a value inferior or equal to 0.1 as the aspect ratio to express "whatever 
+the monitor's aspect ratio is". For example 0 or -1.
+
 --------------------------------------------------------------------------------
 
 [DEFAULT MAP]
@@ -37,15 +42,14 @@ If not indicated, the map's default start pos and direction will be used.
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
 
--> MLX: In size x2, the frame size is numerically updated and yet is drawn with 
-a thickness of 1 pixel per point.
--> MLX: The viewport is centered on the X and Y axis. Check that the cursor 
-matches that (it needs to communicate a position in `man->res.res` scale).
--> Understand why there's a dramatic FPS drop in both versions with a x2 or x3 
-resolution (x1 is 640x360).
 -> Consider modifying the MLX to hide the window decoration in fullscreen. If 
-this works, make a real fullscreen.
+this works, make a real fullscreen. But before that, consider using CODAM's 
+version, as it should have a window resizing feature.
+-> Understand why there's a dramatic FPS drop in both versions with a x2 or x3 
+resolution (x1 is 640x360). Is it just because more rays are being casted?
 
+	* Make sure the GUI is good in the following aspect ratios: 1:1, 3:2, 4:3, 
+	10:9 and 16:9.
 	* Need to adapt the font size, the icon size and the cursor size, then GUI 
 	is done.
 	* Need to adapt background/skybox. Consider generating the skybox, and 

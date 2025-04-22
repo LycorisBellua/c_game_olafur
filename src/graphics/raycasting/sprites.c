@@ -65,7 +65,7 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 
 	set_vec2(&pos, s->pos.x - man->player.pos.x, s->pos.y - man->player.pos.y);
 	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
-				- man->player.dir.x * man->player.plane.y) * man->res.h_mod);
+				- man->player.dir.x * man->player.plane.y));
 	transform.x = (man->player.dir.y * pos.x - man->player.dir.x * pos.y)
 		* inv_det;
 	transform.y = (-man->player.plane.y * pos.x + man->player.plane.x * pos.y)
@@ -94,7 +94,7 @@ static void	render_sprite_column(t_man *man, t_spr *s, int x)
 
 	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x))
 			* s->img->size.x / s->size.x) / 256;
-	if (s->transform.y > 0 && s->transform.y < man->z_buf[x] / man->res.h_mod)
+	if (s->transform.y > 0 && s->transform.y < man->z_buf[x])
 	{
 		y = s->draw_start.y - 1;
 		while (++y < s->draw_end.y)

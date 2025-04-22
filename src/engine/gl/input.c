@@ -13,6 +13,7 @@ void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos);
 
 void	init_input_handling(t_man *man)
 {
+	set_ivec2(&man->cursor, -1, -1);
 	init_keys_wasdqe(man);
 	init_keys_arrows(man);
 	init_keys_misc(man);
@@ -21,7 +22,6 @@ void	init_input_handling(t_man *man)
 	glfwSetScrollCallback(man->window, scroll_callback);
 	glfwSetMouseButtonCallback(man->window, mouse_callback);
 	glfwSetCursorPosCallback(man->window, cursor_pos_callback);
-	set_ivec2(&man->cursor, -1, -1);
 	return ;
 }
 

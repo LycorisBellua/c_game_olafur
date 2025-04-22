@@ -26,8 +26,3 @@ int	norm(int n)
 		return (1);
 	return (0);
 }
-
-double	round_up_to_half(double n)
-{
-	return (ceil(n * 2) / 2.0);
-}

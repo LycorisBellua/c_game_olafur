@@ -10,12 +10,14 @@ static int		init_graphics_lib(void);
 static void		more_window_settings(t_man *man);
 static void		set_initial_viewport(t_man *man);
 
-int	create_window(t_man *man, const char *title, int width, int height)
+int	create_window(t_man *man, const char *title, t_ivec2 size,
+	double aspect_ratio)
 {
 	if (!init_graphics_lib())
 		return (0);
+	if (!set_resolution(man, size, aspect_ratio))
+		return (put_error(0, E_FAIL_WINDOW, 0));
 	man->title = (char *)title;
-	set_resolution(man, width, height);
 	man->window = glfwCreateWindow(man->res.window_size.x,
 			man->res.window_size.y, man->title, NULL, NULL);
 	if (!man->window)

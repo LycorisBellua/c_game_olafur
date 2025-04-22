@@ -6,14 +6,12 @@ static int	get_diff_perc(t_man *man, int diff);
 
 int	mouse_move_callback(int x, int y, t_man *man)
 {
-	man->cursor.x = ((int)x - man->res.viewport_offset.x)
-		* man->res.window_size_default.x / man->res.viewport_size.x;
-	man->cursor.y = ((int)y - man->res.viewport_offset.y)
-		* man->res.window_size_default.y / man->res.viewport_size.y;
-	if (man->cursor.x < 0
-		|| man->cursor.x >= man->res.window_size_default.x
-		|| man->cursor.y < 0
-		|| man->cursor.y >= man->res.window_size_default.y)
+	man->cursor.x = ((int)x - man->res.viewport_offset.x) * man->res.res.x
+		/ man->res.viewport_size.x;
+	man->cursor.y = ((int)y - man->res.viewport_offset.y) * man->res.res.y
+		/ man->res.viewport_size.y;
+	if (man->cursor.x < 0 || man->cursor.x >= man->res.res.x
+		|| man->cursor.y < 0 || man->cursor.y >= man->res.res.y)
 	{
 		set_ivec2(&man->cursor, -1, -1);
 		return (0);

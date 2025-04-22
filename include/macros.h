@@ -4,7 +4,6 @@
 # define TITLE "Cimmerian"
 # define WINDOW_WIDTH  (640 * 1)
 # define WINDOW_HEIGHT (360 * 1)
-# define FOV 60
 # define ECHOLOCATION 0
 # define DEFAULT_DOF 20
 # define DEFAULT_MOVE_SPEED 2.0

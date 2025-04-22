@@ -13,18 +13,21 @@ void	compose_background(t_man *man, t_map *map)
 
 	if (!map)
 		return ;
-	if (map->skybox && !map->background)
+	if (!map->background)
 	{
 		set_ivec2(&size, man->res.res.x * 4, man->res.res.y);
 		map->background = create_empty_png(size);
+		if (!map->background)
+			return ;
 	}
-	if (!map->background)
-		return ;
-	min_len = min(map->skybox->size.x * map->skybox->size.y,
+	if (map->skybox)
+	{
+		min_len = min(map->skybox->size.x * map->skybox->size.y,
 			map->background->size.x * map->background->size.y);
-	memcpy(map->background->buf,
-		map->skybox->cycle[map->skybox->cycle_index],
-		min_len * sizeof(t_color));
+		memcpy(map->background->buf,
+			map->skybox->cycle[map->skybox->cycle_index],
+			min_len * sizeof(t_color));
+	}
 	add_fog_overlay(map->background, man->fog_width, map->fog_color);
 	return ;
 }

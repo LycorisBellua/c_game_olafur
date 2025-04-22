@@ -67,7 +67,7 @@ static void	init_row(t_man *man, t_row *row)
 	tmp_ray_dir.y = man->player.dir.y + man->player.plane.y;
 	row->ray_dir_step.x = (tmp_ray_dir.x - row->ray_dir.x) / man->frame.size.x;
 	row->ray_dir_step.y = (tmp_ray_dir.y - row->ray_dir.y) / man->frame.size.x;
-	row->pos_z = 0.5 * man->res.h_mod * man->frame.size.y;
+	row->pos_z = man->frame.size.y * 0.5;
 	return ;
 }
 

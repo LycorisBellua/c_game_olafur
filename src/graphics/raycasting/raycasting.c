@@ -63,8 +63,7 @@ static void	set_line(t_man *man, int x, t_ray *r)
 	int		offset;
 
 	cell = &man->maps[man->curr_map]->cells[r->m_index.y][r->m_index.x];
-	r->line_height_cubic = man->frame.size.y / r->perp_wall_dist
-		* man->res.h_mod;
+	r->line_height_cubic = man->frame.size.y / r->perp_wall_dist;
 	r->line_height = r->line_height_cubic * cell->height;
 	offset = r->line_height_cubic * (1.0 - cell->height) * 0.5;
 	r->unclamped_line_height.x = -r->line_height / 2 + man->frame.size.y / 2

@@ -164,7 +164,8 @@ void		display_frame(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */
 
-void		set_resolution(t_man *man, int window_width, int window_height);
+int			set_resolution(t_man *man, t_ivec2 window_size,
+				double aspect_ratio);
 void		set_viewport(t_man *man, t_ivec2 window_size);
 
 /* Input -------------------------------------------------------------------- */
@@ -195,7 +196,8 @@ void		poll_input_events(t_man *man);
 
 /* Init --------------------------------------------------------------------- */
 
-int			create_window(t_man *man, const char *title, int width, int height);
+int			create_window(t_man *man, const char *title, t_ivec2 size,
+				double aspect_ratio);
 t_ivec2		get_monitor_size(t_man *man);
 void		init_input_handling(t_man *man);
 void		run_game_loop(t_man *man);

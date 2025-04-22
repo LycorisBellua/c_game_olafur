@@ -50,7 +50,6 @@ t_vec2	rotate_vec2(t_vec2 v, double angle);
 int		clamp(int n, int min, int max);
 double	fclamp(double n, double min, double max);
 int		norm(int n);
-double	round_up_to_half(double n);
 
 /* Distance ----------------------------------------------------------------- */
 
