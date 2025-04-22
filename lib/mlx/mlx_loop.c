@@ -68,4 +68,5 @@ static int	mlx_int_set_win_event_mask(t_xvar *xvar)
       XChangeWindowAttributes(xvar->display, win->window, CWEventMask, &xwa);
       win = win->next;
     }
+	return (0);
 }

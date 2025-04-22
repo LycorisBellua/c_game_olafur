@@ -15,15 +15,9 @@ int	init_frames(t_man *man)
 	return (1);
 }
 
-void	clear_frame(t_man *man)
-{
-	(void)man;
-	glClear(GL_COLOR_BUFFER_BIT);
-	return ;
-}
-
 void	display_frame(t_man *man)
 {
+	glClear(GL_COLOR_BUFFER_BIT);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, man->frame.size.x,
 		man->frame.size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, man->frame.buf);
 	render_mesh();
@@ -48,7 +42,7 @@ static int	set_frame(t_man *man)
 {
 	set_ivec2(&man->frame.size, man->res.res.x, man->res.res.y);
 	man->frame.buf = malloc(man->frame.size.x * man->frame.size.y
-		* sizeof(t_color));
+			* sizeof(t_color));
 	if (!man->frame.buf)
 		return (put_error(man, E_FAIL_MEM, 0));
 	glGenTextures(1, &man->frame.id);

@@ -97,8 +97,9 @@ static void	*mlx_int_new_xshm_image(t_xvar *xvar,int width,int height,int format
 static int	shm_att_pb(Display *d,XErrorEvent *ev)
 {
   if (ev->request_code==146 && ev->minor_code==X_ShmAttach)
-    write(2,WARN_SHM_ATTACH,strlen(WARN_SHM_ATTACH));
+    (void)!write(2,WARN_SHM_ATTACH,strlen(WARN_SHM_ATTACH));
   mlx_X_error = 1;
+  return (0);
 }
 
 static void	*mlx_int_new_image(t_xvar *xvar,int width, int height,int format)

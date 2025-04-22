@@ -21,7 +21,6 @@ static void	rendering(t_man *man)
 {
 	t_map	*map;
 
-	clear_frame(man);
 	if (man->game_state != GAME_STATE_PLAY)
 		display_game_over_screen(man);
 	else

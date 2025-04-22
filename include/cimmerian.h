@@ -159,7 +159,6 @@ int			collect_sprite(t_man *man, int sprite_index);
 /* Frames ------------------------------------------------------------------- */
 
 int			init_frames(t_man *man);
-void		clear_frame(t_man *man);
 void		display_frame(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */

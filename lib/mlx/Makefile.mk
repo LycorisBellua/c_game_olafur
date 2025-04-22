@@ -22,10 +22,9 @@ endif
 NAME		= libmlx.a
 NAME_UNAME	= libmlx_$(UNAME).a
 
-SRC	= mlx_init.c mlx_new_window.c mlx_loop.c mlx_loop_end.c \
-	mlx_expose_hook.c mlx_loop_hook.c \
+SRC	= mlx_init.c mlx_new_window.c mlx_loop.c mlx_loop_end.c mlx_loop_hook.c \
 	mlx_new_image.c mlx_get_data_addr.c \
-	mlx_put_image_to_window.c mlx_clear_window.c mlx_destroy_window.c \
+	mlx_put_image_to_window.c mlx_destroy_window.c \
 	mlx_int_param_event.c mlx_hook.c mlx_do_key_autorepeatoff.c \
 	mlx_do_key_autorepeaton.c mlx_do_sync.c \
 	mlx_destroy_image.c mlx_mouse_move.c mlx_mouse_hide.c mlx_mouse_show.c \

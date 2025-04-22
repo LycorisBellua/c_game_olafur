@@ -21,12 +21,6 @@ int	init_frames(t_man *man)
 	return (1);
 }
 
-void	clear_frame(t_man *man)
-{
-	mlx_clear_window(man->mlx, man->window);
-	return ;
-}
-
 void	free_frames(t_man *man)
 {
 	int	i;

@@ -31,9 +31,7 @@ gl:
 
 $(MLX_LIB):
 	@if [ "$(ENGINE)" = "MLX" ]; then \
-		git clone -q https://github.com/42Paris/minilibx-linux.git $(MLX_DIR) && \
-		echo "Downloaded Linux version of MLX library: $(MLX_DIR)" && \
-		rm -rf $(MLX_DIR)/.git && make -s -C $(MLX_DIR); \
+		make -s -C $(MLX_DIR); \
 	fi
 
 $(NAME): $(OBJ)

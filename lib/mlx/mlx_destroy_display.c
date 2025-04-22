@@ -3,4 +3,5 @@
 int	mlx_destroy_display(t_xvar *xvar)
 {
 	XCloseDisplay(xvar->display);
+	return (0);
 }
