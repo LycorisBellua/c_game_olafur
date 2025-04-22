@@ -25,5 +25,6 @@ int	main(int argc, char **argv)
 	init_input_handling(&g_man);
 	g_man.game_state = GAME_STATE_PLAY;
 	run_game_loop(&g_man);
+	deinit(&g_man);
 	return (EXIT_SUCCESS);
 }

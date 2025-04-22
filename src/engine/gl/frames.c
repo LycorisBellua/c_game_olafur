@@ -15,12 +15,10 @@ int	init_frames(t_man *man)
 	return (1);
 }
 
-/* Keep using glClear for when the window is resized */
 void	clear_frame(t_man *man)
 {
+	(void)man;
 	glClear(GL_COLOR_BUFFER_BIT);
-	bzero(man->frame.buf, man->frame.size.x * man->frame.size.y
-		* sizeof(t_color));
 	return ;
 }
 

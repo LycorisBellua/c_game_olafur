@@ -1,13 +1,13 @@
 CC = gcc
-CFLAGS = -Iinclude -I.mlx -Wall -Wextra -Werror -pedantic -O2 #-g -fsanitize=address
-LDFLAGS = -lm
-MLX_DIR = .mlx
+MLX_DIR = lib/mlx
 MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw34
+CFLAGS = -Iinclude -I$(MLX_DIR) -Wall -Wextra -Werror -pedantic -O2 #-g -fsanitize=address
+LDFLAGS = -lm
 NAME = cimmerian
 
-SRC_COMMON = $(shell find lib -name '*.c') \
+SRC_COMMON = $(shell find lib -path "$(MLX_DIR)" -prune -o -name '*.c' -print) \
 	$(shell find src -path "src/engine" -prune -o -name '*.c' -print)
 ENGINE ?= MLX
 ifeq ($(ENGINE), GL)
@@ -33,7 +33,7 @@ $(MLX_LIB):
 	@if [ "$(ENGINE)" = "MLX" ]; then \
 		git clone -q https://github.com/42Paris/minilibx-linux.git $(MLX_DIR) && \
 		echo "Downloaded Linux version of MLX library: $(MLX_DIR)" && \
-		make -s -C $(MLX_DIR); \
+		rm -rf $(MLX_DIR)/.git && make -s -C $(MLX_DIR); \
 	fi
 
 $(NAME): $(OBJ)

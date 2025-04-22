@@ -1,0 +1,63 @@
+##
+## Makefile for MiniLibX in /home/boulon/work/c/raytraceur/minilibx
+## 
+## Made by Olivier Crouzet
+## Login   <ol@epitech.net>
+## 
+## Started on  Tue Oct  5 15:56:43 2004 Olivier Crouzet
+## Last update Tue May 15 15:41:20 2007 Olivier Crouzet
+##
+
+## Please use configure script
+
+
+INC	=%%%%
+
+UNAME = $(shell uname)
+CC	= gcc
+ifeq ($(UNAME),FreeBSD)
+	CC = clang
+endif
+
+NAME		= libmlx.a
+NAME_UNAME	= libmlx_$(UNAME).a
+
+SRC	= mlx_init.c mlx_new_window.c mlx_loop.c mlx_loop_end.c \
+	mlx_expose_hook.c mlx_loop_hook.c \
+	mlx_new_image.c mlx_get_data_addr.c \
+	mlx_put_image_to_window.c mlx_clear_window.c mlx_destroy_window.c \
+	mlx_int_param_event.c mlx_hook.c mlx_do_key_autorepeatoff.c \
+	mlx_do_key_autorepeaton.c mlx_do_sync.c \
+	mlx_destroy_image.c mlx_mouse_move.c mlx_mouse_hide.c mlx_mouse_show.c \
+	mlx_mouse_get_pos.c mlx_get_screen_size.c mlx_destroy_display.c
+
+OBJ_DIR = obj
+OBJ	= $(addprefix $(OBJ_DIR)/,$(SRC:%.c=%.o))
+CFLAGS	= -O3 -I$(INC)
+
+all	: $(NAME)
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+
+$(NAME)	: $(OBJ)
+	ar -r $(NAME) $(OBJ)
+	ranlib $(NAME)
+	cp $(NAME) $(NAME_UNAME)
+
+check: all
+	@test/run_tests.sh
+
+show:
+	@printf "NAME  		: $(NAME)\n"
+	@printf "NAME_UNAME	: $(NAME_UNAME)\n"
+	@printf "CC		: $(CC)\n"
+	@printf "CFLAGS		: $(CFLAGS)\n"
+	@printf "SRC		:\n	$(SRC)\n"
+	@printf "OBJ		:\n	$(OBJ)\n"
+
+clean	:
+	rm -rf $(OBJ_DIR)/ $(NAME) $(NAME_UNAME) *~ core *.core
+
+.PHONY: all check show clean

@@ -42,9 +42,10 @@ If not indicated, the map's default start pos and direction will be used.
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
 
--> Consider modifying the MLX to hide the window decoration in fullscreen. If 
-this works, make a real fullscreen. But before that, consider using CODAM's 
-version, as it should have a window resizing feature.
+-> MLX Lib: Why does hiding the cursor cause a leak? Once fixed, hide the 
+cursor to be like the GL version.
+-> MLX Lib: Consider modifying the MLX to hide the window decoration in 
+fullscreen. If this works, make a real fullscreen.
 -> Understand why there's a dramatic FPS drop in both versions with a x2 or x3 
 resolution (x1 is 640x360). Is it just because more rays are being casted?
 

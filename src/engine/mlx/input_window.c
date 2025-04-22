@@ -2,7 +2,6 @@
 
 int	cross_window_button_callback(t_man *man)
 {
-	deinit(man);
-	exit(0);
+	mlx_loop_end(man->mlx);
 	return (0);
 }

@@ -23,8 +23,7 @@ int	init_frames(t_man *man)
 
 void	clear_frame(t_man *man)
 {
-	bzero(man->frame.addr, man->frame.size.x * man->frame.size.y
-		* (man->frame.bpp / 8));
+	mlx_clear_window(man->mlx, man->window);
 	return ;
 }
 
