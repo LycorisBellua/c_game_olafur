@@ -24,10 +24,3 @@ void	init_input_handling(t_man *man)
 	glfwSetCursorPosCallback(man->window, cursor_pos_callback);
 	return ;
 }
-
-void	poll_input_events(t_man *man)
-{
-	(void)man;
-	glfwPollEvents();
-	return ;
-}

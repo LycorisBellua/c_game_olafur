@@ -1,13 +1,24 @@
 #include "cimmerian.h"
 
+int			set_swap_buf_frames(t_man *man);
+void		free_swap_buf_frames(t_man *man);
+
 static int	set_frame(t_man *man, t_frame *f, int is_swap_buf);
 
 int	init_frames(t_man *man)
 {
+	if (!set_frame(man, &man->frame, 0) || !set_swap_buf_frames(man))
+		return (0);
+	man->z_buf = malloc(man->frame.size.x * sizeof(double));
+	if (!man->z_buf)
+		return (put_error(man, E_FAIL_MEM, 0));
+	return (1);
+}
+
+int	set_swap_buf_frames(t_man *man)
+{
 	int	i;
 
-	if (!set_frame(man, &man->frame, 0))
-		return (0);
 	i = 0;
 	while (i < 2)
 	{
@@ -15,19 +26,24 @@ int	init_frames(t_man *man)
 			return (0);
 		++i;
 	}
-	man->z_buf = malloc(man->frame.size.x * sizeof(double));
-	if (!man->z_buf)
-		return (put_error(man, E_FAIL_MEM, 0));
 	return (1);
 }
 
 void	free_frames(t_man *man)
 {
-	int	i;
-
 	if (man->frame.img)
 		mlx_destroy_image(man->mlx, man->frame.img);
 	man->frame.img = 0;
+	free_swap_buf_frames(man);
+	free(man->z_buf);
+	man->z_buf = 0;
+	return ;
+}
+
+void	free_swap_buf_frames(t_man *man)
+{
+	int	i;
+
 	i = 0;
 	while (i < 2)
 	{
@@ -36,8 +52,6 @@ void	free_frames(t_man *man)
 		man->swap_buf[i].img = 0;
 		++i;
 	}
-	free(man->z_buf);
-	man->z_buf = 0;
 	return ;
 }
 

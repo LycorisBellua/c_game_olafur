@@ -173,12 +173,6 @@ void		execute_input_action(t_man *man, int key, t_key_state new_state);
 void		init_keys_wasdqe(t_man *man);
 void		init_keys_arrows(t_man *man);
 void		init_keys_misc(t_man *man);
-int			key_press_callback(int keycode, t_man *man);
-int			key_release_callback(int keycode, t_man *man);
-int			mouse_press_callback(int button, int x, int y, t_man *man);
-int			mouse_release_callback(int button, int x, int y, t_man *man);
-int			mouse_move_callback(int x, int y, t_man *man);
-int			focus_loss_callback(t_man *man);
 int			cross_window_button_callback(t_man *man);
 void		action_move_x_incr(t_man *man);
 void		action_move_x_decr(t_man *man);
@@ -191,7 +185,6 @@ void		action_speed_run(t_man *man);
 void		action_toggle_fullscreen(t_man *man);
 void		action_toggle_debug(t_man *man);
 void		action_close_window(t_man *man);
-void		poll_input_events(t_man *man);
 
 /* Init --------------------------------------------------------------------- */
 

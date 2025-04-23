@@ -1,13 +1,13 @@
 #include "mlx_int.h"
 
-static int	mlx_int_anti_resize_win(t_xvar *xvar, Window win, int w, int h);
+int			mlx_get_screen_size(void *mlx_ptr, int *sizex, int *sizey);
+
+static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h);
 static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win);
 
 /*
 	We do not use White/BlackPixel macro, TrueColor Visual make sure 0 is black 
-	& -1 is white
-
-	With mlx_int_wait_first_expose, no flush is needed.
+	and -1 is white.
 */
 void	*mlx_new_window(t_xvar *xvar, int size_x, int size_y, char *title)
 {
@@ -18,19 +18,14 @@ void	*mlx_new_window(t_xvar *xvar, int size_x, int size_y, char *title)
 	xswa.background_pixel = 0;
 	xswa.border_pixel = -1;
 	xswa.colormap = xvar->cmap;
-	/*
-		xswa.event_mask = ButtonPressMask | ButtonReleaseMask | ExposureMask |
-		KeyPressMask | KeyReleaseMask | StructureNotifyMask;
-	*/
-	/* xswa.event_mask = ExposureMask; */
-	xswa.event_mask = 0xFFFFFF; /* all events */
+	xswa.event_mask = 0xFFFFFF;
 	new_win = malloc(sizeof(*new_win));
 	if (!new_win)
 		return ((void *)0);
 	new_win->window = XCreateWindow(xvar->display, xvar->root, 0, 0, size_x,
 			size_y, 0, CopyFromParent, InputOutput, xvar->visual,
 			CWEventMask | CWBackPixel | CWBorderPixel | CWColormap, &xswa);
-	mlx_int_anti_resize_win(xvar, new_win->window, size_x, size_y);
+	mlx_int_resize_win(xvar, new_win->window, size_x, size_y);
 	XStoreName(xvar->display, new_win->window, title);
 	XSetWMProtocols(xvar->display, new_win->window, &(xvar->wm_delete_window),
 		1);
@@ -47,23 +42,27 @@ void	*mlx_new_window(t_xvar *xvar, int size_x, int size_y, char *title)
 	return (new_win);
 }
 
-static int	mlx_int_anti_resize_win(t_xvar *xvar, Window win, int w, int h)
+static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h)
 {
 	XSizeHints	hints;
-	long		toto;
+	int			screen_x;
+	int			screen_y;
+	long		hints_mask;
 
-	XGetWMNormalHints(xvar->display, win, &hints, &toto);
+	mlx_get_screen_size(xvar, &screen_x, &screen_y);
+	XGetWMNormalHints(xvar->display, win, &hints, &hints_mask);
 	hints.width = w;
 	hints.height = h;
 	hints.min_width = w;
 	hints.min_height = h;
-	hints.max_width = w;
-	hints.max_height = h;
+	hints.max_width = screen_x;
+	hints.max_height = screen_y;
 	hints.flags = PPosition | PSize | PMinSize | PMaxSize;
 	XSetWMNormalHints(xvar->display, win, &hints);
 	return (0);
 }
 
+/* No flush is needed with mlx_int_wait_first_expose. */
 static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win)
 {
 	XEvent	ev;

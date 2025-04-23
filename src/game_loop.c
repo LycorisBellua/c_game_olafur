@@ -13,7 +13,6 @@ int	game_loop(t_man *man)
 		door_routine(man);
 		portal_routine(man);
 	}
-	poll_input_events(man);
 	return (0);
 }
 

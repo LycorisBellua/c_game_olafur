@@ -42,11 +42,13 @@ If not indicated, the map's default start pos and direction will be used.
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
 
+-> MLX Lib: The viewport is not updated properly on window resize. Also, the 
+flicker seems to be due to the absence of a double buffer in the MLX. We also 
+need to be able to toggle the window decoration on and off.
+
+-> MLX Lib: Automatically close the window on Alt-F4 just like OpenGL.
 -> MLX Lib: Why does hiding the cursor cause a leak? Once fixed, hide the 
 cursor to be like the GL version.
--> MLX Lib: Consider modifying the MLX to hide the window decoration in 
-fullscreen. If this works, make a real fullscreen.
--> MLX Lib: Resize window?
 -> GL: Focus seems to be lost when toggling off fullscreen. Fix pls.
 -> Understand why there's a dramatic FPS drop in both versions with a x2 or x3 
 resolution (x1 is 640x360). Is it just because more rays are being casted?
