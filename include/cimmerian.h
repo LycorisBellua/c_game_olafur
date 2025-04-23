@@ -26,7 +26,7 @@
 
 t_color		get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a);
 t_color		get_color_hex(const char *str, t_ubyte alpha);
-t_color		get_alpha_blended_color(t_color prev, t_color new);
+t_color		alpha_blending(t_color prev, t_color new);
 
 /* Draw --------------------------------------------------------------------- */
 

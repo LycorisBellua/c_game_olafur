@@ -26,18 +26,12 @@ t_color	get_color_hex(const char *str, t_ubyte alpha)
 	return (c);
 }
 
-/*
-	Checking for whether the new pixel is opaque is not necessary.
-	It's only done to improve performance.
-*/
-t_color	get_alpha_blended_color(t_color prev, t_color new)
+t_color	alpha_blending(t_color prev, t_color new)
 {
 	t_color	blend;
 
 	if (new.a == 0)
 		return (prev);
-	else if (new.a == 255)
-		return (new);
 	blend.a = new.a + (255 - new.a) * prev.a / 255;
 	if (!blend.a)
 		return (get_color_rgba(0, 0, 0, 0));
