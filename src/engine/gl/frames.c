@@ -4,7 +4,7 @@ void		render_mesh(void);
 
 static int	set_frame(t_man *man);
 
-int	init_frames(t_man *man)
+int	init_frame(t_man *man)
 {
 	if (!set_frame(man))
 		return (0);

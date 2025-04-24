@@ -1,15 +1,22 @@
 #include "cimmerian.h"
 
-int			set_swap_buf_frames(t_man *man);
-int			set_xmap_and_ymap(t_man *man);
-void		free_swap_buf_frames(t_man *man);
-
 static int	set_frame(t_man *man, t_frame *f, int is_swap_buf);
+static int	set_xmap_and_ymap(t_man *man);
 
-int	init_frames(t_man *man)
+int	init_frame(t_man *man)
 {
-	if (!set_frame(man, &man->frame, 0) || !set_swap_buf_frames(man)
-		|| !set_xmap_and_ymap(man))
+	int	i;
+
+	if (!set_frame(man, &man->frame, 0))
+		return (put_error(man, 0, 0));
+	i = 0;
+	while (i < 2)
+	{
+		if (!set_frame(man, man->swap_buf + i, 1))
+			return (put_error(man, 0, 0));
+		++i;
+	}
+	if (!set_xmap_and_ymap(man))
 		return (put_error(man, 0, 0));
 	man->z_buf = malloc(man->frame.size.x * sizeof(double));
 	if (!man->z_buf)
@@ -17,39 +24,13 @@ int	init_frames(t_man *man)
 	return (1);
 }
 
-int	set_swap_buf_frames(t_man *man)
+void	free_frame(t_man *man)
 {
 	int	i;
 
-	i = 0;
-	while (i < 2)
-	{
-		if (!set_frame(man, man->swap_buf + i, 1))
-			return (0);
-		++i;
-	}
-	return (1);
-}
-
-void	free_frames(t_man *man)
-{
 	if (man->frame.img)
 		mlx_image_destroy(man->mlx, man->frame.img);
 	man->frame.img = 0;
-	free(man->frame.xmap);
-	free(man->frame.ymap);
-	man->frame.xmap = 0;
-	man->frame.ymap = 0;
-	free_swap_buf_frames(man);
-	free(man->z_buf);
-	man->z_buf = 0;
-	return ;
-}
-
-void	free_swap_buf_frames(t_man *man)
-{
-	int	i;
-
 	i = 0;
 	while (i < 2)
 	{
@@ -58,6 +39,12 @@ void	free_swap_buf_frames(t_man *man)
 		man->swap_buf[i].img = 0;
 		++i;
 	}
+	free(man->frame.xmap);
+	free(man->frame.ymap);
+	man->frame.xmap = 0;
+	man->frame.ymap = 0;
+	free(man->z_buf);
+	man->z_buf = 0;
 	return ;
 }
 
@@ -73,5 +60,26 @@ static int	set_frame(t_man *man, t_frame *f, int is_swap_buf)
 		return (put_error(man, E_FAIL_MLX_IMG, 0));
 	f->addr = (t_ubyte *)mlx_get_data_addr(f->img, &f->bpp, &f->line_length,
 			&f->endian);
+	return (1);
+}
+
+static int	set_xmap_and_ymap(t_man *man)
+{
+	t_ivec2	coord;
+
+	man->frame.xmap = malloc(man->swap_buf[0].size.x * sizeof(int));
+	man->frame.ymap = malloc(man->swap_buf[0].size.y * sizeof(int));
+	if (!man->frame.xmap || !man->frame.ymap)
+		return (0);
+	coord.x = -1;
+	while (++coord.x < man->swap_buf[0].size.x)
+		man->frame.xmap[coord.x] = \
+			clamp((int)(coord.x / man->swap_buf[0].thickness + 0.5),
+				0, man->frame.size.x - 1);
+	coord.y = -1;
+	while (++coord.y < man->swap_buf[0].size.y)
+		man->frame.ymap[coord.y] = \
+			clamp((int)(coord.y / man->swap_buf[0].thickness + 0.5),
+				0, man->frame.size.y - 1);
 	return (1);
 }

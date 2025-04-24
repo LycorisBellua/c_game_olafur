@@ -1,7 +1,5 @@
 #include "cimmerian.h"
 
-void	free_frames(t_man *man);
-
 void	toggle_fullscreen(t_man *man)
 {
 	static int	fullscreen;

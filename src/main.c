@@ -13,7 +13,7 @@ int	main(int argc, char **argv)
 		return (put_error(0, E_TOO_MANY_ARGS, EXIT_FAILURE));
 	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!create_window(&g_man, TITLE, window_size, 16.0 / 9)
-		|| !init_frames(&g_man) || !set_image_array(&g_man, PATH_IMG_JSON))
+		|| !init_frame(&g_man) || !set_image_array(&g_man, PATH_IMG_JSON))
 		return (EXIT_FAILURE);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);

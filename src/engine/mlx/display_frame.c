@@ -18,27 +18,6 @@ void	display_frame(t_man *man)
 	return ;
 }
 
-int	set_xmap_and_ymap(t_man *man)
-{
-	t_ivec2	coord;
-
-	man->frame.xmap = malloc(man->swap_buf[0].size.x * sizeof(int));
-	man->frame.ymap = malloc(man->swap_buf[0].size.y * sizeof(int));
-	if (!man->frame.xmap || !man->frame.ymap)
-		return (0);
-	coord.x = -1;
-	while (++coord.x < man->swap_buf[0].size.x)
-		man->frame.xmap[coord.x] = \
-			clamp((int)(coord.x / man->swap_buf[0].thickness + 0.5),
-				0, man->frame.size.x - 1);
-	coord.y = -1;
-	while (++coord.y < man->swap_buf[0].size.y)
-		man->frame.ymap[coord.y] = \
-			clamp((int)(coord.y / man->swap_buf[0].thickness + 0.5),
-				0, man->frame.size.y - 1);
-	return (1);
-}
-
 static void	upscale_frame(t_frame *f, t_frame *u)
 {
 	t_ivec2	f_coord;

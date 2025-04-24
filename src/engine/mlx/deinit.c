@@ -1,7 +1,5 @@
 #include "cimmerian.h"
 
-void	free_frames(t_man *man);
-
 void	deinit(t_man *man)
 {
 	if (!man)
@@ -11,7 +9,7 @@ void	deinit(t_man *man)
 		mlx_window_destroy(man->mlx, man->window);
 		man->window = 0;
 	}
-	free_frames(man);
+	free_frame(man);
 	mlx_destroy_display(man->mlx);
 	free(man->mlx);
 	man->mlx = 0;

@@ -156,10 +156,11 @@ int			push_back_on_collision(t_man *man, t_map *m, t_vec2 pos,
 void		unstuck_from_wall(t_man *man, t_map *m);
 int			collect_sprite(t_man *man, int sprite_index);
 
-/* Frames ------------------------------------------------------------------- */
+/* Frame -------------------------------------------------------------------- */
 
-int			init_frames(t_man *man);
+int			init_frame(t_man *man);
 void		display_frame(t_man *man);
+void		free_frame(t_man *man);
 
 /* Windowing ---------------------------------------------------------------- */
 
