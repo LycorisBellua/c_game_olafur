@@ -1,6 +1,7 @@
 #include "cimmerian.h"
 
 int		set_swap_buf_frames(t_man *man);
+int		set_xmap_and_ymap(t_man *man);
 void	free_swap_buf_frames(t_man *man);
 
 int	cross_window_button_callback(t_man *man)
@@ -12,15 +13,16 @@ int	cross_window_button_callback(t_man *man)
 int	move_or_resize_window_callback(int x, int y, int width, int height,
 	t_man *man)
 {
-	(void)x;
-	(void)y;
+	set_ivec2(&man->res.window_position, x, y);
 	if (width != man->res.window_size.x || height != man->res.window_size.y)
 	{
 		set_ivec2(&man->res.window_size, width, height);
 		set_viewport(man, man->res.window_size);
 		free_swap_buf_frames(man);
-		set_swap_buf_frames(man);
+		if (!set_swap_buf_frames(man) || !set_xmap_and_ymap(man))
+			exit(put_error(man, 0, EXIT_FAILURE));
 		mlx_clear_window(man->mlx, man->window);
+		display_frame(man);
 	}
-    return (0);
+	return (0);
 }

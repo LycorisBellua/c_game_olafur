@@ -93,7 +93,7 @@ static double	calculate_initial_tex_pos(t_man *man, t_map *m, t_ray *r,
 	y_offset = tex->size.y * (1.0 - cell->height) * 0.5;
 	tex_step = (double)tex->size.y / r->line_height_cubic;
 	return (y_offset + (r->coord1.y - (man->frame.size.y * 0.5 - r->line_height
-		* 0.5)) * tex_step);
+				* 0.5)) * tex_step);
 }
 
 static t_color	calculate_color(t_man *man, t_ray *r, t_img *tex,

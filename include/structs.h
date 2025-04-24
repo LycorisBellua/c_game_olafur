@@ -209,7 +209,9 @@ typedef struct s_frame
 	int		line_length;
 	int		endian;
 	t_ivec2	size;
-	int		thickness;
+	double	thickness;
+	int		*xmap;
+	int		*ymap;
 }	t_frame;
 # endif
 

@@ -42,9 +42,7 @@ If not indicated, the map's default start pos and direction will be used.
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
 
--> MLX Lib: The viewport is not updated properly on window resize. Also, the 
-flicker seems to be due to the absence of a double buffer in the MLX. We also 
-need to be able to toggle the window decoration on and off.
+-> MLX Lib: We need to be able to toggle the window decoration on and off.
 
 -> MLX Lib: Automatically close the window on Alt-F4 just like OpenGL.
 -> MLX Lib: Why does hiding the cursor cause a leak? Once fixed, hide the 
@@ -60,3 +58,16 @@ resolution (x1 is 640x360). Is it just because more rays are being casted?
 	* Need to adapt background/skybox. Consider generating the skybox, and 
 	maybe it's the opportunity to have a proper one, with like mountains and 
 	stuff remaining where they should in the world.
+
+--------------------------------------------------------------------------------
+
+BACKBURNER
+
+-> MLX Lib: There can be a flicker when resizing the window, and it seems to be 
+due to the absence of a double buffer in the MLX. Consider implementing it, 
+instead of asking the user to create two frames. The upscaling feature could 
+even be done in the MLX. Basically take inspiration from OpenGL. And about the 
+upscaling, could this possibly be done by the graphics card? I can give it the 
+reference frame, the offset and size of the upscaled frame within the window, 
+as well as the upscaling factor. These values are computed only when the window 
+is resized, so they can be cached.

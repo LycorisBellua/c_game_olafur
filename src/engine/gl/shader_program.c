@@ -3,7 +3,6 @@
 static GLuint	compile_shader(GLenum type, const char *filepath);
 static int		get_app_glsl_version(void);
 static void		set_glsl_version_in_shader(char *ptr_shader, int version);
-static void		free_shader(GLuint *id);
 
 /*
 	At the end the shaders are freed. This is because they are already compiled 
@@ -19,23 +18,23 @@ int	create_shader_program(void)
 	shaders[1] = compile_shader(GL_FRAGMENT_SHADER, PATH_FRAGMENT_SHADER);
 	if (!shaders[0] || !shaders[1])
 	{
-		free_shader(shaders + 0);
-		free_shader(shaders + 1);
+		glDeleteShader(shaders[0]);
+		glDeleteShader(shaders[1]);
 		return (put_error(0, E_FAIL_SHADER, 0));
 	}
 	shader_program = glCreateProgram();
 	if (!shader_program)
 	{
-		free_shader(shaders + 0);
-		free_shader(shaders + 1);
+		glDeleteShader(shaders[0]);
+		glDeleteShader(shaders[1]);
 		return (put_error(0, E_FAIL_SHADER_PROG, 0));
 	}
 	glAttachShader(shader_program, shaders[0]);
 	glAttachShader(shader_program, shaders[1]);
 	glLinkProgram(shader_program);
 	glUseProgram(shader_program);
-	free_shader(shaders + 0);
-	free_shader(shaders + 1);
+	glDeleteShader(shaders[0]);
+	glDeleteShader(shaders[1]);
 	return (shader_program);
 }
 
@@ -129,12 +128,5 @@ static void	set_glsl_version_in_shader(char *ptr_shader, int version)
 			break ;
 		++i;
 	}
-	return ;
-}
-
-static void	free_shader(GLuint *id)
-{
-	glDeleteShader(*id);
-	*id = 0;
 	return ;
 }

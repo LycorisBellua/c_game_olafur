@@ -18,27 +18,43 @@ void	display_frame(t_man *man)
 	return ;
 }
 
-static void	upscale_frame(t_frame *f, t_frame *u)
+int	set_xmap_and_ymap(t_man *man)
 {
 	t_ivec2	coord;
-	int		t;
 
+	man->frame.xmap = malloc(man->swap_buf[0].size.x * sizeof(int));
+	man->frame.ymap = malloc(man->swap_buf[0].size.y * sizeof(int));
+	if (!man->frame.xmap || !man->frame.ymap)
+		return (0);
+	coord.x = -1;
+	while (++coord.x < man->swap_buf[0].size.x)
+		man->frame.xmap[coord.x] = \
+			clamp((int)(coord.x / man->swap_buf[0].thickness + 0.5),
+				0, man->frame.size.x - 1);
 	coord.y = -1;
-	while (++coord.y < f->size.y)
+	while (++coord.y < man->swap_buf[0].size.y)
+		man->frame.ymap[coord.y] = \
+			clamp((int)(coord.y / man->swap_buf[0].thickness + 0.5),
+				0, man->frame.size.y - 1);
+	return (1);
+}
+
+static void	upscale_frame(t_frame *f, t_frame *u)
+{
+	t_ivec2	f_coord;
+	t_ivec2	u_coord;
+
+	u_coord.y = -1;
+	while (++u_coord.y < u->size.y)
 	{
-		coord.x = -1;
-		while (++coord.x < f->size.x)
+		f_coord.y = f->ymap[u_coord.y];
+		u_coord.x = -1;
+		while (++u_coord.x < u->size.x)
 		{
-			t = -1;
-			while (++t < u->thickness)
-				set_frame_pixel(u, get_frame_pixel(f, coord.x, coord.y),
-					coord.x * u->thickness + t, coord.y * u->thickness);
+			f_coord.x = f->xmap[u_coord.x];
+			set_frame_pixel(u, get_frame_pixel(f, f_coord.x, f_coord.y),
+				u_coord.x, u_coord.y);
 		}
-		t = 0;
-		while (++t < u->thickness)
-			memcpy(&u->addr[(coord.y * u->thickness + t) * u->line_length],
-				&u->addr[coord.y * u->thickness * u->line_length],
-				u->line_length);
 	}
 	return ;
 }
