@@ -34,6 +34,7 @@ static void	switch_to_windowed_mode(t_man *man)
 	glfwSetWindowMonitor(man->window, NULL,
 		man->res.window_position.x, man->res.window_position.y,
 		man->res.window_size.x, man->res.window_size.y, GLFW_DONT_CARE);
+	glfwFocusWindow(man->window);
 	return ;
 }
 

@@ -40,7 +40,6 @@ PROBLEM: RESOLUTION GREATER THAN 640x360
 
 -> MLX Lib: Why does hiding the cursor cause a leak? Once fixed, hide the 
 cursor to be like the GL version.
--> GL: Focus seems to be lost when toggling off fullscreen. Fix pls.
 -> Understand why there's a dramatic FPS drop in both versions with a x2 or x3 
 resolution (x1 is 640x360). Is it just because more rays are being casted?
 
