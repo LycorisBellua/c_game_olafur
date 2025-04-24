@@ -1,7 +1,3 @@
-Diffs between the GL and MLX versions:
-- The MLX version doesn't have fullscreen mode, only a bigger window size.
-- The MLX version has a slower mouse-based rotation.
-
 Notes:
 - The minimum window size is 128x128 while the maximum is the monitor size.
 - Use a value inferior or equal to 0.1 as the aspect ratio to express "whatever 
@@ -41,8 +37,6 @@ If not indicated, the map's default start pos and direction will be used.
 --------------------------------------------------------------------------------
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
-
--> MLX Lib: We need to be able to toggle the window decoration on and off.
 
 -> MLX Lib: Automatically close the window on Alt-F4 just like OpenGL.
 -> MLX Lib: Why does hiding the cursor cause a leak? Once fixed, hide the 

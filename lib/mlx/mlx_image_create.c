@@ -10,7 +10,7 @@ static void	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
 static int	shm_att_pb(Display *d, XErrorEvent *ev);
 static void	*mlx_int_new_image(t_xvar *xvar, int width, int height, int format);
 
-void	*mlx_new_image(t_xvar *xvar, int width, int height)
+void	*mlx_image_create(t_xvar *xvar, int width, int height)
 {
 	t_img	*img;
 

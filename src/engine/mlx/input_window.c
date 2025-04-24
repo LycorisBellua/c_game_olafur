@@ -21,7 +21,7 @@ int	move_or_resize_window_callback(int x, int y, int width, int height,
 		free_swap_buf_frames(man);
 		if (!set_swap_buf_frames(man) || !set_xmap_and_ymap(man))
 			exit(put_error(man, 0, EXIT_FAILURE));
-		mlx_clear_window(man->mlx, man->window);
+		mlx_window_clear(man->mlx, man->window);
 		display_frame(man);
 	}
 	return (0);

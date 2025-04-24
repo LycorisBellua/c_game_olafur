@@ -9,7 +9,7 @@ static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win);
 	We do not use White/BlackPixel macro, TrueColor Visual make sure 0 is black 
 	and -1 is white.
 */
-void	*mlx_new_window(t_xvar *xvar, int size_x, int size_y, char *title)
+void	*mlx_window_create(t_xvar *xvar, int size_x, int size_y, char *title)
 {
 	t_win_list				*new_win;
 	XSetWindowAttributes	xswa;

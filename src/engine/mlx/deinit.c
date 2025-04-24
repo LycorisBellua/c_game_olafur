@@ -8,7 +8,7 @@ void	deinit(t_man *man)
 		return ;
 	if (man->window)
 	{
-		mlx_destroy_window(man->mlx, man->window);
+		mlx_window_destroy(man->mlx, man->window);
 		man->window = 0;
 	}
 	free_frames(man);

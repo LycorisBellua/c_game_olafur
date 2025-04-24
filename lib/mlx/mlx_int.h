@@ -23,6 +23,17 @@
 # define ERR_NO_TRUECOLOR "MLX Error: No TrueColor Visual available.\n"
 # define WARN_SHM_ATTACH "MLX Warning: X server can't attach shared memory.\n"
 
+#define MWM_HINTS_DECORATIONS (1L << 1)
+
+typedef struct
+{
+	unsigned long	flags;
+	unsigned long	functions;
+	unsigned long	decorations;
+	long			input_mode;
+	unsigned long	status;
+}	MotifWmHints;
+
 typedef struct s_event_list
 {
 	int		mask;
