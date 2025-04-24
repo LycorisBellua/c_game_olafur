@@ -6,11 +6,6 @@ void	scroll_callback(GLFWwindow *window, double x_offset, double y_offset);
 void	mouse_callback(GLFWwindow *window, int button, int action, int mods);
 void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos);
 
-/*
-	By default, the window closing event is only triggered by the cross window 
-	button or Alt+F4. We also add ESC.
-*/
-
 void	init_input_handling(t_man *man)
 {
 	set_ivec2(&man->cursor, -1, -1);

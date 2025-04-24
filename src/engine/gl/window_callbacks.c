@@ -21,7 +21,7 @@ void	window_pos_callback(GLFWwindow *window, int xpos, int ypos)
 	return ;
 }
 
-int	cross_window_button_callback(t_man *man)
+int	close_window_callback(t_man *man)
 {
 	glfwSetWindowShouldClose(man->window, GLFW_TRUE);
 	return (0);

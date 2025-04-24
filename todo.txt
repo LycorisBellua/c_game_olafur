@@ -38,7 +38,6 @@ If not indicated, the map's default start pos and direction will be used.
 
 PROBLEM: RESOLUTION GREATER THAN 640x360
 
--> MLX Lib: Automatically close the window on Alt-F4 just like OpenGL.
 -> MLX Lib: Why does hiding the cursor cause a leak? Once fixed, hide the 
 cursor to be like the GL version.
 -> GL: Focus seems to be lost when toggling off fullscreen. Fix pls.

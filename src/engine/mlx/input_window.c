@@ -4,7 +4,7 @@ int		set_swap_buf_frames(t_man *man);
 int		set_xmap_and_ymap(t_man *man);
 void	free_swap_buf_frames(t_man *man);
 
-int	cross_window_button_callback(t_man *man)
+int	close_window_callback(t_man *man)
 {
 	mlx_loop_end(man->mlx);
 	return (0);

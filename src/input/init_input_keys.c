@@ -1,5 +1,10 @@
 #include "cimmerian.h"
 
+/*
+	By default, the window closing event is only triggered by the cross window 
+	button or Alt+F4. We also add ESC.
+*/
+
 void	execute_input_action(t_man *man, int key, t_key_state new_state)
 {
 	int	i;

@@ -173,7 +173,7 @@ void		execute_input_action(t_man *man, int key, t_key_state new_state);
 void		init_keys_wasdqe(t_man *man);
 void		init_keys_arrows(t_man *man);
 void		init_keys_misc(t_man *man);
-int			cross_window_button_callback(t_man *man);
+int			close_window_callback(t_man *man);
 void		action_move_x_incr(t_man *man);
 void		action_move_x_decr(t_man *man);
 void		action_move_y_incr(t_man *man);

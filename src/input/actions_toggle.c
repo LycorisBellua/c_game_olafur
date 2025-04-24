@@ -14,6 +14,6 @@ void	action_toggle_debug(t_man *man)
 
 void	action_close_window(t_man *man)
 {
-	cross_window_button_callback(man);
+	close_window_callback(man);
 	return ;
 }
