@@ -29,13 +29,13 @@ void	free_frame(t_man *man)
 	int	i;
 
 	if (man->frame.img)
-		mlx_image_destroy(man->mlx, man->frame.img);
+		mlx_image_destroy(man->xvar, man->frame.img);
 	man->frame.img = 0;
 	i = 0;
 	while (i < 2)
 	{
 		if (man->swap_buf[i].img)
-			mlx_image_destroy(man->mlx, man->swap_buf[i].img);
+			mlx_image_destroy(man->xvar, man->swap_buf[i].img);
 		man->swap_buf[i].img = 0;
 		++i;
 	}
@@ -55,7 +55,7 @@ static int	set_frame(t_man *man, t_frame *f, int is_swap_buf)
 	else
 		set_ivec2(&f->size, man->res.res.x, man->res.res.y);
 	f->thickness = (double)f->size.x / man->res.res.x;
-	f->img = mlx_image_create(man->mlx, f->size.x, f->size.y);
+	f->img = mlx_image_create(man->xvar, f->size.x, f->size.y);
 	if (!f->img)
 		return (put_error(man, E_FAIL_MLX_IMG, 0));
 	return (1);

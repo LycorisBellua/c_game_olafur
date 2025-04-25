@@ -1,7 +1,7 @@
 #include "mlx.h"
 
-int	mlx_mouse_show(t_xvar *xvar, t_win_list *win)
+void	mlx_mouse_show(t_xvar *xvar)
 {
-	XUndefineCursor(xvar->display, win->window);
-	return (0);
+	XUndefineCursor(xvar->display, xvar->window);
+	return ;
 }

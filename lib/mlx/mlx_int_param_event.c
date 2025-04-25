@@ -1,18 +1,18 @@
 #include "mlx.h"
 
-static int	mlx_undef(void);
-static int	mlx_KeyPress(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_KeyRelease(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_ButtonPress(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_ButtonRelease(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_MotionNotify(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_Expose(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_ConfigureNotify(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_ResizeRequest(t_xvar *xvar, XEvent *ev, t_win_list *win);
-static int	mlx_generic(t_xvar *xvar, XEvent *ev, t_win_list *win);
+static void	mlx_undef(void);
+static void	mlx_KeyPress(t_xvar *xvar, XEvent *ev);
+static void	mlx_KeyRelease(t_xvar *xvar, XEvent *ev);
+static void	mlx_ButtonPress(t_xvar *xvar, XEvent *ev);
+static void	mlx_ButtonRelease(t_xvar *xvar, XEvent *ev);
+static void	mlx_MotionNotify(t_xvar *xvar, XEvent *ev);
+static void	mlx_Expose(t_xvar *xvar, XEvent *ev);
+static void	mlx_ConfigureNotify(t_xvar *xvar, XEvent *ev);
+static void	mlx_ResizeRequest(t_xvar *xvar, XEvent *ev);
+static void	mlx_generic(t_xvar *xvar, XEvent *ev);
 
 /* Range is [0 - 35] */
-int	(*(mlx_int_param_event[]))() =
+void	(*(mlx_int_param_event[]))() =
 {
 	mlx_undef,
 	mlx_undef,
@@ -52,71 +52,71 @@ int	(*(mlx_int_param_event[]))() =
 	mlx_generic
 };
 
-static int	mlx_undef(void)
+static void	mlx_undef(void)
 {
-	return (0);
+	return ;
 }
 
-static int	mlx_KeyPress(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_KeyPress(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[KeyPress].hook(XkbKeycodeToKeysym(xvar->display,
-			ev->xkey.keycode, 0, 0), win->hooks[KeyPress].param);
-	return (0);
+	xvar->hooks[KeyPress].hook(XkbKeycodeToKeysym(xvar->display,
+		ev->xkey.keycode, 0, 0), xvar->hooks[KeyPress].param);
+	return ;
 }
 
-static int	mlx_KeyRelease(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_KeyRelease(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[KeyRelease].hook(XkbKeycodeToKeysym(xvar->display,
-			ev->xkey.keycode, 0, 0), win->hooks[KeyRelease].param);
-	return (0);
+	xvar->hooks[KeyRelease].hook(XkbKeycodeToKeysym(xvar->display,
+		ev->xkey.keycode, 0, 0), xvar->hooks[KeyRelease].param);
+	return ;
 }
 
-static int	mlx_ButtonPress(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_ButtonPress(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[ButtonPress].hook(ev->xbutton.button, ev->xbutton.x,
-		ev->xbutton.y, win->hooks[ButtonPress].param);
-	return (0);
+	xvar->hooks[ButtonPress].hook(ev->xbutton.button, ev->xbutton.x,
+		ev->xbutton.y, xvar->hooks[ButtonPress].param);
+	return ;
 }
 
-static int	mlx_ButtonRelease(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_ButtonRelease(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[ButtonRelease].hook(ev->xbutton.button, ev->xbutton.x,
-		ev->xbutton.y, win->hooks[ButtonRelease].param);
-	return (0);
+	xvar->hooks[ButtonRelease].hook(ev->xbutton.button, ev->xbutton.x,
+		ev->xbutton.y, xvar->hooks[ButtonRelease].param);
+	return ;
 }
 
-static int	mlx_MotionNotify(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_MotionNotify(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[MotionNotify].hook(ev->xbutton.x, ev->xbutton.y,
-		win->hooks[MotionNotify].param);
-	return (0);
+	xvar->hooks[MotionNotify].hook(ev->xbutton.x, ev->xbutton.y,
+		xvar->hooks[MotionNotify].param);
+	return ;
 }
 
-static int	mlx_Expose(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_Expose(t_xvar *xvar, XEvent *ev)
 {
 	if (!ev->xexpose.count)
-		win->hooks[Expose].hook(win->hooks[Expose].param);
-	return (0);
+		xvar->hooks[Expose].hook(xvar->hooks[Expose].param);
+	return ;
 }
 
-static int	mlx_ConfigureNotify(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_ConfigureNotify(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[ConfigureNotify].hook(ev->xconfigure.x, ev->xconfigure.y,
+	xvar->hooks[ConfigureNotify].hook(ev->xconfigure.x, ev->xconfigure.y,
 		ev->xconfigure.width, ev->xconfigure.height,
-		win->hooks[ConfigureNotify].param);
-	return (0);
+		xvar->hooks[ConfigureNotify].param);
+	return ;
 }
 
-static int	mlx_ResizeRequest(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_ResizeRequest(t_xvar *xvar, XEvent *ev)
 {
-	if (win->hooks[ResizeRequest].hook)
-		win->hooks[ResizeRequest].hook(ev->xresizerequest.width,
-			ev->xresizerequest.height, win->hooks[ResizeRequest].param);
-	return (0);
+	if (xvar->hooks[ResizeRequest].hook)
+		xvar->hooks[ResizeRequest].hook(ev->xresizerequest.width,
+			ev->xresizerequest.height, xvar->hooks[ResizeRequest].param);
+	return ;
 }
 
-static int	mlx_generic(t_xvar *xvar, XEvent *ev, t_win_list *win)
+static void	mlx_generic(t_xvar *xvar, XEvent *ev)
 {
-	win->hooks[ev->type].hook(win->hooks[ev->type].param);
-	return (0);
+	xvar->hooks[ev->type].hook(xvar->hooks[ev->type].param);
+	return ;
 }

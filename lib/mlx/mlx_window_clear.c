@@ -1,9 +1,9 @@
 #include "mlx.h"
 
-int	mlx_window_clear(t_xvar *xvar, t_win_list *win)
+void	mlx_window_clear(t_xvar *xvar)
 {
-	XClearWindow(xvar->display, win->window);
+	XClearWindow(xvar->display, xvar->window);
 	if (xvar->do_flush)
 		XFlush(xvar->display);
-	return (0);
+	return ;
 }

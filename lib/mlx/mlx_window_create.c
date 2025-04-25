@@ -1,47 +1,42 @@
 #include "mlx.h"
 
-static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h);
-static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win);
+static void	mlx_int_resize_win(t_xvar *xvar, int w, int h);
+static void	mlx_int_wait_first_expose(t_xvar *xvar);
 
 /*
 	We do not use White/BlackPixel macro, TrueColor Visual make sure 0 is black 
 	and -1 is white.
 */
-t_win_list	*mlx_window_create(t_xvar *xvar, int width, int height,
-				char *title)
+int	mlx_window_create(t_xvar *xvar, int width, int height, char *title)
 {
-	t_win_list				*new_win;
 	XSetWindowAttributes	xswa;
 	XGCValues				xgcv;
 
+	if (xvar->window)
+		mlx_window_destroy(xvar);
 	xswa.background_pixel = 0;
 	xswa.border_pixel = -1;
 	xswa.colormap = xvar->cmap;
 	xswa.event_mask = 0xFFFFFF;
-	new_win = malloc(sizeof(*new_win));
-	if (!new_win)
-		return ((void *)0);
-	new_win->window = XCreateWindow(xvar->display, xvar->root, 0, 0, width,
+	xvar->window = XCreateWindow(xvar->display, xvar->root, 0, 0, width,
 			height, 0, CopyFromParent, InputOutput, xvar->visual,
 			CWEventMask | CWBackPixel | CWBorderPixel | CWColormap, &xswa);
-	mlx_int_resize_win(xvar, new_win->window, width, height);
-	XStoreName(xvar->display, new_win->window, title);
-	XSetWMProtocols(xvar->display, new_win->window, &(xvar->wm_delete_window),
-		1);
+	if (!xvar->window)
+		return (-1);
+	mlx_int_resize_win(xvar, width, height);
+	XStoreName(xvar->display, xvar->window, title);
+	XSetWMProtocols(xvar->display, xvar->window, &(xvar->wm_delete_window), 1);
 	xgcv.foreground = -1;
 	xgcv.function = GXcopy;
 	xgcv.plane_mask = AllPlanes;
-	new_win->gc = XCreateGC(xvar->display, new_win->window,
+	xvar->gc = XCreateGC(xvar->display, xvar->window,
 			GCFunction | GCPlaneMask | GCForeground, &xgcv);
-	new_win->next = xvar->win_list;
-	xvar->win_list = new_win;
-	bzero(&(new_win->hooks), sizeof(new_win->hooks));
-	XMapRaised(xvar->display, new_win->window);
-	mlx_int_wait_first_expose(xvar, new_win->window);
-	return (new_win);
+	XMapRaised(xvar->display, xvar->window);
+	mlx_int_wait_first_expose(xvar);
+	return (0);
 }
 
-static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h)
+static void	mlx_int_resize_win(t_xvar *xvar, int w, int h)
 {
 	XSizeHints	hints;
 	int			screen_x;
@@ -49,7 +44,7 @@ static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h)
 	long		hints_mask;
 
 	mlx_screen_size(xvar, &screen_x, &screen_y);
-	XGetWMNormalHints(xvar->display, win, &hints, &hints_mask);
+	XGetWMNormalHints(xvar->display, xvar->window, &hints, &hints_mask);
 	hints.width = w;
 	hints.height = h;
 	hints.min_width = w;
@@ -57,16 +52,16 @@ static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h)
 	hints.max_width = screen_x;
 	hints.max_height = screen_y;
 	hints.flags = PPosition | PSize | PMinSize | PMaxSize;
-	XSetWMNormalHints(xvar->display, win, &hints);
-	return (0);
+	XSetWMNormalHints(xvar->display, xvar->window, &hints);
+	return ;
 }
 
 /* No flush is needed with mlx_int_wait_first_expose. */
-static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win)
+static void	mlx_int_wait_first_expose(t_xvar *xvar)
 {
 	XEvent	ev;
 
-	XWindowEvent(xvar->display, win, ExposureMask, &ev);
+	XWindowEvent(xvar->display, xvar->window, ExposureMask, &ev);
 	XPutBackEvent(xvar->display, &ev);
-	return (0);
+	return ;
 }

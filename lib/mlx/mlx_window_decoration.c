@@ -1,8 +1,8 @@
 #include "mlx.h"
 
-static void	force_reapply(t_xvar *xvar, t_win_list *win);
+static void	force_reapply(t_xvar *xvar);
 
-int	mlx_window_decoration(t_xvar *xvar, t_win_list *win, int toggle)
+void	mlx_window_decoration(t_xvar *xvar, int toggle)
 {
 	Atom			prop;
 	MotifWmHints	hints;
@@ -13,16 +13,16 @@ int	mlx_window_decoration(t_xvar *xvar, t_win_list *win, int toggle)
 	hints.functions = 0;
 	hints.input_mode = 0;
 	hints.status = 0;
-	XChangeProperty(xvar->display, win->window, prop, prop, 32,
+	XChangeProperty(xvar->display, xvar->window, prop, prop, 32,
 		PropModeReplace, (unsigned char *)&hints, 5);
-	force_reapply(xvar, win);
-	return (0);
+	force_reapply(xvar);
+	return ;
 }
 
-static void	force_reapply(t_xvar *xvar, t_win_list *win)
+static void	force_reapply(t_xvar *xvar)
 {
-	XUnmapWindow(xvar->display, win->window);
-	XMapRaised(xvar->display, win->window);
+	XUnmapWindow(xvar->display, xvar->window);
+	XMapRaised(xvar->display, xvar->window);
 	XFlush(xvar->display);
 	return ;
 }

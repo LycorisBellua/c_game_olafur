@@ -42,26 +42,10 @@ typedef struct
 	unsigned long	status;
 }	MotifWmHints;
 
-typedef struct s_event_list
-{
-	int		mask;
-	int		(*hook)();
-	void	*param;
-}	t_event_list;
-
-typedef struct s_win_list
-{
-	Window				window;
-	GC					gc;
-	struct s_win_list	*next;
-	t_event_list		hooks[MLX_MAX_EVENT];
-}	t_win_list;
-
 typedef struct s_ximg
 {
 	XImage			*image;
 	Pixmap			pix;
-	GC				gc;
 	int				size_line;
 	int				bpp;
 	int				width;
@@ -72,58 +56,64 @@ typedef struct s_ximg
 	XShmSegmentInfo	shm;
 }	t_ximg;
 
+typedef struct s_event_list
+{
+	int		mask;
+	int		(*hook)();
+	void	*param;
+}	t_event_list;
+
 typedef struct s_xvar
 {
-	Display		*display;
-	Window		root;
-	int			screen;
-	int			depth;
-	Visual		*visual;
-	Colormap	cmap;
-	int			private_cmap;
-	t_win_list	*win_list;
-	int			(*loop_hook)();
-	void		*loop_param;
-	int			use_xshm;
-	int			pshm_format;
-	int			do_flush;
-	int			decrgb[6];
-	Atom		wm_delete_window;
-	Atom		wm_protocols;
-	int			end_loop;
+	Display			*display;
+	Window			root;
+	int				screen;
+	int				depth;
+	Visual			*visual;
+	Colormap		cmap;
+	int				private_cmap;
+	Window			window;
+	GC				gc;
+	t_event_list	hooks[MLX_MAX_EVENT];
+	int				(*loop_hook)();
+	void			*loop_param;
+	int				use_xshm;
+	int				pshm_format;
+	int				do_flush;
+	int				decrgb[6];
+	Atom			wm_delete_window;
+	Atom			wm_protocols;
+	int				end_loop;
 }	t_xvar;
 
+t_xvar	*mlx_init(void);
 
-t_xvar		*mlx_init(void);
+void	mlx_display_destroy(t_xvar *xvar);
+void	mlx_screen_size(t_xvar *xvar, int *x, int *y);
 
-int			mlx_display_destroy(t_xvar *xvar);
-int			mlx_screen_size(t_xvar *xvar, int *x, int *y);
+int		mlx_window_create(t_xvar *xvar, int width, int height, char *title);
+void	mlx_window_destroy(t_xvar *xvar);
+void	mlx_window_clear(t_xvar *xvar);
+void	mlx_window_resize(t_xvar *xvar, int x, int y);
+void	mlx_window_move(t_xvar *xvar, int x, int y);
+void	mlx_window_decoration(t_xvar *xvar, int toggle);
+void	mlx_window_fullscreen(t_xvar *xvar, int toggle);
 
-t_win_list	*mlx_window_create(t_xvar *xvar, int width, int height,
-				char *title);
-int			mlx_window_destroy(t_xvar *xvar, t_win_list *win);
-int			mlx_window_clear(t_xvar *xvar, t_win_list *win);
-int			mlx_window_resize(t_xvar *xvar, t_win_list *win, int x, int y);
-int			mlx_window_move(t_xvar *xvar, t_win_list *win, int x, int y);
-int			mlx_window_decoration(t_xvar *xvar, t_win_list *win, int toggle);
-int			mlx_window_fullscreen(t_xvar *xvar, t_win_list *win, int toggle);
+t_ximg	*mlx_image_create(t_xvar *xvar, int width, int height);
+void	mlx_image_destroy(t_xvar *xvar, t_ximg *img);
+void	mlx_image_to_window(t_xvar *xvar, t_ximg *img, int x, int y);
 
-t_ximg		*mlx_image_create(t_xvar *xvar, int width, int height);
-int			mlx_image_destroy(t_xvar *xvar, t_ximg *img);
-int			mlx_image_to_window(t_xvar *xvar, t_win_list *win, t_ximg *img,
-				int x, int y);
+void	mlx_hook(t_xvar *xvar, int x_event, int x_mask, int (*funct)(),
+			void *param);
+void	mlx_loop_hook(t_xvar *xvar, int (*funct_ptr)(), void *param);
+void	mlx_loop(t_xvar *xvar);
+void	mlx_loop_end(t_xvar *xvar);
 
-int			mlx_hook(t_win_list *win, int x_event, int x_mask, int (*funct)(),
-				void *param);
-int			mlx_loop_hook(t_xvar *xvar, int (*funct_ptr)(), void *param);
-int			mlx_loop(t_xvar *xvar);
-int			mlx_loop_end(t_xvar *xvar);
+void	mlx_do_key_autorepeatoff(t_xvar *xvar);
+void	mlx_do_key_autorepeaton(t_xvar *xvar);
+void	mlx_do_sync(t_xvar *xvar);
 
-int			mlx_do_key_autorepeatoff(t_xvar *xvar);
-int			mlx_do_key_autorepeaton(t_xvar *xvar);
-int			mlx_do_sync(t_xvar *xvar);
-
-int			mlx_mouse_hide(t_xvar *xvar, t_win_list *win);
-int			mlx_mouse_show(t_xvar *xvar, t_win_list *win);
+void	mlx_mouse_hide(t_xvar *xvar);
+void	mlx_mouse_show(t_xvar *xvar);
 
 #endif

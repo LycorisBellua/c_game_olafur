@@ -2,7 +2,7 @@
 
 int	close_window_callback(t_man *man)
 {
-	mlx_loop_end(man->mlx);
+	mlx_loop_end(man->xvar);
 	return (0);
 }
 
@@ -17,7 +17,7 @@ int	move_or_resize_window_callback(int x, int y, int width, int height,
 		free_frame(man);
 		if (!init_frame(man))
 			exit(EXIT_FAILURE);
-		mlx_window_clear(man->mlx, man->window);
+		mlx_window_clear(man->xvar);
 		display_frame(man);
 	}
 	return (0);

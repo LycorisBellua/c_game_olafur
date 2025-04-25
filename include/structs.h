@@ -230,8 +230,7 @@ struct s_man
 	GLuint			shader_program;
 	GLint			uniform_loc;
 	# else
-	void			*mlx;
-	void			*window;
+	t_xvar			*xvar;
 	t_frame			swap_buf[2];
 	# endif
 	char			*title;

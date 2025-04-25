@@ -1,8 +1,8 @@
 #include "mlx.h"
 
-int	mlx_loop_hook(t_xvar *xvar, int (*funct)(), void *param)
+void	mlx_loop_hook(t_xvar *xvar, int (*funct)(), void *param)
 {
 	xvar->loop_hook = funct;
 	xvar->loop_param = param;
-	return (0);
+	return ;
 }

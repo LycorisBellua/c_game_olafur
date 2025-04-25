@@ -14,10 +14,10 @@ int	mouse_move_callback(int x, int y, t_man *man)
 		|| man->cursor.y < 0 || man->cursor.y >= man->res.res.y)
 	{
 		set_ivec2(&man->cursor, -1, -1);
-		mlx_mouse_show(man->mlx, man->window);
+		mlx_mouse_show(man->xvar);
 		return (0);
 	}
-	mlx_mouse_hide(man->mlx, man->window);
+	mlx_mouse_hide(man->xvar);
 	if (man->game_state == GAME_STATE_PLAY)
 		rotate_on_click(man);
 	return (0);

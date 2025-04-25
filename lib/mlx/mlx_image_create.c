@@ -129,7 +129,6 @@ static t_ximg	*mlx_int_new_image(t_xvar *xvar, int width, int height,
 		free(img);
 		return ((void *)0);
 	}
-	img->gc = 0;
 	img->size_line = img->image->bytes_per_line;
 	img->bpp = img->image->bits_per_pixel;
 	img->width = width;

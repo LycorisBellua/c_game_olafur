@@ -1,10 +1,10 @@
 #include "mlx.h"
 
-int	mlx_hook(t_win_list *win, int x_event, int x_mask, int (*funct)(),
-		void *param)
+void	mlx_hook(t_xvar *xvar, int x_event, int x_mask, int (*funct)(),
+			void *param)
 {
-	win->hooks[x_event].hook = funct;
-	win->hooks[x_event].param = param;
-	win->hooks[x_event].mask = x_mask;
-	return (0);
+	xvar->hooks[x_event].hook = funct;
+	xvar->hooks[x_event].param = param;
+	xvar->hooks[x_event].mask = x_mask;
+	return ;
 }

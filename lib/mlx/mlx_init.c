@@ -1,14 +1,16 @@
 #include "mlx.h"
 
 static int	mlx_int_get_visual(t_xvar *xvar);
-static int	mlx_int_deal_shm(t_xvar *xvar);
-static int	mlx_int_rgb_conversion(t_xvar *xvar);
+static void	mlx_int_deal_shm(t_xvar *xvar);
+static void	mlx_int_rgb_conversion(t_xvar *xvar);
 
 t_xvar	*mlx_init(void)
 {
 	t_xvar	*xvar;
 
-	xvar = malloc(sizeof(*xvar));
+	if (xvar)
+		return (xvar);
+	xvar = calloc(1, sizeof(*xvar));
 	if (!xvar)
 		return ((void *)0);
 	xvar->display = XOpenDisplay("");
@@ -26,9 +28,6 @@ t_xvar	*mlx_init(void)
 		printf(ERR_NO_TRUECOLOR);
 		exit(1);
 	}
-	xvar->win_list = 0;
-	xvar->loop_hook = 0;
-	xvar->loop_param = (void *)0;
 	xvar->do_flush = 1;
 	xvar->wm_delete_window = XInternAtom(xvar->display, "WM_DELETE_WINDOW",
 			False);
@@ -38,7 +37,6 @@ t_xvar	*mlx_init(void)
 		xvar->cmap = XCreateColormap(xvar->display, xvar->root, xvar->visual,
 				AllocNone);
 	mlx_int_rgb_conversion(xvar);
-	xvar->end_loop = 0;
 	return (xvar);
 }
 
@@ -69,7 +67,7 @@ static int	mlx_int_get_visual(t_xvar *xvar)
 	alpha libX need a check of the DISPLAY env var, or shm is allowed in remote 
 	Xserver connections.
 */
-static int	mlx_int_deal_shm(t_xvar *xvar)
+static void	mlx_int_deal_shm(t_xvar *xvar)
 {
 	int		use_pshm;
 	int		bidon;
@@ -90,13 +88,13 @@ static int	mlx_int_deal_shm(t_xvar *xvar)
 		xvar->pshm_format = -1;
 		xvar->use_xshm = 0;
 	}
-	return (0);
+	return ;
 }
 
 /* TrueColor Visual is needed to have *_mask correctly set */
-static int	mlx_int_rgb_conversion(t_xvar *xvar)
+static void	mlx_int_rgb_conversion(t_xvar *xvar)
 {
-	bzero(xvar->decrgb, sizeof(int) * 6);
+	bzero(xvar->decrgb, 6 * sizeof(int));
 	while (!(xvar->visual->red_mask & 1))
 	{
 		xvar->visual->red_mask >>= 1;
@@ -127,5 +125,5 @@ static int	mlx_int_rgb_conversion(t_xvar *xvar)
 		xvar->visual->blue_mask >>= 1;
 		xvar->decrgb[5]++;
 	}
-	return (0);
+	return ;
 }

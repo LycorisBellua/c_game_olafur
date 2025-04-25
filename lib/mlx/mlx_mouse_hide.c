@@ -1,17 +1,17 @@
 #include "mlx.h"
 
-int	mlx_mouse_hide(t_xvar *xvar, t_win_list *win)
+void	mlx_mouse_hide(t_xvar *xvar)
 {
 	static char	data[1] = {0};
 	Cursor		cursor;
 	Pixmap		blank;
 	XColor		dummy;
 
-	blank = XCreateBitmapFromData(xvar->display, win->window, data, 1, 1);
+	blank = XCreateBitmapFromData(xvar->display, xvar->window, data, 1, 1);
 	cursor = XCreatePixmapCursor(xvar->display, blank, blank, &dummy, &dummy, 0,
 			0);
-	XDefineCursor(xvar->display, win->window, cursor);
+	XDefineCursor(xvar->display, xvar->window, cursor);
 	XFreePixmap(xvar->display, blank);
 	XFreeCursor(xvar->display, cursor);
-	return (0);
+	return ;
 }
