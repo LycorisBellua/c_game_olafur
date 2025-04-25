@@ -1,4 +1,4 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 int	mlx_loop_end(t_xvar *xvar)
 {

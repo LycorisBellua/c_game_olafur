@@ -1,6 +1,4 @@
-#include "mlx_int.h"
-
-int			mlx_get_screen_size(void *mlx_ptr, int *sizex, int *sizey);
+#include "mlx.h"
 
 static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h);
 static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win);
@@ -9,7 +7,8 @@ static int	mlx_int_wait_first_expose(t_xvar *xvar, Window win);
 	We do not use White/BlackPixel macro, TrueColor Visual make sure 0 is black 
 	and -1 is white.
 */
-void	*mlx_window_create(t_xvar *xvar, int size_x, int size_y, char *title)
+t_win_list	*mlx_window_create(t_xvar *xvar, int width, int height,
+				char *title)
 {
 	t_win_list				*new_win;
 	XSetWindowAttributes	xswa;
@@ -22,10 +21,10 @@ void	*mlx_window_create(t_xvar *xvar, int size_x, int size_y, char *title)
 	new_win = malloc(sizeof(*new_win));
 	if (!new_win)
 		return ((void *)0);
-	new_win->window = XCreateWindow(xvar->display, xvar->root, 0, 0, size_x,
-			size_y, 0, CopyFromParent, InputOutput, xvar->visual,
+	new_win->window = XCreateWindow(xvar->display, xvar->root, 0, 0, width,
+			height, 0, CopyFromParent, InputOutput, xvar->visual,
 			CWEventMask | CWBackPixel | CWBorderPixel | CWColormap, &xswa);
-	mlx_int_resize_win(xvar, new_win->window, size_x, size_y);
+	mlx_int_resize_win(xvar, new_win->window, width, height);
 	XStoreName(xvar->display, new_win->window, title);
 	XSetWMProtocols(xvar->display, new_win->window, &(xvar->wm_delete_window),
 		1);
@@ -49,7 +48,7 @@ static int	mlx_int_resize_win(t_xvar *xvar, Window win, int w, int h)
 	int			screen_y;
 	long		hints_mask;
 
-	mlx_get_screen_size(xvar, &screen_x, &screen_y);
+	mlx_screen_size(xvar, &screen_x, &screen_y);
 	XGetWMNormalHints(xvar->display, win, &hints, &hints_mask);
 	hints.width = w;
 	hints.height = h;

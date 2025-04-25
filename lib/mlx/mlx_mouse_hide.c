@@ -1,4 +1,4 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 int	mlx_mouse_hide(t_xvar *xvar, t_win_list *win)
 {

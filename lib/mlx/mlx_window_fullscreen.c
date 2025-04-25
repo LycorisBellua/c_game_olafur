@@ -1,4 +1,4 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 int	mlx_window_fullscreen(t_xvar *xvar, t_win_list *win, int toggle)
 {

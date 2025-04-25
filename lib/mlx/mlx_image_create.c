@@ -1,18 +1,19 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 /* To handle X errors */
 #define X_SHM_ATTACH 1
 
 int	g_mlx_x_error;
 
-static void	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
-				int format);
-static int	shm_att_pb(Display *d, XErrorEvent *ev);
-static void	*mlx_int_new_image(t_xvar *xvar, int width, int height, int format);
+static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
+					int format);
+static int		shm_att_pb(Display *d, XErrorEvent *ev);
+static t_ximg	*mlx_int_new_image(t_xvar *xvar, int width, int height,
+					int format);
 
-void	*mlx_image_create(t_xvar *xvar, int width, int height)
+t_ximg	*mlx_image_create(t_xvar *xvar, int width, int height)
 {
-	t_img	*img;
+	t_ximg	*img;
 
 	if (xvar->use_xshm)
 	{
@@ -24,10 +25,10 @@ void	*mlx_image_create(t_xvar *xvar, int width, int height)
 }
 
 /* Data malloc: width + 32 (bitmap_pad = 32), *4 = *32 / 8bit */
-static void	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
-	int format)
+static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
+					int format)
 {
-	t_img	*img;
+	t_ximg	*img;
 	int		(*save_handler)();
 
 	img = malloc(sizeof(*img));
@@ -105,9 +106,10 @@ static int	shm_att_pb(Display *d, XErrorEvent *ev)
 	return (0);
 }
 
-static void	*mlx_int_new_image(t_xvar *xvar, int width, int height, int format)
+static t_ximg	*mlx_int_new_image(t_xvar *xvar, int width, int height,
+					int format)
 {
-	t_img	*img;
+	t_ximg	*img;
 
 	img = malloc(sizeof(*img));
 	if (!img)

@@ -10,7 +10,7 @@ void	deinit(t_man *man)
 		man->window = 0;
 	}
 	free_frame(man);
-	mlx_destroy_display(man->mlx);
+	mlx_display_destroy(man->mlx);
 	free(man->mlx);
 	man->mlx = 0;
 	free_images(man);

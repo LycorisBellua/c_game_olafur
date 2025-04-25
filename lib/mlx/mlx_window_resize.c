@@ -1,8 +1,8 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
-int	mlx_window_resize(t_xvar *xvar, t_win_list *win, int width, int height)
+int	mlx_window_resize(t_xvar *xvar, t_win_list *win, int x, int y)
 {
-	XResizeWindow(xvar->display, win->window, width, height);
+	XResizeWindow(xvar->display, win->window, x, y);
 	if (xvar->do_flush)
 		XFlush(xvar->display);
 	return (0);

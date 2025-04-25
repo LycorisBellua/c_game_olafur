@@ -25,12 +25,11 @@ NAME_UNAME	= libmlx_$(UNAME).a
 SRC	= mlx_init.c mlx_window_create.c mlx_window_resize.c mlx_window_clear.c \
 	mlx_window_move.c mlx_window_decoration.c mlx_window_fullscreen.c \
 	mlx_loop.c mlx_loop_end.c mlx_loop_hook.c \
-	mlx_image_create.c mlx_get_data_addr.c \
-	mlx_put_image_to_window.c mlx_window_destroy.c \
+	mlx_image_create.c mlx_image_to_window.c mlx_window_destroy.c \
 	mlx_int_param_event.c mlx_hook.c mlx_do_key_autorepeatoff.c \
 	mlx_do_key_autorepeaton.c mlx_do_sync.c \
-	mlx_image_destroy.c mlx_mouse_move.c mlx_mouse_hide.c mlx_mouse_show.c \
-	mlx_mouse_get_pos.c mlx_get_screen_size.c mlx_destroy_display.c
+	mlx_image_destroy.c mlx_mouse_hide.c mlx_mouse_show.c \
+	mlx_screen_size.c mlx_display_destroy.c
 
 OBJ_DIR = obj
 OBJ	= $(addprefix $(OBJ_DIR)/,$(SRC:%.c=%.o))

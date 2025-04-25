@@ -1,4 +1,4 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 static void	force_reapply(t_xvar *xvar, t_win_list *win);
 

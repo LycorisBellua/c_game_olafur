@@ -203,11 +203,7 @@ typedef struct s_frame
 # else
 typedef struct s_frame
 {
-	void	*img;
-	t_ubyte	*addr;
-	int		bpp;
-	int		line_length;
-	int		endian;
+	t_ximg	*img;
 	t_ivec2	size;
 	double	thickness;
 	int		*xmap;

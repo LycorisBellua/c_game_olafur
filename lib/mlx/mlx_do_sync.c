@@ -1,4 +1,4 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 int	mlx_do_sync(t_xvar *xvar)
 {

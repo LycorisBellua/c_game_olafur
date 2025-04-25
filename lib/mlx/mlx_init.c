@@ -1,10 +1,10 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 static int	mlx_int_get_visual(t_xvar *xvar);
 static int	mlx_int_deal_shm(t_xvar *xvar);
 static int	mlx_int_rgb_conversion(t_xvar *xvar);
 
-void	*mlx_init(void)
+t_xvar	*mlx_init(void)
 {
 	t_xvar	*xvar;
 

@@ -1,6 +1,6 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
-int	mlx_image_destroy(t_xvar *xvar, t_img *img)
+int	mlx_image_destroy(t_xvar *xvar, t_ximg *img)
 {
 	if (img->type == MLX_TYPE_SHM_PIXMAP || img->type == MLX_TYPE_SHM)
 	{

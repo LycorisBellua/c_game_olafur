@@ -12,7 +12,7 @@ void	display_frame(t_man *man)
 
 	swap = man->swap_buf + curr_swap_buf;
 	upscale_frame(&man->frame, swap);
-	mlx_put_image_to_window(man->mlx, man->window, swap->img,
+	mlx_image_to_window(man->mlx, man->window, swap->img,
 		man->res.viewport_offset.x, man->res.viewport_offset.y);
 	curr_swap_buf = (curr_swap_buf + 1) % 2;
 	return ;

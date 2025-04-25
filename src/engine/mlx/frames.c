@@ -58,8 +58,6 @@ static int	set_frame(t_man *man, t_frame *f, int is_swap_buf)
 	f->img = mlx_image_create(man->mlx, f->size.x, f->size.y);
 	if (!f->img)
 		return (put_error(man, E_FAIL_MLX_IMG, 0));
-	f->addr = (t_ubyte *)mlx_get_data_addr(f->img, &f->bpp, &f->line_length,
-			&f->endian);
 	return (1);
 }
 

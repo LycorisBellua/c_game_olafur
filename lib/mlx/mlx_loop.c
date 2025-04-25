@@ -1,8 +1,6 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 extern	int (*(mlx_int_param_event[]))();
-
-int			mlx_loop_end(t_xvar *xvar);
 
 static int	win_count(t_xvar *xvar);
 static int	mlx_int_set_win_event_mask(t_xvar *xvar);

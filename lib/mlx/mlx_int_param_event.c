@@ -1,4 +1,4 @@
-#include "mlx_int.h"
+#include "mlx.h"
 
 static int	mlx_undef(void);
 static int	mlx_KeyPress(t_xvar *xvar, XEvent *ev, t_win_list *win);
