@@ -24,8 +24,6 @@
 # define MLX_TYPE_SHM 2
 # define MLX_TYPE_XIMAGE 1
 
-# define MLX_MAX_EVENT LASTEvent
-
 # define ENV_DISPLAY "DISPLAY"
 # define LOCALHOST "localhost"
 # define ERR_NO_TRUECOLOR "MLX Error: No TrueColor Visual available.\n"
@@ -58,9 +56,9 @@ typedef struct s_ximg
 
 typedef struct s_event_list
 {
-	int		mask;
-	int		(*hook)();
+	void	(*hook)();
 	void	*param;
+	int		mask;
 }	t_event_list;
 
 typedef struct s_xvar
@@ -75,12 +73,11 @@ typedef struct s_xvar
 	Window			window;
 	GC				gc;
 	int				detectable_repeat;
-	t_event_list	hooks[MLX_MAX_EVENT];
-	int				(*loop_hook)();
+	t_event_list	hooks[LASTEvent];
+	void			(*loop_hook)();
 	void			*loop_param;
 	int				use_xshm;
 	int				pshm_format;
-	int				do_flush;
 	int				decrgb[6];
 	Atom			wm_delete_window;
 	Atom			wm_protocols;
@@ -106,9 +103,8 @@ t_ximg	*mlx_image_create(t_xvar *xvar, int width, int height);
 void	mlx_image_destroy(t_xvar *xvar, t_ximg *img);
 void	mlx_image_to_window(t_xvar *xvar, t_ximg *img, int x, int y);
 
-void	mlx_hook(t_xvar *xvar, int x_event, int x_mask, int (*funct)(),
-			void *param);
-void	mlx_loop_hook(t_xvar *xvar, int (*funct_ptr)(), void *param);
+void	mlx_hook(t_xvar *xvar, int x_event, void (*funct)(), void *param);
+void	mlx_loop_hook(t_xvar *xvar, void(*funct_ptr)(), void *param);
 void	mlx_loop(t_xvar *xvar);
 void	mlx_loop_end(t_xvar *xvar);
 

@@ -2,7 +2,7 @@
 
 static void	rendering(t_man *man);
 
-int	game_loop(t_man *man)
+void	game_loop(t_man *man)
 {
 	set_dt_and_fps(man);
 	advance_all_image_cycles(man);
@@ -13,7 +13,7 @@ int	game_loop(t_man *man)
 		door_routine(man);
 		portal_routine(man);
 	}
-	return (0);
+	return ;
 }
 
 static void	rendering(t_man *man)

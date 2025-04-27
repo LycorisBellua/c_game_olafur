@@ -7,8 +7,6 @@ void	mlx_window_destroy(t_xvar *xvar)
 	XDestroyWindow(xvar->display, xvar->window);
 	xvar->window = 0;
 	XFreeGC(xvar->display, xvar->gc);
-	xvar->gc = (void *)0;
-	if (xvar->do_flush)
-		XFlush(xvar->display);
+	xvar->gc = NULL;
 	return ;
 }

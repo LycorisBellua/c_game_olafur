@@ -13,12 +13,12 @@ t_xvar	*mlx_init(void)
 		return (xvar);
 	xvar = calloc(1, sizeof(*xvar));
 	if (!xvar)
-		return ((void *)0);
+		return (NULL);
 	xvar->display = XOpenDisplay("");
 	if (!xvar->display)
 	{
 		free(xvar);
-		return ((void *)0);
+		return (NULL);
 	}
 	set_detectable_repeat(xvar);
 	xvar->screen = DefaultScreen(xvar->display);
@@ -30,7 +30,6 @@ t_xvar	*mlx_init(void)
 		printf(ERR_NO_TRUECOLOR);
 		exit(1);
 	}
-	xvar->do_flush = 1;
 	xvar->wm_delete_window = XInternAtom(xvar->display, "WM_DELETE_WINDOW",
 			False);
 	xvar->wm_protocols = XInternAtom(xvar->display, "WM_PROTOCOLS", False);

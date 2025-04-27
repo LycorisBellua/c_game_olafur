@@ -61,6 +61,4 @@ reference frame, the offset and size of the upscaled frame within the window,
 as well as the upscaling factor. These values are computed only when the window 
 is resized, so they can be cached. Use `XRender` to scale the reference frame.
 
--> MLX Lib: Add all the event handlers. And see whether the mask should be 
-added by the user or by me directly. Are there even different relevant masks 
-per event?
+-> MLX Lib: Add all the event handlers.

@@ -1,12 +1,12 @@
 #include "cimmerian.h"
 
-int	close_window_callback(t_man *man)
+void	close_window_callback(t_man *man)
 {
 	mlx_loop_end(man->xvar);
-	return (0);
+	return ;
 }
 
-int	move_or_resize_window_callback(int x, int y, int width, int height,
+void	move_or_resize_window_callback(int x, int y, int width, int height,
 	t_man *man)
 {
 	set_ivec2(&man->res.window_position, x, y);
@@ -20,5 +20,5 @@ int	move_or_resize_window_callback(int x, int y, int width, int height,
 		mlx_window_clear(man->xvar);
 		display_frame(man);
 	}
-	return (0);
+	return ;
 }

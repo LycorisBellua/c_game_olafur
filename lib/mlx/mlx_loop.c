@@ -9,7 +9,6 @@ void	mlx_loop(t_xvar *xvar)
 	XEvent	ev;
 
 	mlx_int_set_win_event_mask(xvar);
-	xvar->do_flush = 0;
 	while (xvar->window && !xvar->end_loop)
 	{
 		while (!xvar->end_loop && (!xvar->loop_hook || XPending(xvar->display)))
@@ -26,7 +25,7 @@ void	mlx_loop(t_xvar *xvar)
 						xvar->hooks[DestroyNotify]
 							.hook(xvar->hooks[DestroyNotify].param);
 				}
-				if (xvar->window && ev.type < MLX_MAX_EVENT
+				if (xvar->window && ev.type < LASTEvent
 					&& xvar->hooks[ev.type].hook)
 					mlx_int_param_event[ev.type](xvar, &ev);
 			}
@@ -46,7 +45,7 @@ static void	mlx_int_set_win_event_mask(t_xvar *xvar)
 	if (!xvar->window)
 		return ;
 	xwa.event_mask = 0;
-	i = MLX_MAX_EVENT;
+	i = LASTEvent;
 	while (i--)
 		xwa.event_mask |= xvar->hooks[i].mask;
 	XChangeWindowAttributes(xvar->display, xvar->window, CWEventMask, &xwa);

@@ -56,7 +56,6 @@ static void	mlx_int_resize_win(t_xvar *xvar, int w, int h)
 	return ;
 }
 
-/* No flush is needed with mlx_int_wait_first_expose. */
 static void	mlx_int_wait_first_expose(t_xvar *xvar)
 {
 	XEvent	ev;

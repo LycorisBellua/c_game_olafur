@@ -31,17 +31,16 @@ static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
 	t_ximg	*img;
 	int		(*save_handler)();
 
-	img = malloc(sizeof(*img));
+	img = calloc(1, sizeof(*img));
 	if (!img)
-		return ((void *)0);
-	bzero(img, sizeof(*img));
+		return (NULL);
 	img->data = 0;
 	img->image = XShmCreateImage(xvar->display, xvar->visual, xvar->depth,
 			format, img->data, &(img->shm), width, height);
 	if (!img->image)
 	{
 		free(img);
-		return ((void *)0);
+		return (NULL);
 	}
 	img->width = width;
 	img->height = height;
@@ -54,7 +53,7 @@ static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
 	{
 		XDestroyImage(img->image);
 		free(img);
-		return ((void *)0);
+		return (NULL);
 	}
 	img->data = shmat(img->shm.shmid, 0, 0);
 	img->shm.shmaddr = img->data;
@@ -64,7 +63,7 @@ static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
 		shmctl(img->shm.shmid, IPC_RMID, 0);
 		XDestroyImage(img->image);
 		free(img);
-		return ((void *)0);
+		return (NULL);
 	}
 	img->shm.readOnly = False;
 	g_mlx_x_error = 0;
@@ -77,7 +76,7 @@ static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
 		shmctl(img->shm.shmid, IPC_RMID, 0);
 		XDestroyImage(img->image);
 		free(img);
-		return ((void *)0);
+		return (NULL);
 	}
 	XSetErrorHandler(save_handler);
 	shmctl(img->shm.shmid, IPC_RMID, 0);
@@ -93,8 +92,6 @@ static t_ximg	*mlx_int_new_xshm_image(t_xvar *xvar, int width, int height,
 				xvar->depth);
 		img->type = MLX_TYPE_SHM;
 	}
-	if (xvar->do_flush)
-		XFlush(xvar->display);
 	return (img);
 }
 
@@ -113,21 +110,20 @@ static t_ximg	*mlx_int_new_image(t_xvar *xvar, int width, int height,
 
 	img = malloc(sizeof(*img));
 	if (!img)
-		return ((void *)0);
-	img->data = malloc((width + 32) * height * 4);
+		return (NULL);
+	img->data = calloc((width + 32) * height, 4);
 	if (!img->data)
 	{
 		free(img);
-		return ((void *)0);
+		return (NULL);
 	}
-	bzero(img->data, (width + 32) * height * 4);
 	img->image = XCreateImage(xvar->display, xvar->visual, xvar->depth, format,
 			0, img->data, width, height, 32, 0);
 	if (!img->image)
 	{
 		free(img->data);
 		free(img);
-		return ((void *)0);
+		return (NULL);
 	}
 	img->size_line = img->image->bytes_per_line;
 	img->bpp = img->image->bits_per_pixel;
@@ -137,7 +133,5 @@ static t_ximg	*mlx_int_new_image(t_xvar *xvar, int width, int height,
 			xvar->depth);
 	img->format = format;
 	img->type = MLX_TYPE_XIMAGE;
-	if (xvar->do_flush)
-		XFlush(xvar->display);
 	return (img);
 }

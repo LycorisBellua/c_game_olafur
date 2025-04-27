@@ -21,10 +21,10 @@ void	window_pos_callback(GLFWwindow *window, int xpos, int ypos)
 	return ;
 }
 
-int	close_window_callback(t_man *man)
+void	close_window_callback(t_man *man)
 {
 	glfwSetWindowShouldClose(man->window, GLFW_TRUE);
-	return (0);
+	return ;
 }
 
 static void	size_for_fullscreen_toggle(GLFWwindow *window, int x, int y)

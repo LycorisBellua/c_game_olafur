@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-int	mouse_press_callback(int button, int x, int y, t_man *man)
+void	mouse_press_callback(int button, int x, int y, t_man *man)
 {
 	(void)x;
 	(void)y;
@@ -15,10 +15,10 @@ int	mouse_press_callback(int button, int x, int y, t_man *man)
 		else if (button == BTN_SCROLL_DOWN)
 			decrease_minimap_zoom(man);
 	}
-	return (0);
+	return ;
 }
 
-int	mouse_release_callback(int button, int x, int y, t_man *man)
+void	mouse_release_callback(int button, int x, int y, t_man *man)
 {
 	(void)x;
 	(void)y;
@@ -26,5 +26,5 @@ int	mouse_release_callback(int button, int x, int y, t_man *man)
 		man->l_click_action = 0;
 	else if (button == BTN_CLICK_RIGHT)
 		man->r_click_action = 0;
-	return (0);
+	return ;
 }

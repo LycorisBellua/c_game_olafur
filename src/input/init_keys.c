@@ -5,7 +5,7 @@
 	button or Alt+F4. We also add ESC.
 */
 
-int	cancel_keys_in_game_state(t_man *man)
+void	cancel_keys_in_game_state(t_man *man)
 {
 	int	i;
 
@@ -16,7 +16,7 @@ int	cancel_keys_in_game_state(t_man *man)
 			execute_input_action(man, man->keys[i].keycode, KEY_STATE_NONE);
 		++i;
 	}
-	return (0);
+	return ;
 }
 
 void	change_game_state(t_man *man, t_game_state new_state)
