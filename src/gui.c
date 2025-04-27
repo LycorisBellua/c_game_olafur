@@ -33,6 +33,8 @@ void	display_game_over_screen(t_man *man)
 	draw_minimap(man, man->maps[man->curr_map]);
 	display_collectibles(man);
 	display_centered_message(man, &pos, msg);
+	if (man->show_debug)
+		display_fps(man);
 	if (!cursor)
 		cursor = get_image(man, "cursor");
 	if (man->cursor.x >= 0 && man->cursor.y >= 0)

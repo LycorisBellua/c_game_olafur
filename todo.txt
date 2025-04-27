@@ -3,6 +3,8 @@ Notes:
 - Use a value inferior or equal to 0.1 as the aspect ratio to express "whatever 
 the monitor's aspect ratio is". For example 0 or -1.
 
+Allow res greater than 640x360 (ongoing)
+
 --------------------------------------------------------------------------------
 
 [DEFAULT MAP]
@@ -57,4 +59,8 @@ even be done in the MLX. Basically take inspiration from OpenGL. And about the
 upscaling, could this possibly be done by the graphics card? I can give it the 
 reference frame, the offset and size of the upscaled frame within the window, 
 as well as the upscaling factor. These values are computed only when the window 
-is resized, so they can be cached.
+is resized, so they can be cached. Use `XRender` to scale the reference frame.
+
+-> MLX Lib: Add all the event handlers. And see whether the mask should be 
+added by the user or by me directly. Are there even different relevant masks 
+per event?

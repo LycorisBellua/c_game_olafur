@@ -26,8 +26,7 @@ SRC	= mlx_init.c mlx_window_create.c mlx_window_resize.c mlx_window_clear.c \
 	mlx_window_move.c mlx_window_decoration.c mlx_window_fullscreen.c \
 	mlx_loop.c mlx_loop_end.c mlx_loop_hook.c \
 	mlx_image_create.c mlx_image_to_window.c mlx_window_destroy.c \
-	mlx_int_param_event.c mlx_hook.c mlx_do_key_autorepeatoff.c \
-	mlx_do_key_autorepeaton.c mlx_do_sync.c \
+	mlx_int_param_event.c mlx_hook.c \
 	mlx_image_destroy.c mlx_mouse_hide.c mlx_mouse_show.c \
 	mlx_screen_size.c mlx_display_destroy.c
 

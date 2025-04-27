@@ -22,7 +22,7 @@ void	cross_goal_if_unlocked(t_man *man)
 	if (((cell[0] && cell[0]->is_goal) || (cell[1] && cell[1]->is_goal)
 			|| (cell[2] && cell[2]->is_goal) || (cell[3] && cell[3]->is_goal))
 		&& man->player.collected >= man->player.to_collect)
-		man->game_state = GAME_STATE_SUCCESS;
+		change_game_state(man, GAME_STATE_SUCCESS);
 	return ;
 }
 

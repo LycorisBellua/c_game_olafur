@@ -1,19 +1,22 @@
 #include "cimmerian.h"
 
-void	action_toggle_fullscreen(t_man *man)
+void	action_toggle_fullscreen(t_man *man, int set)
 {
-	toggle_fullscreen(man);
+	if (set)
+		toggle_fullscreen(man);
 	return ;
 }
 
-void	action_toggle_debug(t_man *man)
+void	action_toggle_debug(t_man *man, int set)
 {
-	man->show_debug = !man->show_debug;
+	if (set)
+		man->show_debug = !man->show_debug;
 	return ;
 }
 
-void	action_close_window(t_man *man)
+void	action_close_window(t_man *man, int set)
 {
-	close_window_callback(man);
+	if (set)
+		close_window_callback(man);
 	return ;
 }

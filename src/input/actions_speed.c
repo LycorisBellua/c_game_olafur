@@ -1,15 +1,16 @@
 #include "cimmerian.h"
 
-void	action_speed_walk(t_man *man)
+void	action_run(t_man *man, int set)
 {
-	man->move_speed = DEFAULT_MOVE_SPEED;
-	man->rotate_speed = DEFAULT_ROTATE_SPEED;
-	return ;
-}
-
-void	action_speed_run(t_man *man)
-{
-	man->move_speed = DEFAULT_MOVE_SPEED * 2;
-	man->rotate_speed = DEFAULT_ROTATE_SPEED * 2;
+	if (set)
+	{
+		man->move_speed = DEFAULT_MOVE_SPEED * 2;
+		man->rotate_speed = DEFAULT_ROTATE_SPEED * 2;
+	}
+	else
+	{
+		man->move_speed = DEFAULT_MOVE_SPEED;
+		man->rotate_speed = DEFAULT_ROTATE_SPEED;
+	}
 	return ;
 }

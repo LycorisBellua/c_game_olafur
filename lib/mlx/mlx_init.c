@@ -1,5 +1,6 @@
 #include "mlx.h"
 
+static void set_detectable_repeat(t_xvar *xvar);
 static int	mlx_int_get_visual(t_xvar *xvar);
 static void	mlx_int_deal_shm(t_xvar *xvar);
 static void	mlx_int_rgb_conversion(t_xvar *xvar);
@@ -19,6 +20,7 @@ t_xvar	*mlx_init(void)
 		free(xvar);
 		return ((void *)0);
 	}
+	set_detectable_repeat(xvar);
 	xvar->screen = DefaultScreen(xvar->display);
 	xvar->root = DefaultRootWindow(xvar->display);
 	xvar->cmap = DefaultColormap(xvar->display, xvar->screen);
@@ -38,6 +40,23 @@ t_xvar	*mlx_init(void)
 				AllocNone);
 	mlx_int_rgb_conversion(xvar);
 	return (xvar);
+}
+
+/*
+	`XkbSetDetectableAutoRepeat` deactivates the default behavior of sending 
+	continuous Press and Release key events while a key is being held. Instead, 
+	Press events are being sent until a true Release. Not all systems support 
+	this feature however, despite being from 2001. A fallback might therefore 
+	be necessary, which would decrease performance but still better than 
+	nothing.
+*/
+static void set_detectable_repeat(t_xvar *xvar)
+{
+	int	supported;
+
+	if (XkbSetDetectableAutoRepeat(xvar->display, 1, &supported) && supported)
+		xvar->detectable_repeat = 1;
+	return ;
 }
 
 /* We need a private colormap for non-default Visual. */

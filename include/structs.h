@@ -8,18 +8,27 @@ typedef struct s_map	t_map;
 
 typedef enum e_game_state
 {
-	GAME_STATE_NONE = 0,
-	GAME_STATE_PLAY = 1 << 0,
-	GAME_STATE_SUCCESS = 1 << 1,
-	GAME_STATE_FAILURE = 1 << 2,
-	GAME_STATE_ALL = ~0
+	GAME_STATE_NONE,
+	GAME_STATE_PLAY,
+	GAME_STATE_SUCCESS,
+	GAME_STATE_FAILURE
 }	t_game_state;
 
 typedef enum e_key_state
 {
-	KEY_STATE_RELEASED,
-	KEY_STATE_PRESSED
+	KEY_STATE_NONE,
+	KEY_STATE_PRESSED,
+	KEY_STATE_HELD,
+	KEY_STATE_RELEASED
 }	t_key_state;
+
+/* Each key has 3 potential game states for 3 potential key states */
+typedef struct s_key
+{
+	int				keycode;
+	t_key_state		state;
+	void			(*actions[3][3])(t_man *man, int set);
+}	t_key;
 
 typedef struct s_list
 {
@@ -41,14 +50,6 @@ typedef struct s_vert
 	t_ivec2	coord;
 	t_color	color;
 }	t_vert;
-
-typedef struct s_key
-{
-	int				key;
-	t_key_state		state;
-	t_game_state	game_states;
-	void			(*actions[2])(t_man *man);
-}	t_key;
 
 typedef struct s_img
 {

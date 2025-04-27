@@ -74,6 +74,7 @@ typedef struct s_xvar
 	int				private_cmap;
 	Window			window;
 	GC				gc;
+	int				detectable_repeat;
 	t_event_list	hooks[MLX_MAX_EVENT];
 	int				(*loop_hook)();
 	void			*loop_param;
@@ -90,6 +91,8 @@ t_xvar	*mlx_init(void);
 
 void	mlx_display_destroy(t_xvar *xvar);
 void	mlx_screen_size(t_xvar *xvar, int *x, int *y);
+void	mlx_mouse_hide(t_xvar *xvar);
+void	mlx_mouse_show(t_xvar *xvar);
 
 int		mlx_window_create(t_xvar *xvar, int width, int height, char *title);
 void	mlx_window_destroy(t_xvar *xvar);
@@ -108,12 +111,5 @@ void	mlx_hook(t_xvar *xvar, int x_event, int x_mask, int (*funct)(),
 void	mlx_loop_hook(t_xvar *xvar, int (*funct_ptr)(), void *param);
 void	mlx_loop(t_xvar *xvar);
 void	mlx_loop_end(t_xvar *xvar);
-
-void	mlx_do_key_autorepeatoff(t_xvar *xvar);
-void	mlx_do_key_autorepeaton(t_xvar *xvar);
-void	mlx_do_sync(t_xvar *xvar);
-
-void	mlx_mouse_hide(t_xvar *xvar);
-void	mlx_mouse_show(t_xvar *xvar);
 
 #endif

@@ -3,16 +3,6 @@
 This is the MinilibX, a simple X-Window (X11R6) programming API
 in C, designed for students, suitable for X-beginners.
 
-
-Contents
-
- - source code in C to create the mlx library
- - man pages (in man/ directory)
- - a test program (in test/ directory) is built
-   with the library
- - a public include file mlx.h
- - a tiny configure script to generate an appropriate Makefile.gen
-
 Requirements for Linux
 
  - MinilibX only support TrueColor visual type (8,15,16,24 or 32 bits depth)
@@ -23,16 +13,7 @@ Requirements for Linux
  - Utility functions from BSD systems - development files (package libbsd-dev)
  - **e.g. _sudo apt-get install gcc make xorg libxext-dev libbsd-dev_ (Debian/Ubuntu)**
  
-Requirements for MacOS
- - [Xquartz](https://www.xquartz.org/)
-
-```bash
-➜  ~ Brew install Xquartz
-➜  ~ reboot
-➜  ~ xeyes # run an hello world X11 app
-```
-
-MlX Color Opacity / Transparency / Alpha (32 bits depth)
+MLX Color Opacity / Transparency / Alpha (32 bits depth)
  - 0xFF (fully transparent) or 0x00 (fully opaque)
 
 Compile MinilibX
@@ -41,15 +22,39 @@ Compile MinilibX
    both will make a few tests, create Makefile.gen
    and then automatically run make on this generated Makefile.gen .
    libmlx.a and libmlx_$(HOSTTYPE).a are created.
-   test/mlx-test binary is also created.
 
+---
 
-Install MinilibX
+BSD 2-Clause License
 
- - no installation script is provided. You may want to install
-     - libmlx.a and/or libmlx_$(HOSTTYPE).a in /usr/X11/lib or /usr/local/lib
-     - mlx.h in /usr/X11/include or /usr/local/include
-     - man/man3/mlx*.1 in /usr/X11/man/man3 or /usr/local/man/man3
+Copyright (c) 2021, Ecole 42
+All rights reserved.
 
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
- Olivier CROUZET - 2014-01-06 -
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+---
+
+EDIT: The MLX has been heavily modified. Lots of content have been removed from 
+the original codebase, and a lot of new content has been added, while the 
+remaining content from the original codebase has been modified. With more 
+modifications, this won't be acknowledged as being the MLX anymore, as this 
+would merely be a use of the X11 API, and this cannot be copyrighted.

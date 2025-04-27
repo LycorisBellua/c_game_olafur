@@ -25,7 +25,7 @@ void	portal_routine(t_man *man)
 		return ;
 	if (!portal->path_map)
 	{
-		man->game_state = GAME_STATE_FAILURE;
+		change_game_state(man, GAME_STATE_FAILURE);
 		return ;
 	}
 	man->player.is_in_portal = 1;

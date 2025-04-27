@@ -170,22 +170,21 @@ void		set_viewport(t_man *man, t_ivec2 window_size);
 
 /* Input -------------------------------------------------------------------- */
 
-void		execute_input_action(t_man *man, int key, t_key_state new_state);
-void		init_keys_wasdqe(t_man *man);
-void		init_keys_arrows(t_man *man);
-void		init_keys_misc(t_man *man);
+void		execute_input_action(t_man *man, int keycode, t_key_state state);
+int			cancel_keys_in_game_state(t_man *man);
+void		change_game_state(t_man *man, t_game_state new_state);
+void		init_input_keys(t_man *man);
 int			close_window_callback(t_man *man);
-void		action_move_x_incr(t_man *man);
-void		action_move_x_decr(t_man *man);
-void		action_move_y_incr(t_man *man);
-void		action_move_y_decr(t_man *man);
-void		action_rotate_incr(t_man *man);
-void		action_rotate_decr(t_man *man);
-void		action_speed_walk(t_man *man);
-void		action_speed_run(t_man *man);
-void		action_toggle_fullscreen(t_man *man);
-void		action_toggle_debug(t_man *man);
-void		action_close_window(t_man *man);
+void		action_move_right(t_man *man, int set);
+void		action_move_left(t_man *man, int set);
+void		action_move_forward(t_man *man, int set);
+void		action_move_backward(t_man *man, int set);
+void		action_turn_right(t_man *man, int set);
+void		action_turn_left(t_man *man, int set);
+void		action_run(t_man *man, int set);
+void		action_toggle_fullscreen(t_man *man, int set);
+void		action_toggle_debug(t_man *man, int set);
+void		action_close_window(t_man *man, int set);
 
 /* Init --------------------------------------------------------------------- */
 

@@ -22,7 +22,7 @@ void	unstuck_from_wall(t_man *man, t_map *m)
 	set_ivec2(&pos, (int)man->player.pos.x, (int)man->player.pos.y);
 	if (pos.x < 0 || pos.y < 0 || pos.x >= m->size.x || pos.y >= m->size.y)
 	{
-		man->game_state = GAME_STATE_FAILURE;
+		change_game_state(man, GAME_STATE_FAILURE);
 		return ;
 	}
 	else if (!m->cells[pos.y][pos.x].is_obstacle)
@@ -36,7 +36,7 @@ void	unstuck_from_wall(t_man *man, t_map *m)
 			|| check_left_and_right_edges(man, &coord, min, max))
 			return ;
 	}
-	man->game_state = GAME_STATE_FAILURE;
+	change_game_state(man, GAME_STATE_FAILURE);
 	return ;
 }
 
