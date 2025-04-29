@@ -2,8 +2,10 @@ Notes:
 - The minimum window size is 128x128 while the maximum is the monitor size.
 - Use a value inferior or equal to 0.1 as the aspect ratio to express "whatever 
 the monitor's aspect ratio is". For example 0 or -1.
-
-Allow res greater than 640x360 (ongoing)
+- The skybox image is meant to have a size of (res.x * 4, res.y). If this is 
+not respected, the skybox isn't displayed properly.
+- The GUI had been made with a resolution of (640, 360), and isn't adapted to 
+other resolutions. It respects the aspect ratio, however.
 
 --------------------------------------------------------------------------------
 
@@ -35,18 +37,6 @@ P N X, Y path_to_dest_map N X, Y
 -> [Optional] The destination's cardinal direction + new pos XY (int).
 The new pos can be the location of another portal, it's safe.
 If not indicated, the map's default start pos and direction will be used.
-
---------------------------------------------------------------------------------
-
-PROBLEM: RESOLUTION GREATER THAN 640x360
-
-	* Make sure the GUI is good in the following aspect ratios: 1:1, 3:2, 4:3, 
-	10:9 and 16:9.
-	* Need to adapt the font size, the icon size and the cursor size, then GUI 
-	is done.
-	* Need to adapt background/skybox. Consider generating the skybox, and 
-	maybe it's the opportunity to have a proper one, with like mountains and 
-	stuff remaining where they should in the world.
 
 --------------------------------------------------------------------------------
 
