@@ -7,6 +7,12 @@ not respected, the skybox isn't displayed properly.
 - The GUI had been made with a resolution of (640, 360), and isn't adapted to 
 other resolutions. It respects the aspect ratio, however.
 
+
+- See how you can force door to only be vertical or horizontal, not both.
+- Doors need to have a start: left, right, top or bottom. It's relative to the 
+world origin. This start can help us with the previous point, and it can also 
+help us invert the texture if the door is seen from the other side.
+
 --------------------------------------------------------------------------------
 
 [DEFAULT MAP]

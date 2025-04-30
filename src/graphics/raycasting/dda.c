@@ -4,11 +4,10 @@ static void	init_ray_data_x(t_man *man, t_ray *r, double cam_x);
 static void	init_ray_data_y(t_man *man, t_ray *r, double cam_x);
 static void	update_ray_data(t_ray *r);
 
-void	perform_dda(t_man *man, double cam_x, t_list **list)
+void	perform_dda(t_man *man, double cam_x)
 {
 	t_ray	*r;
 	double	max_height;
-	int		add;
 
 	r = calloc(1, sizeof(t_ray));
 	if (!r)
@@ -19,15 +18,8 @@ void	perform_dda(t_man *man, double cam_x, t_list **list)
 	while (1)
 	{
 		update_ray_data(r);
-		add = dda_add_to_list(man, man->maps[man->curr_map], r, &max_height);
-		if (add < 0)
+		if (dda_add_to_list(man, man->maps[man->curr_map], &r, &max_height) < 0)
 			break ;
-		else if (add)
-		{
-			list_add_front(list, list_new(r));
-			r = calloc(1, sizeof(t_ray));
-			memcpy(r, ((t_ray *)(*list)->data), sizeof(t_ray));
-		}
 	}
 	free(r);
 	return ;

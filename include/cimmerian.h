@@ -110,11 +110,13 @@ t_portal	*get_portal(t_man *man);
 /* Raycasting --------------------------------------------------------------- */
 
 void		raycasting(t_man *man);
-void		perform_dda(t_man *man, double cam_x, t_list **list);
-int			dda_add_to_list(t_man *man, t_map *m, t_ray *r, double *max_height);
+void		perform_dda(t_man *man, double cam_x);
+int			dda_add_to_list(t_man *man, t_map *m, t_ray **r,
+				double *max_height);
+void		set_texture_and_is_see_through(t_ray *r, t_cell *c);
 void		cast_floor(t_man *man);
 void		cast_ceiling_x(t_man *man, int x);
-void		draw_wall(t_man *man, t_ray *r, int is_portal);
+void		draw_wall(t_man *man, t_ray *r, t_img *tex);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
 void		sort_sprites_by_dist(t_man *man);
 void		swap_elements(void **a, void **b);

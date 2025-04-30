@@ -152,7 +152,7 @@ static void	set_pillar_sprites(t_spr **spr, t_img *img)
 {
 	int	i;
 
-	i = 8;
+	i = 7;
 	while (i < 11)
 	{
 		spr[i]->img = img;
@@ -169,7 +169,7 @@ static void	set_barrel_sprites(t_spr **spr, t_img *img)
 {
 	int	i;
 
-	i = 12;
+	i = 11;
 	while (i < 19)
 	{
 		spr[i]->img = img;

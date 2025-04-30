@@ -1,21 +1,18 @@
 #include "cimmerian.h"
 
-static t_img	*get_texture(t_map *m, t_ray *r, int is_portal);
 static int		calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r);
 static double	calculate_initial_tex_pos(t_man *man, t_map *m, t_ray *r,
 					t_img *tex);
 static t_color	calculate_color(t_man *man, t_ray *r, t_img *tex,
 					t_ivec2 tex_coord);
 
-void	draw_wall(t_man *man, t_ray *r, int is_portal)
+void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 {
 	int		y;
-	t_img	*tex;
 	t_ivec2	tex_coord;
 	double	tex_step;
 	double	tex_pos;
 
-	tex = get_texture(man->maps[man->curr_map], r, is_portal);
 	if (!tex)
 		return ;
 	tex_coord.x = calculate_tex_coord_x(man, tex, r);
@@ -34,35 +31,6 @@ void	draw_wall(t_man *man, t_ray *r, int is_portal)
 	}
 	r->coord1.y = y;
 	return ;
-}
-
-static t_img	*get_texture(t_map *m, t_ray *r, int is_portal)
-{
-	t_portal	*p;
-
-	if (is_portal)
-	{
-		p = m->cells[r->m_index.y][r->m_index.x].portal;
-		if (!p)
-			return (0);
-		else if (p->src_cardinal == 'N' && r->side == 1 && r->ray_dir.y > 0)
-			return (p->tex);
-		else if (p->src_cardinal == 'S' && r->side == 1 && r->ray_dir.y < 0)
-			return (p->tex);
-		else if (p->src_cardinal == 'W' && r->side == 0 && r->ray_dir.x > 0)
-			return (p->tex);
-		else if (p->src_cardinal == 'E' && r->side == 0 && r->ray_dir.x < 0)
-			return (p->tex);
-	}
-	else if (r->side == 1 && r->ray_dir.y > 0)
-		return (m->cells[r->m_index.y][r->m_index.x].tex_north);
-	else if (r->side == 1 && r->ray_dir.y < 0)
-		return (m->cells[r->m_index.y][r->m_index.x].tex_south);
-	else if (r->side == 0 && r->ray_dir.x > 0)
-		return (m->cells[r->m_index.y][r->m_index.x].tex_west);
-	else if (r->side == 0 && r->ray_dir.x < 0)
-		return (m->cells[r->m_index.y][r->m_index.x].tex_east);
-	return (0);
 }
 
 static int	calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r)

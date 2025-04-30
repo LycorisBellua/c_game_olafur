@@ -104,6 +104,8 @@ typedef struct s_ray
 	t_ivec2	unclamped_line_height;
 	t_ivec2	coord1;
 	t_ivec2	coord2;
+	t_img	*tex;
+	t_img	*tex_portal;
 	int		is_see_through;
 }	t_ray;
 
@@ -263,6 +265,7 @@ struct s_man
 	int				minimap_radius;
 	int				minimap_zoom;
 	int				minimap_cell_amount;
+	t_list			*rays;
 };
 
 extern t_man	g_man;

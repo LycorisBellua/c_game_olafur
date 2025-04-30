@@ -1,23 +1,22 @@
 #include "cimmerian.h"
 
 static void	reset_z_buffer(t_man *man);
-static void	process_dda_list(t_man *man, t_list **list, int x);
+static void	process_dda_list(t_man *man, int x);
 static void	set_line(t_man *man, int x, t_ray *r);
 
 void	raycasting(t_man *man)
 {
 	int		x;
-	t_list	*list;
 
 	cast_floor(man);
 	reset_z_buffer(man);
 	sort_sprites_by_dist(man);
-	list = 0;
+	man->rays = 0;
 	x = 0;
 	while (x < man->frame.size.x)
 	{
-		perform_dda(man, 2 * x / (double)man->frame.size.x - 1, &list);
-		process_dda_list(man, &list, x);
+		perform_dda(man, 2 * x / (double)man->frame.size.x - 1);
+		process_dda_list(man, x);
 		++x;
 	}
 	return ;
@@ -33,13 +32,13 @@ static void	reset_z_buffer(t_man *man)
 	return ;
 }
 
-static void	process_dda_list(t_man *man, t_list **list, int x)
+static void	process_dda_list(t_man *man, int x)
 {
 	t_ray	*r;
 
-	while (*list)
+	while (man->rays)
 	{
-		r = (t_ray *)(*list)->data;
+		r = (t_ray *)man->rays->data;
 		if (r->is_see_through)
 		{
 			cast_ceiling_x(man, x);
@@ -48,9 +47,9 @@ static void	process_dda_list(t_man *man, t_list **list, int x)
 		if (r->perp_wall_dist < man->z_buf[x])
 			man->z_buf[x] = r->perp_wall_dist;
 		set_line(man, x, r);
-		draw_wall(man, r, 0);
-		draw_wall(man, r, 1);
-		list_del_one(list, free);
+		draw_wall(man, r, r->tex);
+		draw_wall(man, r, r->tex_portal);
+		list_del_one(&man->rays, free);
 	}
 	cast_ceiling_x(man, x);
 	cast_sprites(man, x);
