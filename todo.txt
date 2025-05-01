@@ -9,12 +9,17 @@ other resolutions. It respects the aspect ratio, however.
 
 --------------------------------------------------------------------------------
 
+[SKYBOX]
+
+S: [img path or id]
+F: [floor color (hex or rgb)]
+C: [ceiling color (hex or rgb)]
+
 [DEFAULT MAP]
 
 NSEW: Player start position
 D: Door (simple door)
 G: Goal (victory)
-P: Portal (to another map)
 0: Ground
 1-9: Type of ordinary walls
 Whitespace: Empty space
@@ -37,3 +42,13 @@ P N X, Y path_to_dest_map N X, Y
 -> [Optional] The destination's cardinal direction + new pos XY (int).
 The new pos can be the location of another portal, it's safe.
 If not indicated, the map's default start pos and direction will be used.
+
+[SPRITES]
+
+Collectible: [Amount to unlock goal] [Sprite path or id, needs to match the 
+									  wording of the sprite described below]
+
+Sprite: [img path or id]
+[XY floating point position]
+[XY floating point position]
+[XY floating point position]
