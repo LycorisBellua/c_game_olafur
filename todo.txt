@@ -7,12 +7,6 @@ not respected, the skybox isn't displayed properly.
 - The GUI had been made with a resolution of (640, 360), and isn't adapted to 
 other resolutions. It respects the aspect ratio, however.
 
-
-- See how you can force door to only be vertical or horizontal, not both.
-- Doors need to have a start: left, right, top or bottom. It's relative to the 
-world origin. This start can help us with the previous point, and it can also 
-help us invert the texture if the door is seen from the other side.
-
 --------------------------------------------------------------------------------
 
 [DEFAULT MAP]
@@ -43,18 +37,3 @@ P N X, Y path_to_dest_map N X, Y
 -> [Optional] The destination's cardinal direction + new pos XY (int).
 The new pos can be the location of another portal, it's safe.
 If not indicated, the map's default start pos and direction will be used.
-
---------------------------------------------------------------------------------
-
-BACKBURNER
-
--> MLX Lib: There can be a flicker when resizing the window, and it seems to be 
-due to the absence of a double buffer in the MLX. Consider implementing it, 
-instead of asking the user to create two frames. The upscaling feature could 
-even be done in the MLX. Basically take inspiration from OpenGL. And about the 
-upscaling, could this possibly be done by the graphics card? I can give it the 
-reference frame, the offset and size of the upscaled frame within the window, 
-as well as the upscaling factor. These values are computed only when the window 
-is resized, so they can be cached. Use `XRender` to scale the reference frame.
-
--> MLX Lib: Add all the event handlers.

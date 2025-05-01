@@ -107,6 +107,7 @@ typedef struct s_ray
 	t_img	*tex;
 	t_img	*tex_portal;
 	int		is_see_through;
+	int		invert_tex;
 }	t_ray;
 
 typedef struct s_row

@@ -47,6 +47,8 @@ static int	calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r)
 	if ((r->side == 0 && r->ray_dir.x < 0)
 		|| (r->side == 1 && r->ray_dir.y > 0))
 		tex_coord_x = tex->size.x - tex_coord_x - 1;
+	if (r->invert_tex)
+		tex_coord_x = tex->size.x - tex_coord_x - 1;
 	return (tex_coord_x);
 }
 
