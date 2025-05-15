@@ -59,20 +59,20 @@ static int	set_perp_wall_dist_with_offset(t_man *man, t_ray *r, double offset)
 	if (r->side == 0)
 	{
 		wall.x = r->m_index.x + offset;
-		wall.y = man->player.pos.y + (wall.x - man->player.pos.x)
+		wall.y = man->player.cam_pos.y + (wall.x - man->player.cam_pos.x)
 			* (r->ray_dir.y / r->ray_dir.x);
 		if (wall.y < r->m_index.y || wall.y > r->m_index.y + 1)
 			return (0);
-		r->perp_wall_dist = (wall.x - man->player.pos.x) / r->ray_dir.x;
+		r->perp_wall_dist = (wall.x - man->player.cam_pos.x) / r->ray_dir.x;
 	}
 	else
 	{
 		wall.y = r->m_index.y + offset;
-		wall.x = man->player.pos.x + (wall.y - man->player.pos.y)
+		wall.x = man->player.cam_pos.x + (wall.y - man->player.cam_pos.y)
 			* (r->ray_dir.x / r->ray_dir.y);
 		if (wall.x < r->m_index.x || wall.x > r->m_index.x + 1)
 			return (0);
-		r->perp_wall_dist = (wall.y - man->player.pos.y) / r->ray_dir.y;
+		r->perp_wall_dist = (wall.y - man->player.cam_pos.y) / r->ray_dir.y;
 	}
 	if (r->perp_wall_dist > man->dof)
 		return (-1);

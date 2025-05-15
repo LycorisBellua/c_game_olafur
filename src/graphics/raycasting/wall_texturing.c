@@ -39,9 +39,9 @@ static int	calculate_tex_coord_x(t_man *man, t_img *tex, t_ray *r)
 	double	wall_x;
 
 	if (r->side == 0)
-		wall_x = man->player.pos.y + r->perp_wall_dist * r->ray_dir.y;
+		wall_x = man->player.cam_pos.y + r->perp_wall_dist * r->ray_dir.y;
 	else
-		wall_x = man->player.pos.x + r->perp_wall_dist * r->ray_dir.x;
+		wall_x = man->player.cam_pos.x + r->perp_wall_dist * r->ray_dir.x;
 	wall_x -= floor(wall_x);
 	tex_coord_x = (int)(wall_x * tex->size.x);
 	if ((r->side == 0 && r->ray_dir.x < 0)

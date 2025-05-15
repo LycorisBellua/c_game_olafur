@@ -192,6 +192,9 @@ typedef struct s_player
 	t_vec2	prev_pos;
 	t_vec2	dir;
 	t_vec2	plane;
+	t_vec2	cam_pos;
+	t_vec2	cam_dir;
+	t_vec2	cam_plane;
 	int		collected;
 	int		to_collect;
 	int		is_in_portal;

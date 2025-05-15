@@ -6,8 +6,11 @@ static void	set_line(t_man *man, int x, t_ray *r);
 
 void	raycasting(t_man *man)
 {
-	int		x;
+	int	x;
 
+	set_vec2(&man->player.cam_pos, man->player.pos.x, man->player.pos.y);
+	set_vec2(&man->player.cam_dir, man->player.dir.x, man->player.dir.y);
+	set_vec2(&man->player.cam_plane, man->player.plane.x, man->player.plane.y);
 	cast_floor(man);
 	reset_z_buffer(man);
 	sort_sprites_by_dist(man);
