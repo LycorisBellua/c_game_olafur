@@ -8,9 +8,6 @@ void	raycasting(t_man *man)
 {
 	int	x;
 
-	set_vec2(&man->player.cam_pos, man->player.pos.x, man->player.pos.y);
-	set_vec2(&man->player.cam_dir, man->player.dir.x, man->player.dir.y);
-	set_vec2(&man->player.cam_plane, man->player.plane.x, man->player.plane.y);
 	cast_floor(man);
 	reset_z_buffer(man);
 	sort_sprites_by_dist(man);
@@ -42,16 +39,20 @@ static void	process_dda_list(t_man *man, int x)
 	while (man->rays)
 	{
 		r = (t_ray *)man->rays->data;
-		if (r->is_see_through)
+		if (!(r->m_index.x < 0 || r->m_index.x >= r->m->size.x
+			|| r->m_index.y < 0 || r->m_index.y >= r->m->size.y))
 		{
-			cast_ceiling_x(man, x);
-			cast_sprites(man, x);
+			if (r->is_see_through)
+			{
+				cast_ceiling_x(man, x);
+				cast_sprites(man, x);
+			}
+			if (r->perp_wall_dist < man->z_buf[x])
+				man->z_buf[x] = r->perp_wall_dist;
+			set_line(man, x, r);
+			draw_wall(man, r, r->tex);
+			draw_wall(man, r, r->tex_portal);
 		}
-		if (r->perp_wall_dist < man->z_buf[x])
-			man->z_buf[x] = r->perp_wall_dist;
-		set_line(man, x, r);
-		draw_wall(man, r, r->tex);
-		draw_wall(man, r, r->tex_portal);
 		list_del_one(&man->rays, free);
 	}
 	cast_ceiling_x(man, x);
@@ -64,7 +65,7 @@ static void	set_line(t_man *man, int x, t_ray *r)
 	t_cell	*cell;
 	int		offset;
 
-	cell = &man->maps[man->curr_map]->cells[r->m_index.y][r->m_index.x];
+	cell = &r->m->cells[r->m_index.y][r->m_index.x];
 	r->line_height_cubic = man->frame.size.y / r->perp_wall_dist;
 	r->line_height = r->line_height_cubic * cell->height;
 	offset = r->line_height_cubic * (1.0 - cell->height) * 0.5;

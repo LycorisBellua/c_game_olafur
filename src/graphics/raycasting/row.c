@@ -61,10 +61,10 @@ static void	init_row(t_man *man, t_row *row)
 {
 	t_vec2	tmp_ray_dir;
 
-	row->ray_dir.x = man->player.cam_dir.x - man->player.cam_plane.x;
-	row->ray_dir.y = man->player.cam_dir.y - man->player.cam_plane.y;
-	tmp_ray_dir.x = man->player.cam_dir.x + man->player.cam_plane.x;
-	tmp_ray_dir.y = man->player.cam_dir.y + man->player.cam_plane.y;
+	row->ray_dir.x = man->player.dir.x - man->player.plane.x;
+	row->ray_dir.y = man->player.dir.y - man->player.plane.y;
+	tmp_ray_dir.x = man->player.dir.x + man->player.plane.x;
+	tmp_ray_dir.y = man->player.dir.y + man->player.plane.y;
 	row->ray_dir_step.x = (tmp_ray_dir.x - row->ray_dir.x) / man->frame.size.x;
 	row->ray_dir_step.y = (tmp_ray_dir.y - row->ray_dir.y) / man->frame.size.x;
 	row->pos_z = man->frame.size.y * 0.5;
@@ -81,8 +81,8 @@ static int	update_row(t_man *man, t_row *row, int *y)
 	}
 	row->floor_step.x = row->row_dist * row->ray_dir_step.x;
 	row->floor_step.y = row->row_dist * row->ray_dir_step.y;
-	row->floor.x = man->player.cam_pos.x + row->row_dist * row->ray_dir.x;
-	row->floor.y = man->player.cam_pos.y + row->row_dist * row->ray_dir.y;
+	row->floor.x = man->player.pos.x + row->row_dist * row->ray_dir.x;
+	row->floor.y = man->player.pos.y + row->row_dist * row->ray_dir.y;
 	return (1);
 }
 

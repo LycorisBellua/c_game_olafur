@@ -15,7 +15,7 @@ void	sort_sprites_by_dist(t_man *man)
 	i = 0;
 	while (i < man->maps[man->curr_map]->sprite_len)
 	{
-		man->maps[man->curr_map]->sprites[i]->dist = dist(man->player.cam_pos,
+		man->maps[man->curr_map]->sprites[i]->dist = dist(man->player.pos,
 				man->maps[man->curr_map]->sprites[i]->pos);
 		++i;
 	}
@@ -63,13 +63,13 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 	double	inv_det;
 	t_vec2	transform;
 
-	pos.x = s->pos.x - man->player.cam_pos.x;
-	pos.y = s->pos.y - man->player.cam_pos.y;
-	inv_det = 1.0 / ((man->player.cam_plane.x * man->player.cam_dir.y
-				- man->player.cam_dir.x * man->player.cam_plane.y));
-	transform.x = (man->player.cam_dir.y * pos.x - man->player.cam_dir.x
-			* pos.y) * inv_det;
-	transform.y = (-man->player.cam_plane.y * pos.x + man->player.cam_plane.x
+	pos.x = s->pos.x - man->player.pos.x;
+	pos.y = s->pos.y - man->player.pos.y;
+	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
+				- man->player.dir.x * man->player.plane.y));
+	transform.x = (man->player.dir.y * pos.x - man->player.dir.x * pos.y)
+		* inv_det;
+	transform.y = (-man->player.plane.y * pos.x + man->player.plane.x
 			* pos.y) * inv_det;
 	set_vec2(&s->transform, transform.x, transform.y);
 	s->screen_x = (man->frame.size.x / 2)

@@ -91,6 +91,10 @@ typedef struct s_png
 
 typedef struct s_ray
 {
+	double	cam_x;
+	t_vec2	origin_pos;
+	t_vec2	origin_dir;
+	t_vec2	origin_plane;
 	t_map	*m;
 	t_ivec2	m_index;
 	t_vec2	ray_dir;
@@ -192,9 +196,6 @@ typedef struct s_player
 	t_vec2	prev_pos;
 	t_vec2	dir;
 	t_vec2	plane;
-	t_vec2	cam_pos;
-	t_vec2	cam_dir;
-	t_vec2	cam_plane;
 	int		collected;
 	int		to_collect;
 	int		is_in_portal;

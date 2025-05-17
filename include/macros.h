@@ -17,7 +17,7 @@
 # define SPRITE_RADIUS 0.5
 # define SPRITE_AMOUNT_TO_COLLECT 5
 # define SPRITE_TYPE_TO_COLLECT "soul_idle"
-# define PORTAL_IS_CORRIDOR 0
+# define PORTAL_IS_CORRIDOR 1
 
 # define PATH_IMG_JSON "img/index.json"
 # ifdef GL

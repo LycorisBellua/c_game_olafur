@@ -18,6 +18,7 @@ int	create_portal_array(t_man *man, t_map *map)
 		if (!map->portals)
 			return (0);
 
+		/*
 		map->portals[0].is_corridor = PORTAL_IS_CORRIDOR;
 		map->portals[0].src_cardinal = 'S';
 		set_ivec2(&map->portals[0].src_pos, 12, 0);
@@ -26,7 +27,9 @@ int	create_portal_array(t_man *man, t_map *map)
 		map->portals[0].dst_cardinal = 'E';
 		set_ivec2(&map->portals[0].dst_pos, 0, 5);
 		map->portals[0].tex = tex_portal;
+		*/
 
+		/*
 		map->portals[1].is_corridor = PORTAL_IS_CORRIDOR;
 		map->portals[1].src_cardinal = 'N';
 		set_ivec2(&map->portals[1].src_pos, 15, 6);
@@ -34,6 +37,24 @@ int	create_portal_array(t_man *man, t_map *map)
 		map->portals[1].override_start_pos = 1;
 		map->portals[1].dst_cardinal = 'E';
 		set_ivec2(&map->portals[1].dst_pos, 0, 5);
+		map->portals[1].tex = tex_portal;
+		*/
+		map->portals[0].is_corridor = PORTAL_IS_CORRIDOR;
+		map->portals[0].src_cardinal = 'S';
+		set_ivec2(&map->portals[0].src_pos, 12, 0);
+		map->portals[0].path_map = strdup("maps/0.map");
+		map->portals[0].override_start_pos = 1;
+		map->portals[0].dst_cardinal = 'N';
+		set_ivec2(&map->portals[0].dst_pos, 12, 23);
+		map->portals[0].tex = tex_portal;
+
+		map->portals[1].is_corridor = PORTAL_IS_CORRIDOR;
+		map->portals[1].src_cardinal = 'N';
+		set_ivec2(&map->portals[1].src_pos, 12, 23);
+		map->portals[1].path_map = strdup("maps/0.map");
+		map->portals[1].override_start_pos = 1;
+		map->portals[1].dst_cardinal = 'S';
+		set_ivec2(&map->portals[1].dst_pos, 12, 0);
 		map->portals[1].tex = tex_portal;
 	}
 	else if (!strcmp(map->filepath, "maps/1.map"))

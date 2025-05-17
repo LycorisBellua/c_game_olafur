@@ -111,8 +111,10 @@ t_portal	*get_portal(t_man *man);
 
 void		raycasting(t_man *man);
 void		perform_dda(t_man *man, double cam_x);
-int			dda_add_to_list(t_man *man, t_map *m, t_ray **r,
-				double *max_height);
+void		init_ray_data_x(t_ray *r);
+void		init_ray_data_y(t_ray *r);
+void		update_ray_data(t_ray *r);
+int			dda_add_to_list(t_man *man, t_ray **r, double *max_height);
 void		set_texture_and_is_see_through(t_ray *r, t_cell *c);
 void		cast_floor(t_man *man);
 void		cast_ceiling_x(t_man *man, int x);
