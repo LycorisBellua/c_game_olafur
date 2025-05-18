@@ -115,6 +115,7 @@ void		init_ray_data_x(t_ray *r);
 void		init_ray_data_y(t_ray *r);
 void		update_ray_data(t_ray *r);
 int			dda_add_to_list(t_man *man, t_ray **r, double *max_height);
+t_cell		*resolve_portal_rendering(t_man *man, t_ray **r);
 void		set_texture_and_is_see_through(t_ray *r, t_cell *c);
 void		cast_floor(t_man *man);
 void		cast_ceiling_x(t_man *man, int x);
@@ -142,6 +143,7 @@ void		init_minimap_values(t_man *man);
 void		decrease_minimap_zoom(t_man *man);
 void		increase_minimap_zoom(t_man *man);
 t_vec2		get_dir_from_cardinal(char c);
+t_ivec2		get_dir_from_cardinal_ivec(char c);
 char		opp_cardinal(char cardinal);
 
 /* Transform ---------------------------------------------------------------- */
