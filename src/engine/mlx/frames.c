@@ -8,19 +8,19 @@ int	init_frame(t_man *man)
 	int	i;
 
 	if (!set_frame(man, &man->frame, 0))
-		return (put_error(man, 0, 0));
+		return (put_error(man, 0, 0, 0));
 	i = 0;
 	while (i < 2)
 	{
 		if (!set_frame(man, man->swap_buf + i, 1))
-			return (put_error(man, 0, 0));
+			return (put_error(man, 0, 0, 0));
 		++i;
 	}
 	if (!set_xmap_and_ymap(man))
-		return (put_error(man, 0, 0));
+		return (put_error(man, 0, 0, 0));
 	man->z_buf = malloc(man->frame.size.x * sizeof(double));
 	if (!man->z_buf)
-		return (put_error(man, E_FAIL_MEM, 0));
+		return (put_error(man, E_FAIL_MEM, 0, 0));
 	return (1);
 }
 
@@ -57,7 +57,7 @@ static int	set_frame(t_man *man, t_frame *f, int is_swap_buf)
 	f->thickness = (double)f->size.x / man->res.res.x;
 	f->img = mlx_image_create(man->xvar, f->size.x, f->size.y);
 	if (!f->img)
-		return (put_error(man, E_FAIL_MLX_IMG, 0));
+		return (put_error(man, E_FAIL_MLX_IMG, 0, 0));
 	return (1);
 }
 

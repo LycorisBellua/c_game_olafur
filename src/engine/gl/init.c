@@ -16,18 +16,18 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 	if (!init_graphics_lib())
 		return (0);
 	if (!set_resolution(man, size, aspect_ratio))
-		return (put_error(0, E_FAIL_WINDOW, 0));
+		return (put_error(0, E_FAIL_WINDOW, 0, 0));
 	man->title = (char *)title;
 	man->window = glfwCreateWindow(man->res.window_size.x,
 			man->res.window_size.y, man->title, NULL, NULL);
 	if (!man->window)
-		return (put_error(man, E_FAIL_WINDOW_GL, 0));
+		return (put_error(man, E_FAIL_WINDOW_GL, 0, 0));
 	more_window_settings(man);
 	if (!init_gl_functions())
-		return (put_error(man, E_FAIL_GL_FUNC, 0));
+		return (put_error(man, E_FAIL_GL_FUNC, 0, 0));
 	man->shader_program = create_shader_program();
 	if (!man->shader_program || !create_uniform(man) || !create_mesh())
-		return (put_error(man, 0, 0));
+		return (put_error(man, 0, 0, 0));
 	return (1);
 }
 
@@ -36,7 +36,7 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 static int	init_graphics_lib(void)
 {
 	if (!glfwInit())
-		return (put_error(0, E_FAIL_GLFW, 0));
+		return (put_error(0, E_FAIL_GLFW, 0, 0));
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -47,7 +47,7 @@ static int	init_graphics_lib(void)
 static int	init_graphics_lib(void)
 {
 	if (!glfwInit())
-		return (put_error(0, E_FAIL_GLFW, 0));
+		return (put_error(0, E_FAIL_GLFW, 0, 0));
 	return (1);
 }
 #endif

@@ -61,6 +61,7 @@ void		apply_wall_fog(t_color *wall, t_color c, double dist, double dof);
 
 /* Files -------------------------------------------------------------------- */
 
+char		*get_absolute_path(const char *path);
 char		*read_file(const char *filepath);
 char		**read_file_lines(const char *filepath);
 void		free_arr(void **arr, void (free_fct)(void *));
@@ -206,7 +207,7 @@ void		toggle_fullscreen(t_man *man);
 /* End ---------------------------------------------------------------------- */
 
 void		deinit(t_man *man);
-int			put_error(t_man *man, char *msg, int errno);
+int			put_error(t_man *man, const char *msg, const char *arg, int errno);
 
 /* Utils -------------------------------------------------------------------- */
 

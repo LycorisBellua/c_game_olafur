@@ -20,14 +20,14 @@ int	create_shader_program(void)
 	{
 		glDeleteShader(shaders[0]);
 		glDeleteShader(shaders[1]);
-		return (put_error(0, E_FAIL_SHADER, 0));
+		return (put_error(0, E_FAIL_SHADER, 0, 0));
 	}
 	shader_program = glCreateProgram();
 	if (!shader_program)
 	{
 		glDeleteShader(shaders[0]);
 		glDeleteShader(shaders[1]);
-		return (put_error(0, E_FAIL_SHADER_PROG, 0));
+		return (put_error(0, E_FAIL_SHADER_PROG, 0, 0));
 	}
 	glAttachShader(shader_program, shaders[0]);
 	glAttachShader(shader_program, shaders[1]);

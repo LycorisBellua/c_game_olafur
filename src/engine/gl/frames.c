@@ -11,7 +11,7 @@ int	init_frame(t_man *man)
 	glBindTexture(GL_TEXTURE_2D, man->frame.id);
 	man->z_buf = malloc(man->frame.size.x * sizeof(double));
 	if (!man->z_buf)
-		return (put_error(man, E_FAIL_MEM, 0));
+		return (put_error(man, E_FAIL_MEM, 0, 0));
 	return (1);
 }
 
@@ -45,7 +45,7 @@ static int	set_frame(t_man *man)
 	man->frame.buf = malloc(man->frame.size.x * man->frame.size.y
 			* sizeof(t_color));
 	if (!man->frame.buf)
-		return (put_error(man, E_FAIL_MEM, 0));
+		return (put_error(man, E_FAIL_MEM, 0, 0));
 	glGenTextures(1, &man->frame.id);
 	glBindTexture(GL_TEXTURE_2D, man->frame.id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
