@@ -47,15 +47,18 @@ t_map	*create_map(t_man *man, const char *filepath)
 
 void	free_cells(t_map *map)
 {
-	int	i;
+	t_ivec2	coord;
 
 	if (!map || !map->cells)
 		return ;
-	i = 0;
-	while (i < map->size.y)
+	coord.y = 0;
+	while (coord.y < map->size.y)
 	{
-		free(map->cells[i]);
-		++i;
+		coord.x = 0;
+		while (coord.x < map->size.x)
+			free(map->cells[coord.y][coord.x++].door);
+		free(map->cells[coord.y]);
+		++coord.y;
 	}
 	free(map->cells);
 	map->cells = 0;
@@ -100,9 +103,23 @@ static int	set_map_cells(t_man *man, t_map *map)
 			i = coord.y * map->size.x + coord.x;
 			c = &map->cells[coord.y][coord.x];
 			c->is_empty_space = isspace(map->map_walls[i]);
-			c->is_door = map->map_walls[i] == 'D';
+			if (map->map_walls[i] == 'D')
+			{
+				c->door = calloc(1, sizeof(t_door));
+				if (!c->door)
+				{
+					free_cells(map);
+					return (0);
+				}
+				c->door->m = map;
+				c->door->pos = coord;
+				c->door->tex_closed = img_arr[5];
+				c->door->tex_open = 0;
+				c->door->is_open = 0;
+				c->door->is_obstacle = &(c->is_obstacle);
+			}
 			c->is_goal = map->map_walls[i] == 'G';
-			c->is_obstacle = c->is_empty_space || c->is_door || c->is_goal
+			c->is_obstacle = c->is_empty_space || c->door || c->is_goal
 				|| (map->map_walls[i] > '0' && map->map_walls[i] <= '9');
 			c->is_visible = c->is_obstacle && !c->is_empty_space;
 
@@ -124,7 +141,7 @@ static int	set_map_cells(t_man *man, t_map *map)
 				c->tex_ceiling = get_image(man, "tex_ceiling");
 			}
 			//
-			if (c->is_door)
+			if (c->door)
 				img = img_arr[5];
 			else if (c->is_goal)
 				img = img_arr[6];

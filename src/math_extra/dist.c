@@ -17,6 +17,8 @@ int	is_dist_grid_aligned_and_within_threshold(t_ivec2 a, t_ivec2 b,
 {
 	t_ivec2	delta;
 
+	if (threshold < 0)
+		return (0);
 	set_ivec2(&delta, abs(a.x - b.x), abs(a.y - b.y));
 	if (delta.x > 0 && delta.y > 0)
 		return (0);

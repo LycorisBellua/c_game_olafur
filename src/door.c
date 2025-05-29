@@ -1,41 +1,42 @@
 #include "cimmerian.h"
 
-static void	close_last_door(t_man *man, t_map *map, t_list **opened_doors,
-				int max_dist);
-static void	open_new_door(t_man *man, t_list **opened_doors, int max_dist);
-static int	is_closed_door(t_man *man, int x, int y);
-static void	add_door_to_list(t_man *man, int x, int y, t_list **list);
+static void		close_doors(t_man *man, t_map *map, t_list **opened_doors,
+					int max_dist);
+static void		open_new_door(t_man *man, t_list **opened_doors, int max_dist);
+static t_door	*get_door(t_map *m, int x, int y);
+static void		add_door_to_list(t_list **list, t_door *door);
 
 void	door_routine(t_man *man)
 {
 	static t_list	*opened_doors;
 
-	close_last_door(man, man->maps[man->curr_map], &opened_doors, 2);
+	close_doors(man, man->maps[man->curr_map], &opened_doors, 2);
 	open_new_door(man, &opened_doors, 2);
 	return ;
 }
 
-static void	close_last_door(t_man *man, t_map *map, t_list **opened_doors,
+static void	close_doors(t_man *man, t_map *map, t_list **opened_doors,
 	int max_dist)
 {
 	t_list	*head;
 	t_list	*curr;
-	t_ivec2	player;
-	t_ivec2	door;
+	t_ivec2	p;
+	t_door	*d;
 
-	set_ivec2(&player, (int)man->player.pos.x, (int)man->player.pos.y);
+	set_ivec2(&p, (int)man->player.pos.x, (int)man->player.pos.y);
 	curr = *opened_doors;
 	head = curr;
 	while (curr)
 	{
-		door = *((t_ivec2 *)curr->data);
-		if (!is_dist_grid_aligned_and_within_threshold(player, door, max_dist))
+		d = (t_door *)curr->data;
+		if (d->m != map
+			|| !is_dist_grid_aligned_and_within_threshold(p, d->pos, max_dist))
 		{
-			map->cells[door.y][door.x].is_visible = 1;
-			map->cells[door.y][door.x].is_obstacle = 1;
+			d->is_open = 0;
+			*d->is_obstacle = 1;
 			if (curr == head)
 				head = (curr)->next;
-			list_del_one(&curr, free);
+			list_del_one(&curr, 0);
 		}
 		else
 			curr = curr->next;
@@ -47,20 +48,25 @@ static void	close_last_door(t_man *man, t_map *map, t_list **opened_doors,
 static void	open_new_door(t_man *man, t_list **opened_doors, int max_dist)
 {
 	int		i;
-	t_ivec2	player;
+	t_map	*m;
+	t_ivec2	p;
+	t_door	*d;
 
-	set_ivec2(&player, (int)man->player.pos.x, (int)man->player.pos.y);
+	m = man->maps[man->curr_map];
+	set_ivec2(&p, (int)man->player.pos.x, (int)man->player.pos.y);
 	i = -max_dist;
 	while (i <= max_dist)
 	{
-		if (is_closed_door(man, player.x + i, player.y))
+		d = get_door(m, p.x + i, p.y);
+		if (d && !d->is_open)
 		{
-			add_door_to_list(man, player.x + i, player.y, opened_doors);
+			add_door_to_list(opened_doors, d);
 			break ;
 		}
-		else if (is_closed_door(man, player.x, player.y + i))
+		d = get_door(m, p.x, p.y + i);
+		if (d && !d->is_open)
 		{
-			add_door_to_list(man, player.x, player.y + i, opened_doors);
+			add_door_to_list(opened_doors, d);
 			break ;
 		}
 		++i;
@@ -68,34 +74,22 @@ static void	open_new_door(t_man *man, t_list **opened_doors, int max_dist)
 	return ;
 }
 
-static int	is_closed_door(t_man *man, int x, int y)
+static t_door	*get_door(t_map *m, int x, int y)
 {
-	t_map	*map;
-
-	map = man->maps[man->curr_map];
-	if (x < 0 || x >= map->size.x || y < 0 || y >= map->size.y)
+	if (x < 0 || x >= m->size.x || y < 0 || y >= m->size.y)
 		return (0);
-	return (map->cells[y][x].is_door && map->cells[y][x].is_obstacle);
+	return (m->cells[y][x].door);
 }
 
-static void	add_door_to_list(t_man *man, int x, int y, t_list **list)
+static void	add_door_to_list(t_list **list, t_door *door)
 {
-	t_map	*map;
-	t_ivec2	*coord;
 	t_list	*node;
 
-	map = man->maps[man->curr_map];
-	coord = calloc(1, sizeof(t_ivec2));
-	if (coord)
-	{
-		set_ivec2(coord, x, y);
-		node = list_new(coord);
-		if (!node)
-			free(coord);
-		else
-			list_add_back(list, node);
-	}
-	map->cells[y][x].is_visible = 0;
-	map->cells[y][x].is_obstacle = 0;
+	node = list_new(door);
+	if (!node)
+		return ;
+	list_add_back(list, node);
+	door->is_open = 1;
+	*door->is_obstacle = 0;
 	return ;
 }

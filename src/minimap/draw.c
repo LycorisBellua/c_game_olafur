@@ -46,7 +46,7 @@ static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell)
 	v.color = get_color_rgba(0, 0, 0, 0);
 	if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].is_goal)
 		v.color = get_color_rgba(28, 210, 192, 255);
-	else if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].is_door
+	else if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].door
 		|| man->maps[man->curr_map]->cells[i_map.y][i_map.x].portal)
 		v.color = get_color_rgba(244, 162, 97, 255);
 	else if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].is_visible)

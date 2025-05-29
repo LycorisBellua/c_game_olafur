@@ -9,7 +9,9 @@ void	set_texture_and_is_see_through(t_ray *r, t_cell *c)
 {
 	r->tex = 0;
 	r->tex_portal = 0;
-	if (r->side == 1 && r->ray_dir.y > 0)
+	if (c->door)
+		r->tex = c->door->is_open ? c->door->tex_open : c->door->tex_closed;
+	else if (r->side == 1 && r->ray_dir.y > 0)
 		set_north_tex(r, c);
 	else if (r->side == 1 && r->ray_dir.y < 0)
 		set_south_tex(r, c);

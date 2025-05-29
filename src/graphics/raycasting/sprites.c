@@ -1,9 +1,5 @@
 #include "cimmerian.h"
 
-#define U_DIV 1
-#define V_DIV 1
-#define V_MOVE 0.0
-
 static void	set_sprite_values(t_man *man, t_spr *s);
 static void	render_sprite_column(t_man *man, t_spr *s, int x);
 
@@ -49,7 +45,8 @@ void	cast_sprites(t_man *man, int x)
 		{
 			if (!x)
 				set_sprite_values(man, s);
-			if (s->img && x >= s->draw_start.x && x < s->draw_end.x)
+			if (s->img && x >= s->draw_start.x && x < s->draw_end.x
+				&& s->transform.y > 0 && s->transform.y < man->z_buf[x])
 				render_sprite_column(man, s, x);
 		}
 		++i;
@@ -59,19 +56,19 @@ void	cast_sprites(t_man *man, int x)
 
 static void	set_sprite_values(t_man *man, t_spr *s)
 {
-	t_vec2	pos;
-	double	inv_det;
-	t_vec2	transform;
+	const int		U_DIV = 1;
+	const int		V_DIV = 1;
+	const double	V_MOVE = 0.0;
+	t_vec2			pos;
+	double			inv_det;
 
-	pos.x = s->pos.x - man->player.pos.x;
-	pos.y = s->pos.y - man->player.pos.y;
+	set_vec2(&pos, s->pos.x - man->player.pos.x, s->pos.y - man->player.pos.y);
 	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
 				- man->player.dir.x * man->player.plane.y));
-	transform.x = (man->player.dir.y * pos.x - man->player.dir.x * pos.y)
+	s->transform.x = (man->player.dir.y * pos.x - man->player.dir.x * pos.y)
 		* inv_det;
-	transform.y = (-man->player.plane.y * pos.x + man->player.plane.x
+	s->transform.y = (-man->player.plane.y * pos.x + man->player.plane.x
 			* pos.y) * inv_det;
-	set_vec2(&s->transform, transform.x, transform.y);
 	s->screen_x = (man->frame.size.x / 2)
 		* (1 + s->transform.x / s->transform.y);
 	s->v_move_screen = V_MOVE / s->transform.y;
@@ -91,24 +88,24 @@ static void	render_sprite_column(t_man *man, t_spr *s, int x)
 	t_ivec2	tex;
 	int		y;
 	int		d;
-	t_color	color;
+	t_color	c;
 
-	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x))
-			* s->img->size.x / s->size.x) / 256;
-	if (s->transform.y > 0 && s->transform.y < man->z_buf[x])
+	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x)) * s->img->size.x
+		/ s->size.x) / 256;
+	if (tex.x < 0 || tex.x >= man->frame.size.x)
+		return ;
+	y = s->draw_start.y - 1;
+	while (++y < s->draw_end.y)
 	{
-		y = s->draw_start.y - 1;
-		while (++y < s->draw_end.y)
-		{
-			d = (y - s->v_move_screen) * 256 - man->frame.size.y * 128
-				+ s->size.y * 128;
-			tex.y = ((d * s->img->size.y) / s->size.y) / 256;
-			color = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x
-				+ tex.x];
-			apply_wall_fog(&color, man->maps[man->curr_map]->fog_color, s->dist,
-				man->dof);
-			draw_point(man, color, x, y);
-		}
+		d = (y - s->v_move_screen) * 256 - man->frame.size.y * 128 + s->size.y
+			* 128;
+		tex.y = ((d * s->img->size.y) / s->size.y) / 256;
+		if (tex.y < 0 || tex.y >= man->frame.size.y)
+			return ;
+		c = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x + tex.x];
+		apply_wall_fog(&c, man->maps[man->curr_map]->fog_color, s->dist,
+			man->dof);
+		draw_point(man, c, x, y);
 	}
 	return ;
 }

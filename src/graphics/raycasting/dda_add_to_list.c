@@ -17,7 +17,7 @@ int	dda_add_to_list(t_man *man, t_ray **r, double *max_height)
 		return (0);
 	add_to_list = 0;
 	set_texture_and_is_see_through(*r, cell);
-	if ((*r)->is_see_through || cell->is_door)
+	if ((*r)->is_see_through || cell->door)
 		add_to_list = 1;
 	else if (cell->height > *max_height)
 	{
@@ -35,7 +35,7 @@ static void	set_perp_wall_dist(t_man *man, t_ray **r, t_cell *cell,
 {
 	if (!*add_to_list)
 		return ;
-	else if (cell->is_door)
+	else if (cell->door)
 		*add_to_list = set_perp_wall_dist_with_offset(man, *r, 0.5);
 	else
 	{

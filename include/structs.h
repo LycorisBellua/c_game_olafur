@@ -124,6 +124,16 @@ typedef struct s_row
 	t_vec2	floor;
 }	t_row;
 
+typedef struct s_door
+{
+	t_map		*m;
+	t_ivec2		pos;
+	t_img		*tex_closed;
+	t_img		*tex_open;
+	int			is_open;
+	int			*is_obstacle;
+}	t_door;
+
 typedef struct s_portal
 {
 	int		is_corridor;
@@ -142,7 +152,6 @@ typedef struct s_cell
 	int			is_empty_space;
 	int			is_visible;
 	int			is_obstacle;
-	int			is_door;
 	int			is_goal;
 	double		height;
 	t_img		*tex_floor;
@@ -151,6 +160,7 @@ typedef struct s_cell
 	t_img		*tex_east;
 	t_img		*tex_south;
 	t_img		*tex_west;
+	t_door		*door;
 	t_portal	*portal;
 }	t_cell;
 
