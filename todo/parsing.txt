@@ -1,13 +1,6 @@
-Notes:
-- The minimum window size is 128x128 while the maximum is the monitor size.
-- Use a value inferior or equal to 0.1 as the aspect ratio to express "whatever 
-the monitor's aspect ratio is". For example 0 or -1.
-- The skybox image is meant to have a size of (res.x * 4, res.y). If this is 
-not respected, the skybox isn't displayed properly.
-- The GUI had been made with a resolution of (640, 360), and isn't adapted to 
-other resolutions. It respects the aspect ratio, however.
-
---------------------------------------------------------------------------------
++------------------------------------------------------------------------------+
+|                                  MAP PARSING                                 |
++------------------------------------------------------------------------------+
 
 [SKYBOX]
 

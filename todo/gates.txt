@@ -1,0 +1,21 @@
++------------------------------------------------------------------------------+
+|                                    GATES                                     |
++------------------------------------------------------------------------------+
+
+I need a system where both doors are portals are handled the same way:
+- They can be at any offset within the cell.
+- They have a different texture depending on whether they are open or closed.
+- They can be opened, and maybe even closed, based on distance.
+- They can be opened, and maybe even closed, on the press of a button or 
+sequence of buttons.
+- They can be opened, and maybe even closed, through the use of an item. And 
+maybe different sets of items, for example the correct key, or with a crowbar.
+
+The difference between a door and a portal, is that a door is simply a wall 
+which loses collision when open. A portal teleports you to another location on 
+collision, whether within the same map or another. Also, portals are of two 
+different types: teleporters and corridors. Both actually teleport you, but the 
+corridor type looks like you're simply walking into the map, and only the 
+minimap shows you that teleportation happened.
+
+Do I add a portal gun?
