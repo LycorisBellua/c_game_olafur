@@ -32,7 +32,7 @@ void	free_map(t_map *map)
 	i = 0;
 	while (i < map->portal_len)
 	{
-		free(map->portals[i].path_map);
+		free(map->portals[i].path_dst_map);
 		++i;
 	}
 	free(map->portals);

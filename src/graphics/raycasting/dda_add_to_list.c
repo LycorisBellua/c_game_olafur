@@ -10,6 +10,12 @@ int	dda_add_to_list(t_man *man, t_ray **r, double *max_height)
 	t_cell	*cell;
 	int		add_to_list;
 
+	if ((*r)->m_index.x < 0 || (*r)->m_index.x >= (*r)->m->size.x
+		|| (*r)->m_index.y < 0 || (*r)->m_index.y >= (*r)->m->size.y)
+		cell = 0;
+	else
+		cell = &(*r)->m->cells[(*r)->m_index.y][(*r)->m_index.x];
+
 	cell = resolve_portal_rendering(man, r);
 	if (!cell)
 		return (-1);

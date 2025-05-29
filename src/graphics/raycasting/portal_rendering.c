@@ -64,7 +64,12 @@ t_cell	*resolve_portal_rendering(t_man *man, t_ray **r)
 	else if (!cell && internal_hit)
 		cell = &(*r)->m->cells[(int)(*r)->origin_pos.y][(int)(*r)->origin_pos.x];
 
-	map_index = add_map(man, cell->portal->path_map);
+	// I shouldn't need to check, but I do, otherwise it crashes when I cross 
+	// the portal around the circle of six cubes through a non-portal face
+	if (!cell->portal)
+		return (cell);
+	//
+	map_index = add_map(man, cell->portal->path_dst_map);
 	if (map_index < 0)
 		return (0);
 

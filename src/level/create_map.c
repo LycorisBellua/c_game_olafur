@@ -118,14 +118,13 @@ static int	set_map_cells(t_man *man, t_map *map)
 				c->door->is_open = 0;
 				c->door->is_obstacle = &(c->is_obstacle);
 			}
+			c->portal = find_portal(map, coord.x, coord.y);
 			c->is_goal = map->map_walls[i] == 'G';
 			c->is_obstacle = c->is_empty_space || c->door || c->is_goal
 				|| (map->map_walls[i] > '0' && map->map_walls[i] <= '9');
-			c->is_visible = c->is_obstacle && !c->is_empty_space;
-
-			c->portal = find_portal(map, coord.x, coord.y);
-			if (c->portal && !c->portal->is_corridor)
-				c->is_visible = 1;
+			c->is_visible = (c->is_obstacle && !c->is_empty_space)
+				|| (c->portal
+					&& (c->portal->tex_closed || c->portal->tex_open));
 
 			if (c->is_visible)
 				c->height = 1.0;

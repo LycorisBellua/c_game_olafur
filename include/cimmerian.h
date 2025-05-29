@@ -107,6 +107,7 @@ void		display_game_over_screen(t_man *man);
 void		door_routine(t_man *man);
 void		portal_routine(t_man *man);
 t_portal	*get_portal(t_man *man);
+void		open_and_close_portals(t_man *man);
 
 /* Raycasting --------------------------------------------------------------- */
 

@@ -27,7 +27,12 @@ static void	set_north_tex(t_ray *r, t_cell *c)
 {
 	r->tex = c->tex_north;
 	if (c->portal && c->portal->src_cardinal == 'N')
-		r->tex_portal = c->portal->tex;
+	{
+		if (c->portal->is_open)
+			r->tex_portal = c->portal->tex_open;
+		else
+			r->tex_portal = c->portal->tex_closed;
+	}
 	return ;
 }
 
@@ -35,7 +40,12 @@ static void	set_south_tex(t_ray *r, t_cell *c)
 {
 	r->tex = c->tex_south;
 	if (c->portal && c->portal->src_cardinal == 'S')
-		r->tex_portal = c->portal->tex;
+	{
+		if (c->portal->is_open)
+			r->tex_portal = c->portal->tex_open;
+		else
+			r->tex_portal = c->portal->tex_closed;
+	}
 	return ;
 }
 
@@ -43,7 +53,12 @@ static void	set_west_tex(t_ray *r, t_cell *c)
 {
 	r->tex = c->tex_west;
 	if (c->portal && c->portal->src_cardinal == 'W')
-		r->tex_portal = c->portal->tex;
+	{
+		if (c->portal->is_open)
+			r->tex_portal = c->portal->tex_open;
+		else
+			r->tex_portal = c->portal->tex_closed;
+	}
 	return ;
 }
 
@@ -51,6 +66,11 @@ static void	set_east_tex(t_ray *r, t_cell *c)
 {
 	r->tex = c->tex_east;
 	if (c->portal && c->portal->src_cardinal == 'E')
-		r->tex_portal = c->portal->tex;
+	{
+		if (c->portal->is_open)
+			r->tex_portal = c->portal->tex_open;
+		else
+			r->tex_portal = c->portal->tex_closed;
+	}
 	return ;
 }

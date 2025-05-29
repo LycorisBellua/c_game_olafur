@@ -136,14 +136,17 @@ typedef struct s_door
 
 typedef struct s_portal
 {
+	t_map	*src_map;
 	int		is_corridor;
 	char	src_cardinal;
 	t_ivec2	src_pos;
-	char	*path_map;
+	char	*path_dst_map;
 	int		override_start_pos;
 	char	dst_cardinal;
 	t_ivec2	dst_pos;
-	t_img	*tex;
+	t_img	*tex_closed;
+	t_img	*tex_open;
+	int		is_open;
 	int		trigger_opposite;
 }	t_portal;
 

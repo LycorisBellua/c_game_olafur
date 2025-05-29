@@ -20,17 +20,18 @@ void	portal_routine(t_man *man)
 {
 	t_portal	*portal;
 
+	open_and_close_portals(man);
 	portal = get_portal(man);
 	if (!portal)
 		return ;
-	if (!portal->path_map)
+	if (!portal->path_dst_map)
 	{
 		change_game_state(man, GAME_STATE_FAILURE);
 		return ;
 	}
 	man->player.is_in_portal = 1;
-	add_map(man, portal->path_map);
-	man->curr_map = find_map_index(man, portal->path_map);
+	add_map(man, portal->path_dst_map);
+	man->curr_map = find_map_index(man, portal->path_dst_map);
 	set_transform(man, portal);
 	if (man->echolocation)
 		update_dof(man, -30);
