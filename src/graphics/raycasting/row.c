@@ -108,9 +108,6 @@ static t_color	calculate_color(t_man *man, t_map *m, t_row *row, int is_floor)
 	coord.x = (int)(tex->size.x * (row->floor.x - cell.x)) % tex->size.x;
 	coord.y = (int)(tex->size.y * (row->floor.y - cell.y)) % tex->size.y;
 	color = tex->cycle[tex->cycle_index][tex->size.x * coord.y + coord.x];
-	color.r *= 0.7;
-	color.g *= 0.7;
-	color.b *= 0.7;
 	apply_wall_fog(&color, m->fog_color, row->row_dist, man->dof);
 	return (color);
 }
