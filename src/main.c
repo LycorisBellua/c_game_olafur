@@ -17,7 +17,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
-	add_map(&g_man, "null");
 	g_man.curr_map = add_map(&g_man, argv[1]);
 	if (g_man.curr_map < 0)
 		return (put_error(&g_man, 0, 0, EXIT_FAILURE));

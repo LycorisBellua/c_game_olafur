@@ -30,8 +30,7 @@ void	portal_routine(t_man *man)
 		return ;
 	}
 	man->player.is_in_portal = 1;
-	add_map(man, portal->path_dst_map);
-	man->curr_map = find_map_index(man, portal->path_dst_map);
+	man->curr_map = add_map(man, portal->path_dst_map);
 	set_transform(man, portal);
 	if (man->echolocation)
 		update_dof(man, -30);

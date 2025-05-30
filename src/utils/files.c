@@ -7,10 +7,7 @@ char	*get_absolute_path(const char *path)
 	char	*absolute;
 
 	if (!path)
-	{
-		put_error(0, "get_absolute_path", "null", 0);
 		return (0);
-	}
 	absolute = realpath(path, 0);
 	if (!absolute)
 		put_error(0, "get_absolute_path", path, 0);

@@ -129,7 +129,6 @@ void		cast_sprites(t_man *man, int x);
 
 /* Maps --------------------------------------------------------------------- */
 
-int			find_map_index(t_man *man, const char *filepath);
 int			add_map(t_man *man, const char *filepath);
 t_map		*create_map(t_man *man, const char *filepath);
 int			extract_maps_and_player_start(t_map *m);

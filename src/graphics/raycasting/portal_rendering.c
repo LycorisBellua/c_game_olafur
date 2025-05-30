@@ -57,6 +57,7 @@ t_cell	*resolve_portal_rendering(t_man *man, t_ray **r)
 		cell = 0;
 	else
 		cell = &(*r)->m->cells[(*r)->m_index.y][(*r)->m_index.x];
+	/**/return (cell);
 	internal_hit = is_within_portal_and_ray_hits_opp_face(*r);
 	external_hit = is_ray_hitting_portal(cell, *r);
 	if (!internal_hit && !external_hit)
