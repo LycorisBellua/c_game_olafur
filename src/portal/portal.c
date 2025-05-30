@@ -48,12 +48,14 @@ void	portal_routine(t_man *man)
 */
 static void	set_transform(t_man *man, t_portal *portal)
 {
+	t_vec2	exit_pos;
 	t_vec2	exit_dir;
 	t_vec2	entry_dir;
 	double	player_angle;
 	double	entry_angle;
 	double	relative_angle;
 
+	exit_pos = man->maps[man->curr_map]->start_pos;
 	exit_dir = man->maps[man->curr_map]->start_dir;
 	if (portal->dst_cardinal && portal->trigger_opposite)
 		exit_dir = get_dir_from_cardinal(opp_cardinal(portal->dst_cardinal));
@@ -61,17 +63,14 @@ static void	set_transform(t_man *man, t_portal *portal)
 		exit_dir = get_dir_from_cardinal(portal->dst_cardinal);
 	if (portal->override_start_pos)
 	{
-		man->maps[man->curr_map]->start_pos = compute_start_pos(portal,
-				man->player.pos);
+		exit_pos = compute_start_pos(portal, man->player.pos);
 		entry_dir = compute_entry_dir(man->player.pos, portal->src_pos);
 		player_angle = get_angle_from_dir(man->player.dir);
 		entry_angle = get_angle_from_dir(entry_dir);
 		relative_angle = norm_angle(player_angle - entry_angle);
-		man->maps[man->curr_map]->start_dir = rotate_vec2(exit_dir,
-				relative_angle);
+		exit_dir = rotate_vec2(exit_dir, relative_angle);
 	}
-	reset_player_transform(man);
-	set_vec2(&man->maps[man->curr_map]->start_dir, exit_dir.x, exit_dir.y);
+	set_player_transform(man, exit_pos, exit_dir);
 	return ;
 }
 

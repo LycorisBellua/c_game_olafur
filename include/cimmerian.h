@@ -149,7 +149,9 @@ char		opp_cardinal(char cardinal);
 
 /* Transform ---------------------------------------------------------------- */
 
+void		reset_player(t_man *man);
 void		reset_player_transform(t_man *man);
+void		set_player_transform(t_man *man, t_vec2 new_pos, t_vec2 new_dir);
 void		update_player_transform(t_man *man);
 void		prevent_out_of_bounds(t_man *man);
 void		handle_player_speed(t_man *man, int shift_pressed);
@@ -192,6 +194,7 @@ void		action_run(t_man *man, int set);
 void		action_toggle_fullscreen(t_man *man, int set);
 void		action_toggle_debug(t_man *man, int set);
 void		action_close_window(t_man *man, int set);
+void		action_move_to_start(t_man *man, int set);
 
 /* Init --------------------------------------------------------------------- */
 

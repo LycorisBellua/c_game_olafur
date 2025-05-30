@@ -5,7 +5,6 @@ void	key_release_callback(int keycode, t_man *man);
 void	mouse_press_callback(int button, int x, int y, t_man *man);
 void	mouse_release_callback(int button, int x, int y, t_man *man);
 void	mouse_move_callback(int x, int y, t_man *man);
-void	focus_loss_callback(t_man *man);
 void	move_or_resize_window_callback(int x, int y, int width, int height,
 			t_man *man);
 

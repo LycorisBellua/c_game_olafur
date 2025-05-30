@@ -1,4 +1,3 @@
-- Press BACKSPACE to reset player's map and position.
 - Add commands to the readme.
 - Konami code.
 - Make an infinite corridor (the invisible portal cell must not show on the 

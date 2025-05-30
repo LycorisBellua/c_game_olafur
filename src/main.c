@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 	g_man.curr_map = add_map(&g_man, argv[1]);
 	if (g_man.curr_map < 0)
 		return (put_error(&g_man, 0, 0, EXIT_FAILURE));
-	reset_player_transform(&g_man);
+	reset_player(&g_man);
 	init_input_handling(&g_man);
 	g_man.game_state = GAME_STATE_PLAY;
 	run_game_loop(&g_man);

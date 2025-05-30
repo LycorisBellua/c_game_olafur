@@ -25,42 +25,44 @@
 #  define PATH_FRAGMENT_SHADER "src/engine/gl/shaders/fs.glsl"
 # endif
 
-# define NBR_KEYS 14
+# define NBR_KEYS 15
 # ifdef GL
-#  define KEY_A       GLFW_KEY_A
-#  define KEY_D       GLFW_KEY_D
-#  define KEY_E       GLFW_KEY_E
-#  define KEY_Q       GLFW_KEY_Q
-#  define KEY_S       GLFW_KEY_S
-#  define KEY_W       GLFW_KEY_W
-#  define KEY_ESCAPE  GLFW_KEY_ESCAPE
-#  define KEY_LEFT    GLFW_KEY_LEFT
-#  define KEY_UP      GLFW_KEY_UP
-#  define KEY_RIGHT   GLFW_KEY_RIGHT
-#  define KEY_DOWN    GLFW_KEY_DOWN
-#  define KEY_F11     GLFW_KEY_F11
-#  define KEY_F12     GLFW_KEY_F12
-#  define KEY_SHIFT   -1
+#  define KEY_A         GLFW_KEY_A
+#  define KEY_D         GLFW_KEY_D
+#  define KEY_E         GLFW_KEY_E
+#  define KEY_Q         GLFW_KEY_Q
+#  define KEY_S         GLFW_KEY_S
+#  define KEY_W         GLFW_KEY_W
+#  define KEY_BACKSPACE GLFW_KEY_BACKSPACE
+#  define KEY_ESCAPE    GLFW_KEY_ESCAPE
+#  define KEY_LEFT      GLFW_KEY_LEFT
+#  define KEY_UP        GLFW_KEY_UP
+#  define KEY_RIGHT     GLFW_KEY_RIGHT
+#  define KEY_DOWN      GLFW_KEY_DOWN
+#  define KEY_F11       GLFW_KEY_F11
+#  define KEY_F12       GLFW_KEY_F12
+#  define KEY_SHIFT     -1
 # else
 #  define BTN_CLICK_LEFT  1
 #  define BTN_CLICK_WHEEL 2
 #  define BTN_CLICK_RIGHT 3
 #  define BTN_SCROLL_UP   4
 #  define BTN_SCROLL_DOWN 5
-#  define KEY_A       97
-#  define KEY_D       100
-#  define KEY_E       101
-#  define KEY_Q       113
-#  define KEY_S       115
-#  define KEY_W       119
-#  define KEY_ESCAPE  65307
-#  define KEY_LEFT    65361
-#  define KEY_UP      65362
-#  define KEY_RIGHT   65363
-#  define KEY_DOWN    65364
-#  define KEY_F11     65480
-#  define KEY_F12     65481
-#  define KEY_SHIFT   65505
+#  define KEY_A         97
+#  define KEY_D         100
+#  define KEY_E         101
+#  define KEY_Q         113
+#  define KEY_S         115
+#  define KEY_W         119
+#  define KEY_BACKSPACE 65288
+#  define KEY_ESCAPE    65307
+#  define KEY_LEFT      65361
+#  define KEY_UP        65362
+#  define KEY_RIGHT     65363
+#  define KEY_DOWN      65364
+#  define KEY_F11       65480
+#  define KEY_F12       65481
+#  define KEY_SHIFT     65505
 # endif
 
 # define E_NO_ARG "Provide a *.map file as argument."

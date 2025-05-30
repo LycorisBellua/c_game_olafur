@@ -95,5 +95,9 @@ void	init_input_keys(t_man *man)
 	man->keys[13].actions[game_play][key_pressed] = action_close_window;
 	man->keys[13].actions[game_success][key_pressed] = action_close_window;
 	man->keys[13].actions[game_failure][key_pressed] = action_close_window;
+
+	man->keys[14].keycode = KEY_BACKSPACE;
+	man->keys[14].actions[game_play][key_pressed] = action_move_to_start;
+	man->keys[14].actions[game_success][key_pressed] = action_move_to_start;
 	return ;
 }
