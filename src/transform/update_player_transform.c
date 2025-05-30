@@ -3,7 +3,6 @@
 static void	move_in_local_dir(t_man *man, double forward_speed,
 				double lateral_speed);
 static void	adjust_position_on_wall_collision(t_man *man);
-static void	adjust_position_on_sprite_collision(t_man *man, t_map *map);
 
 /*
 	Movement speed is in cell per second.
@@ -67,33 +66,5 @@ static void	adjust_position_on_wall_collision(t_man *man)
 	disable_collision_with_dst_portal_if_within(man, m, pos);
 	if (!push_back_on_collision(man, m, pos, delta))
 		unstuck_from_wall(man, m);
-	return ;
-}
-
-static void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
-{
-	int		i;
-	t_vec2	pos;
-	double	s_dist;
-	double	overlap;
-	t_vec2	push;
-
-	pos = man->player.pos;
-	i = 0;
-	while (i < map->sprite_len)
-	{
-		s_dist = map->sprites[i]->dist;
-		if (s_dist < man->player.radius + SPRITE_RADIUS)
-		{
-			if (collect_sprite(man, i))
-				continue ;
-			overlap = man->player.radius + SPRITE_RADIUS - s_dist;
-			push.x = (pos.x - map->sprites[i]->pos.x) / s_dist * overlap;
-			push.y = (pos.y - map->sprites[i]->pos.y) / s_dist * overlap;
-			set_vec2(&pos, pos.x + push.x, pos.y + push.y);
-		}
-		++i;
-	}
-	man->player.pos = pos;
 	return ;
 }

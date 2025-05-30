@@ -170,6 +170,7 @@ typedef struct s_cell
 typedef struct s_spr
 {
 	int		is_collectible;
+	int		has_collision;
 	t_vec2	pos;
 	t_img	*img;
 	double	dist;

@@ -162,7 +162,7 @@ void		disable_collision_with_dst_portal_if_within(t_man *man, t_map *m,
 int			push_back_on_collision(t_man *man, t_map *m, t_vec2 pos,
 				t_vec2 delta);
 void		unstuck_from_wall(t_man *man, t_map *m);
-int			collect_sprite(t_man *man, int sprite_index);
+void		adjust_position_on_sprite_collision(t_man *man, t_map *map);
 
 /* Frame -------------------------------------------------------------------- */
 

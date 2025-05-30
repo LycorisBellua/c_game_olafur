@@ -126,6 +126,7 @@ static void	set_soul_sprites(t_spr **spr, t_img *img)
 	while (i < 7)
 	{
 		spr[i]->img = img;
+		spr[i]->has_collision = 0;
 		++i;
 	}
 	set_vec2(&spr[0]->pos, 20.5, 11.5);
@@ -156,6 +157,7 @@ static void	set_pillar_sprites(t_spr **spr, t_img *img)
 	while (i < 11)
 	{
 		spr[i]->img = img;
+		spr[i]->has_collision = 1;
 		++i;
 	}
 	set_vec2(&spr[7]->pos, 18.5, 10.5);
@@ -173,6 +175,7 @@ static void	set_barrel_sprites(t_spr **spr, t_img *img)
 	while (i < 19)
 	{
 		spr[i]->img = img;
+		spr[i]->has_collision = 1;
 		++i;
 	}
 	set_vec2(&spr[11]->pos, 21.5, 1.5);
