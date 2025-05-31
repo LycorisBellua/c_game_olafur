@@ -28,6 +28,7 @@
 # define NBR_KEYS 15
 # ifdef GL
 #  define KEY_A         GLFW_KEY_A
+#  define KEY_B         GLFW_KEY_B
 #  define KEY_D         GLFW_KEY_D
 #  define KEY_E         GLFW_KEY_E
 #  define KEY_Q         GLFW_KEY_Q
@@ -49,6 +50,7 @@
 #  define BTN_SCROLL_UP   4
 #  define BTN_SCROLL_DOWN 5
 #  define KEY_A         97
+#  define KEY_B         98
 #  define KEY_D         100
 #  define KEY_E         101
 #  define KEY_Q         113

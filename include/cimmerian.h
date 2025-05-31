@@ -184,6 +184,7 @@ void		cancel_keys_in_game_state(t_man *man);
 void		change_game_state(t_man *man, t_game_state new_state);
 void		init_input_keys(t_man *man);
 void		close_window_callback(t_man *man);
+void		konami_code(t_man *man, int pressed_key);
 void		action_move_right(t_man *man, int set);
 void		action_move_left(t_man *man, int set);
 void		action_move_forward(t_man *man, int set);

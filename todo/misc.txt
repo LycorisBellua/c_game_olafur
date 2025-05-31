@@ -1,4 +1,4 @@
-- Konami code.
+- Make use of the Konami code.
 - Make an infinite corridor (the invisible portal cell must not show on the 
 minimap nor through the corner shadows).
 - Add music with OpenAL.
