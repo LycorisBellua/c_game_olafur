@@ -128,14 +128,15 @@ typedef struct s_door
 {
 	t_map		*m;
 	t_ivec2		pos;
+	char		cardinal;
 	t_img		*tex_closed;
 	t_img		*tex_open;
 	int			is_open;
-	int			*is_obstacle;
 }	t_door;
 
 typedef struct s_portal
 {
+	int		preview;
 	t_map	*src_map;
 	int		is_corridor;
 	char	src_cardinal;

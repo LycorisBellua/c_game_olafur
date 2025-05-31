@@ -68,7 +68,7 @@ static void	set_player_start(t_map *m)
 				|| m->map_walls[coord.y * m->size.x + coord.x] == 'W'
 				|| m->map_walls[coord.y * m->size.x + coord.x] == 'E')
 			{
-				set_vec2(&m->start_pos, coord.x, coord.y);
+				set_vec2(&m->start_pos, coord.x + 0.5, coord.y + 0.5);
 				m->start_dir = get_dir_from_cardinal(m->map_walls[coord.y
 						* m->size.x + coord.x]);
 				return ;

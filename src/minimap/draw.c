@@ -38,21 +38,22 @@ void	draw_minimap(t_man *man, t_map *map)
 static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell)
 {
 	t_vert	v;
+	t_cell	*c;
 
 	v.coord.x = man->minimap_offset.x + (i_cell.x + ((int)man->player.pos.x
 				- man->player.pos.x)) * man->minimap_zoom;
 	v.coord.y = man->minimap_offset.y + (i_cell.y + ((int)man->player.pos.y
 				- man->player.pos.y)) * man->minimap_zoom;
 	v.color = get_color_rgba(0, 0, 0, 0);
-	if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].is_goal)
-		v.color = get_color_rgba(28, 210, 192, 255);
-	else if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].door
-		|| man->maps[man->curr_map]->cells[i_map.y][i_map.x].portal)
-		v.color = get_color_rgba(244, 162, 97, 255);
-	else if (man->maps[man->curr_map]->cells[i_map.y][i_map.x].is_visible)
-		v.color = get_color_rgba(40, 114, 113, 255);
-	else if (!man->maps[man->curr_map]->cells[i_map.y][i_map.x].is_empty_space)
+	c = &man->maps[man->curr_map]->cells[i_map.y][i_map.x];
+	if (!c->is_visible && !c->is_empty_space)
 		v.color = get_color_rgba(38, 70, 83, 255);
+	else if (c->is_goal)
+		v.color = get_color_rgba(28, 210, 192, 255);
+	else if (c->door || c->portal)
+		v.color = get_color_rgba(244, 162, 97, 255);
+	else
+		v.color = get_color_rgba(40, 114, 113, 255);
 	return (v);
 }
 

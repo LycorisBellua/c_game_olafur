@@ -66,7 +66,8 @@ t_cell	*resolve_portal_rendering(t_man *man, t_ray **r)
 		cell = &(*r)->m->cells[(int)(*r)->origin_pos.y][(int)(*r)->origin_pos.x];
 
 	// I shouldn't need to check, but I do, otherwise it crashes when I cross 
-	// the portal around the circle of six cubes through a non-portal face
+	// the portal around the circle of six cubes through a non-portal face.
+	// Also, only raycast through the portal if `portal->preview` is true.
 	if (!cell->portal)
 		return (cell);
 	//

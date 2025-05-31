@@ -113,10 +113,10 @@ static int	set_map_cells(t_man *man, t_map *map)
 				}
 				c->door->m = map;
 				c->door->pos = coord;
+				c->door->cardinal = 0;
 				c->door->tex_closed = img_arr[5];
 				c->door->tex_open = 0;
 				c->door->is_open = 0;
-				c->door->is_obstacle = &(c->is_obstacle);
 			}
 			c->portal = find_portal(map, coord.x, coord.y);
 			c->is_goal = map->map_walls[i] == 'G';
