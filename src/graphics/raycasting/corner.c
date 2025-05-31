@@ -41,6 +41,7 @@ static int	check_north_face(t_map *m, t_ray *r, int img_coord_x,
 		if (c.x == m->size.x - 1 || c.y == 0
 			|| !m->cells[c.y][c.x + 1].is_visible
 			|| m->cells[c.y][c.x + 1].door
+			|| m->cells[c.y][c.x + 1].portal
 			|| m->cells[c.y][c.x + 1].is_goal
 			|| m->cells[c.y - 1][c.x + 1].is_visible)
 			return (1);
@@ -50,6 +51,7 @@ static int	check_north_face(t_map *m, t_ray *r, int img_coord_x,
 		if (c.x == 0 || c.y == 0
 			|| !m->cells[c.y][c.x - 1].is_visible
 			|| m->cells[c.y][c.x - 1].door
+			|| m->cells[c.y][c.x - 1].portal
 			|| m->cells[c.y][c.x - 1].is_goal
 			|| m->cells[c.y - 1][c.x - 1].is_visible)
 			return (1);
@@ -68,6 +70,7 @@ static int	check_south_face(t_map *m, t_ray *r, int img_coord_x,
 		if (c.x == 0 || c.y == m->size.y - 1
 			|| !m->cells[c.y][c.x - 1].is_visible
 			|| m->cells[c.y][c.x - 1].door
+			|| m->cells[c.y][c.x - 1].portal
 			|| m->cells[c.y][c.x - 1].is_goal
 			|| m->cells[c.y + 1][c.x - 1].is_visible)
 			return (1);
@@ -77,6 +80,7 @@ static int	check_south_face(t_map *m, t_ray *r, int img_coord_x,
 		if (c.x == m->size.x - 1 || c.y == m->size.y - 1
 			|| !m->cells[c.y][c.x + 1].is_visible
 			|| m->cells[c.y][c.x + 1].door
+			|| m->cells[c.y][c.x + 1].portal
 			|| m->cells[c.y][c.x + 1].is_goal
 			|| m->cells[c.y + 1][c.x + 1].is_visible)
 			return (1);
@@ -94,6 +98,7 @@ static int	check_west_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 		if (c.x == 0 || c.y == 0
 			|| !m->cells[c.y - 1][c.x].is_visible
 			|| m->cells[c.y - 1][c.x].door
+			|| m->cells[c.y - 1][c.x].portal
 			|| m->cells[c.y - 1][c.x].is_goal
 			|| m->cells[c.y - 1][c.x - 1].is_visible)
 			return (1);
@@ -103,6 +108,7 @@ static int	check_west_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 		if (c.x == 0 || c.y == m->size.y - 1
 			|| !m->cells[c.y + 1][c.x].is_visible
 			|| m->cells[c.y + 1][c.x].door
+			|| m->cells[c.y + 1][c.x].portal
 			|| m->cells[c.y + 1][c.x].is_goal
 			|| m->cells[c.y + 1][c.x - 1].is_visible)
 			return (1);
@@ -120,6 +126,7 @@ static int	check_east_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 		if (c.x == m->size.x - 1 || c.y == m->size.y - 1
 			|| !m->cells[c.y + 1][c.x].is_visible
 			|| m->cells[c.y + 1][c.x].door
+			|| m->cells[c.y + 1][c.x].portal
 			|| m->cells[c.y + 1][c.x].is_goal
 			|| m->cells[c.y + 1][c.x + 1].is_visible)
 			return (1);
@@ -129,6 +136,7 @@ static int	check_east_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 		if (c.x == m->size.x - 1 || c.y == 0
 			|| !m->cells[c.y - 1][c.x].is_visible
 			|| m->cells[c.y - 1][c.x].door
+			|| m->cells[c.y - 1][c.x].portal
 			|| m->cells[c.y - 1][c.x].is_goal
 			|| m->cells[c.y - 1][c.x + 1].is_visible)
 			return (1);

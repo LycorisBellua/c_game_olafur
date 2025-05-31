@@ -46,14 +46,14 @@ static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell)
 				- man->player.pos.y)) * man->minimap_zoom;
 	v.color = get_color_rgba(0, 0, 0, 0);
 	c = &man->maps[man->curr_map]->cells[i_map.y][i_map.x];
-	if (!c->is_visible && !c->is_empty_space)
-		v.color = get_color_rgba(38, 70, 83, 255);
-	else if (c->is_goal)
+	if (c->is_goal)
 		v.color = get_color_rgba(28, 210, 192, 255);
-	else if (c->door || c->portal)
+	else if ((c->door || c->portal) && c->is_visible)
 		v.color = get_color_rgba(244, 162, 97, 255);
-	else
+	else if (c->is_visible)
 		v.color = get_color_rgba(40, 114, 113, 255);
+	else if (!c->is_empty_space)
+		v.color = get_color_rgba(38, 70, 83, 255);
 	return (v);
 }
 

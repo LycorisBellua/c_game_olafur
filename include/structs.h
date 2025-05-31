@@ -148,6 +148,7 @@ typedef struct s_portal
 	t_img	*tex_closed;
 	t_img	*tex_open;
 	int		is_open;
+	int		is_visible;
 	int		trigger_opposite;
 }	t_portal;
 
