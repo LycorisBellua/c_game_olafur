@@ -12,5 +12,6 @@ void	deinit(t_man *man)
 	man->xvar = 0;
 	free_images(man);
 	free_maps(man);
+	audio_deinit(&man->audio);
 	return ;
 }

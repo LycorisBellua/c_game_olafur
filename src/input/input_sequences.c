@@ -1,5 +1,7 @@
 #include "cimmerian.h"
 
+static void	easter_egg(t_man *man);
+
 void	konami_code(t_man *man, int pressed_key)
 {
 	static int	sequence[10];
@@ -23,8 +25,19 @@ void	konami_code(t_man *man, int pressed_key)
 	if (index == sizeof(sequence) / sizeof(int))
 	{
 		index = 0;
-		(void)man;
-		printf("Konami code!\n");
+		easter_egg(man);
 	}
+	return ;
+}
+
+static void	easter_egg(t_man *man)
+{
+	// TODO: Make proper easter egg
+	if (!man->audio.music)
+		return ;
+	else if (man->audio.music->is_running)
+		audio_source_pause(man->audio.music);
+	else
+		audio_source_play(man->audio.music);
 	return ;
 }

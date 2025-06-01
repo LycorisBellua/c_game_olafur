@@ -15,6 +15,8 @@ int	main(int argc, char **argv)
 	if (!create_window(&g_man, TITLE, window_size, 16.0 / 9)
 		|| !init_frame(&g_man) || !set_image_array(&g_man, PATH_IMG_JSON))
 		return (EXIT_FAILURE);
+	audio_init(&g_man.audio);
+	g_man.audio.music = audio_source_create(0);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
 	g_man.curr_map = add_map(&g_man, argv[1]);

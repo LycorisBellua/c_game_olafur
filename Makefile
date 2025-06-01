@@ -4,7 +4,7 @@ MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw34
 CFLAGS = -Iinclude -I$(MLX_DIR) -Wall -Wextra -pedantic -O2 -g -fsanitize=address
-LDFLAGS = -lm
+LDFLAGS = -lm -lopenal
 NAME = cimmerian
 
 SRC_COMMON = $(shell find lib -path "$(MLX_DIR)" -prune -o -name '*.c' -print) \

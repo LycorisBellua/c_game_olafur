@@ -1,0 +1,33 @@
+olafur/m_afg.mp3:
+	Afghanistan background music
+	https://www.youtube.com/watch?v=MLx1F0jXrms
+
+olafur/m_box.mp3:
+	Cinematic Romantic Wedding Acoustic Orchestra Piano by Cold Cinema [No 
+	Copyright Music] / Waltz
+	https://www.youtube.com/watch?v=KopfLqCkaQ8
+
+olafur/m_brain.mp3:
+	-> Created for the occasion: "1-brainworm 2025-05-28 11_05.m4a"
+	-> By Hellchauffo:
+	https://www.figma.com/proto/UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974
+
+olafur/m_dgn.mp3:
+	Kubbi - Digestive biscuit ♫ NO COPYRIGHT 8-bit Music
+	https://www.youtube.com/watch?v=PFbYfgStDQc
+
+olafur/m_hol.mp3:
+	Geoxor - Hellscape
+	https://www.youtube.com/watch?v=7aRvxqMq8xE
+
+olafur/m_menu.mp3:
+	The Stanley Parable OST 'Elevator'
+	https://www.youtube.com/watch?v=P99AiAYc0h0
+
+olafur/m_mus.mp3:
+	Calm Space Strawberry Candy Music Free Copyright
+	https://www.youtube.com/watch?v=6zaLamGSV4g
+
+olafur/m_pul.mp3:
+	-> Created for the occasion: "Poool.mp3"
+	-> By Max

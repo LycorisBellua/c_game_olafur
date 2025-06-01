@@ -11,7 +11,13 @@
 # include <sys/time.h>
 # include <math.h>
 # include "math_extra.h"
+// IMAGE ------------
 # include "lodepng.h"
+// AUDIO ------------
+# include <AL/al.h>
+# include <AL/alc.h>
+# include "dr_mp3.h"
+// ------------------
 # ifdef GL
 #  include <GL/gl.h>
 #  include "glfw3.h"
@@ -196,6 +202,22 @@ void		action_toggle_fullscreen(t_man *man, int set);
 void		action_toggle_debug(t_man *man, int set);
 void		action_close_window(t_man *man, int set);
 void		action_move_to_start(t_man *man, int set);
+
+/* Audio -------------------------------------------------------------------- */
+
+void		audio_init(t_audio *a);
+void		audio_deinit(t_audio *a);
+void		audio_switch_music(t_man *man);
+t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename);
+void		audio_track_delete(t_audio *a, t_a_track **track);
+void		audio_track_delete_all(t_audio *a);
+t_a_source	*audio_source_create(t_a_track *t);
+void		audio_source_change_track(t_a_source *s, t_a_track *t);
+void		audio_source_unset_track(t_a_source *s);
+void		audio_source_delete(t_a_source **s);
+void		audio_source_play(t_a_source *s);
+void		audio_source_pause(t_a_source *s);
+void		audio_source_stop(t_a_source *s);
 
 /* Init --------------------------------------------------------------------- */
 

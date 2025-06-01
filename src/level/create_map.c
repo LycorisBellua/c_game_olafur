@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+static void	load_music_track(t_man *man, t_map *map);
 static int	set_map_cells(t_man *man, t_map *map);
 
 t_map	*create_map(t_man *man, const char *filepath)
@@ -36,6 +37,7 @@ t_map	*create_map(t_man *man, const char *filepath)
 		map->fog_color = src_skybox->average_color[0];
 	compose_skybox(man, map, src_skybox);
 	compose_background(man, map);
+	load_music_track(man, map);
 	if (!map->skybox || !map->background || !create_portal_array(man, map)
 		|| !set_map_cells(man, map))
 	{
@@ -62,6 +64,28 @@ void	free_cells(t_map *map)
 	}
 	free(map->cells);
 	map->cells = 0;
+	return ;
+}
+
+static void	load_music_track(t_man *man, t_map *map)
+{
+	char	*map_name;
+
+	map_name = strrchr(map->filepath, '/');
+	if (!map_name)
+		map_name = map->filepath;
+	else
+		++map_name;
+	if (!strcmp(map_name, "0.map"))
+	{
+		map->music_track = audio_track_create(&man->audio,
+			"audio/olafur/m_menu.mp3");
+	}
+	else if (!strcmp(map_name, "1.map"))
+	{
+		map->music_track = audio_track_create(&man->audio,
+			"audio/olafur/m_menu.mp3");
+	}
 	return ;
 }
 

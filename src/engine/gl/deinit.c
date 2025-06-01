@@ -16,5 +16,6 @@ void	deinit(t_man *man)
 	free_frame(man);
 	free_images(man);
 	free_maps(man);
+	audio_deinit(&man->audio);
 	return ;
 }

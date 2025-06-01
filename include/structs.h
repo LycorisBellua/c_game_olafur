@@ -37,6 +37,34 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_a_track
+{
+	char	*name;
+	double	seconds;
+	ALvoid	*pcm_data;
+	ALsizei	data_size;
+	ALenum	format;
+	ALsizei	freq;
+	ALuint	*buffers;
+	int		nbr_buffers;
+}	t_a_track;
+
+typedef struct s_a_source
+{
+	ALuint		source;
+	t_a_track	*track;
+	int			is_loop;
+	int			is_running;
+}	t_a_source;
+
+typedef struct s_audio
+{
+	ALCdevice	*device;
+	ALCcontext	*context;
+	t_a_track	**tracks;
+	t_a_source	*music;
+}	t_audio;
+
 typedef struct s_color
 {
 	t_ubyte	r;
@@ -203,6 +231,7 @@ struct s_map
 	t_cell		**cells;
 	int			sprite_len;
 	t_spr		**sprites;
+	t_a_track	*music_track;
 };
 
 typedef struct s_player
@@ -287,6 +316,7 @@ struct s_man
 	int				minimap_zoom;
 	int				minimap_cell_amount;
 	t_list			*rays;
+	t_audio			audio;
 };
 
 extern t_man	g_man;
