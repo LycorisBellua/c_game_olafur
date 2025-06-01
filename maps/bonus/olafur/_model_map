@@ -1,0 +1,29 @@
+map_walls:
+12340GD
+NESW
+
+map_ceil_floor:
+01
+
+NO ./path to img.png
+SO ./path to img.png
+EA ./path to img.png
+WE ./path to img.png
+F rrr,vvv,bbb ou ./path to img.png
+C rrr,vvv,bbb ou ./path to img.png
+S ./path to img.png
+
+Portal_1 Cardinal X Y /address_to_texture /address_to_other_map ou null Cardinal X Y
+
+Portal_2 Cardinal X Y /address_to_texture /address_to_other_map ou null Cardinal X Y
+
+Portal_3 Cardinal X Y /address_to_texture /address_to_other_map ou null Cardinal X Y
+
+sprite_obj1:
+x, y
+
+sprite_obj2:
+x, y
+
+spite_obj3:
+x, y

@@ -248,4 +248,53 @@ void		list_add_front(t_list **list, t_list *new);
 void		list_add_back(t_list **list, t_list *new);
 void		list_del_one(t_list **list, void (*del)(void*));
 
+/* Parsing (Temp) ----------------------------------------------------------- */
+
+void		put_error_and_exit(t_man *man, char *msg, int shouldexit, int err);
+void		exit_in_parsing(t_man *man, t_map *map, char *msg, void *data);
+void		parse_file_map(t_man *man, t_map *map, char **line);
+void		parse_bonus_lines(t_man *man, t_map *map, char **line);
+void        find_music(t_man *man, t_map *map, char **line);
+void		find_cardinals_floor_ceiling(t_man *man, t_map *map, char **line,
+				int n_texture);
+int			find_cardinal_and_pos(char *line, t_ivec2 *v, char *cardinal);
+int			check_doublewall(char *line, t_tex_type *type);
+int			check_texfilled(t_tex_type *types, int *n_texture);
+void		fill_cells(t_man *man, t_map *map);
+void		find_f_c_style(t_man *man, t_map *map, char**line, char *address);
+void		valid_map(t_man *man, t_map *map);
+void		check_unfill_map(t_man *man, t_map *map, char *ln,
+				char **map_to_check);
+void		maps_symetry(t_man *man, t_map *map);
+char		**get_map_from_fd(t_man *man, t_map *map, char **line,
+				int *n_texture);
+void		get_maps(t_man *man, t_map *map, char **line, int *n_texture);
+t_map		*create_map(t_man *man, const char *file);
+void		find_portals(t_man *man, t_map *map, char **line);
+t_portal	*find_portal(t_map *map, int x, int y);
+void		malloc_struct(t_man *man, t_map **map, int fd, const char *file);
+int			check_file(t_man *man, const char *filename);
+void		reach_endfile(t_man *man, t_map *map, char **line);
+void		find_door_goal(t_man *man, t_map *map, char **line);
+void		find_player(t_man *man, t_map *map, char *s, int y);
+void		find_skybox(t_man *man, t_map *map, char **line);
+void		find_sprites(t_man *man, t_map *map, char **line);
+t_img		*state_open(t_man *man, char *path);
+void		find_longest_line(char *s, t_ivec2 *size, int *n_texture);
+int			find_endline(char *lines);
+double		move_decimal(double n, unsigned int decimal);
+double		atod(char *line, int *i);
+int			find_text(char *line, int *size);
+int			isvalid(char c, char *str);
+int			onlyvalids(char *str, char *source);
+int			get_id(char *line, int *i, t_ivec2	*special, char **id);
+int			get_pos(char *line, int *i, t_vec2 *pos);
+int			skip_char(char *str, int *i, char c);
+int			skip_space(char *line);
+void		skip_whiteline(t_map *map, char **line);
+char		*append(char **s1, char *s2);
+char		*ft_substr(char const *s, unsigned int start, size_t len);
+char		*ft_strncpy(char *dest, const char *src, size_t n);
+int			revncmp(const char *s1, const char *s2, size_t n);
+
 #endif

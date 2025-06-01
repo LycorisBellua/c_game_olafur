@@ -212,11 +212,26 @@ typedef struct s_spr
 	t_ivec2	draw_end;
 }	t_spr;
 
+typedef struct s_tex_type
+{
+	t_img	*tex_floor;
+	t_img	*tex_f_indoor;
+	t_img	*tex_ceiling;
+	t_img	*tex_north;
+	t_img	*tex_east;
+	t_img	*tex_south;
+	t_img	*tex_west;
+	t_img	*tex_door_closed;
+	t_img	*tex_door_open;
+	t_img	*tex_goal;
+}	t_tex_type;
+
 struct s_map
 {
+	/**/int		fd;
 	char		*filepath;
-	char		*map_walls;
-	char		*map_ceil_floor;
+	char		**map_walls;
+	char		**map_ceil_floor;
 	t_ivec2		size;
 	t_vec2		start_pos;
 	t_vec2		start_dir;
@@ -227,7 +242,8 @@ struct s_map
 	t_png		*background;
 	int			background_offset;
 	int			portal_len;
-	t_portal	*portals;
+	t_portal	**portals;
+	t_tex_type	*types;
 	t_cell		**cells;
 	int			sprite_len;
 	t_spr		**sprites;
@@ -317,6 +333,7 @@ struct s_man
 	int				minimap_cell_amount;
 	t_list			*rays;
 	t_audio			audio;
+	int				bonus;
 };
 
 extern t_man	g_man;

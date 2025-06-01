@@ -1,0 +1,36 @@
+map_walls:
+ 1111
+10W001
+100201
+100001
+11111
+
+map_ceil_floor:
+ 0000
+000000
+000100
+000000
+00000
+
+1NO ./img/dgn/dgn_n.png
+1SO ./img/dgn/dgn_s.png
+1WE ./img/dgn/dgn_w.png
+1EA ./img/dgn/dgn_e.png
+
+1NO ./img/dgn/dgn_n.png
+2SO ./img/dgn/dgn_s.png
+2WE ./img/dgn/dgn_w.png
+2EA ./img/dgn/dgn_e.png
+
+F ./img/dgn/dgn_f.png
+C ./img/dgn/dgn_c.png
+
+D ./img/dgn/dgn_d.png
+G ./img/dgn/dgn_g.png
+
+S ./img/debug/tex_skybox_debug.png
+
+P E 1 1 ./img/dgn/dgn_p.png ./maps/bonus/playground/room.map E 6 4
+
+sprite_collec_soul_idle:
+3.5, 1.5

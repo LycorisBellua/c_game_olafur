@@ -1,6 +1,7 @@
 ~*
 *.swp
 *.swo
+.vscode
 *.o
 *.a
 cimmerian

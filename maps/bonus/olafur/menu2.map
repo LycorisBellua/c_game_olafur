@@ -1,0 +1,26 @@
+map_walls:
+111
+1N1
+111
+
+map_ceil_floor:
+111
+111
+111
+
+NO ./img/menu/menu_n.png
+SO ./img/menu/menu_s.png
+WE ./img/menu/menu_w.png
+EA ./img/menu/menu_e.png
+
+F ./img/menu/menu_f.png
+C ./img/menu/menu_c.png
+
+D ./img/null.png
+G ./img/null.png
+
+S ./img/brain/brain_sk.png
+
+P N 1 2 ./img/menu/menu_p_mus.png ./maps/bonus/olafur/mus.map N 4 7
+
+M ./audio/olafur/m_menu.mp3

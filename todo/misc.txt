@@ -1,6 +1,8 @@
 - Add the link to Max in audio/credits.txt.
 - OpenAL: Loop source with multithreading.
 
+- Rewrite parsing.
+
 - Make use of the Konami code.
 - Make an infinite corridor (the invisible portal cell must not show on the 
 minimap nor through the corner shadows).

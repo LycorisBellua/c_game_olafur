@@ -24,20 +24,46 @@ void	free_map(t_map *map)
 	if (!map)
 		return ;
 	free(map->filepath);
-	free(map->map_walls);
-	free(map->map_ceil_floor);
-	free_cells(map);
+	free_arr((void **)map->map_walls, free);
+	free_arr((void **)map->map_ceil_floor, free);
+	free_arr((void **)map->cells, free);
+	free(map->types);
 	free_image(map->skybox, free);
 	free_png(map->background);
-	i = 0;
-	while (i < map->portal_len)
+	if (map->portals)
 	{
-		free(map->portals[i].path_dst_map);
-		++i;
+		i = 0;
+		while (i < map->portal_len)
+		{
+			free(map->portals[i]->path_dst_map);
+			free(map->portals[i]);
+			++i;
+		}
+		free(map->portals);
 	}
-	free(map->portals);
 	free_sprite_array(map);
 	free(map);
 	map = 0;
+	return ;
+}
+
+void	free_sprite_array(t_map *map)
+{
+	int	i;
+
+	if (!map)
+		return ;
+	if (map->sprites)
+	{
+		i = 0;
+		while (i < map->sprite_len)
+		{
+			free(map->sprites[i]);
+			++i;
+		}
+		free(map->sprites);
+	}
+	map->sprites = 0;
+	map->sprite_len = 0;
 	return ;
 }
