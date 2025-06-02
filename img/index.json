@@ -128,28 +128,11 @@
         ]
     },
     {
-        "path": "img/debug/solid_color.png",
+        "path": "img/solid.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "solid_color",
-                "size": [128, 128],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 300,
-                "cycle": [
-                    [0, 0],
-                    [128, 0]
-                ]
-            }
-        ]
-    },
-    {
-        "path": "img/dgn/dgn_g.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "goal",
+                "id": "solid",
                 "size": [128, 128],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -256,22 +239,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle": [
-                    [0, 0]
-                ]
-            }
-        ]
-    },
-    {
-        "path": "img/dgn/sprite_chalice.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "sprite_chalice",
-                "size": [64, 58],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 150,
                 "cycle": [
                     [0, 0]
                 ]

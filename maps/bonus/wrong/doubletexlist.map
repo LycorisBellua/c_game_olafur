@@ -26,9 +26,9 @@ F ./img/dgn/dgn_f.png
 C ./img/dgn/dgn_c.png
 
 D ./img/dgn/dgn_d.png
-G ./img/dgn/dgn_g.png
+G solid
 
-S ./img/debug/tex_skybox_debug.png
+S ./img/dungeon/tex_skybox.png
 
 P E 1 1 ./img/dgn/dgn_p.png ./maps/bonus/playground/room.map E 6 4
 

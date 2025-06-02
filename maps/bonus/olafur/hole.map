@@ -71,7 +71,7 @@ F ./img/hol/hol_f.png
 C ./img/hol/hol_c.png
 
 D ./img/null.png
-G solid_color
+G solid
 
 S ./img/hol/hol_sk.png
 

@@ -3,7 +3,7 @@ MLX_DIR = lib/mlx
 MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw34
-CFLAGS = -Iinclude -I$(MLX_DIR) -Wall -Wextra -pedantic -O2 -g -fsanitize=address
+CFLAGS = -Iinclude -I$(MLX_DIR) -Wall -Wextra -pedantic -O2# -g -fsanitize=address
 AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN/lib'
 LDFLAGS = -lm $(AL_FLAGS)
 NAME = cimmerian

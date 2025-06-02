@@ -31,12 +31,12 @@ F ./img/mus/mus_f1.png
 C ./img/mus/mus_c1.png
 
 D ./img/dgn/dgn_d.png
-G solid_color
+G solid
 
 S ./img/dgn/dgn_sk.png
 
-P N 3 3 solid_color ./maps/bonus/playground/test.map W 3 1
-P N 5 3 solid_color ./maps/bonus/playground/test.map W 3 1
+P N 3 3 solid ./maps/bonus/playground/test.map W 3 1
+P N 5 3 solid ./maps/bonus/playground/test.map W 3 1
 
 sprite_collec_soul_idle:
 4.5, 8.9

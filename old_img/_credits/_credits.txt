@@ -1,0 +1,44 @@
+----------------------------------- COMMON -------------------------------------
+
+See "license_mg.txt"
+- common/mg_cursor.png
+
+See "license_monogram.txt"
+- common/monogram.png
+
+Generated with ChatGPT
+- common/solid.png
+- common/solid2.png
+
+See "license_mc.txt"
+- common/mc_soul.png
+- common/mc_soul_shadow.png
+
+----------------------------------- DUNGEON ------------------------------------
+
+Generated with ChatGPT
+- dungeon/portal_closed.png
+- dungeon/portal_open.png
+
+Link: https://opengameart.org/content/doors
+- dungeon/tex_doors.png
+
+https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set
+- dungeon/tex_skybox.png
+- dungeon/tex_skybox_debug.png
+
+https://opengameart.org/content/textures-collection
+- dungeon/tex_ceiling.png
+- dungeon/tex_floor_indoors.png
+- dungeon/tex_floor.png
+- dungeon/tex_wall_01.png
+- dungeon/tex_wall_02.png
+- dungeon/tex_wall_03.png
+- dungeon/tex_wall_04.png
+
+https://lodev.org/cgtutor/raycasting3.html
+Wolfenstein 3D - Copyright by id Software
+- dungeon/wf_barrel.png
+- dungeon/wf_greenlight.png
+- dungeon/wf_pillar.png
+
