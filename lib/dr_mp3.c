@@ -1,2 +1,2 @@
 #define DR_MP3_IMPLEMENTATION
-#include "dr_mp3.h"
+#include "../include/lib/dr_mp3.h"

@@ -12,15 +12,15 @@
 # include <math.h>
 # include "math_extra.h"
 // IMAGE ------------
-# include "lodepng.h"
+# include "lib/lodepng.h"
 // AUDIO ------------
-# include "al.h"
-# include "alc.h"
-# include "dr_mp3.h"
+# include "lib/al.h"
+# include "lib/alc.h"
+# include "lib/dr_mp3.h"
 // ------------------
 # ifdef GL
 #  include <GL/gl.h>
-#  include "glfw3.h"
+#  include "lib/glfw3.h"
 #  include "gl_functions.h"
 # else
 #  include "mlx.h"
