@@ -12,6 +12,8 @@ t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename)
 	int			index;
 
 	abs_path = get_absolute_path(mp3_filename);
+	if (!abs_path)
+		return (0);
 	t = get_track(a, abs_path);
 	if (t)
 	{
@@ -77,7 +79,7 @@ static t_a_track	*get_track(t_audio *a, const char *filename)
 {
 	int	i;
 
-	if (!a || !a->tracks)
+	if (!a || !a->tracks || !filename)
 		return (0);
 	i = 0;
 	while (a->tracks[i])

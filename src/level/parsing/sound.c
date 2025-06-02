@@ -16,11 +16,7 @@ void	find_music(t_man *man, t_map *map, char **line)
 		else
 		{
 			music_path = ft_substr(*line, 2, strlen(*line) - 3);
-			map->music_track = NULL;
-			if (access(music_path, R_OK) == 0)
-			{
-				// TODO: Load music
-			}
+			map->music_track = audio_track_create(&man->audio, music_path);
 			free(music_path);
 		}
 	}

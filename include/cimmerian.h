@@ -14,8 +14,8 @@
 // IMAGE ------------
 # include "lodepng.h"
 // AUDIO ------------
-# include <AL/al.h>
-# include <AL/alc.h>
+# include "al.h"
+# include "alc.h"
 # include "dr_mp3.h"
 // ------------------
 # ifdef GL
