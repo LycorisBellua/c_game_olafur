@@ -159,6 +159,7 @@ typedef struct s_door
 	char		cardinal;
 	t_img		*tex_closed;
 	t_img		*tex_open;
+	int			is_plane;
 	int			is_open;
 }	t_door;
 

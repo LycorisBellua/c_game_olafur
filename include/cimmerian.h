@@ -68,6 +68,7 @@ void		apply_wall_fog(t_color *wall, t_color c, double dist, double dof);
 /* Files -------------------------------------------------------------------- */
 
 char		*get_absolute_path(const char *path);
+const char	*get_filename(const char *path);
 char		*read_file(const char *filepath);
 char		**read_file_lines(const char *filepath);
 void		free_arr(void **arr, void (free_fct)(void *));
@@ -295,5 +296,6 @@ char		*append(char **s1, char *s2);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 int			revncmp(const char *s1, const char *s2, size_t n);
+int			is_portal_visible(t_portal *portal);
 
 #endif

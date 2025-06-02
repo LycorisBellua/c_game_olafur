@@ -77,7 +77,7 @@ C ./img/menu/menu_c.png
 D ./img/menu/menu_d.png
 G ./img/null.png
 
-S ./img/dgn/dgn_sk.png
+S ./img/brain/brain_sk.png
 
 P N 1 8 ./img/null.png ./maps/bonus/olafur/menu4.map S 1 2
 P S 1 0 ./img/menu/menu_p_m3.png ./maps/bonus/olafur/menu3.map N 1 1

@@ -21,8 +21,8 @@ void	door_routine(t_man *man)
 		add_doors_already_opened(map, &opened_doors);
 		curr_map = man->curr_map;
 	}
-	close_doors(man, map, &opened_doors, 2);
-	open_new_door(man, &opened_doors, 2);
+	close_doors(man, map, &opened_doors, 1);
+	open_new_door(man, &opened_doors, 1);
 	return ;
 }
 

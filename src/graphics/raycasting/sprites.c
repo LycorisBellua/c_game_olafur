@@ -92,7 +92,7 @@ static void	render_sprite_column(t_man *man, t_spr *s, int x)
 
 	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x)) * s->img->size.x
 		/ s->size.x) / 256;
-	if (tex.x < 0 || tex.x >= man->frame.size.x)
+	if (tex.x < 0 || tex.x >= s->img->size.x)
 		return ;
 	y = s->draw_start.y - 1;
 	while (++y < s->draw_end.y)
@@ -100,7 +100,7 @@ static void	render_sprite_column(t_man *man, t_spr *s, int x)
 		d = (y - s->v_move_screen) * 256 - man->frame.size.y * 128 + s->size.y
 			* 128;
 		tex.y = ((d * s->img->size.y) / s->size.y) / 256;
-		if (tex.y < 0 || tex.y >= man->frame.size.y)
+		if (tex.y < 0 || tex.y >= s->img->size.y)
 			return ;
 		c = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x + tex.x];
 		apply_wall_fog(&c, man->maps[man->curr_map]->fog_color, s->dist,

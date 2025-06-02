@@ -22,8 +22,8 @@ void	open_and_close_portals(t_man *man)
 		add_portals_already_opened(map, &opened_portals);
 		curr_map = man->curr_map;
 	}
-	close_portals(man, map, &opened_portals, 2);
-	open_new_portal(man, &opened_portals, 2);
+	close_portals(man, map, &opened_portals, 1);
+	open_new_portal(man, &opened_portals, 1);
 	return ;
 }
 
@@ -142,13 +142,10 @@ static void	add_portal_to_list(t_list **list, t_portal *portal)
 static void	trigger_portal(t_portal *p, int is_open)
 {
 	t_cell	*c;
-	int		is_portal_visible;
 
 	p->is_open = is_open;
 	c = &p->src_map->cells[p->src_pos.y][p->src_pos.x];
-	is_portal_visible = (p->is_open && p->tex_open)
-		|| (!p->is_open && p->tex_closed);
-	c->is_visible = is_portal_visible || c->tex_north || c->tex_south
+	c->is_visible = is_portal_visible(p) || c->tex_north || c->tex_south
 		|| c->tex_west || c->tex_east;
 	return ;
 }

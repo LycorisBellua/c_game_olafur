@@ -3,7 +3,6 @@
 static void	init_cells(t_man *man, t_map *map);
 static void	set_cell_tex(t_cell *cell, t_img *img, t_tex_type *types);
 static void	fill_cell(t_map *map, t_cell *c, int x, int y);
-static int	is_portal_visible(t_portal *portal);
 
 void	fill_cells(t_man *man, t_map *map)
 {
@@ -32,6 +31,27 @@ void	fill_cells(t_man *man, t_map *map)
 			fill_cell(map, c, p.x, p.y);
 		}
 	}
+}
+
+int	is_portal_visible(t_portal *portal)
+{
+	t_img	*tex;
+	char	*tex_name;
+
+	if (!portal || portal->is_corridor)
+		return (0);
+	if (portal->is_open && portal->tex_open)
+		tex = portal->tex_open;
+	else
+		tex = portal->tex_closed;
+	if (!tex)
+		return (0);
+	tex_name = strrchr(tex->id, '/');
+	if (!tex_name)
+		tex_name = tex->id;
+	else
+		++tex_name;
+	return (tex_name && strncmp(tex_name, "null.png", 8));
 }
 
 static void	init_cells(t_man *man, t_map *map)
@@ -98,25 +118,4 @@ static void	fill_cell(t_map *map, t_cell *c, int x, int y)
 		set_cell_tex(c, NULL, &(map->types[map->map_walls[y][x] - '0']));
 	else
 		set_cell_tex(c, NULL, &(map->types[0]));
-}
-
-static int	is_portal_visible(t_portal *portal)
-{
-	t_img	*tex;
-	char	*tex_name;
-
-	if (!portal || portal->is_corridor)
-		return (0);
-	if (portal->is_open && portal->tex_open)
-		tex = portal->tex_open;
-	else
-		tex = portal->tex_closed;
-	if (!tex)
-		return (0);
-	tex_name = strrchr(tex->id, '/');
-	if (!tex_name)
-		tex_name = tex->id;
-	else
-		++tex_name;
-	return (tex_name && strncmp(tex_name, "null.png", 8));
 }

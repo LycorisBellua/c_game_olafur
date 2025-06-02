@@ -18,6 +18,7 @@
 # define SPRITE_AMOUNT_TO_COLLECT 5
 # define SPRITE_TYPE_TO_COLLECT "soul_idle"
 # define PORTAL_IS_CORRIDOR 0
+# define MAP_EASTER_EGG "maps/bonus/olafur/menu3.map"
 
 # define PATH_IMG_JSON "img/index.json"
 # ifdef GL
