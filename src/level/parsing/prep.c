@@ -48,7 +48,7 @@ int	check_file(t_man *man, const char *filename)
 	if (fd > 0)
 		put_error_and_exit(man, E_DIRREFUSED, 1, EXIT_FAILURE);
 	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	if (fd < 0)
 		put_error_and_exit(man, E_NOFILEMAP, 1, EXIT_FAILURE);
 	return (fd);
 }
@@ -66,7 +66,7 @@ void	reach_endfile(t_man *man, t_map *map, char **line)
 	free(*line);
 	while (tmp)
 	{
-		if (onlyvalids(tmp, WHITES) == 0)
+		if (!onlyvalids(tmp, WHITES))
 		{
 			free(tmp);
 			exit_in_parsing(man, map, E_WRONGCHAR, NULL);

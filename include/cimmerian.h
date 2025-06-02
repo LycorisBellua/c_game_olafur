@@ -144,7 +144,6 @@ t_portal	*find_portal(t_map *map, int x, int y);
 void		free_sprite_array(t_map *map);
 void		free_maps(t_man *man);
 void		free_map(t_map *map);
-void		free_cells(t_map *map);
 void		draw_minimap(t_man *man, t_map *map);
 void		init_minimap_values(t_man *man);
 void		decrease_minimap_zoom(t_man *man);

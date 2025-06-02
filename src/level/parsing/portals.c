@@ -22,7 +22,7 @@ static char	*get_portals(t_map *map, char **line)
 	portals = calloc(1, sizeof(char));
 	while (*line)
 	{
-		if (strncmp(*line, "P", 1) == 0)
+		if (!strncmp(*line, "P", 1))
 		{
 			tmp = strjoin(portals, *line);
 			free(portals);
@@ -31,7 +31,7 @@ static char	*get_portals(t_map *map, char **line)
 		}
 		else
 		{
-			if (onlyvalids(*line, WHITES) == 0)
+			if (!onlyvalids(*line, WHITES))
 				break ;
 		}
 		free(*line);
@@ -77,6 +77,7 @@ static t_portal	*valid_portal(t_man *man, t_map *map, char *line, int i)
 	ptl = calloc(1, sizeof(t_portal));
 	if (!ptl)
 		return (NULL);
+	ptl->src_map = map;
 	ptl->is_corridor = PORTAL_IS_CORRIDOR;
 	i += find_cardinal_and_pos(line, &ptl->src_pos, &ptl->src_cardinal);
 	if (i < 0)
@@ -90,7 +91,7 @@ static t_portal	*valid_portal(t_man *man, t_map *map, char *line, int i)
 	ptl->path_dst_map = get_portal_absolute_path(ft_substr(line, i - size, size));
 	ptl->override_start_pos = 1;
 	i += find_cardinal_and_pos(line + i, &ptl->dst_pos, &ptl->dst_cardinal);
-	if (i < 0 || onlyvalids(line + i, WHITES) == 0)
+	if (i < 0 || !onlyvalids(line + i, WHITES))
 		return (free(ptl->path_dst_map),
 			exit_in_parsing(man, map, E_WRONGCHAR, ptl), NULL);
 	return (ptl);
@@ -100,7 +101,7 @@ static char	*get_portal_absolute_path(char *path)
 {
 	char	*absolute;
 
-	if (strcmp(path, "null") == 0)
+	if (!strcmp(path, "null"))
 	{
 		free(path);
 		return (NULL);

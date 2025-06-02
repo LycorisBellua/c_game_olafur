@@ -7,7 +7,7 @@ void	find_f_c_style(t_man *man, t_map *map, char**line, char *address)
 {
 	t_color	tmp;
 
-	if (strncmp(*line, "F ", 2) == 0)
+	if (!strncmp(*line, "F ", 2))
 	{
 		if (man->bonus && !map->types[1].tex_floor)
 			map->types[1].tex_floor = add_new_image(man, address);
@@ -19,7 +19,7 @@ void	find_f_c_style(t_man *man, t_map *map, char**line, char *address)
 			map->floor_color = get_color_rgba(tmp.r, tmp.g, tmp.b, tmp.a);
 		}
 	}
-	else if (strncmp(*line, "C ", 2) == 0)
+	else if (!strncmp(*line, "C ", 2))
 	{
 		if (man->bonus)
 			map->types[1].tex_ceiling = add_new_image(man, address);

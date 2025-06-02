@@ -1,5 +1,8 @@
 #include "cimmerian.h"
 
+static void	free_cell_arrays(t_map *map);
+static void	free_portal_array(t_map *map);
+
 void	free_maps(t_man *man)
 {
 	int	i;
@@ -19,28 +22,16 @@ void	free_maps(t_man *man)
 
 void	free_map(t_map *map)
 {
-	int	i;
-
 	if (!map)
 		return ;
 	free(map->filepath);
 	free_arr((void **)map->map_walls, free);
 	free_arr((void **)map->map_ceil_floor, free);
-	free_arr((void **)map->cells, free);
 	free(map->types);
 	free_image(map->skybox, free);
 	free_png(map->background);
-	if (map->portals)
-	{
-		i = 0;
-		while (i < map->portal_len)
-		{
-			free(map->portals[i]->path_dst_map);
-			free(map->portals[i]);
-			++i;
-		}
-		free(map->portals);
-	}
+	free_cell_arrays(map);
+	free_portal_array(map);
 	free_sprite_array(map);
 	free(map);
 	map = 0;
@@ -65,5 +56,52 @@ void	free_sprite_array(t_map *map)
 	}
 	map->sprites = 0;
 	map->sprite_len = 0;
+	return ;
+}
+
+static void	free_cell_arrays(t_map *map)
+{
+	t_ivec2	coord;
+
+	if (!map)
+		return ;
+	if (map->cells)
+	{
+		coord.y = 0;
+		while (coord.y < map->size.y)
+		{
+			coord.x = 0;
+			while (coord.x < map->size.x)
+			{
+				free(map->cells[coord.y][coord.x].door);
+				++coord.x;
+			}
+			++coord.y;
+		}
+		free_arr((void **)map->cells, free);
+	}
+	map->cells = 0;
+	return ;
+}
+
+static void	free_portal_array(t_map *map)
+{
+	int	i;
+
+	if (!map)
+		return ;
+	if (map->portals)
+	{
+		i = 0;
+		while (i < map->portal_len)
+		{
+			free(map->portals[i]->path_dst_map);
+			free(map->portals[i]);
+			++i;
+		}
+		free(map->portals);
+	}
+	map->portals = 0;
+	map->portal_len = 0;
 	return ;
 }

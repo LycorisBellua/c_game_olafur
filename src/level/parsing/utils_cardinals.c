@@ -2,16 +2,16 @@
 
 int	check_doublewall(char *line, t_tex_type *type)
 {
-	if (strncmp(line, "NO", 2) == 0 && type->tex_north
+	if (!strncmp(line, "NO", 2) && type->tex_north
 		&& type->tex_north->id != NULL)
 		return (-1);
-	else if (strncmp(line, "SO", 2) == 0 && type->tex_south
+	else if (!strncmp(line, "SO", 2) && type->tex_south
 		&& type->tex_south->id != NULL)
 		return (-1);
-	else if (strncmp(line, "EA", 2) == 0 && type->tex_east
+	else if (!strncmp(line, "EA", 2) && type->tex_east
 		&& type->tex_east->id != NULL)
 		return (-1);
-	else if (strncmp(line, "WE", 2) == 0 && type->tex_west
+	else if (!strncmp(line, "WE", 2) && type->tex_west
 		&& type->tex_west->id != NULL)
 		return (-1);
 	return (0);
@@ -24,7 +24,7 @@ int	check_texfilled(t_tex_type *types, int *n_texture)
 
 	n = 1;
 	no_id = 0;
-	while (n <= *n_texture && no_id == 0)
+	while (n <= *n_texture && !no_id)
 	{
 		if (!types[n].tex_north || !types[n].tex_north->id)
 			no_id--;

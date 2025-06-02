@@ -24,23 +24,23 @@ void	get_maps(t_man *man, t_map *map, char **line, int *n_texture)
 	{
 		while (strncmp((*line), "map_", 4) != 0)
 		{
-			if (onlyvalids((*line), WHITES) == 0)
+			if (!onlyvalids((*line), WHITES))
 				exit_in_parsing(man, map, E_WRONGCHAR, *line);
 			free((*line));
 			(*line) = gnl(map->fd);
 		}
-		if (strncmp((*line), "map_walls", 9) == 0)
+		if (!strncmp((*line), "map_walls", 9))
 		{
 			check_unfill_map(man, map, (*line), map->map_walls);
 			map->map_walls = get_map_from_fd(man, map, line, n_texture);
 		}
-		else if (strncmp((*line), "map_ceil_floor", 14) == 0)
+		else if (!strncmp((*line), "map_ceil_floor", 14))
 		{
 			check_unfill_map(man, map, (*line), map->map_ceil_floor);
 			map->map_ceil_floor = get_map_from_fd(man, map, line, n_texture);
 		}
 	}
-	if (map->start_pos.x == -1)
+	if (map->start_pos.x < 0)
 		exit_in_parsing(man, map, E_MISSPLAYER, NULL);
 }
 
@@ -49,20 +49,20 @@ static char	*get_map(t_man *man, t_map *map, char **line)
 	char	*tmp1;
 	char	*tmp2;
 
-	if (!man->bonus && onlyvalids(*line, VALID_MANDA_MAP) == 0)
+	if (!man->bonus && !onlyvalids(*line, VALID_MANDA_MAP))
 		exit_in_parsing(man, map, E_WRONGCHAR, *line);
 	tmp1 = gnl(map->fd);
 	skip_whiteline(map, &tmp1);
-	if (!man->bonus && onlyvalids(tmp1, VALID_MANDA_MAP) == 0)
+	if (!man->bonus && !onlyvalids(tmp1, VALID_MANDA_MAP))
 		exit_in_parsing(man, map, E_WRONGCHAR, tmp1);
 	tmp2 = gnl(map->fd);
 	if (!tmp1 || !tmp2)
 		exit_in_parsing(man, map, E_EMPTYLINE, *line);
 	while (tmp2)
 	{
-		if (onlyvalids(tmp2, WHITES) == 1)
+		if (onlyvalids(tmp2, WHITES))
 			break ;
-		if (!man->bonus && onlyvalids(tmp2, VALID_MANDA_MAP) == 0)
+		if (!man->bonus && !onlyvalids(tmp2, VALID_MANDA_MAP))
 			exit_in_parsing(man, map, E_WRONGCHAR, tmp2);
 		append(&tmp1, tmp2);
 		tmp2 = gnl(map->fd);

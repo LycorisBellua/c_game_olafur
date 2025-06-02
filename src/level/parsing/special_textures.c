@@ -9,7 +9,7 @@ void	find_player(t_man *man, t_map *map, char *s, int y)
 		return ;
 	while (s[x])
 	{
-		if (isvalid(s[x], PLAYER) == 1)
+		if (isvalid(s[x], PLAYER))
 		{
 			if (map->start_pos.x != -1)
 				exit_in_parsing(man, map, E_DOUBLEPLAYER, NULL);
@@ -26,7 +26,7 @@ void	find_door_goal(t_man *man, t_map *map, char **line)
 	char	*path;
 
 	skip_whiteline(map, line);
-	if (strncmp(*line, "D ", 2) == 0)
+	if (!strncmp(*line, "D ", 2))
 	{
 		path = ft_substr(*line, 2, strlen(*line) - 3);
 		map->types[1].tex_door_closed = add_new_image(man, path);
@@ -35,7 +35,7 @@ void	find_door_goal(t_man *man, t_map *map, char **line)
 		free(*line);
 		*line = gnl(map->fd);
 	}
-	if (strncmp(*line, "G ", 2) == 0)
+	if (!strncmp(*line, "G ", 2))
 	{
 		path = ft_substr(*line, 2, strlen(*line) - 3);
 		map->types[1].tex_goal = add_new_image(man, path);
@@ -61,7 +61,7 @@ t_img	*state_open(t_man *man, char *path)
 	ft_strncpy(compose_path, path, size - 4);
 	ft_strncpy(compose_path + (size - 4), "_open", 5);
 	ft_strncpy(compose_path + (size - 4 + 5), ".png", 4);
-	if (access(compose_path, R_OK) == 0)
+	if (!access(compose_path, R_OK))
 		open = add_new_image(man, compose_path);
 	free(compose_path);
 	return (open);
@@ -74,7 +74,7 @@ void	find_skybox(t_man *man, t_map *map, char **line)
 
 	skip_whiteline(map, line);
 	path = ft_substr(*line, 2, strlen(*line) - 3);
-	if (strncmp(*line, "S ", 2) == 0)
+	if (!strncmp(*line, "S ", 2))
 	{
 		if (map->skybox)
 			exit_in_parsing(man, map, E_DOUBLESKYBOX, *line);

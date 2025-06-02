@@ -23,7 +23,7 @@ void	find_sprites(t_man *man, t_map *map, char **line)
 		free(line_sprites);
 		exit_in_parsing(man, map, E_WRONGCHAR, NULL);
 	}
-	if (set_sprites(man, map, line_sprites) == 0)
+	if (!set_sprites(man, map, line_sprites))
 	{
 		free(*line);
 		free(line_sprites);
@@ -39,18 +39,18 @@ static char	*get_sprites(t_map *map, char **line)
 	sprite = calloc(1, sizeof(char));
 	while (*line)
 	{
-		if (strncmp(*line, "sprite_", 7) == 0)
+		if (!strncmp(*line, "sprite_", 7))
 		{
 			append(&sprite, *line);
 			*line = gnl(map->fd);
-			while (*line && isdigit((*line)[skip_space(*line)]) == 1)
+			while (*line && isdigit((*line)[skip_space(*line)]))
 			{
 				map->sprite_len++;
 				append(&sprite, *line);
 				*line = gnl(map->fd);
 			}
 		}
-		else if (onlyvalids(*line, WHITES) == 0)
+		else if (!onlyvalids(*line, WHITES))
 			break ;
 		free(*line);
 		*line = gnl(map->fd);
@@ -79,15 +79,15 @@ static int	set_sprites(t_man *man, t_map *map, char *line)
 	id = NULL;
 	while (sp < map->sprite_len)
 	{
-		if (strncmp(line + start, "sprite_", 7) == 0)
+		if (!strncmp(line + start, "sprite_", 7))
 		{
 			free(id);
-			if (get_id(line + start, &start, &spec, &id) == -1)
+			if (get_id(line + start, &start, &spec, &id) < 0)
 				return (free(id), 0);
 		}
-		else if (isdigit(line[skip_char(line, &start, ' ')]) == 1)
+		else if (isdigit(line[skip_char(line, &start, ' ')]))
 		{
-			if (get_pos(line + start, &start, &pos) == -1)
+			if (get_pos(line + start, &start, &pos) < 0)
 				return (free(id), 0);
 			set_sprite(map->sprites[sp++], add_new_image(man, id), spec, pos);
 		}

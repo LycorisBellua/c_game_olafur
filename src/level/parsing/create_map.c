@@ -2,9 +2,9 @@
 
 void	go_to_mandatory(char *line, int *bonus)
 {
-	if (strncmp(line, "NO", 2) == 0 || strncmp(line, "SO", 2) == 0
-		|| strncmp(line, "WE", 2) == 0 || strncmp(line, "EA", 2) == 0
-		|| strncmp(line, "F", 1) == 0 || strncmp(line, "C", 1) == 0)
+	if (!strncmp(line, "NO", 2) || !strncmp(line, "SO", 2)
+		|| !strncmp(line, "WE", 2) || !strncmp(line, "EA", 2)
+		|| !strncmp(line, "F", 1) || !strncmp(line, "C", 1))
 	{
 		*bonus = 0;
 	}

@@ -24,7 +24,7 @@ void	fill_cells(t_man *man, t_map *map)
 				c->door = calloc(1, sizeof(t_door));
 			c->is_goal = map->map_walls[p.y][p.x] == 'G';
 			c->is_obstacle = c->is_empty_space || c->door || c->is_goal
-				|| isvalid(map->map_walls[p.y][p.x], "12345678") == 1;
+				|| isvalid(map->map_walls[p.y][p.x], "12345678");
 			c->portal = find_portal(map, p.x, p.y);
 			c->is_visible = (c->is_obstacle && !c->is_empty_space)
 				|| is_portal_visible(c->portal);
@@ -85,8 +85,12 @@ static void	fill_cell(t_map *map, t_cell *c, int x, int y)
 	}
 	if (c->door)
 	{
+		c->door->m = map;
+		set_ivec2(&c->door->pos, x, y);
+		c->door->cardinal = 0;
 		c->door->tex_closed = map->types[1].tex_door_closed;
 		c->door->tex_open = map->types[1].tex_door_open;
+		c->door->is_open = 0;
 	}
 	else if (c->is_goal)
 		set_cell_tex(c, map->types[1].tex_goal, NULL);

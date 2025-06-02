@@ -35,7 +35,7 @@ int	onlyvalids(char *str, char *source)
 		return (0);
 	while (str[i])
 	{
-		if (isvalid(str[i], source) == 0)
+		if (!isvalid(str[i], source))
 			return (0);
 		i++;
 	}
@@ -107,11 +107,11 @@ int	revncmp(const char *s1, const char *s2, size_t n)
 		return (1);
 	len1 = strlen(s1);
 	len2 = strlen(s2);
-	if (n == 0)
+	if (!n)
 		return (0);
 	while (n--)
 	{
-		if (len1 == 0 || len2 == 0 || s1[--len1] != s2[--len2])
+		if (!len1 || !len2 || s1[--len1] != s2[--len2])
 			break ;
 	}
 	return ((unsigned char)s1[len1] - (unsigned char)s2[len2]);

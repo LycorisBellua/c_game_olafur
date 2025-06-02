@@ -7,7 +7,7 @@ void	find_music(t_man *man, t_map *map, char **line)
 	skip_whiteline(map, line);
 	if (!line || !*line)
 		return ;
-	if (strncmp(*line, "M ", 2) == 0)
+	if (!strncmp(*line, "M ", 2))
 	{
 		if (map->music_track)
 			exit_in_parsing(man, map, E_DOUBLEMUSIC, *line);

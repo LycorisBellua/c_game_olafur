@@ -16,7 +16,7 @@ void	valid_map(t_man *man, t_map *map)
 	while (++p.y < map->size.y)
 	{
 		if (map->map_walls[(int)p.y][0] == '\n'
-			|| onlyvalids(map->map_walls[(int)p.y], VALID_MANDATORY) == 0)
+			|| !onlyvalids(map->map_walls[(int)p.y], VALID_MANDATORY))
 			exit_in_parsing(man, map, E_INVALIDCHAR, NULL);
 		p.x = -1;
 		while (++p.x < map->size.x)
@@ -46,14 +46,14 @@ void	maps_symetry(t_man *man, t_map *map)
 		x = 0;
 		while (map->map_walls[y][x])
 		{
-			if (isvalid(map->map_walls[y][x], VALID_BONUS) == 1)
+			if (isvalid(map->map_walls[y][x], VALID_BONUS))
 			{
-				if (isvalid(map->map_ceil_floor[y][x], VALID_BONUS) == 0)
+				if (!isvalid(map->map_ceil_floor[y][x], VALID_BONUS))
 					exit_in_parsing(man, map, E_INVALIDCHAR, NULL);
 			}
 			else
 			{
-				if (isvalid(map->map_ceil_floor[y][x], VALID_BONUS) == 1)
+				if (isvalid(map->map_ceil_floor[y][x], VALID_BONUS))
 					exit_in_parsing(man, map, E_INVALIDCHAR, NULL);
 			}
 			x++;

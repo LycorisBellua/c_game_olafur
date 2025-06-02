@@ -49,7 +49,7 @@ static void	biggest_digit(char c, int *n)
 {
 	int	tmp;
 
-	if (isdigit(c) == 1)
+	if (isdigit(c))
 	{
 		tmp = c - '0';
 		if (*n < tmp)

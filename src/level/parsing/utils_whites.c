@@ -14,7 +14,7 @@ int	skip_space(char *line)
 
 void	skip_whiteline(t_map *map, char **line)
 {
-	while (line && *line && onlyvalids(*line, WHITES) == 1)
+	while (line && *line && onlyvalids(*line, WHITES))
 	{
 		free(*line);
 		*line = gnl(map->fd);
