@@ -34,7 +34,7 @@ G ./img/null.png
 S ./img/mus/mus_sk.png
 
 P S 4 0 ./img/mus/mus_p_brain.png ./maps/bonus/olafur/brain.map S 22 13
-P E 0 4 ./img/mus/mus_p_hol.png ./maps/bonus/olafur/hole.map E 9 15
+P E 0 4 ./img/mus/mus_p_hol.png ./maps/bonus/olafur/hol.map E 9 15
 P W 8 4 ./img/mus/mus_p_box.png ./maps/bonus/olafur/box.map E 5 1
 P N 4 8 ./img/mus/mus_p_menu2.png ./maps/bonus/olafur/menu2.map N 1 1
 

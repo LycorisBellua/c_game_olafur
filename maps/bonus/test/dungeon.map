@@ -1,11 +1,11 @@
 map_walls:
-111111111111111111111111
+111111111111011111111111
 100000000000000000000001
 100000000000000000000001
 100000000000000000000001
 10000022D220000303030001
 100000200020000000000001
-100000200020000300030001
+100000200020000000030001
 100000200020000000000001
 10000022D220000303030001
 100000000000000000000001
@@ -43,7 +43,7 @@ map_ceil_floor:
 000000000000000000000000
 011111111000000000000000
 011111111000000000000000
-011111111000000000000000
+011111011000000000000000
 011111111000000000000000
 011111111000000000000000
 011111111000000000000000
@@ -51,23 +51,23 @@ map_ceil_floor:
 000000000000000000000000
 
 1NO ./img/dgn/dgn_n.png
-1SO ./img/dgn/dgn_s.png
-1WE ./img/dgn/dgn_w.png
-1EA ./img/dgn/dgn_e.png
+1SO ./img/dgn/dgn_n.png
+1WE ./img/dgn/dgn_n.png
+1EA ./img/dgn/dgn_n.png
 
-2NO ./img/dgn/dgn_n.png
+2NO ./img/dgn/dgn_s.png
 2SO ./img/dgn/dgn_s.png
-2WE ./img/dgn/dgn_w.png
-2EA ./img/dgn/dgn_e.png
+2WE ./img/dgn/dgn_s.png
+2EA ./img/dgn/dgn_s.png
 
-3NO ./img/dgn/dgn_n.png
-3SO ./img/dgn/dgn_s.png
+3NO ./img/dgn/dgn_w.png
+3SO ./img/dgn/dgn_w.png
 3WE ./img/dgn/dgn_w.png
-3EA ./img/dgn/dgn_e.png
+3EA ./img/dgn/dgn_w.png
 
-4NO ./img/dgn/dgn_n.png
-4SO ./img/dgn/dgn_s.png
-4WE ./img/dgn/dgn_w.png
+4NO ./img/dgn/dgn_e.png
+4SO ./img/dgn/dgn_e.png
+4WE ./img/dgn/dgn_e.png
 4EA ./img/dgn/dgn_e.png
 
 F ./img/dgn/dgn_f.png
@@ -79,7 +79,8 @@ G solid
 
 S ./img/dgn/dgn_sk.png
 
-P S 12 0 ./img/dgn/sprite_greenlight.png ./maps/bonus/playground/room.map E 6 4
+P S 12 0 ./img/dgn/dgn_p.png ./maps/bonus/test/small.map E 0 5
+P N 15 6 ./img/dgn/dgn_p.png ./maps/bonus/test/small.map E 0 5
 
 sprite_collec_soul_idle:
 20.5, 11.5

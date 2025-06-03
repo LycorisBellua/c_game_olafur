@@ -82,6 +82,11 @@ void	find_skybox(t_man *man, t_map *map, char **line)
 		free(path);
 		if (src_skybox)
 			map->fog_color = src_skybox->average_color[0];
+		else
+		{
+			map->ceiling_color.a = 255;
+			map->floor_color.a = 255;
+		}
 		compose_skybox(man, map, src_skybox);
 	}
 	free(*line);

@@ -77,7 +77,7 @@ S ./img/hol/hol_sk.png
 
 P E 6 15 ./img/dgn/dgn_p.png ./maps/bonus/olafur/mus2.map E 0 4
 
-P W 95 14 ./img/dgn/dgn_p.png ./maps/bonus/olafur/hole.map W 24 14
+P W 95 14 ./img/dgn/dgn_p.png ./maps/bonus/olafur/hol.map W 24 14
 
 P E 22 14 ./img/dgn/dgn_p.png null N 0 0
 

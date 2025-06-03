@@ -1,0 +1,36 @@
+map_walls:
+1111111
+1S10001
+101000G
+1010001
+1000001
+0000101
+1000001
+1111111
+
+map_ceil_floor:
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+
+1NO ./img/dgn/dgn_n.png
+1SO ./img/dgn/dgn_n.png
+1WE ./img/dgn/dgn_n.png
+1EA ./img/dgn/dgn_n.png
+
+F ./img/dgn/dgn_f.png
+C ./img/dgn/dgn_c.png
+F ./img/dgn/dgn_f_in.png
+
+D ./img/dgn/dgn_d.png
+G solid
+
+S ./img/dgn/dgn_sk.png
+
+P E 0 5 ./img/dgn/dgn_p.png ./maps/bonus/test/dungeon.map S 12 0
+P W 6 5 ./img/dgn/dgn_p.png ./maps/bonus/test/dungeon.map S 12 0

@@ -35,7 +35,7 @@ S ./img/mus/mus_sk.png
 
 P S 4 0 ./img/mus/mus_p_pul.png ./maps/bonus/olafur/pul.map N 4 9
 P E 0 4 ./img/mus/mus_p_afg.png ./maps/bonus/olafur/afg.map W 31 3
-P W 8 4 ./img/mus/mus_p_dgn.png ./maps/bonus/olafur/dungeon.map E 2 4
+P W 8 4 ./img/mus/mus_p_dgn.png ./maps/bonus/olafur/dgn.map S 12 0
 P N 4 8 ./img/mus/mus_p_menu1.png ./maps/bonus/olafur/menu.map N 1 1
 
 sprite_art1:
