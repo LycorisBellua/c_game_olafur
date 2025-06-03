@@ -137,11 +137,6 @@ void		cast_sprites(t_man *man, int x);
 /* Maps --------------------------------------------------------------------- */
 
 int			add_map(t_man *man, const char *filepath);
-t_map		*create_map(t_man *man, const char *filepath);
-int			extract_maps_and_player_start(t_map *m);
-int			extract_sprites(t_man *man, t_map *map);
-int			create_portal_array(t_man *man, t_map *map);
-t_portal	*find_portal(t_map *map, int x, int y);
 void		free_sprite_array(t_map *map);
 void		free_maps(t_man *man);
 void		free_map(t_map *map);
@@ -250,10 +245,11 @@ void		list_del_one(t_list **list, void (*del)(void*));
 
 /* Parsing (Temp) ----------------------------------------------------------- */
 
+t_map		*create_map(t_man *man, const char *filepath);
+
 void		put_error_and_exit(t_man *man, char *msg, int shouldexit, int err);
 void		exit_in_parsing(t_man *man, t_map *map, char *msg, void *data);
 void		parse_file_map(t_man *man, t_map *map, char **line);
-void		parse_bonus_lines(t_man *man, t_map *map, char **line);
 void        find_music(t_man *man, t_map *map, char **line);
 void		find_cardinals_floor_ceiling(t_man *man, t_map *map, char **line,
 				int n_texture);
@@ -269,12 +265,8 @@ void		maps_symetry(t_man *man, t_map *map);
 char		**get_map_from_fd(t_man *man, t_map *map, char **line,
 				int *n_texture);
 void		get_maps(t_man *man, t_map *map, char **line, int *n_texture);
-t_map		*create_map(t_man *man, const char *file);
 void		find_portals(t_man *man, t_map *map, char **line);
 t_portal	*find_portal(t_map *map, int x, int y);
-void		malloc_struct(t_man *man, t_map **map, int fd, const char *file);
-int			check_file(t_man *man, const char *filename);
-void		reach_endfile(t_man *man, t_map *map, char **line);
 void		find_door_goal(t_man *man, t_map *map, char **line);
 void		find_player(t_man *man, t_map *map, char *s, int y);
 void		find_skybox(t_man *man, t_map *map, char **line);

@@ -45,7 +45,7 @@ char	**read_file_lines(const char *filepath)
 	char	**lines;
 
 	whole = read_file(filepath);
-	lines = split(whole, '\n');
+	lines = split(whole, '\x1C');
 	free(whole);
 	return (lines);
 }
@@ -63,7 +63,8 @@ static char	*get_whole_file(int fd)
 		tmp3 = strjoin(tmp1, tmp2);
 		free(tmp1);
 		free(tmp2);
-		tmp1 = tmp3;
+		tmp1 = strjoin(tmp3, "\x1C");
+		free(tmp3);
 		tmp2 = gnl(fd);
 	}
 	return (tmp1);

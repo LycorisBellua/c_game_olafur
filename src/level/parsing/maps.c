@@ -83,14 +83,14 @@ static char	**fill_map(t_man *man, t_map *m, t_ivec2 size, char *lines)
 	x = 0;
 	map = calloc(size.y + 1, sizeof(char *));
 	if (!map)
-		exit_in_parsing(man, m, E_ALLOCFAILMAP, NULL);
+		exit_in_parsing(man, m, E_FAIL_MEM, NULL);
 	while (lines && ++y < size.y)
 	{
 		map[y] = calloc(size.x + 1, sizeof(char));
 		if (!map[y])
 		{
 			free_arr((void **)map, free);
-			exit_in_parsing(man, m, E_ALLOCFAILMAP, NULL);
+			exit_in_parsing(man, m, E_FAIL_MEM, NULL);
 		}
 		tmp = find_endline(lines + x);
 		map[y] = ft_strncpy(map[y], lines + x, tmp);

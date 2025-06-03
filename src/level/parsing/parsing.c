@@ -1,5 +1,8 @@
 #include "cimmerian.h"
 
+static void	parse_bonus_lines(t_man *man, t_map *map, char **line);
+static void	reach_endfile(t_man *man, t_map *map, char **line);
+
 void	parse_file_map(t_man *man, t_map *map, char **line)
 {
 	int	n_texture;
@@ -26,5 +29,40 @@ void	parse_file_map(t_man *man, t_map *map, char **line)
 		fill_cells(man, map);
 	}
 	compose_background(man, map);
+	close(map->fd);
+}
+
+static void	parse_bonus_lines(t_man *man, t_map *map, char **line)
+{
+	if (!man->bonus)
+		return ;
+	find_door_goal(man, map, line);
+	find_skybox(man, map, line);
+	find_portals(man, map, line);
+	find_sprites(man, map, line);
+	find_music(man, map, line);
+}
+
+static void	reach_endfile(t_man *man, t_map *map, char **line)
+{
+	char	*tmp;
+
+	if (!*line)
+	{
+		close(map->fd);
+		return ;
+	}
+	tmp = strdup(*line);
+	free(*line);
+	while (tmp)
+	{
+		if (!onlyvalids(tmp, WHITES))
+		{
+			free(tmp);
+			exit_in_parsing(man, map, E_WRONGCHAR, NULL);
+		}
+		free(tmp);
+		tmp = gnl(map->fd);
+	}
 	close(map->fd);
 }

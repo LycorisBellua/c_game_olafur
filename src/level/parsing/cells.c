@@ -61,12 +61,12 @@ static void	init_cells(t_man *man, t_map *map)
 	y = 0;
 	map->cells = calloc(map->size.y, sizeof(t_cell));
 	if (!map->cells)
-		exit_in_parsing(man, map, E_ALLOCFAILCEL, NULL);
+		exit_in_parsing(man, map, E_FAIL_MEM, NULL);
 	while (y < map->size.y)
 	{
 		map->cells[y] = calloc(map->size.x, sizeof(t_cell));
 		if (!map->cells[y])
-			exit_in_parsing(man, map, E_ALLOCFAILCEL, NULL);
+			exit_in_parsing(man, map, E_FAIL_MEM, NULL);
 		y++;
 	}
 }
