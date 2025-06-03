@@ -321,6 +321,7 @@ struct s_man
 	t_key			keys[NBR_KEYS + 1];
 	t_ivec2			cursor;
 	int				show_debug;
+	char			**json_paths;
 	t_img			**images;
 	t_map			**maps;
 	int				curr_map;

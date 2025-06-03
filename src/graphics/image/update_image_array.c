@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+static int		check_path(t_man *man, const char *path);
 static int		allocate_array(t_man *man, char **lines, size_t *i_img);
 static int		set_pixel_data(t_man *man, t_png *file, size_t *i_img);
 static t_color	*get_pixel_data(t_png *file, int is_shadow);
@@ -12,6 +13,8 @@ int	update_image_array(t_man *man, const char *path)
 	int		is_success;
 	int		is_parsing_ongoing;
 
+	if (!path || check_path(man, path))
+		return (1);
 	lines = get_json_content(man, path);
 	i_img = 0;
 	if (!lines || !allocate_array(man, lines, &i_img))
@@ -28,6 +31,31 @@ int	update_image_array(t_man *man, const char *path)
 	}
 	free_json_content(lines);
 	return (is_success);
+}
+
+static int	check_path(t_man *man, const char *path)
+{
+	size_t	i;
+	char	**new_arr;
+
+	if (!man->json_paths)
+		return (0);
+	i = 0;
+	while (man->json_paths[i])
+	{
+		if (!strcmp(man->json_paths[i], path))
+			return (1);
+		++i;
+	}
+	new_arr = calloc(i + 1 + 1, sizeof(char *));
+	if (new_arr)
+	{
+		memcpy(new_arr, man->json_paths, i * sizeof(char *));
+		free(man->json_paths);
+		man->json_paths = new_arr;
+		man->json_paths[i] = strdup(path);
+	}
+	return (0);
 }
 
 static int	allocate_array(t_man *man, char **lines, size_t *i_img)
