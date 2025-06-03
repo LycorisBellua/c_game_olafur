@@ -18,6 +18,13 @@ to work on such a project, so I'm happy to nibble at this from time to time.
 The aim isn't to make it a commercial project, although that's not out of the 
 question neither. The purpose is to experiment and scratch my low level itch.  
 
+## Levels
+
+The Olafur level is a museum where each painting leads to another mini-world. 
+This level has been entirely created by 
+[Lucie-Kin](https://github.com/Lucie-Kin), a friend of mine. I've only added an 
+easter egg to the elevator.  
+
 ## Commands
 
 Move forward: W or UP arrow key  
