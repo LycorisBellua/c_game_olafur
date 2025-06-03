@@ -7,7 +7,7 @@
 # define ECHOLOCATION 0
 # define DEFAULT_DOF 20
 # define DEFAULT_MOVE_SPEED 2.0
-# define DEFAULT_ROTATE_SPEED 0.25
+# define DEFAULT_ROTATE_SPEED 1.0
 # define DEFAULT_PLAYER_RADIUS 0.25
 # define FONT_PAD    4
 # define FONT_SIZE_X 7
@@ -16,11 +16,9 @@
 # define FONT_MOD_Y  4
 # define SPRITE_RADIUS 0.5
 # define SPRITE_AMOUNT_TO_COLLECT 5
-# define SPRITE_TYPE_TO_COLLECT "soul_idle"
 # define PORTAL_IS_CORRIDOR 0
 # define MAP_EASTER_EGG "maps/bonus/olafur/menu3.map"
 
-# define PATH_IMG_JSON "img/index.json"
 # ifdef GL
 #  define PATH_VERTEX_SHADER "src/engine/gl/shaders/vs.glsl"
 #  define PATH_FRAGMENT_SHADER "src/engine/gl/shaders/fs.glsl"
