@@ -1,0 +1,218 @@
+------------------------------------ COMMON ------------------------------------
+---------------------------- Concept by LycorisDev -----------------------------
+
+Hellchauffo
+- common/null.png
+
+See "license_monogram.txt"
+- common/monogram.png
+
+See "license_mg.txt"
+- common/cursor.png
+
+Generated with ChatGPT
+- common/solid.png
+- common/solid2.png
+
+See "license_mc.txt"
+- common/soul.png
+- common/soul_shadow.png
+
+------------------------------------ DUNGEON -----------------------------------
+---------------------------- Concept by LycorisDev -----------------------------
+
+Generated with ChatGPT
+- dgn/dgn_p.png
+- dgn/dgn_p_open.png
+
+Link: https://opengameart.org/content/doors
+- dgn/dgn_d.png
+
+https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set
+- dgn/dgn_sk.png
+- dgn/dgn_sk_debug.png
+
+https://opengameart.org/content/textures-collection
+- dgn/dgn_c.png
+- dgn/dgn_f.png
+- dgn/dgn_f_in.png
+- dgn/dgn_w.png
+- dgn/dgn_w2.png
+- dgn/dgn_w3.png
+- dgn/dgn_w4.png
+
+https://lodev.org/cgtutor/raycasting3.html
+Wolfenstein 3D - Copyright by id Software
+- dgn/sprite_barrel.png
+- dgn/sprite_greenlight.png
+- dgn/sprite_pillar.png
+
+------------------------------------- MENU -------------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- menu/menu_c.png
+- menu/menu_f.png
+- menu/menu_p.png
+- menu/menu_p_open.png
+- menu/menu_w.png
+- menu/menu_w2.png
+- menu/menu_w3.png
+
+------------------------------------ MUSEUM ------------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- mus/common/mus_sk.png
+- mus/common/sprite_art1.png
+- mus/common/sprite_art2.png
+- mus/common/sprite_art3.png
+- mus/common/sprite_art4.png
+- mus/common/sprite_art41.png
+- mus/common/sprite_art42.png
+- mus/mus/mus_c.png
+- mus/mus/mus_f.png
+- mus/mus/mus_p_afg.png
+- mus/mus/mus_p_afg_open.png
+- mus/mus/mus_p_dgn.png
+- mus/mus/mus_p_dgn_open.png
+- mus/mus/mus_p_menu.png
+- mus/mus/mus_p_menu_open.png
+- mus/mus/mus_p_pul.png
+- mus/mus/mus_p_pul_open.png
+- mus/mus/mus_w.png
+- mus/mus/mus_w2.png
+- mus/mus/mus_w3.png
+- mus/mus/mus_w4.png
+- mus/mus/sprite_light_mus1.png
+- mus/mus/sprite_light_mus2.png
+- mus/mus/sprite_light_mus3.png
+- mus/mus2/mus2_c.png
+- mus/mus2/mus2_f.png
+- mus/mus2/mus2_p_box.png
+- mus/mus2/mus2_p_box_open.png
+- mus/mus2/mus2_p_brain.png
+- mus/mus2/mus2_p_brain_open.png
+- mus/mus2/mus2_p_hol.png
+- mus/mus2/mus2_p_hol_open.png
+- mus/mus2/mus2_p_menu2.png
+- mus/mus2/mus2_p_menu2_open.png
+- mus/mus2/mus2_w.png
+- mus/mus2/mus2_w2.png
+- mus/mus2/mus2_w3.png
+- mus/mus2/mus2_w4.png
+
+---------------------------------- AFGHANISTAN ---------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- afg/afg_1_w.png
+- afg/afg_1_w2.png
+- afg/afg_1_w3.png
+- afg/afg_2_w.png
+- afg/afg_2_w2.png
+- afg/afg_3_w.png
+- afg/afg_3_w2.png
+- afg/afg_3_w3.png
+- afg/afg_4_w.png
+- afg/afg_4_w2.png
+- afg/afg_4_w3.png
+- afg/afg_4_w4.png
+- afg/afg_c.png
+- afg/afg_d.png
+- afg/afg_d_open.png
+- afg/afg_f.png
+- afg/afg_f_in.png
+- afg/afg_p.png
+- afg/afg_p_open.png
+- afg/afg_sk.png
+- afg/sprite_afg1.png
+- afg/sprite_afg2.png
+- afg/sprite_afg3.png
+- afg/sprite_cage.png
+- afg/sprite_collec_book1.png
+- afg/sprite_collec_book2.png
+- afg/sprite_collec_book3.png
+- afg/sprite_collec_book4.png
+
+---------------------------------- FINDTHEBOX ----------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- box/box_d.png
+- box/box_f.png
+- box/box_p_box.png
+- box/box_p_box_open.png
+- box/box_p_mus.png
+- box/box_p_mus_open.png
+- box/box_sk.png
+- box/box_w.png
+- box/sprite_box01.png
+- box/sprite_box02.png
+- box/sprite_box03.png
+- box/sprite_light_box04.png
+
+------------------------------------ BRAIN -------------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- brain/brain_c.png
+- brain/brain_d.png
+- brain/brain_d_open.png
+- brain/brain_f.png
+- brain/brain_f_in.png
+- brain/brain_p.png
+- brain/brain_p_open.png
+- brain/brain_sk.png
+- brain/brain_w.png
+- brain/brain_w2.png
+- brain/brain_w3.png
+- brain/brain_w4.png
+- brain/sprite_brain01.png
+- brain/sprite_brain02.png
+- brain/sprite_brain03.png
+- brain/sprite_brain04.png
+- brain/sprite_brain05.png
+- brain/sprite_brain06.png
+- brain/sprite_brain07.png
+- brain/sprite_light_brain08.png
+- brain/sprite_collec_brain09.png
+- brain/sprite_brain10.png
+- brain/sprite_brain11.png
+
+------------------------------------- HOLE -------------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- hol/hol_c.png
+- hol/hol_f.png
+- hol/hol_sk.png
+- hol/hol_sk2.png
+- hol/hol_w.png
+- hol/hol_w2.png
+- hol/sprite_hol01.png
+- hol/sprite_hol02.png
+- hol/sprite_light_hol03.png
+- hol/sprite_light_hol04.png
+- hol/sprite_light_hol05.png
+- hol/sprite_light_hol06.png
+- hol/sprite_light_hol07.png
+- hol/sprite_light_hol08.png
+
+------------------------------------- POOL -------------------------------------
+----------------------------- Concept by Hellchauffo ---------------------------
+
+Hellchauffo
+- pul/pul_c.png
+- pul/pul_c2.png
+- pul/pul_f.png
+- pul/pul_f2.png
+- pul/pul_p.png
+- pul/pul_p_open.png
+- pul/pul_sk.png
+- pul/pul_w.png
+- pul/pul_w2.png
+- pul/pul_w3.png
+- pul/pul_w4.png
+- pul/sprite_legs.png
+- pul/sprite_stairs.png

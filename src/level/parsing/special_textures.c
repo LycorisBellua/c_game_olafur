@@ -58,11 +58,9 @@ t_img	*state_open(t_man *man, char *path)
 	compose_path = calloc(size + 5 + 1, sizeof(char));
 	if (!compose_path)
 		return (NULL);
-	ft_strncpy(compose_path, path, size - 4);
-	ft_strncpy(compose_path + (size - 4), "_open", 5);
-	ft_strncpy(compose_path + (size - 4 + 5), ".png", 4);
-	if (!access(compose_path, R_OK))
-		open = add_new_image(man, compose_path);
+	ft_strncpy(compose_path, path, size);
+	ft_strncpy(compose_path + size, "_open", 5);
+	open = add_new_image(man, compose_path);
 	free(compose_path);
 	return (open);
 }

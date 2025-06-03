@@ -76,7 +76,7 @@ size_t		count_arr_elems(void **arr);
 
 /* JSON --------------------------------------------------------------------- */
 
-char		**get_json_content(const char *filepath);
+char		**get_json_content(t_man *man, const char *filepath);
 void		free_json_content(char **content);
 int			set_png_file_obj(t_png *file, char **lines);
 void		free_and_reset_png_file_obj(t_png *file);
@@ -96,7 +96,7 @@ void		compose_skybox(t_man *man, t_map *map, t_img *src);
 void		compose_background(t_man *man, t_map *map);
 void		draw_background(t_man *man);
 void		free_png(t_png *png);
-int			set_image_array(t_man *man, const char *path);
+int			update_image_array(t_man *man, const char *path);
 int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
 void		cut_image(t_png *file, t_img *img, size_t i);
 void		free_images(t_man *man);

@@ -1,0 +1,114 @@
+[
+    {
+        "path": "img/menu/menu_p.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_p",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/menu/menu_p_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_p_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/menu/menu_c.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_c",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/menu/menu_f.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_f",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/menu/menu_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/menu/menu_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_w2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/menu/menu_w3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "menu_w3",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    }
+]

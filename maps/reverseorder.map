@@ -1,10 +1,13 @@
+JSON img/common/index.json
+JSON img/dgn/index.json
+
 F 0,120,0
 C 0,0,120
 
-NO ./img/dgn/dgn_n.png
-SO ./img/dgn/dgn_s.png
-WE ./img/dgn/dgn_w.png
-EA ./img/dgn/dgn_e.png
+NO dgn_w
+SO dgn_w2
+WE dgn_w3
+EA dgn_w4
 
         1111111111111111111111111
        11000001000110000000000001

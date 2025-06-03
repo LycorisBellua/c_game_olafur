@@ -19,6 +19,11 @@ int	set_png_file_obj(t_png *file, char **lines)
 		}
 		++i;
 	}
+	if (!lines[i])
+	{
+		i = 0;
+		return (0);
+	}
 	return (!!lines[i]);
 }
 

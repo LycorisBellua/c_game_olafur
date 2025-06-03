@@ -1,3 +1,6 @@
+JSON img/common/index.json
+JSON img/dgn/index.json
+
 map_walls:
 111111111111011111111111
 100000000000000000000001
@@ -50,37 +53,37 @@ map_ceil_floor:
 011111111000000000000000
 000000000000000000000000
 
-1NO ./img/dgn/dgn_n.png
-1SO ./img/dgn/dgn_n.png
-1WE ./img/dgn/dgn_n.png
-1EA ./img/dgn/dgn_n.png
+1NO dgn_w
+1SO dgn_w
+1WE dgn_w
+1EA dgn_w
 
-2NO ./img/dgn/dgn_s.png
-2SO ./img/dgn/dgn_s.png
-2WE ./img/dgn/dgn_s.png
-2EA ./img/dgn/dgn_s.png
+2NO dgn_w2
+2SO dgn_w2
+2WE dgn_w2
+2EA dgn_w2
 
-3NO ./img/dgn/dgn_w.png
-3SO ./img/dgn/dgn_w.png
-3WE ./img/dgn/dgn_w.png
-3EA ./img/dgn/dgn_w.png
+3NO dgn_w3
+3SO dgn_w3
+3WE dgn_w3
+3EA dgn_w3
 
-4NO ./img/dgn/dgn_e.png
-4SO ./img/dgn/dgn_e.png
-4WE ./img/dgn/dgn_e.png
-4EA ./img/dgn/dgn_e.png
+4NO dgn_w4
+4SO dgn_w4
+4WE dgn_w4
+4EA dgn_w4
 
-F ./img/dgn/dgn_f.png
-C ./img/dgn/dgn_c.png
-F ./img/dgn/dgn_f_in.png
+F dgn_f
+C dgn_c
+F dgn_f_in
 
-D ./img/dgn/dgn_d.png
+D dgn_d
 G solid
 
-S ./img/dgn/dgn_sk.png
+S dgn_sk
 
-P S 12 0 ./img/dgn/dgn_p.png ./maps/bonus/test/small.map E 0 5
-P N 15 6 ./img/dgn/dgn_p.png ./maps/bonus/test/small.map E 0 5
+P S 12 0 dgn_p maps/bonus/test/small.map E 0 5
+P N 15 6 dgn_p maps/bonus/test/small.map E 0 5
 
 sprite_collec_soul_idle:
 20.5, 11.5

@@ -1,0 +1,370 @@
+[
+    {
+        "path": "img/brain/brain_sk.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_sk",
+                "size": [2560, 360],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_d.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_d",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_d_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_d_open",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_p.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_p",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_p_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_p_open",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_c.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_c",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_f.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_f",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_f_in.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_f_in",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_w2",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_w3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_w3",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/brain_w4.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "brain_w4",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain01.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain01",
+                "size": [224, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain02.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain02",
+                "size": [390, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain03.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain03",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain04.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain04",
+                "size": [294, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain05.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain05",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain06.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain06",
+                "size": [336, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain07.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain07",
+                "size": [453, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_light_brain08.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_brain08",
+                "size": [64, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_collec_brain09.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_collec_brain09",
+                "size": [174, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain10.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain10",
+                "size": [269, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/brain/sprite_brain11.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_brain11",
+                "size": [174, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,131 @@
+[
+    {
+        "path": "img/mus/common/mus_sk.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_sk",
+                "size": [2560, 360],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/mus/common/sprite_art1.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_art1",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 100,
+                "cycle": [
+                    [0, 0],
+                    [513, 0],
+                    [1025, 0],
+                    [1538, 0],
+                    [2050, 0],
+                    [2563, 0],
+                    [3075, 0],
+                    [3588, 0],
+                    [4101, 0],
+                    [4613, 0],
+                    [5126, 0],
+                    [5638, 0],
+                    [6151, 0],
+                    [6664, 0],
+                    [7176, 0],
+                    [7689, 0],
+                    [8201, 0],
+                    [8714, 0],
+                    [9226, 0],
+                    [9739, 0],
+                    [10252, 0],
+                    [10764, 0],
+                    [11277, 0],
+                    [11789, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/mus/common/sprite_art2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_art2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 100,
+                "cycle": [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [512, 0],
+                    [1024, 0],
+                    [1535, 0],
+                    [2047, 0],
+                    [2559, 0],
+                    [3071, 0],
+                    [3582, 0],
+                    [4094, 0],
+                    [4606, 0],
+                    [5118, 0],
+                    [5629, 0],
+                    [6141, 0],
+                    [6653, 0],
+                    [7165, 0],
+                    [7676, 0],
+                    [8188, 0],
+                    [8700, 0],
+                    [9212, 0],
+                    [9723, 0],
+                    [10235, 0],
+                    [10747, 0],
+                    [11259, 0],
+                    [11770, 0],
+                    [11770, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/mus/common/sprite_art3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_art3",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/mus/common/sprite_art41.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_art4",
+                "size": [353, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    }
+]

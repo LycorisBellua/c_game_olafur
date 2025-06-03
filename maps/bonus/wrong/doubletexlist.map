@@ -12,25 +12,25 @@ map_ceil_floor:
 000000
 00000
 
-1NO ./img/dgn/dgn_n.png
-1SO ./img/dgn/dgn_s.png
-1WE ./img/dgn/dgn_w.png
-1EA ./img/dgn/dgn_e.png
+1NO dgn_w
+1SO dgn_w2
+1WE dgn_w3
+1EA dgn_w4
 
-1NO ./img/dgn/dgn_n.png
-2SO ./img/dgn/dgn_s.png
-2WE ./img/dgn/dgn_w.png
-2EA ./img/dgn/dgn_e.png
+1NO dgn_w
+2SO dgn_w2
+2WE dgn_w3
+2EA dgn_w4
 
-F ./img/dgn/dgn_f.png
-C ./img/dgn/dgn_c.png
+F dgn_f
+C dgn_c
 
-D ./img/dgn/dgn_d.png
+D dgn_d
 G solid
 
-S ./img/dgn/tex_skybox.png
+S dgn_sk
 
-P E 1 1 ./img/dgn/dgn_p.png ./maps/bonus/playground/room.map E 6 4
+P E 1 1 dgn_p maps/bonus/playground/room.map E 6 4
 
 sprite_collec_soul_idle:
 3.5, 1.5

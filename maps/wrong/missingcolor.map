@@ -1,7 +1,7 @@
-NO ./img/dgn/dgn_n.png
-SO ./img/dgn/dgn_s.png
-WE ./img/dgn/dgn_w.png
-EA ./img/dgn/dgn_e.png
+NO dgn_w
+SO dgn_w2
+WE dgn_w3
+EA dgn_w4
 
 C 0,0,120
 

@@ -1,3 +1,6 @@
+JSON img/common/index.json
+JSON img/box/index.json
+
 map_walls:
 111111111111111111111111111111111111111111111111111111111111111111111
 10000E000000000D00000000000000D000000000000000000D0000000000D00000001
@@ -20,21 +23,21 @@ map_ceil_floor:
 000000000000000
 000000000000000
 
-NO ./img/box/box_n.png
-SO ./img/box/box_s.png
-WE ./img/box/box_w.png
-EA ./img/box/box_e.png
+NO box_w
+SO box_w
+WE box_w
+EA box_w
 
-F ./img/box/box_f.png
-C ./img/null.png
+F box_f
+C null
 
-D ./img/box/box_d.png
-G ./img/null.png
+D box_d
+G null
 
-S ./img/box/box_sk.png
+S box_sk
 
-P S 6 0 ./img/box/box_p_mus.png ./maps/bonus/olafur/mus2.map W 8 4
-P S 15 3 ./img/box/box_p_box.png ./maps/bonus/olafur/box.map W 23 1
+P S 6 0 box_p_mus maps/bonus/olafur/mus2.map W 8 4
+P S 15 3 box_p_box maps/bonus/olafur/box.map W 23 1
 
 sprite_box01:
 15.5, 1.5
@@ -70,4 +73,4 @@ sprite_light_box04:
 3.5, 5.5
 2.5, 7.5
 
-M ./audio/olafur/m_box.mp3
+M audio/olafur/m_box.mp3

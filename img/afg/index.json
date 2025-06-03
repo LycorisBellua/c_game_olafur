@@ -1,0 +1,487 @@
+[
+    {
+        "path": "img/afg/afg_sk.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_sk",
+                "size": [2560, 360],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_d.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_d",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_d_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_d_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_p.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_p",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_p_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_p_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_c.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_c",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_f.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_f",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_f_in.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_f_in",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_1_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_1_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_1_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_1_w2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_1_w3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_1_w3",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_2_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_2_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_2_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_2_w2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_3_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_3_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_3_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_3_w2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_3_w3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_3_w3",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_4_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_4_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_4_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_4_w2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_4_w3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_4_w3",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/afg_4_w4.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "afg_4_w4",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_afg1.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_afg1",
+                "size": [218, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 11,
+                "cycle_time_in_ms": 100,
+                "cycle": [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [218, 0],
+                    [437, 0],
+                    [655, 0],
+                    [874, 0],
+                    [1092, 0],
+                    [1311, 0],
+                    [1529, 0],
+                    [1747, 0],
+                    [1966, 0],
+                    [2184, 0],
+                    [2403, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_afg2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_afg2",
+                "size": [173, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 100,
+                "cycle": [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [173, 0],
+                    [345, 0],
+                    [518, 0],
+                    [690, 0],
+                    [863, 0],
+                    [1035, 0],
+                    [1035, 0],
+                    [1035, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_afg3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_afg3",
+                "size": [241, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 3,
+                "cycle_time_in_ms": 120,
+                "cycle": [
+                    [0, 0],
+                    [241, 0],
+                    [482, 0],
+                    [723, 0],
+                    [964, 0],
+                    [1205, 0],
+                    [1446, 0],
+                    [1686, 0],
+                    [1927, 0],
+                    [2168, 0],
+                    [2409, 0],
+                    [2650, 0],
+                    [2891, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_cage.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_cage",
+                "size": [229, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_collec_book1.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_collec_book1",
+                "size": [165, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_collec_book2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_collec_book2",
+                "size": [165, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_collec_book3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_collec_book3",
+                "size": [165, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/afg/sprite_collec_book4.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_collec_book4",
+                "size": [165, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    }
+]

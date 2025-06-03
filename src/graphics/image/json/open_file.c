@@ -3,13 +3,14 @@
 static char	**get_line_arr(const char *filepath);
 static char	*remove_leading_whitespaces(char *s);
 
-char	**get_json_content(const char *filepath)
+char	**get_json_content(t_man *man, const char *filepath)
 {
 	size_t	i;
 	int		fd;
 	char	*line;
 	char	**lines;
 
+	(void)man;
 	lines = get_line_arr(filepath);
 	if (!lines)
 		return (0);

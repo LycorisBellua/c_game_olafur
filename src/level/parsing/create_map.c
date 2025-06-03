@@ -19,6 +19,27 @@ t_map	*create_map(t_man *man, const char *file)
 	line = NULL;
 	fd = check_file(man, file);
 	line = gnl(fd);
+
+	while (line && !strncmp(line, "JSON ", 5))
+	{
+		free(line);
+		line = gnl(fd);
+	}
+	free(line);
+	line = gnl(fd);
+	/*
+	while (line && !strncmp(line, "JSON ", 5))
+	{
+		line[strlen(line) - 1] = '\0';
+		if (!update_image_array(man, line + 5))
+		{
+			// abort map creation
+		}
+		free(line);
+		line = gnl(fd);
+	}
+	*/
+
 	if (man->bonus)
 		go_to_mandatory(line, &man->bonus);
 	malloc_struct(man, &map, fd, file);

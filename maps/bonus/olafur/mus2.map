@@ -1,3 +1,7 @@
+JSON img/common/index.json
+JSON img/mus/common/index.json
+JSON img/mus/mus2/index.json
+
 map_walls:
 111111111
 100000001
@@ -20,23 +24,23 @@ map_ceil_floor:
 111111111
 111111111
 
-NO ./img/mus/mus_n2.png
-SO ./img/mus/mus_s2.png
-WE ./img/mus/mus_w2.png
-EA ./img/mus/mus_e2.png
+NO mus2_w2
+SO mus2_w
+WE mus2_w4
+EA mus2_w3
 
-F ./img/mus/mus_f2.png
-C ./img/mus/mus_c2.png
+F mus2_f
+C mus2_c
 
-D ./img/null.png
-G ./img/null.png
+D null
+G null
 
-S ./img/mus/mus_sk.png
+S mus_sk
 
-P S 4 0 ./img/mus/mus_p_brain.png ./maps/bonus/olafur/brain.map S 22 13
-P E 0 4 ./img/mus/mus_p_hol.png ./maps/bonus/olafur/hol.map E 9 15
-P W 8 4 ./img/mus/mus_p_box.png ./maps/bonus/olafur/box.map E 5 1
-P N 4 8 ./img/mus/mus_p_menu2.png ./maps/bonus/olafur/menu2.map N 1 1
+P S 4 0 mus2_p_brain maps/bonus/olafur/brain.map S 22 13
+P E 0 4 mus2_p_hol maps/bonus/olafur/hol.map E 9 15
+P W 8 4 mus2_p_box maps/bonus/olafur/box.map E 5 1
+P N 4 8 mus2_p_menu2 maps/bonus/olafur/menu2.map N 1 1
 
 sprite_art1:
 2.5,  2.5
@@ -50,4 +54,4 @@ sprite_art3:
 sprite_art4:
 6.5,  6.5
 
-M ./audio/olafur/m_mus.mp3
+M audio/olafur/m_mus.mp3

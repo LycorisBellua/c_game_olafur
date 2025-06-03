@@ -1,3 +1,6 @@
+JSON img/common/index.json
+JSON img/afg/index.json
+
 map_walls:
 11111122211111222111111122211111
 10000020200000202000000020200001
@@ -56,36 +59,36 @@ map_ceil_floor:
 00000111111111100000000111111000
 00000111111111100000000000111000
 
-1NO ./img/afg/afg_n1.png
-1SO ./img/afg/afg_s1.png
-1WE ./img/afg/afg_w1.png
-1EA ./img/afg/afg_e1.png
+1NO afg_1_w
+1SO afg_1_w2
+1WE afg_1_w3
+1EA afg_1_w3
 
-2NO ./img/afg/afg_n2.png
-2SO ./img/afg/afg_s2.png
-2WE ./img/afg/afg_w2.png
-2EA ./img/afg/afg_e2.png
+2NO afg_2_w
+2SO afg_2_w
+2WE afg_2_w2
+2EA afg_2_w2
 
-3NO ./img/afg/afg_n3.png
-3SO ./img/afg/afg_s3.png
-3WE ./img/afg/afg_w3.png
-3EA ./img/afg/afg_e3.png
+3NO afg_3_w
+3SO afg_3_w2
+3WE afg_3_w3
+3EA afg_3_w3
 
-4NO ./img/afg/afg_n4.png
-4SO ./img/afg/afg_s4.png
-4WE ./img/afg/afg_w4.png
-4EA ./img/afg/afg_e4.png
+4NO afg_4_w2
+4SO afg_4_w
+4WE afg_4_w3
+4EA afg_4_w4
 
-F ./img/afg/afg_f.png
-C ./img/afg/afg_c.png
-F ./img/afg/afg_f_in.png
+F afg_f
+C afg_c
+F afg_f_in
 
-D ./img/afg/afg_d.png
-G ./img/null.png
+D afg_d
+G null
 
-S ./img/afg/afg_sk.png
+S afg_sk
 
-P W 31 3 ./img/afg/afg_p_mus.png ./maps/bonus/olafur/mus.map E 0 4
+P W 31 3 afg_p maps/bonus/olafur/mus.map E 0 4
 
 sprite_afg1:
 4.5, 20.5
@@ -112,4 +115,4 @@ sprite_collec_book3:
 sprite_collec_book4:
 19.5, 21.5
 
-M ./audio/olafur/m_afg.mp3
+M audio/olafur/m_afg.mp3

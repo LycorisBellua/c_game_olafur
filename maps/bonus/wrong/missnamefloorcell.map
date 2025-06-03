@@ -8,20 +8,20 @@ map_walls:
 000000
 00000
 
-NO ./img/dgn/dgn_n.png
-SO ./img/dgn/dgn_s.png
-WE ./img/dgn/dgn_w.png
-EA ./img/dgn/dgn_e.png
+NO dgn_w
+SO dgn_w2
+WE dgn_w3
+EA dgn_w4
 
-F ./img/dgn/dgn_f.png
-C ./img/dgn/dgn_c.png
+F dgn_f
+C dgn_c
 
-D ./img/dgn/dgn_d.png
+D dgn_d
 G solid
 
-S ./img/dgn/tex_skybox.png
+S dgn_sk
 
-P E 1 1 ./img/dgn/dgn_p.png ./maps/bonus/playground/room.map E 6 4
+P E 1 1 dgn_p maps/bonus/playground/room.map E 6 4
 
 sprite_collec_soul_idle:
 3.5, 1.5

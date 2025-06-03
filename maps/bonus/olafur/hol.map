@@ -1,3 +1,6 @@
+JSON img/common/index.json
+JSON img/hol/index.json
+
 map_walls:
  000           000000000000000000000           000
 00 00        0000000000000000000000000        00 00
@@ -62,24 +65,22 @@ map_ceil_floor:
  000           000000000000000000000           000
 
 
-SO ./img/hol/hol_s.png
-NO ./img/hol/hol_n.png
-WE ./img/hol/hol_w.png
-EA ./img/hol/hol_e.png
+SO hol_w2
+NO hol_w
+WE hol_w
+EA hol_w2
 
-F ./img/hol/hol_f.png
-C ./img/hol/hol_c.png
+F hol_f
+C hol_c
 
-D ./img/null.png
+D null
 G solid
 
-S ./img/hol/hol_sk.png
+S hol_sk
 
-P E 6 15 ./img/dgn/dgn_p.png ./maps/bonus/olafur/mus2.map E 0 4
-
-P W 95 14 ./img/dgn/dgn_p.png ./maps/bonus/olafur/hol.map W 24 14
-
-P E 22 14 ./img/dgn/dgn_p.png null N 0 0
+P E 6 15 dgn_p maps/bonus/olafur/mus2.map E 0 4
+P W 95 14 dgn_p maps/bonus/olafur/hol.map W 24 14
+P E 22 14 dgn_p null N 0 0
 
 sprite_hol01:
 48.5, 2.5
@@ -110,4 +111,4 @@ sprite_light_hol07:
 sprite_light_hol08:
 93.5, 14.5
 
-M ./audio/olafur/m_hol.mp3
+M audio/olafur/m_hol.mp3

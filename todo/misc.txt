@@ -1,2 +1,10 @@
+- In `get_json_content`, discard the lines of an image when already present in 
+`man->images`.
+- Currently, the "JSON" lines within the map files aren't used, and all the 
+JSON files are loaded from the main function. Later on, they will load 
+individually at map-parsing time.
+- Before this can happen, the parsing needs to read the entire map file, 
+otherwise this conflicts with the GNL of the JSON parsing. It's also the sane 
+way of parsing anyway.
+
 - OpenAL: Loop source with multithreading.
-- Rewrite parsing.

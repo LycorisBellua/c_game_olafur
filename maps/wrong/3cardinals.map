@@ -1,6 +1,6 @@
-SO ./img/dgn/dgn_s.png
-WE ./img/dgn/dgn_w.png
-EA ./img/dgn/dgn_e.png
+SO dgn_w2
+WE dgn_w3
+EA dgn_w4
 
 F 0,120,0
 C 0,0,120

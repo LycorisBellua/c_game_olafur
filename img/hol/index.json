@@ -1,0 +1,242 @@
+[
+    {
+        "path": "img/hol/hol_sk.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "hol_sk",
+                "size": [2560, 360],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/hol_c.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "hol_c",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/hol_f.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "hol_f",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/hol_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "hol_w",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/hol_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "hol_w2",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_hol01.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_hol01",
+                "size": [362, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_hol02.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_hol02",
+                "size": [350, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_light_hol03.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_hol03",
+                "size": [350, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_light_hol04.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_hol04",
+                "size": [592, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_light_hol05.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_hol05",
+                "size": [671, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_light_hol06.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_hol06",
+                "size": [671, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_light_hol07.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_hol07",
+                "size": [671, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/hol/sprite_light_hol08.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_light_hol08",
+                "size": [318, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/dgn/dgn_p.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "dgn_p",
+                "size": [256, 256],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "img/dgn/dgn_p_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "dgn_p_open",
+                "size": [256, 256],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    }
+]
