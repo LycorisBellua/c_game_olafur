@@ -9,6 +9,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <sys/stat.h>
 # include <math.h>
 # include "math_extra.h"
 // IMAGE ------------
@@ -246,6 +247,7 @@ void		list_del_one(t_list **list, void (*del)(void*));
 /* Parsing (Temp) ----------------------------------------------------------- */
 
 t_map		*create_map(t_man *man, const char *filepath);
+t_map		*fetch_map_data(const char *filepath);
 
 void		put_error_and_exit(t_man *man, char *msg, int shouldexit, int err);
 void		exit_in_parsing(t_man *man, t_map *map, char *msg, void *data);

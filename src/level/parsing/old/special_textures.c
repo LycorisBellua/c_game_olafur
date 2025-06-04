@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 void	find_player(t_man *man, t_map *map, char *s, int y)
 {
 	int	x;
@@ -90,3 +91,4 @@ void	find_skybox(t_man *man, t_map *map, char **line)
 	free(*line);
 	*line = gnl(map->fd);
 }
+*/

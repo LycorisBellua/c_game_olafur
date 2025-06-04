@@ -56,7 +56,9 @@ static char	*get_whole_file(int fd)
 	char	*tmp2;
 	char	*tmp3;
 
-	tmp1 = gnl(fd);
+	tmp3 = gnl(fd);
+	tmp1 = strjoin(tmp3, "\x1C");
+	free(tmp3);
 	tmp2 = gnl(fd);
 	while (tmp2)
 	{

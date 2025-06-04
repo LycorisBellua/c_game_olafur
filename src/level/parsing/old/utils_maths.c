@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 double	move_decimal(double n, unsigned int decimal)
 {
 	if (!n || !decimal)
@@ -34,3 +35,4 @@ double	atod(char *line, int *i)
 	*i += tmp;
 	return (n);
 }
+*/

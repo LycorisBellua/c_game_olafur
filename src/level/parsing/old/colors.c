@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static unsigned int	char_atoui_rgb(char *n, int *i, char sep);
 static t_color		parse_color(t_man *man, t_map *map, char **line);
 
@@ -82,3 +83,4 @@ static t_color	parse_color(t_man *man, t_map *map, char **line)
 	c.b = tmp[2];
 	return (c);
 }
+*/

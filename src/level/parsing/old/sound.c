@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 void	find_music(t_man *man, t_map *map, char **line)
 {
 	char	*music_path;
@@ -23,3 +24,4 @@ void	find_music(t_man *man, t_map *map, char **line)
 	free(*line);
 	*line = gnl(map->fd);
 }
+*/

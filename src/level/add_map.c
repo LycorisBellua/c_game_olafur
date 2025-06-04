@@ -12,7 +12,7 @@ int	add_map(t_man *man, const char *filepath)
 
 	abs_path = get_absolute_path(filepath);
 	if (!abs_path)
-		return (-1);
+		return (put_error(0, E_MAP_READ, filepath, -1));
 	index = find_map_index(man, abs_path);
 	if (index >= 0)
 	{

@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 int	skip_space(char *line)
 {
 	int	i;
@@ -20,3 +21,4 @@ void	skip_whiteline(t_map *map, char **line)
 		*line = gnl(map->fd);
 	}
 }
+*/

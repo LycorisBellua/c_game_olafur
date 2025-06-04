@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static void	is_special(char *line, int *i, int *collec, int *light);
 
 int	get_id(char *line, int *i, t_ivec2 *special, char **id)
@@ -72,3 +73,4 @@ static void	is_special(char *line, int *i, int *collec, int *light)
 	else
 		*light = 0;
 }
+*/

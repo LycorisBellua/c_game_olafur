@@ -25,9 +25,11 @@ void	free_map(t_map *map)
 	if (!map)
 		return ;
 	free(map->filepath);
-	free_arr((void **)map->map_walls, free);
-	free_arr((void **)map->map_ceil_floor, free);
-	free(map->types);
+	free_arr((void **)map->pars.info, free);
+	free_arr((void **)map->pars.map_wall, free);
+	free_arr((void **)map->pars.map_floor, free);
+	free_arr((void **)map->pars.map_ceil, free);
+	free(map->pars.types);
 	free_image(map->skybox, free);
 	free_png(map->background);
 	free_cell_arrays(map);

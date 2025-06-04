@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 int	check_doublewall(char *line, t_tex_type *type)
 {
 	if (!strncmp(line, "NO", 2) && type->tex_north
@@ -43,3 +44,4 @@ int	check_texfilled(t_tex_type *types, int *n_texture)
 	}
 	return (1);
 }
+*/

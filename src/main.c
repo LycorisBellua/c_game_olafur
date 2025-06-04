@@ -7,7 +7,6 @@ int	main(int argc, char **argv)
 	t_ivec2	window_size;
 
 	bzero(&g_man, sizeof(t_man));
-	g_man.bonus = 1;
 	if (argc == 1)
 		return (put_error(0, E_NO_ARG, 0, EXIT_FAILURE));
 	else if (argc > 2)

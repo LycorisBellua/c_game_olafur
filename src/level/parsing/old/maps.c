@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static char	*get_map(t_man *man, t_map *map, char **line);
 static char	**fill_map(t_man *man, t_map *m, t_ivec2 size, char *lines);
 
@@ -100,3 +101,4 @@ static char	**fill_map(t_man *man, t_map *m, t_ivec2 size, char *lines)
 	}
 	return (map);
 }
+*/

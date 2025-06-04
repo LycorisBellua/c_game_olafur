@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 int	find_text(char *line, int *size)
 {
 	int	i;
@@ -116,3 +117,4 @@ int	revncmp(const char *s1, const char *s2, size_t n)
 	}
 	return ((unsigned char)s1[len1] - (unsigned char)s2[len2]);
 }
+*/

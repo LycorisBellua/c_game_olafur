@@ -2,42 +2,14 @@
 
 t_map	*create_map(t_man *man, const char *filepath)
 {
-	char	**lines;
+	t_map	*map;
 
-	/*
-		# define E_MAP_READ "The map file cannot be read"
-			-> string is null || file doesn't exist || is not a file (dir) || no read perm
-		# define E_MAP_TYPE "The map file doesn't have the *.map extension"
-			-> Needs to end in ".map"
-		# define E_MAP_NAME "The map file doesn't have a name"
-			-> no character before the last '.'
-		
-		return (put_error(0, E_MAP_TYPE, filepath, 0));
-	*/
-		
-
-	lines = read_file_lines(filepath);
-	if (!lines)
+	map = fetch_map_data(filepath);
+	if (!map)
 		return (0);
-	/*
-		- Cut each line into tokens at whitespaces. If a line is only 
-		whitespaces, remove it. Except if it's map data. The map needs to be 
-		at the end. Basically, before tokenizing, if a line only has characters 
-		allowed in a map, it's a map line. After the first map line, if you 
-		find newlines it's okay, ignore it for the time being, but if you find 
-		other characters which are not allowed in a map, return an error which 
-		explains that the maps need to come last (wall map first, then floor, 
-		then ceiling). Only the wall map is necessary, the other two are 
-		optional. Also throw an error at this step if there are more than 3 
-		maps or no map at all. At this point, we know that all the info lines 
-		come first, and then come the maps, and that we have the precise amount 
-		of maps we want (between 1 and 3).
 
-		- Browse the entire file. For each line which starts with "JSON" as the 
-		first token, call `update_image_array(man, second_token)`. Abort the 
-		map creation if it returns false.
-	*/
-
+	(void)man;
+	free(map);
 	return (0);
 }
 
@@ -118,3 +90,24 @@ static void	malloc_struct(t_man *man, t_map **map, int fd, const char *file)
 	(*map)->fog_color = get_color_rgba(0, 0, 0, 255);
 }
 */
+
+int	is_portal_visible(t_portal *portal)
+{
+	t_img	*tex;
+	char	*tex_name;
+
+	if (!portal || portal->is_corridor)
+		return (0);
+	if (portal->is_open && portal->tex_open)
+		tex = portal->tex_open;
+	else
+		tex = portal->tex_closed;
+	if (!tex)
+		return (0);
+	tex_name = strrchr(tex->id, '/');
+	if (!tex_name)
+		tex_name = tex->id;
+	else
+		++tex_name;
+	return (tex_name && strncmp(tex_name, "null.png", 8));
+}

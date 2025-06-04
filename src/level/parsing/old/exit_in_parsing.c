@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 void	exit_in_parsing(t_man *man, t_map *map, char *msg, void *data)
 {
 	free(data);
@@ -9,3 +10,4 @@ void	exit_in_parsing(t_man *man, t_map *map, char *msg, void *data)
 		free_map(map);
 	put_error_and_exit(man, msg, 1, EXIT_FAILURE);
 }
+*/

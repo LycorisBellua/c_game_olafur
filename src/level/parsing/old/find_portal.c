@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 t_portal	*find_portal(t_map *map, int x, int y)
 {
 	int	i;
@@ -13,3 +14,4 @@ t_portal	*find_portal(t_map *map, int x, int y)
 	}
 	return (NULL);
 }
+*/

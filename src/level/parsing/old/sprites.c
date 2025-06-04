@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static char	*get_sprites(t_map *map, char **line);
 static void	set_sprite(t_spr *spr, t_img *img, t_ivec2 col_light, t_vec2 pos);
 static int	set_sprites(t_man *man, t_map *map, char *line);
@@ -122,3 +123,4 @@ static int	allocate_sprites(t_map *map)
 	}
 	return (1);
 }
+*/

@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static void	biggest_digit(char c, int *n);
 
 void	find_longest_line(char *s, t_ivec2 *size, int *n_texture)
@@ -56,3 +57,4 @@ static void	biggest_digit(char c, int *n)
 			*n = tmp;
 	}
 }
+*/

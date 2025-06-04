@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static char		*get_portals(t_map *map, char **line);
 static t_portal	**set_portals(t_man *man, t_map *map, char *line);
 static t_portal	*valid_portal(t_man *man, t_map *map, char *line, int i);
@@ -110,3 +111,4 @@ static char	*get_portal_absolute_path(char *path)
 	free(path);
 	return (absolute);
 }
+*/

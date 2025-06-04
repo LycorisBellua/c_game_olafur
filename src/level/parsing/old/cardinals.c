@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static int	is_bad_map(char **line);
 static int	find_cards(t_man *man, t_map *map, char **line, t_tex_type *type);
 static int	find_n_wall(char *line, int *n_wall, int *n_type);
@@ -123,3 +124,4 @@ static int	find_n_wall(char *line, int *n_wall, int *n_type)
 	}
 	return (0);
 }
+*/

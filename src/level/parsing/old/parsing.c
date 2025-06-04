@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static void	parse_bonus_lines(t_man *man, t_map *map, char **line);
 static void	reach_endfile(t_man *man, t_map *map, char **line);
 
@@ -66,3 +67,4 @@ static void	reach_endfile(t_man *man, t_map *map, char **line)
 	}
 	close(map->fd);
 }
+*/

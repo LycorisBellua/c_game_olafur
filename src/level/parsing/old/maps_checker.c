@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 static void	check_adjacent_floor_tiles(t_man *man, t_map *m, char **map,
 				t_vec2 pos);
 
@@ -82,3 +83,4 @@ t_vec2 pos)
 		exit_in_parsing(man, m, E_OUTTILE, NULL);
 	}
 }
+*/

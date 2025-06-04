@@ -1,16 +1,6 @@
 JSON img/common/index.json
 JSON img/menu/index.json
 
-map_walls:
-111
-1N1
-111
-
-map_ceil_floor:
-111
-111
-111
-
 NO menu_p
 SO menu_w3
 WE menu_w2
@@ -27,3 +17,15 @@ S brain_sk
 P N 1 2 null maps/bonus/olafur/mus2.map N 4 7
 
 M audio/olafur/m_menu.mp3
+
+111
+1N1
+111
+
+111
+111
+111
+
+111
+111
+111

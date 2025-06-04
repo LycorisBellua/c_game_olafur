@@ -84,6 +84,8 @@
 
 /* Parsing ------------------------------------------------------------------ */
 
+# define MAP_CHARS "NSWEDG"
+
 # define E_MAP_READ "The map file cannot be read"
 # define E_MAP_TYPE "The map file doesn't have the *.map extension"
 # define E_MAP_NAME "The map file doesn't have a name"

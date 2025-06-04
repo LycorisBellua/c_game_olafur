@@ -84,6 +84,6 @@ static char	*get_substr(const char *s, unsigned int start, size_t len)
 	if (!sub)
 		return (0);
 	if (start < strlen(s))
-		ft_strncpy(sub, s + start, len);
+		strncpy(sub, s + start, len);
 	return (sub);
 }

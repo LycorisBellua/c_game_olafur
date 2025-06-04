@@ -1,5 +1,6 @@
 #include "cimmerian.h"
 
+/*
 void	put_error_and_exit(t_man *man, char *msg, int shouldexit, int err)
 {
 	if (man)
@@ -9,3 +10,4 @@ void	put_error_and_exit(t_man *man, char *msg, int shouldexit, int err)
 	if (shouldexit)
 		exit(err);
 }
+*/

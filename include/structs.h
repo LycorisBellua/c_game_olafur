@@ -227,12 +227,19 @@ typedef struct s_tex_type
 	t_img	*tex_goal;
 }	t_tex_type;
 
+typedef struct s_map_pars
+{
+	char		**info;
+	char		**map_wall;
+	char		**map_floor;
+	char		**map_ceil;
+	t_tex_type	*types;
+}	t_map_pars;
+
 struct s_map
 {
-	/**/int		fd;
+	t_map_pars	pars;
 	char		*filepath;
-	char		**map_walls;
-	char		**map_ceil_floor;
 	t_ivec2		size;
 	t_vec2		start_pos;
 	t_vec2		start_dir;
@@ -244,7 +251,6 @@ struct s_map
 	int			background_offset;
 	int			portal_len;
 	t_portal	**portals;
-	t_tex_type	*types;
 	t_cell		**cells;
 	int			sprite_len;
 	t_spr		**sprites;
