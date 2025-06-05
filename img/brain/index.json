@@ -304,11 +304,11 @@
         ]
     },
     {
-        "path": "img/brain/sprite_light_brain08.png",
+        "path": "img/brain/sprite_brain08.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_brain08",
+                "id": "sprite_brain08",
                 "size": [64, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -320,11 +320,11 @@
         ]
     },
     {
-        "path": "img/brain/sprite_collec_brain09.png",
+        "path": "img/brain/sprite_brain09.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_collec_brain09",
+                "id": "sprite_brain09",
                 "size": [174, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

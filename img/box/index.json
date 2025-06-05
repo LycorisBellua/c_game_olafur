@@ -176,11 +176,11 @@
         ]
     },
     {
-        "path": "img/box/sprite_light_box04.png",
+        "path": "img/box/sprite_box04.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_box04",
+                "id": "sprite_box04",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

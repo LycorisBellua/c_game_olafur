@@ -224,11 +224,11 @@
         ]
     },
     {
-        "path": "img/mus/mus/sprite_light_mus1.png",
+        "path": "img/mus/mus/sprite_mus1.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_mus1",
+                "id": "sprite_mus1",
                 "size": [511, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -240,11 +240,11 @@
         ]
     },
     {
-        "path": "img/mus/mus/sprite_light_mus2.png",
+        "path": "img/mus/mus/sprite_mus2.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_mus2",
+                "id": "sprite_mus2",
                 "size": [511, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -256,11 +256,11 @@
         ]
     },
     {
-        "path": "img/mus/mus/sprite_light_mus3.png",
+        "path": "img/mus/mus/sprite_mus3.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_mus3",
+                "id": "sprite_mus3",
                 "size": [511, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

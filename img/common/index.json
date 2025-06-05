@@ -1,21 +1,5 @@
 [
     {
-        "path": "img/common/null.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "null",
-                "size": [1, 1],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 0,
-                "cycle": [
-                    [0, 0]
-                ]
-            }
-        ]
-    },
-    {
         "path": "img/common/monogram.png",
         "path_shadow": "",
         "segments": [
@@ -182,7 +166,7 @@
         "path_shadow": "img/common/soul_shadow.png",
         "segments": [
             {
-                "id": "sprite_collec_soul_idle",
+                "id": "sprite_soul_idle",
                 "size": [32, 32],
                 "shadow_offset": [0, 0],
                 "still_frame": 3,

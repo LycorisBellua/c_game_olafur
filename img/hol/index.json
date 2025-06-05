@@ -112,11 +112,11 @@
         ]
     },
     {
-        "path": "img/hol/sprite_light_hol03.png",
+        "path": "img/hol/sprite_hol03.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_hol03",
+                "id": "sprite_hol03",
                 "size": [350, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -128,11 +128,11 @@
         ]
     },
     {
-        "path": "img/hol/sprite_light_hol04.png",
+        "path": "img/hol/sprite_hol04.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_hol04",
+                "id": "sprite_hol04",
                 "size": [592, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -144,11 +144,11 @@
         ]
     },
     {
-        "path": "img/hol/sprite_light_hol05.png",
+        "path": "img/hol/sprite_hol05.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_hol05",
+                "id": "sprite_hol05",
                 "size": [671, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -160,11 +160,11 @@
         ]
     },
     {
-        "path": "img/hol/sprite_light_hol06.png",
+        "path": "img/hol/sprite_hol06.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_hol06",
+                "id": "sprite_hol06",
                 "size": [671, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -176,11 +176,11 @@
         ]
     },
     {
-        "path": "img/hol/sprite_light_hol07.png",
+        "path": "img/hol/sprite_hol07.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_hol07",
+                "id": "sprite_hol07",
                 "size": [671, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -192,11 +192,11 @@
         ]
     },
     {
-        "path": "img/hol/sprite_light_hol08.png",
+        "path": "img/hol/sprite_hol08.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_light_hol08",
+                "id": "sprite_hol08",
                 "size": [318, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

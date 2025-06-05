@@ -215,25 +215,25 @@ typedef struct s_spr
 
 typedef struct s_tex_type
 {
-	t_img	*tex_floor;
-	t_img	*tex_f_indoor;
-	t_img	*tex_ceiling;
 	t_img	*tex_north;
 	t_img	*tex_east;
 	t_img	*tex_south;
 	t_img	*tex_west;
-	t_img	*tex_door_closed;
-	t_img	*tex_door_open;
-	t_img	*tex_goal;
 }	t_tex_type;
 
 typedef struct s_map_pars
 {
-	char		**info;
+	char		**lines;
+	char		***vars;
 	char		**map_wall;
 	char		**map_floor;
 	char		**map_ceil;
-	t_tex_type	*types;
+	t_tex_type	*tex_types_wall;
+	t_img		**tex_types_floor;
+	t_img		**tex_types_ceil;
+	t_img		*tex_door_closed;
+	t_img		*tex_door_open;
+	t_img		*tex_goal;
 }	t_map_pars;
 
 struct s_map

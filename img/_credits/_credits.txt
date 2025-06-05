@@ -1,9 +1,6 @@
 ------------------------------------ COMMON ------------------------------------
 ---------------------------- Concept by LycorisDev -----------------------------
 
-Hellchauffo
-- common/null.png
-
 See "license_monogram.txt"
 - common/monogram.png
 
@@ -84,9 +81,9 @@ Hellchauffo
 - mus/mus/mus_w2.png
 - mus/mus/mus_w3.png
 - mus/mus/mus_w4.png
-- mus/mus/sprite_light_mus1.png
-- mus/mus/sprite_light_mus2.png
-- mus/mus/sprite_light_mus3.png
+- mus/mus/sprite_mus1.png
+- mus/mus/sprite_mus2.png
+- mus/mus/sprite_mus3.png
 - mus/mus2/mus2_c.png
 - mus/mus2/mus2_f.png
 - mus/mus2/mus2_p_box.png
@@ -130,10 +127,10 @@ Hellchauffo
 - afg/sprite_afg2.png
 - afg/sprite_afg3.png
 - afg/sprite_cage.png
-- afg/sprite_collec_book1.png
-- afg/sprite_collec_book2.png
-- afg/sprite_collec_book3.png
-- afg/sprite_collec_book4.png
+- afg/sprite_book1.png
+- afg/sprite_book2.png
+- afg/sprite_book3.png
+- afg/sprite_book4.png
 
 ---------------------------------- FINDTHEBOX ----------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------
@@ -150,7 +147,7 @@ Hellchauffo
 - box/sprite_box01.png
 - box/sprite_box02.png
 - box/sprite_box03.png
-- box/sprite_light_box04.png
+- box/sprite_box04.png
 
 ------------------------------------ BRAIN -------------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------
@@ -175,8 +172,8 @@ Hellchauffo
 - brain/sprite_brain05.png
 - brain/sprite_brain06.png
 - brain/sprite_brain07.png
-- brain/sprite_light_brain08.png
-- brain/sprite_collec_brain09.png
+- brain/sprite_brain08.png
+- brain/sprite_brain09.png
 - brain/sprite_brain10.png
 - brain/sprite_brain11.png
 
@@ -192,12 +189,12 @@ Hellchauffo
 - hol/hol_w2.png
 - hol/sprite_hol01.png
 - hol/sprite_hol02.png
-- hol/sprite_light_hol03.png
-- hol/sprite_light_hol04.png
-- hol/sprite_light_hol05.png
-- hol/sprite_light_hol06.png
-- hol/sprite_light_hol07.png
-- hol/sprite_light_hol08.png
+- hol/sprite_hol03.png
+- hol/sprite_hol04.png
+- hol/sprite_hol05.png
+- hol/sprite_hol06.png
+- hol/sprite_hol07.png
+- hol/sprite_hol08.png
 
 ------------------------------------- POOL -------------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------

@@ -1,7 +1,56 @@
 JSON img/common/index.json
 JSON img/box/index.json
 
-map_walls:
+NO box_w
+SO box_w
+WE box_w
+EA box_w
+
+F box_f
+
+D box_d
+
+S box_sk
+
+P S 6 0 box_p_mus box_p_mus_open maps/bonus/olafur/mus2.map W 8 4
+P S 15 3 box_p_box box_p_box_open maps/bonus/olafur/box.map W 23 1
+
+SP sprite_box01 collision
+15.5, 1.5
+60.5, 1.5
+26.5, 2.5
+51.5, 2.5
+5.5, 6.5
+
+SP sprite_box02 collision
+54.5, 2.5
+57.5, 2.5
+6.5, 3.5
+32.5, 2.5
+
+SP sprite_box03 collision
+30.5, 1.5
+7.5, 2.5
+9.5, 2.5
+22.5, 3.5
+8.5, 4.5
+9.5, 7.5
+
+SP sprite_soul_idle collectible
+49.5, 1.5
+3.5, 2.5
+18.5, 2.5
+41.5, 2.5
+2.5, 3.5
+
+SP sprite_box04
+45.5, 3.5
+69.5, 3.5
+3.5, 5.5
+2.5, 7.5
+
+M audio/olafur/m_box.mp3
+
 111111111111111111111111111111111111111111111111111111111111111111111
 10000E000000000D00000000000000D000000000000000000D0000000000D00000001
 100D000D0D00000000D0000000D00000D00000000D000000000D00D00D00000000001
@@ -12,7 +61,6 @@ map_walls:
 10D000000D00001
 111111111111111
 
-map_ceil_floor:
 000000000000000000000000000000000000000000000000000000000000000000000
 000000000000000000000000000000000000000000000000000000000000000000000
 000000000000000000000000000000000000000000000000000000000000000000000
@@ -22,55 +70,3 @@ map_ceil_floor:
 000000000000000
 000000000000000
 000000000000000
-
-NO box_w
-SO box_w
-WE box_w
-EA box_w
-
-F box_f
-C null
-
-D box_d
-G null
-
-S box_sk
-
-P S 6 0 box_p_mus maps/bonus/olafur/mus2.map W 8 4
-P S 15 3 box_p_box maps/bonus/olafur/box.map W 23 1
-
-sprite_box01:
-15.5, 1.5
-60.5, 1.5
-26.5, 2.5
-51.5, 2.5
-5.5, 6.5
-
-sprite_box02:
-54.5, 2.5
-57.5, 2.5
-6.5, 3.5
-32.5, 2.5
-
-sprite_box03:
-30.5, 1.5
-7.5, 2.5
-9.5, 2.5
-22.5, 3.5
-8.5, 4.5
-9.5, 7.5
-
-sprite_collec_soul_idle:
-49.5, 1.5
-3.5, 2.5
-18.5, 2.5
-41.5, 2.5
-2.5, 3.5
-
-sprite_light_box04:
-45.5, 3.5
-69.5, 3.5
-3.5, 5.5
-2.5, 7.5
-
-M audio/olafur/m_box.mp3

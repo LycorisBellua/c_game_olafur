@@ -89,6 +89,11 @@
 # define E_MAP_READ "The map file cannot be read"
 # define E_MAP_TYPE "The map file doesn't have the *.map extension"
 # define E_MAP_NAME "The map file doesn't have a name"
+# define E_VARS_AFTER_MAP "Variable found after map content"
+# define E_NO_MAP "No wall map was found"
+# define E_TOO_MANY_MAPS "There are more than three maps"
+# define E_NO_VAR "No var was found"
+# define E_JSON "JSON file"
 
 /* Parsing (Temp) ----------------------------------------------------------- */
 

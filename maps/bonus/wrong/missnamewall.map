@@ -23,6 +23,6 @@ S dgn_sk
 
 P E 1 1 dgn_p maps/bonus/playground/room.map E 6 4
 
-sprite_collec_soul_idle:
+SP sprite_soul_idle collectible
 3.5, 1.5
 
