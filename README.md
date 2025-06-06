@@ -20,10 +20,18 @@ question neither. The purpose is to experiment and scratch my low level itch.
 
 ## Levels
 
+- maps/bonus/test/\*:
+The Test level is where I develop features.  
+
+- maps/bonus/olafur/\* (recommended entry "menu2.map"):
 The Olafur level is a museum where each painting leads to another mini-world. 
-This level has been entirely created by 
-[Lucie-Kin](https://github.com/Lucie-Kin), a friend of mine. I've only added an 
-easter egg to the elevator.  
+Besides the "Cimmerian" mini-world, which stems from my test level, the choice 
+of elevator music, and an easter egg accessible from the elevator, the level 
+has been entirely designed by Hellchauffo ([Figma](https://www.figma.com/proto/
+UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974) and [GitHub](https://github.com/
+Lucie-Kin)), a friend of mine. She is behind the concept, the map layouts, the 
+sprites, the textures, the presence of music and the choice of tracks. This has 
+been quite the undertaking and I thank her for this work.  
 
 ## Commands
 
