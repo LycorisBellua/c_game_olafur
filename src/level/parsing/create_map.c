@@ -11,13 +11,14 @@ t_map	*create_map(t_man *man, const char *filepath)
 		- If a line ends in "\" (with a newline of course), do we concatenate?
 		- And if so, do we do this in the parsing or in the original file 
 		reading function?
+		- Add a README to the maps folder to explain how to format a map file.
 	*/
 	map = fetch_map_data(filepath);
 	if (!map)
 		return (0);
-	if (!process_json_lines(man, map))
+	if (!process_json_lines(man, map) || !process_wall_types(man, map))
 	{
-		free(map);
+		free_map(map);
 		return (0);
 	}
 	/*
@@ -38,6 +39,8 @@ t_map	*create_map(t_man *man, const char *filepath)
 		-> If third token, it's bad.
 		-> If the second token's processing fails in `add_new_image`, it's bad.
 
+		------------------------------------------------------------------------
+
 		F C
 		-> Initialize the floor, ceiling and fog colors to (0, 0, 0, 255).
 		-> Can be an RGB color. Alpha is not indicated and is 255.
@@ -54,6 +57,12 @@ t_map	*create_map(t_man *man, const char *filepath)
 		you have more than one type, pick the lowest.
 		-> In a floor or ceiling map, '0' means "show the background".
 
+		S
+		-> Optional. Skybox image.
+		-> Once you have it, compose the background and stuff.
+
+		------------------------------------------------------------------------
+
 		D
 		-> Optional. Texture for the door cell's walls.
 		-> First comes the closed version.
@@ -61,10 +70,6 @@ t_map	*create_map(t_man *man, const char *filepath)
 		
 		G
 		-> Optional. Texture for the goal cell's walls.
-
-		S
-		-> Optional. Skybox image.
-		-> Once you have it, compose the background and stuff.
 
 		P
 		-> Optional. Portal line.
@@ -92,7 +97,7 @@ t_map	*create_map(t_man *man, const char *filepath)
 		M
 		-> Optional. It's the path to the music file.
 	*/
-	free(map);
+	free_map(map);
 	return (0);
 }
 
@@ -118,24 +123,6 @@ static int	process_json_lines(t_man *man, t_map *map)
 }
 
 /*
-t_map	*create_map(t_man *man, const char *filepath)
-{
-	int	nbr_types;
-
-	// ...
-	nbr_types = 1;
-	if (man->bonus)
-		nbr_types = 9;
-	(*map)->types = calloc(nbr_types + 1, sizeof(t_cell));
-	if (!(*map)->types)
-		exit_in_parsing(man, *map, E_FAIL_MEM, NULL);
-	set_vec2(&(*map)->start_pos, -1, -1);
-	(*map)->fog_color = get_color_rgba(0, 0, 0, 255);
-	//
-	parse_file_map(man, map, &line);
-	return (map);
-}
-
 void	parse_file_map(t_man *man, t_map *map, char **line)
 {
 	int	n_texture;

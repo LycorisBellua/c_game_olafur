@@ -94,6 +94,12 @@
 # define E_TOO_MANY_MAPS "There are more than three maps"
 # define E_NO_VAR "No var was found"
 # define E_JSON "JSON file"
+# define E_CARD_0 "No 0 wall type, it's a digit between 1 and 9"
+# define E_DUP_CARD "A cardinal wall type was found more than once"
+# define E_NO_WALL_TEX "No wall texture was indicated"
+# define E_WALL_TEX_TWO "A second wall texture was indicated"
+# define E_CARD_NOT_FOUR "At least one cardinal is missing for a wall type"
+# define E_NO_IMG "Image not found"
 
 /* Parsing (Temp) ----------------------------------------------------------- */
 

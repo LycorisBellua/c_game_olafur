@@ -254,5 +254,7 @@ void		list_del_one(t_list **list, void (*del)(void*));
 t_map		*create_map(t_man *man, const char *filepath);
 t_map		*fetch_map_data(const char *filepath);
 int			extract_maps(t_map *map);
+int			process_wall_types(t_man *man, t_map *map);
+int			put_error_wall(char *tex[10][4], const char *msg, const char *arg);
 
 #endif

@@ -213,13 +213,20 @@ typedef struct s_spr
 	t_ivec2	draw_end;
 }	t_spr;
 
-typedef struct s_tex_type
+typedef struct s_wall_type
 {
+	char	symbol;
 	t_img	*tex_north;
 	t_img	*tex_east;
 	t_img	*tex_south;
 	t_img	*tex_west;
-}	t_tex_type;
+}	t_wall_type;
+
+typedef struct s_row_type
+{
+	char	symbol;
+	t_img	*tex;
+}	t_row_type;
 
 typedef struct s_map_pars
 {
@@ -228,9 +235,9 @@ typedef struct s_map_pars
 	char		**map_wall;
 	char		**map_floor;
 	char		**map_ceil;
-	t_tex_type	*tex_types_wall;
-	t_img		**tex_types_floor;
-	t_img		**tex_types_ceil;
+	t_wall_type	*tex_types_wall;
+	t_row_type	*tex_types_floor;
+	t_row_type	*tex_types_ceil;
 	t_img		*tex_door_closed;
 	t_img		*tex_door_open;
 	t_img		*tex_goal;
