@@ -7,7 +7,7 @@ static void	fill_image_slot(t_man *man, int index, char *abs_path, t_png *file);
 	If you cannot get the absolute path, it might be because `path` is actually 
 	an ID.
 */
-t_img	*add_new_image(t_man *man, const char *path)
+t_img	*add_image(t_man *man, const char *path)
 {
 	char	*abs_path;
 	t_img	*img;

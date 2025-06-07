@@ -69,16 +69,15 @@ static int	process_wall_line(t_map *map, char *tex[10][4], int i, int digit)
 	else
 		digit = map->pars.vars[i][0][0] - '0';
 	if (!digit)
-		return (put_error_wall(tex, E_CARD_0, map->pars.vars[i][0]));
+		return (put_error_wall(tex, E_TYPE_0, map->pars.vars[i][0]));
 	else if (tex[digit][card])
-		return (put_error_wall(tex, E_DUP_CARD, map->pars.vars[i][0]));
+		return (put_error_wall(tex, E_DUP_VAR, map->pars.vars[i][0]));
 	else if (!map->pars.vars[i][1])
-		return (put_error_wall(tex, E_NO_WALL_TEX, map->pars.vars[i][0]));
+		return (put_error_wall(tex, E_VAR_VAL, map->pars.vars[i][0]));
 	else if (map->pars.vars[i][2])
-		return (put_error_wall(tex, E_WALL_TEX_TWO, map->pars.vars[i][0]));
+		return (put_error_wall(tex, E_VAR_VALS, map->pars.vars[i][0]));
 	tex[digit][card] = strdup(map->pars.vars[i][1]);
-	free_arr((void **)map->pars.vars[i], free);
-	remove_arr_elems((void **)map->pars.vars, i, i, 0);
+	remove_var_line(map, i);
 	return (1);
 }
 
@@ -108,25 +107,25 @@ static int	fetch_images(t_man *man, char *tex[10][4], int i, t_wall_type *w)
 {
 	if (strcmp(tex[i][0], "null"))
 	{
-		w->tex_north = add_new_image(man, tex[i][0]);
+		w->tex_north = add_image(man, tex[i][0]);
 		if (!w->tex_north)
 			return (put_error_wall(tex, E_NO_IMG, tex[i][0]));
 	}
 	if (strcmp(tex[i][1], "null"))
 	{
-		w->tex_south = add_new_image(man, tex[i][1]);
+		w->tex_south = add_image(man, tex[i][1]);
 		if (!w->tex_south)
 			return (put_error_wall(tex, E_NO_IMG, tex[i][1]));
 	}
 	if (strcmp(tex[i][2], "null"))
 	{
-		w->tex_west = add_new_image(man, tex[i][2]);
+		w->tex_west = add_image(man, tex[i][2]);
 		if (!w->tex_west)
 			return (put_error_wall(tex, E_NO_IMG, tex[i][2]));
 	}
 	if (strcmp(tex[i][3], "null"))
 	{
-		w->tex_east = add_new_image(man, tex[i][3]);
+		w->tex_east = add_image(man, tex[i][3]);
 		if (!w->tex_east)
 			return (put_error_wall(tex, E_NO_IMG, tex[i][3]));
 	}

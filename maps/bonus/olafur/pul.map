@@ -1,17 +1,17 @@
-JSON img/common/index.json
-JSON img/pul/index.json
+IMG img/common/index.json
+IMG img/pul/index.json
 
 NO pul_w
 SO pul_w2
 WE pul_w3
 EA pul_w4
 
-F pul_f
-C pul_c
+1F pul_f
+1C pul_c
 
-S pul_sk
+SK pul_sk
 
-P N 4 9 pul_p pul_p_open maps/bonus/olafur/mus.map S 4 0
+PT N 4 9 pul_p pul_p_open maps/bonus/olafur/mus.map S 4 0
 
 SP sprite_legs
 6.8, 8.8
@@ -22,7 +22,7 @@ SP sprite_stairs
 SP sprite_soul_idle collectible
 4.5, 2.5
 
-M audio/olafur/m_pul.mp3
+M_BG audio/olafur/m_pul.mp3
 
 1111111111
 1000000001

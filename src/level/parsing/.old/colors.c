@@ -11,9 +11,9 @@ void	find_f_c_style(t_man *man, t_map *map, char**line, char *address)
 	if (!strncmp(*line, "F ", 2))
 	{
 		if (man->bonus && !map->types[1].tex_floor)
-			map->types[1].tex_floor = add_new_image(man, address);
+			map->types[1].tex_floor = add_image(man, address);
 		else if (man->bonus)
-			map->types[1].tex_f_indoor = add_new_image(man, address);
+			map->types[1].tex_f_indoor = add_image(man, address);
 		else
 		{
 			tmp = parse_color(man, map, line);
@@ -23,7 +23,7 @@ void	find_f_c_style(t_man *man, t_map *map, char**line, char *address)
 	else if (!strncmp(*line, "C ", 2))
 	{
 		if (man->bonus)
-			map->types[1].tex_ceiling = add_new_image(man, address);
+			map->types[1].tex_ceiling = add_image(man, address);
 		else
 		{
 			tmp = parse_color(man, map, line);

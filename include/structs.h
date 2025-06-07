@@ -251,12 +251,11 @@ struct s_map
 	t_vec2		start_pos;
 	t_vec2		start_dir;
 	t_color		fog_color;
-	t_color		ceiling_color;
 	t_color		floor_color;
+	t_color		ceil_color;
 	t_img		*skybox;
 	t_png		*background;
 	int			background_offset;
-	int			portal_len;
 	t_portal	**portals;
 	t_cell		**cells;
 	int			sprite_len;

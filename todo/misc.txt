@@ -1,2 +1,65 @@
+COMMON
 - Redo parsing.
 - OpenAL: Loop source with multithreading.
+- Are the maps as they should be? Fix anything you notice, so that it matches 
+the original design.
+- The option to have a (flat) sprite not facing the camera, but a specific 
+direction.
+- If the skybox is an animation which changes color, the fog color needs to 
+change as well. The image average color is actually an array, make use of this 
+instead of only using the first array element.
+
+[COMMON] SOUND
+- Consider sound effects. For example when collecting something (one sound for 
+all collectibles). Also a jingle when reaching the winning screen, and a damage 
+sound effect when reaching the losing screen. I don't want a sound when 
+crossing a portal, as certain portals ought to be discreet. In any case, don't 
+have these tracks be indicated in a hardcoded manner. They are indicated in the 
+map file. They are their own line. For example, "M_COLLEC", "M_WIN", "M_LOSE", 
+and the simple "M" becomes "M_BG". This could be the "M" of MP3, instead of 
+using "T" for "track" which could remind of "texture".
+- Consider several "music tracks", in the sense as something looping in the 
+background. Each soundtrack is indicated with the "M" var in the map file. For 
+the time being, the parsing only allow one music track. The purpose of another 
+one is for example to have ambient sound, such as the wind. Something I have to 
+make clear to future me: DO NOT, I repeat, DO NOT... Try to determine whether 
+the player is indoors or outdoors, this is more complex than you imagine. Let 
+the map designer make their own decisions. It's not complicated for them to 
+have a map with only the outside of buildings, no way to get inside them 
+besides a portal for the door, and then a smaller map for the inside of the 
+building. The "inside" map could encompass all the buildings of a map, the 
+designer doesn't have to create a new map for each building. This way, the 
+sound fits. And if you wonder how such a map can be written when "islands" 
+are not allowed, remember that a space can be used to represent a literal empty 
+cell, and the walkable areas are still enclosed in walls because they are 
+the inner part of buildings, aka they have walls. What's not allowed is a mere 
+newline.
+
+[COMMON] COLLECTIBLES
+- Have a general icon for collectibles: a small circle using the same pattern 
+as the goal texture (switching between these two specific colors).
+- It shows the amount of collectibles we already have as well as the amount 
+needed to win the game, hardcoded as 5.
+- When entering a map with collectibles in it, these are showcased right under 
+the general collectible line. The icon of the map collectible is shown, with 
+how many have been found and how many are available. For example, in the AFG 
+map, each book is a single line, because they are different collectibles, and 
+not several instances of the same one.
+- Let's allow the player to collect them all, but with a boolean switch in the 
+macro header. Depending on the boolean value, which is hardcoded, the player 
+can keep collecting even if it's to have more collectibles than needed, 
+otherwise the player cannot collect anymore.
+
+[BONUS] LEVELS - SELECT SCREEN
+- Instead of giving a map file as argument, you can give a directory. The game 
+fetches all the map files present there, recursively. If only one map exists, 
+it's loaded automatically. Otherwise, a select screen shows up. It lists the 
+maps as they came in, with the name being their filename without the extension. 
+You can select any of them.
+- For the name being displayed, it's actually not just the filename. It's the 
+path starting after the folder, and without "*.map" at the end. For example, 
+for "maps/bonus" as argument, it's "OLAFUR/AFG" and "TEST/DGN".
+- When you press BACKSPACE, you're brought back to this menu. If there was only 
+one map (which is also the case if you indicated a map and not a directory), 
+then you're brought back there automatically instead of selecting. Besides 
+pressing BACKSPACE, also have an explicit menu option.

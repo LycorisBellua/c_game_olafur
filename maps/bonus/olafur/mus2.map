@@ -1,21 +1,21 @@
-JSON img/common/index.json
-JSON img/mus/common/index.json
-JSON img/mus/mus2/index.json
+IMG img/common/index.json
+IMG img/mus/common/index.json
+IMG img/mus/mus2/index.json
 
 NO mus2_w2
 SO mus2_w
 WE mus2_w4
 EA mus2_w3
 
-F mus2_f
-C mus2_c
+1F mus2_f
+1C mus2_c
 
-S mus_sk
+SK mus_sk
 
-P S 4 0 mus2_p_brain mus2_p_brain_open maps/bonus/olafur/brain.map S 22 13
-P E 0 4 mus2_p_hol mus2_p_hol_open maps/bonus/olafur/hol.map E 9 15
-P W 8 4 mus2_p_box mus2_p_box_open maps/bonus/olafur/box.map E 5 1
-P N 4 8 mus2_p_menu2 mus2_p_menu2_open maps/bonus/olafur/menu2.map N 1 1
+PT S 4 0 mus2_p_brain mus2_p_brain_open maps/bonus/olafur/brain.map S 22 13
+PT E 0 4 mus2_p_hol mus2_p_hol_open maps/bonus/olafur/hol.map E 9 15
+PT W 8 4 mus2_p_box mus2_p_box_open maps/bonus/olafur/box.map E 5 1
+PT N 4 8 mus2_p_menu2 mus2_p_menu2_open maps/bonus/olafur/menu2.map N 1 1
 
 SP sprite_art1 collision
 2.5,  2.5
@@ -29,7 +29,7 @@ SP sprite_art3 collision
 SP sprite_art4 collision
 6.5,  6.5
 
-M audio/olafur/m_mus.mp3
+M_BG audio/olafur/m_mus.mp3
 
 111111111
 100000001
@@ -44,9 +44,9 @@ M audio/olafur/m_mus.mp3
 111111111
 111111111
 111111111
-111101111
-111000111
-111101111
+111111111
+111111111
+111111111
 111111111
 111111111
 111111111

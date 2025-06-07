@@ -93,15 +93,20 @@
 # define E_NO_MAP "No wall map was found"
 # define E_TOO_MANY_MAPS "There are more than three maps"
 # define E_NO_VAR "No var was found"
-# define E_JSON "JSON file"
-# define E_CARD_0 "No 0 wall type, it's a digit between 1 and 9"
-# define E_DUP_CARD "A cardinal wall type was found more than once"
-# define E_NO_WALL_TEX "No wall texture was indicated"
-# define E_WALL_TEX_TWO "A second wall texture was indicated"
+# define E_NO_JSON "Not a JSON file"
+# define E_FAIL_JSON "The JSON file for images cannot be loaded"
+# define E_TYPE_0 "No 0 cell type, it's a digit between 1 and 9"
 # define E_CARD_NOT_FOUR "At least one cardinal is missing for a wall type"
-# define E_NO_IMG "Image not found"
+# define E_DUP_VAR "A single-use variable was found more than once"
+# define E_VAR_VAL "A value is missing for a variable"
+# define E_VAR_VALS "Too many values found for a variable"
+# define E_NO_IMG "PNG image not found"
+# define E_NO_TRACK "MP3 sound track not found"
+# define E_NO_COLOR "Invalid RGB or hex color"
+# define E_NO_CARD "Invalid cardinal - Valid is N S W E or NO SO WE EA"
+# define E_NO_COORD "Invalid coordinate - Valid is [0 - 2147483647]"
 
-/* Parsing (Temp) ----------------------------------------------------------- */
+/* Parsing (Old) ------------------------------------------------------------ */
 
 //ANNEXE
 # define WHITES "\a\b\t\n\v\f\r "

@@ -21,9 +21,9 @@ C dgn_c
 D dgn_d
 G solid
 
-S dgn_sk
+SK dgn_sk
 
-P E 1 1 dgn_p maps/bonus/playground/room.map E 6 4
+PT E 1 1 dgn_p maps/bonus/playground/room.map E 6 4
 
 SP sprite_soul_idle collectible
 3.5, 1.5

@@ -1,5 +1,5 @@
-JSON img/common/index.json
-JSON img/dgn/index.json
+IMG img/common/index.json
+IMG img/dgn/index.json
 
 NO dgn_w
 SO dgn_w2
@@ -7,7 +7,7 @@ WE dgn_w3
 EA dgn_w4
 
 F 255,0,255
-C 120,0,0
+C #FFFFFF
 
         1111111111111111111111111
        11000001000110000000000001

@@ -32,9 +32,9 @@ void	free_map(t_map *map)
 	while (map->pars.vars && map->pars.vars[++i])
 		free_arr((void **)map->pars.vars[i], free);
 	free(map->pars.vars);
-	free(map->pars.map_wall);
-	free(map->pars.map_floor);
-	free(map->pars.map_ceil);
+	free_arr((void **)map->pars.map_wall, free);
+	free_arr((void **)map->pars.map_floor, free);
+	free_arr((void **)map->pars.map_ceil, free);
 	free(map->pars.tex_types_wall);
 	free(map->pars.tex_types_floor);
 	free(map->pars.tex_types_ceil);
@@ -98,20 +98,16 @@ static void	free_portal_array(t_map *map)
 {
 	int	i;
 
-	if (!map)
+	if (!map || !map->portals)
 		return ;
-	if (map->portals)
+	i = 0;
+	while (map->portals[i])
 	{
-		i = 0;
-		while (i < map->portal_len)
-		{
-			free(map->portals[i]->path_dst_map);
-			free(map->portals[i]);
-			++i;
-		}
-		free(map->portals);
+		free(map->portals[i]->path_dst_map);
+		free(map->portals[i]);
+		++i;
 	}
+	free(map->portals);
 	map->portals = 0;
-	map->portal_len = 0;
 	return ;
 }

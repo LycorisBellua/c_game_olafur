@@ -1,50 +1,50 @@
-JSON img/common/index.json
-JSON img/brain/index.json
+IMG img/common/index.json
+IMG img/brain/index.json
 
 NO brain_w
 SO brain_w2
 WE brain_w3
 EA brain_w4
 
-F brain_f
-C brain_c
-F brain_f_in
+1F brain_f_in
+1C brain_c
+2F brain_f
 
 D brain_d brain_d_open
 
-S brain_sk
+SK brain_sk
 
-P N 22 20 brain_p brain_p_open maps/bonus/olafur/mus2.map S 4 0
-P W 1 14 brain_p brain_p_open maps/bonus/olafur/brain.map E 44 14
-P E 44 14 brain_p brain_p_open maps/bonus/olafur/brain.map W 1 14
-P E 1 21 brain_p brain_p_open maps/bonus/olafur/brain.map W 44 21
-P W 44 21 brain_p brain_p_open maps/bonus/olafur/brain.map E 1 21
-P S 4 23 brain_p brain_p_open maps/bonus/olafur/brain.map N 41 23
-P N 41 23 brain_p brain_p_open maps/bonus/olafur/brain.map S 4 23
-P E 5 12 brain_p brain_p_open maps/bonus/olafur/brain.map W 40 12
-P W 40 12 brain_p brain_p_open maps/bonus/olafur/brain.map E 5 12
-P N 6 7 brain_p brain_p_open maps/bonus/olafur/brain.map S 39 7
-P S 39 7 brain_p brain_p_open maps/bonus/olafur/brain.map N 6 7
-P S 7 15 brain_p brain_p_open maps/bonus/olafur/brain.map N 38 15
-P N 38 15 brain_p brain_p_open maps/bonus/olafur/brain.map S 7 15
-P S 8 8 brain_p brain_p_open maps/bonus/olafur/brain.map N 37 8
-P N 37 8 brain_p brain_p_open maps/bonus/olafur/brain.map S 8 8
-P E 10 1 brain_p brain_p_open maps/bonus/olafur/brain.map W 37 1
-P W 37 1 brain_p brain_p_open maps/bonus/olafur/brain.map E 10 1
-P E 11 24 brain_p brain_p_open maps/bonus/olafur/brain.map W 25 24
-P W 25 24 brain_p brain_p_open maps/bonus/olafur/brain.map E 11 24
-P N 11 15 brain_p brain_p_open maps/bonus/olafur/brain.map S 36 15
-P S 36 15 brain_p brain_p_open maps/bonus/olafur/brain.map N 11 15
-P S 12 17 brain_p brain_p_open maps/bonus/olafur/brain.map N 35 17
-P N 35 17 brain_p brain_p_open maps/bonus/olafur/brain.map S 12 17
-P N 12 0 brain_p brain_p_open maps/bonus/olafur/brain.map S 35 0
-P S 35 0 brain_p brain_p_open maps/bonus/olafur/brain.map N 12 0
-P W 15 3 brain_p brain_p_open maps/bonus/olafur/brain.map E 30 3
-P E 30 3 brain_p brain_p_open maps/bonus/olafur/brain.map W 15 3
-P E 21 12 brain_p brain_p_open maps/bonus/olafur/brain.map W 26 12
-P W 26 12 brain_p brain_p_open maps/bonus/olafur/brain.map E 21 12
-P N 26 15 brain_p brain_p_open maps/bonus/olafur/brain.map S 25 15
-P S 25 15 brain_p brain_p_open maps/bonus/olafur/brain.map N 26 15
+PT N 22 20 brain_p brain_p_open maps/bonus/olafur/mus2.map S 4 0
+PT W 1 14 brain_p brain_p_open maps/bonus/olafur/brain.map E 44 14
+PT E 44 14 brain_p brain_p_open maps/bonus/olafur/brain.map W 1 14
+PT E 1 21 brain_p brain_p_open maps/bonus/olafur/brain.map W 44 21
+PT W 44 21 brain_p brain_p_open maps/bonus/olafur/brain.map E 1 21
+PT S 4 23 brain_p brain_p_open maps/bonus/olafur/brain.map N 41 23
+PT N 41 23 brain_p brain_p_open maps/bonus/olafur/brain.map S 4 23
+PT E 5 12 brain_p brain_p_open maps/bonus/olafur/brain.map W 40 12
+PT W 40 12 brain_p brain_p_open maps/bonus/olafur/brain.map E 5 12
+PT N 6 7 brain_p brain_p_open maps/bonus/olafur/brain.map S 39 7
+PT S 39 7 brain_p brain_p_open maps/bonus/olafur/brain.map N 6 7
+PT S 7 15 brain_p brain_p_open maps/bonus/olafur/brain.map N 38 15
+PT N 38 15 brain_p brain_p_open maps/bonus/olafur/brain.map S 7 15
+PT S 8 8 brain_p brain_p_open maps/bonus/olafur/brain.map N 37 8
+PT N 37 8 brain_p brain_p_open maps/bonus/olafur/brain.map S 8 8
+PT E 10 1 brain_p brain_p_open maps/bonus/olafur/brain.map W 37 1
+PT W 37 1 brain_p brain_p_open maps/bonus/olafur/brain.map E 10 1
+PT E 11 24 brain_p brain_p_open maps/bonus/olafur/brain.map W 25 24
+PT W 25 24 brain_p brain_p_open maps/bonus/olafur/brain.map E 11 24
+PT N 11 15 brain_p brain_p_open maps/bonus/olafur/brain.map S 36 15
+PT S 36 15 brain_p brain_p_open maps/bonus/olafur/brain.map N 11 15
+PT S 12 17 brain_p brain_p_open maps/bonus/olafur/brain.map N 35 17
+PT N 35 17 brain_p brain_p_open maps/bonus/olafur/brain.map S 12 17
+PT N 12 0 brain_p brain_p_open maps/bonus/olafur/brain.map S 35 0
+PT S 35 0 brain_p brain_p_open maps/bonus/olafur/brain.map N 12 0
+PT W 15 3 brain_p brain_p_open maps/bonus/olafur/brain.map E 30 3
+PT E 30 3 brain_p brain_p_open maps/bonus/olafur/brain.map W 15 3
+PT E 21 12 brain_p brain_p_open maps/bonus/olafur/brain.map W 26 12
+PT W 26 12 brain_p brain_p_open maps/bonus/olafur/brain.map E 21 12
+PT N 26 15 brain_p brain_p_open maps/bonus/olafur/brain.map S 25 15
+PT S 25 15 brain_p brain_p_open maps/bonus/olafur/brain.map N 26 15
 
 SP sprite_brain01 collision
 17.5 13.5
@@ -80,7 +80,7 @@ SP sprite_brain10 collision
 SP sprite_brain11 collision
 20.5, 2.5
 
-M audio/olafur/m_brain.mp3
+M_BG audio/olafur/m_brain.mp3
 
          11111111111     11111111111
        11000000100001   10000110100001
@@ -111,24 +111,24 @@ M audio/olafur/m_brain.mp3
          11111111111     11111111111
        11111111111111   11111111111111
       1111111111111111 1111111111111111
-   111111111111111111101111111111111111111
-  11111111111111111111011111111111111111111
- 1111111111111111111110111111111111111111111
- 1111111111111111111110111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
-111111111111111111111101111111111111111111111
- 1111111111111111111110111111111111111111111
- 1111111111111111111110111111111111111111111
- 1111111111111111111110111111111111111111111
-  11111111111111111111011111111111111111111
+   111111111111111111121111111111111111111
+  11111111111111111111211111111111111111111
+ 1111111111111111111112111111111111111111111
+ 1111111111111111111112111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+111111111111111111111121111111111111111111111
+ 1111111111111111111112111111111111111111111
+ 1111111111111111111112111111111111111111111
+ 1111111111111111111112111111111111111111111
+  11111111111111111111211111111111111111111
    111111111111111111   111111111111111111
     111111111111111       111111111111111
      111111111111           111111111111

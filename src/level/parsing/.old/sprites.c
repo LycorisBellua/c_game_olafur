@@ -90,7 +90,7 @@ static int	set_sprites(t_man *man, t_map *map, char *line)
 		{
 			if (get_pos(line + start, &start, &pos) < 0)
 				return (free(id), 0);
-			set_sprite(map->sprites[sp++], add_new_image(man, id), spec, pos);
+			set_sprite(map->sprites[sp++], add_image(man, id), spec, pos);
 		}
 	}
 	return (free(id), 1);

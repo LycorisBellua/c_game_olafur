@@ -1,19 +1,19 @@
-JSON img/common/index.json
-JSON img/menu/index.json
+IMG img/common/index.json
+IMG img/menu/index.json
 
 NO menu_p
 SO menu_w3
 WE menu_w2
 EA menu_w
 
-F menu_f
-C menu_c
+1F menu_f
+1C menu_c
 
-S brain_sk
+SK brain_sk
 
-P N 1 2 null null maps/bonus/olafur/mus2.map N 4 7
+PT N 1 2 null null maps/bonus/olafur/mus2.map N 4 7
 
-M audio/olafur/m_menu.mp3
+M_BG audio/olafur/m_menu.mp3
 
 111
 1N1

@@ -35,7 +35,7 @@ static void	add_ceiling_and_floor_to_skybox(t_map *map)
 	while (map->skybox->cycle_index < map->skybox->cycle_len)
 	{
 		apply_ceiling_to_curr_cycle_frame(map->skybox, map->fog_color,
-			h_gradient, map->ceiling_color);
+			h_gradient, map->ceil_color);
 		apply_floor_to_curr_cycle_frame(map->skybox, map->fog_color,
 			h_gradient, map->floor_color);
 		++map->skybox->cycle_index;

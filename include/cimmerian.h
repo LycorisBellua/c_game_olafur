@@ -96,7 +96,7 @@ void		parse_segments(t_png *file, char **lines, size_t *i);
 t_png		*load_png_from_path(const char *path);
 t_png		*create_empty_png(t_ivec2 size);
 t_img		*create_empty_image(const char *id, t_ivec2 size);
-t_img		*add_new_image(t_man *man, const char *path);
+t_img		*add_image(t_man *man, const char *path);
 void		compose_skybox(t_man *man, t_map *map, t_img *src);
 void		compose_background(t_man *man, t_map *map);
 void		draw_background(t_man *man);
@@ -153,6 +153,7 @@ void		increase_minimap_zoom(t_man *man);
 t_vec2		get_dir_from_cardinal(char c);
 t_ivec2		get_dir_from_cardinal_ivec(char c);
 char		opp_cardinal(char cardinal);
+char		get_card_from_str(const char *s);
 
 /* Transform ---------------------------------------------------------------- */
 
@@ -249,12 +250,23 @@ void		list_add_front(t_list **list, t_list *new);
 void		list_add_back(t_list **list, t_list *new);
 void		list_del_one(t_list **list, void (*del)(void*));
 
-/* Parsing (ongoing) -------------------------------------------------------- */
+/* Parsing ------------------------------------------------------------------ */
 
 t_map		*create_map(t_man *man, const char *filepath);
 t_map		*fetch_map_data(const char *filepath);
 int			extract_maps(t_map *map);
+int			process_img_assets(t_man *man, t_map *map);
+int			process_sound_assets(t_man *man, t_map *map);
 int			process_wall_types(t_man *man, t_map *map);
+int			process_spec_wall_types(t_man *man, t_map *map);
+int			process_background_image(t_man *man, t_map *map);
+int			get_rgb_num(const char *arg);
+int			process_floor_types(t_man *man, t_map *map);
+int			process_ceil_types(t_man *man, t_map *map);
+int			process_portals(t_man *man, t_map *map);
+int			get_num(const char *arg);
+
+void		remove_var_line(t_map *map, int i);
 int			put_error_wall(char *tex[10][4], const char *msg, const char *arg);
 
 #endif

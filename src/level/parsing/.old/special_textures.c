@@ -30,7 +30,7 @@ void	find_door_goal(t_man *man, t_map *map, char **line)
 	if (!strncmp(*line, "D ", 2))
 	{
 		path = ft_substr(*line, 2, strlen(*line) - 3);
-		map->types[1].tex_door_closed = add_new_image(man, path);
+		map->types[1].tex_door_closed = add_image(man, path);
 		map->types[1].tex_door_open = state_open(man, path);
 		free(path);
 		free(*line);
@@ -39,7 +39,7 @@ void	find_door_goal(t_man *man, t_map *map, char **line)
 	if (!strncmp(*line, "G ", 2))
 	{
 		path = ft_substr(*line, 2, strlen(*line) - 3);
-		map->types[1].tex_goal = add_new_image(man, path);
+		map->types[1].tex_goal = add_image(man, path);
 		free(path);
 	}
 	free(*line);
@@ -61,7 +61,7 @@ t_img	*state_open(t_man *man, char *path)
 		return (NULL);
 	ft_strncpy(compose_path, path, size);
 	ft_strncpy(compose_path + size, "_open", 5);
-	open = add_new_image(man, compose_path);
+	open = add_image(man, compose_path);
 	free(compose_path);
 	return (open);
 }
@@ -77,7 +77,7 @@ void	find_skybox(t_man *man, t_map *map, char **line)
 	{
 		if (map->skybox)
 			exit_in_parsing(man, map, E_DOUBLESKYBOX, *line);
-		src_skybox = add_new_image(man, path);
+		src_skybox = add_image(man, path);
 		free(path);
 		if (src_skybox)
 			map->fog_color = src_skybox->average_color[0];

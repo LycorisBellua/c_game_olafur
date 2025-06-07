@@ -95,13 +95,13 @@ static int	find_cards(t_man *man, t_map *map, char **line, t_tex_type *type)
 	if (check_doublewall(*line + n, type) < 0)
 		exit_in_parsing(man, map, E_DOUBLEWALL, *line);
 	if (!strncmp(*line + n, "NO", 2) && ++tmp)
-		type->tex_north = add_new_image(man, path);
+		type->tex_north = add_image(man, path);
 	else if (!strncmp(*line + n, "SO", 2) && ++tmp)
-		type->tex_south = add_new_image(man, path);
+		type->tex_south = add_image(man, path);
 	else if (!strncmp(*line + n, "EA", 2) && ++tmp)
-		type->tex_east = add_new_image(man, path);
+		type->tex_east = add_image(man, path);
 	else if (!strncmp(*line + n, "WE", 2) && ++tmp)
-		type->tex_west = add_new_image(man, path);
+		type->tex_west = add_image(man, path);
 	return (free(path), tmp);
 }
 

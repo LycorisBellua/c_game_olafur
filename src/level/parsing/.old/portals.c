@@ -85,7 +85,7 @@ static t_portal	*valid_portal(t_man *man, t_map *map, char *line, int i)
 		exit_in_parsing(man, map, E_WRONGCHAR, ptl);
 	i += find_text(line + i, &size);
 	path = ft_substr(line, i - size, size);
-	ptl->tex_closed = add_new_image(man, path);
+	ptl->tex_closed = add_image(man, path);
 	ptl->tex_open = state_open(man, path);
 	free(path);
 	i += find_text(line + i, &size);

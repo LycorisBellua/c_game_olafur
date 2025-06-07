@@ -1,22 +1,22 @@
-JSON img/common/index.json
-JSON img/dgn/index.json
+IMG img/common/index.json
+IMG img/dgn/index.json
 
 1NO dgn_w
 1SO dgn_w
 1WE dgn_w
 1EA dgn_w
 
-F dgn_f
-C dgn_c
-F dgn_f_in
+1F dgn_f_in
+1C dgn_c
+2F dgn_f
 
 D dgn_d
 G solid
 
-S dgn_sk
+SK dgn_sk
 
-P E 0 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map S 12 0
-P W 6 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map S 12 0
+PT E 0 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map S 12 0
+PT W 6 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map S 12 0
 
 1111111
 1S10001

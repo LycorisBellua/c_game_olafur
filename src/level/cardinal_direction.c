@@ -46,3 +46,18 @@ char	opp_cardinal(char cardinal)
 		return ('E');
 	return (0);
 }
+
+char	get_card_from_str(const char *s)
+{
+	if (!s)
+		return (0);
+	else if (!strcmp(s, "N") || !strcmp(s, "NO"))
+		return ('N');
+	else if (!strcmp(s, "S") || !strcmp(s, "SO"))
+		return ('S');
+	else if (!strcmp(s, "W") || !strcmp(s, "WE"))
+		return ('W');
+	else if (!strcmp(s, "E") || !strcmp(s, "EA"))
+		return ('E');
+	return (0);
+}

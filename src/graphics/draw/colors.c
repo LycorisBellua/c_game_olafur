@@ -16,9 +16,15 @@ t_color	get_color_rgba(t_ubyte r, t_ubyte g, t_ubyte b, t_ubyte a)
 t_color	get_color_hex(const char *str, t_ubyte alpha)
 {
 	int		i;
+	size_t	len;
 	t_color	c;
 
+	if (!str || !str[0])
+		return (get_color_rgba(0, 0, 0, 0));
 	i = str[0] == '#';
+	len = strlen(str) - i;
+	if (len != 6)
+		return (get_color_rgba(0, 0, 0, 0));
 	c.r = hex_char_to_int(str[i + 0]) * 16 + hex_char_to_int(str[i + 1]);
 	c.g = hex_char_to_int(str[i + 2]) * 16 + hex_char_to_int(str[i + 3]);
 	c.b = hex_char_to_int(str[i + 4]) * 16 + hex_char_to_int(str[i + 5]);
