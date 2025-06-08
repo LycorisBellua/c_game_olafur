@@ -13,38 +13,30 @@ G solid
 
 SK hol_sk
 
-PT E 6 15 dgn_p dgn_p_open maps/bonus/olafur/mus2.map E 0 4
-PT W 95 14 dgn_p dgn_p_open maps/bonus/olafur/hol.map W 24 14
-PT E 22 14 dgn_p dgn_p_open null N 0 0
+PT EA 6 15 dgn_p dgn_p_open maps/bonus/olafur/mus2.map EA 0 4
+PT WE 95 14 dgn_p dgn_p_open maps/bonus/olafur/hol.map WE 24 14
+PT EA 22 14 dgn_p dgn_p_open null NO 0 0
 
-SP sprite_hol01 collision
-48.5, 2.5
+SP 48.5 2.5 sprite_hol01 collision
 
-SP sprite_hol02 collision
-48.5, 26.5
+SP 48.5 26.5 sprite_hol02 collision
 
-SP sprite_hol03
-14.5, 14.5
-27.5,  8.5
-27.5, 21.5
-76.5, 14.5
-92.5, 14.5
+SP 14.5 14.5 sprite_hol03
+SP 27.5 8.5 sprite_hol03
+SP 27.5 21.5 sprite_hol03
+SP 76.5 14.5 sprite_hol03
+SP 92.5 14.5 sprite_hol03
 
-SP sprite_hol04
-25.5, 14.5
-27.5, 14.5
+SP 25.5 14.5 sprite_hol04
+SP 27.5 14.5 sprite_hol04
 
-SP sprite_hol05
-2.5, 26.5
+SP 2.5 26.5 sprite_hol05
 
-SP sprite_hol06
-82.5, 14.5
+SP 82.5 14.5 sprite_hol06
 
-SP sprite_hol07
-2.5, 2.5
+SP 2.5 2.5 sprite_hol07
 
-SP sprite_hol08
-93.5, 14.5
+SP 93.5 14.5 sprite_hol08
 
 M_BG audio/olafur/m_hol.mp3
 

@@ -57,7 +57,7 @@ void	free_sprite_array(t_map *map)
 	if (map->sprites)
 	{
 		i = 0;
-		while (i < map->sprite_len)
+		while (map->sprites[i])
 		{
 			free(map->sprites[i]);
 			++i;

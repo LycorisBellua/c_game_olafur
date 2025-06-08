@@ -238,6 +238,8 @@ typedef struct s_map_pars
 	t_wall_type	*tex_types_wall;
 	t_row_type	*tex_types_floor;
 	t_row_type	*tex_types_ceil;
+	int			door_line_found;
+	int			goal_line_found;
 	t_img		*tex_door_closed;
 	t_img		*tex_door_open;
 	t_img		*tex_goal;

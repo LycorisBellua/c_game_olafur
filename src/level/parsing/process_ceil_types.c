@@ -7,14 +7,14 @@ static int	fetch_images(t_man *man, char **tex, int i, t_row_type *f);
 
 int	process_ceil_types(t_man *man, t_map *map)
 {
-	char	**tex;
+	char	*tex[10];
 	int		i;
 	int		j;
 
-	tex = calloc(11, sizeof(char *));
-	if (!tex || !populate_tex(map, tex) || !allocate_ceil_arr(map, tex))
+	bzero(tex, 10 * sizeof(char *));
+	if (!populate_tex(map, tex) || !allocate_ceil_arr(map, tex))
 	{
-		free_arr((void **)tex, free);
+		free_tex_fc(tex);
 		return (0);
 	}
 	i = 1;
@@ -29,7 +29,7 @@ int	process_ceil_types(t_man *man, t_map *map)
 		}
 		++i;
 	}
-	free_arr((void **)tex, free);
+	free_tex_fc(tex);
 	return (1);
 }
 
@@ -41,7 +41,7 @@ static int	populate_tex(t_map *map, char **tex)
 	while (map->pars.vars[i])
 	{
 		if (isdigit(map->pars.vars[i][0][0])
-			&& !strcmp(map->pars.vars[i][0] + 1, "F"))
+			&& !strcmp(map->pars.vars[i][0] + 1, "C"))
 		{
 			if (!process_ceil_line(map, tex, i))
 				return (0);
@@ -96,7 +96,7 @@ static int	fetch_images(t_man *man, char **tex, int i, t_row_type *f)
 		if (!f->tex)
 		{
 			put_error(0, E_NO_IMG, tex[i], 0);
-			free_arr((void **)tex, free);
+			free_tex_fc(tex);
 			return (0);
 		}
 	}

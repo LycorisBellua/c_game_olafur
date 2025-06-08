@@ -51,13 +51,13 @@ char	get_card_from_str(const char *s)
 {
 	if (!s)
 		return (0);
-	else if (!strcmp(s, "N") || !strcmp(s, "NO"))
+	else if (!strcmp(s, "NO"))
 		return ('N');
-	else if (!strcmp(s, "S") || !strcmp(s, "SO"))
+	else if (!strcmp(s, "SO"))
 		return ('S');
-	else if (!strcmp(s, "W") || !strcmp(s, "WE"))
+	else if (!strcmp(s, "WE"))
 		return ('W');
-	else if (!strcmp(s, "E") || !strcmp(s, "EA"))
+	else if (!strcmp(s, "EA"))
 		return ('E');
 	return (0);
 }

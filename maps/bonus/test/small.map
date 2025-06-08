@@ -15,8 +15,8 @@ G solid
 
 SK dgn_sk
 
-PT E 0 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map S 12 0
-PT W 6 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map S 12 0
+PT EA 0 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map SO 12 0
+PT WE 6 5 dgn_p dgn_p_open maps/bonus/test/dungeon.map SO 12 0
 
 1111111
 1S10001

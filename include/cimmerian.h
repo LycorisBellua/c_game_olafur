@@ -241,6 +241,7 @@ int			put_error(t_man *man, const char *msg, const char *arg, int errno);
 
 char		*itoa(int number);
 char		**split(const char *s, char c);
+char		*get_substr(const char *s, unsigned int start, size_t len);
 char		*strjoin(char const *s1, char const *s2);
 char		*strjoin_arr(char **arr, size_t start, size_t end);
 char		*gnl(int fd);
@@ -260,13 +261,18 @@ int			process_sound_assets(t_man *man, t_map *map);
 int			process_wall_types(t_man *man, t_map *map);
 int			process_spec_wall_types(t_man *man, t_map *map);
 int			process_background_image(t_man *man, t_map *map);
-int			get_rgb_num(const char *arg);
 int			process_floor_types(t_man *man, t_map *map);
 int			process_ceil_types(t_man *man, t_map *map);
 int			process_portals(t_man *man, t_map *map);
-int			get_num(const char *arg);
+int			process_sprites(t_man *man, t_map *map);
+
+int			get_num_rgb(const char *arg);
+int			get_num_int(const char *arg);
+double		get_num_dbl(const char *arg);
 
 void		remove_var_line(t_map *map, int i);
-int			put_error_wall(char *tex[10][4], const char *msg, const char *arg);
+int			is_var_list_empty(t_map *map);
+void		free_tex_w(char *tex[10][4]);
+void		free_tex_fc(char *tex[10]);
 
 #endif

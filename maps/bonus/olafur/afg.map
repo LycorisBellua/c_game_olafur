@@ -29,32 +29,19 @@ D afg_d afg_d_open
 
 SK afg_sk
 
-PT W 31 3 afg_p afg_p_open maps/bonus/olafur/mus.map E 0 4
+PT WE 31 3 afg_p afg_p_open maps/bonus/olafur/mus.map EA 0 4
 
-SP sprite_afg1 collision
-4.5, 20.5
+SP 4.5 20.5 sprite_afg1 collision
+SP 27.5 7.5 sprite_afg2 collision
+SP 3.5 16.5 sprite_afg3 collision
 
-SP sprite_afg2 collision
-27.5, 7.5
+SP 15.5 12.5 sprite_cage collision
+SP 23.5 15.5 sprite_cage collision
 
-SP sprite_afg3 collision
-3.5, 16.5
-
-SP sprite_cage collision
-15.5, 12.5
-23.5, 15.5
-
-SP sprite_book1 collectible collision
-19.5, 3.5
-
-SP sprite_book2 collectible collision
-15.5, 7.5
-
-SP sprite_book3 collectible collision
-13.5, 25.5
-
-SP sprite_book4 collectible collision
-19.5, 21.5
+SP 19.5 3.5 sprite_book1 collectible collision
+SP 15.5 7.5 sprite_book2 collectible collision
+SP 13.5 25.5 sprite_book3 collectible collision
+SP 19.5 21.5 sprite_book4 collectible collision
 
 M_BG audio/olafur/m_afg.mp3
 

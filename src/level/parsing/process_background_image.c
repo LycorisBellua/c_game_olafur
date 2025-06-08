@@ -60,19 +60,19 @@ static int	load_color(t_map *map, int i, t_color *color)
 	{
 		*color = get_color_hex(map->pars.vars[i][1], 255);
 		if (!color->a)
-			return (put_error(0, E_NO_COLOR, map->pars.vars[i][0], 0));
+			return (put_error(0, E_BAD_COLOR, map->pars.vars[i][0], 0));
 	}
 	else if (arg_len == 3)
 	{
-		rgb[0] = get_rgb_num(map->pars.vars[i][1]);
-		rgb[1] = get_rgb_num(map->pars.vars[i][2]);
-		rgb[2] = get_rgb_num(map->pars.vars[i][3]);
+		rgb[0] = get_num_rgb(map->pars.vars[i][1]);
+		rgb[1] = get_num_rgb(map->pars.vars[i][2]);
+		rgb[2] = get_num_rgb(map->pars.vars[i][3]);
 		if (rgb[0] < 0 || rgb[1] < 0 || rgb[2] < 0)
-			return (put_error(0, E_NO_COLOR, map->pars.vars[i][0], 0));
+			return (put_error(0, E_BAD_COLOR, map->pars.vars[i][0], 0));
 		*color = get_color_rgba(rgb[0], rgb[1], rgb[2], 255);
 	}
 	else
-		return (put_error(0, E_NO_COLOR, map->pars.vars[i][0], 0));
+		return (put_error(0, E_BAD_COLOR, map->pars.vars[i][0], 0));
 	return (1);
 }
 

@@ -11,7 +11,7 @@ EA menu_w
 
 SK brain_sk
 
-PT N 1 2 null null maps/bonus/olafur/mus2.map N 4 7
+PT NO 1 2 null null maps/bonus/olafur/mus2.map NO 4 7
 
 M_BG audio/olafur/m_menu.mp3
 

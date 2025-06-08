@@ -7,12 +7,18 @@ void	remove_var_line(t_map *map, int i)
 	return ;
 }
 
-int	put_error_wall(char *tex[10][4], const char *msg, const char *arg)
+int	is_var_list_empty(t_map *map)
+{
+	if (map->pars.vars[0])
+		return (put_error(0, E_BAD_VAR, map->pars.vars[0][0], 0));
+	return (1);
+}
+
+void	free_tex_w(char *tex[10][4])
 {
 	int	i;
 	int	j;
 
-	put_error(0, msg, arg, 0);
 	i = 0;
 	while (i < 10)
 	{
@@ -21,5 +27,18 @@ int	put_error_wall(char *tex[10][4], const char *msg, const char *arg)
 			free(tex[i][j++]);
 		++i;
 	}
-	return (0);
+	return ;
+}
+
+void	free_tex_fc(char *tex[10])
+{
+	int	i;
+
+	i = 0;
+	while (i < 10)
+	{
+		free(tex[i]);
+		++i;
+	}
+	return ;
 }

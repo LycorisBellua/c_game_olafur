@@ -16,11 +16,13 @@ int	process_spec_wall_types(t_man *man, t_map *map)
 	{
 		if (!strcmp(map->pars.vars[i][0], "D"))
 		{
+			map->door_line_found = 1;
 			if (!load_door_tex(man, map, i, &door))
 				return (0);
 		}
 		else if (!strcmp(map->pars.vars[i][0], "G"))
 		{
+			map->goal_line_found = 1;
 			if (!load_goal_tex(man, map, i, &goal))
 				return (0);
 		}

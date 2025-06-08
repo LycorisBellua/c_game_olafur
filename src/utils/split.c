@@ -2,7 +2,6 @@
 
 static size_t	count_split_nmemb(const char *s, char c);
 static char		**populate_split_list(char **list, const char *s, char c);
-static char		*get_substr(const char *s, unsigned int start, size_t len);
 
 char	**split(const char *s, char c)
 {
@@ -16,6 +15,20 @@ char	**split(const char *s, char c)
 	if (!list)
 		return (0);
 	return (populate_split_list(list, s, c));
+}
+
+char	*get_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*sub;
+
+	if (!s)
+		return (0);
+	sub = calloc(len + 1, sizeof(char));
+	if (!sub)
+		return (0);
+	if (start < strlen(s))
+		strncpy(sub, s + start, len);
+	return (sub);
 }
 
 static size_t	count_split_nmemb(const char *s, char c)
@@ -72,18 +85,4 @@ static char	**populate_split_list(char **list, const char *s, char c)
 	}
 	list[nmemb] = 0;
 	return (list);
-}
-
-static char	*get_substr(const char *s, unsigned int start, size_t len)
-{
-	char	*sub;
-
-	if (!s)
-		return (0);
-	sub = calloc(len + 1, sizeof(char));
-	if (!sub)
-		return (0);
-	if (start < strlen(s))
-		strncpy(sub, s + start, len);
-	return (sub);
 }

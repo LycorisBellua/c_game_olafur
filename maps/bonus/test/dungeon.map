@@ -30,34 +30,31 @@ G solid
 
 SK dgn_sk
 
-PT S 12 0 dgn_p dgn_p_open maps/bonus/test/small.map E 0 5
-PT N 15 6 dgn_p dgn_p_open maps/bonus/test/small.map E 0 5
+PT SO 12 0 dgn_p dgn_p_open maps/bonus/test/small.map EA 0 5
+PT NO 15 6 dgn_p dgn_p_open maps/bonus/test/small.map EA 0 5
 
-SP sprite_soul_idle collectible
-20.5, 11.5
-18.5,  4.5
-10.0,  4.5
-10.0, 12.5
- 3.5,  6.5
- 3.5, 20.5
- 3.5, 14.5
-14.5, 20.5
+SP 20.5 11.5 sprite_soul_idle collectible
+SP 18.5 4.5 sprite_soul_idle collectible
+SP 10.0 4.5 sprite_soul_idle collectible
+SP 10.0 12.5 sprite_soul_idle collectible
+SP 3.5 6.5 sprite_soul_idle collectible
+SP 3.5 20.5 sprite_soul_idle collectible
+SP 3.5 14.5 sprite_soul_idle collectible
+SP 14.5 20.5 sprite_soul_idle collectible
 
-SP sprite_pillar collision
-18.5, 10.5
-18.5, 11.5
-18.5, 12.5
- 8.5,  7.0
+SP 18.5 10.5 sprite_pillar collision
+SP 18.5 11.5 sprite_pillar collision
+SP 18.5 12.5 sprite_pillar collision
+SP 8.5 7.0 sprite_pillar collision
 
-SP sprite_barrel collision
-21.5,  1.5
-15.5,  1.5
-16.0,  1.8
-16.2,  1.2
- 3.5,  2.5
- 9.5, 15.5
-10.0, 15.1
-10.5, 15.8
+SP 21.5 1.5 sprite_barrel collision
+SP 15.5 1.5 sprite_barrel collision
+SP 16.0 1.8 sprite_barrel collision
+SP 16.2 1.2 sprite_barrel collision
+SP 3.5 2.5 sprite_barrel collision
+SP 9.5 15.5 sprite_barrel collision
+SP 10.0 15.1 sprite_barrel collision
+SP 10.5 15.8 sprite_barrel collision
 
 111111111111011111111111
 100000000000000000000001

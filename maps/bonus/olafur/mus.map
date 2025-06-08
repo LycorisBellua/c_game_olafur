@@ -12,36 +12,26 @@ EA mus_w3
 
 SK mus_sk
 
-PT S 4 0 mus_p_pul mus_p_pul_open maps/bonus/olafur/pul.map N 4 9
-PT E 0 4 mus_p_afg mus_p_afg_open maps/bonus/olafur/afg.map W 31 3
-PT W 8 4 mus_p_dgn mus_p_dgn_open maps/bonus/olafur/dgn.map S 12 0
-PT N 4 8 mus_p_menu mus_p_menu_open maps/bonus/olafur/menu.map N 1 1
+PT SO 4 0 mus_p_pul mus_p_pul_open maps/bonus/olafur/pul.map NO 4 9
+PT EA 0 4 mus_p_afg mus_p_afg_open maps/bonus/olafur/afg.map WE 31 3
+PT WE 8 4 mus_p_dgn mus_p_dgn_open maps/bonus/olafur/dgn.map SO 12 0
+PT NO 4 8 mus_p_menu mus_p_menu_open maps/bonus/olafur/menu.map NO 1 1
 
-SP sprite_art1 collision
-2.5,  2.5
+SP 2.5 2.5 sprite_art1 collision
+SP 6.5 2.5 sprite_art2 collision
+SP 2.5 6.5 sprite_art3 collision
+SP 6.5 6.5 sprite_art4 collision
 
-SP sprite_art2 collision
-6.5,  2.5
+SP 2.5 2.5 sprite_mus1
+SP 2.5 6.5 sprite_mus1
+SP 6.5 2.5 sprite_mus1
+SP 6.5 6.5 sprite_mus1
 
-SP sprite_art3 collision
-2.5,  6.5
+SP 2.5 4.5 sprite_mus2
+SP 6.5 4.5 sprite_mus2
 
-SP sprite_art4 collision
-6.5,  6.5
-
-SP sprite_mus1
-2.5,  2.5
-2.5,  6.5
-6.5,  2.5
-6.5,  6.5
-
-SP sprite_mus2
-2.5,  4.5
-6.5,  4.5
-
-SP sprite_mus3
-4.5,  3.5
-4.5,  5.5
+SP 4.5 3.5 sprite_mus3
+SP 4.5 5.5 sprite_mus3
 
 M_BG audio/olafur/m_mus.mp3
 

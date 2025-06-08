@@ -212,4 +212,4 @@ Hellchauffo
 - pul/pul_w3.png
 - pul/pul_w4.png
 - pul/sprite_legs.png
-- pul/sprite_stairs.png
+- pul/sprite_ladder.png

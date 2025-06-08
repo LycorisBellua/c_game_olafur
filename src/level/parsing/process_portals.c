@@ -71,29 +71,29 @@ static int	set_portal(t_man *man, t_map *map, t_portal *p, int i)
 		p->override_start_pos = 1;
 		p->dst_cardinal = get_card_from_str(map->pars.vars[i][7]);
 		if (!p->dst_cardinal)
-			return (put_error(0, E_NO_CARD, map->pars.vars[i][7], 0));
-		p->dst_pos.x = get_num(map->pars.vars[i][8]);
+			return (put_error(0, E_BAD_CARD, map->pars.vars[i][7], 0));
+		p->dst_pos.x = get_num_int(map->pars.vars[i][8]);
 		if (p->dst_pos.x < 0)
-			return (put_error(0, E_NO_COORD, map->pars.vars[i][8], 0));
-		p->dst_pos.y = get_num(map->pars.vars[i][9]);
+			return (put_error(0, E_BAD_COORD, map->pars.vars[i][8], 0));
+		p->dst_pos.y = get_num_int(map->pars.vars[i][9]);
 		if (p->dst_pos.y < 0)
-			return (put_error(0, E_NO_COORD, map->pars.vars[i][9], 0));
+			return (put_error(0, E_BAD_COORD, map->pars.vars[i][9], 0));
 	}
 	return (set_portal_src(map, p, i)
 		&& set_portal_tex_and_dst_path(man, map, p, i));
 }
 
-static int	set_portal_src(t_man *man, t_map *map, t_portal *p, int i)
+static int	set_portal_src(t_map *map, t_portal *p, int i)
 {
 	p->src_cardinal = get_card_from_str(map->pars.vars[i][1]);
 	if (!p->src_cardinal)
-		return (put_error(0, E_NO_CARD, map->pars.vars[i][1], 0));
-	p->src_pos.x = get_num(map->pars.vars[i][2]);
+		return (put_error(0, E_BAD_CARD, map->pars.vars[i][1], 0));
+	p->src_pos.x = get_num_int(map->pars.vars[i][2]);
 	if (p->src_pos.x < 0)
-		return (put_error(0, E_NO_COORD, map->pars.vars[i][2], 0));
-	p->src_pos.y = get_num(map->pars.vars[i][3]);
+		return (put_error(0, E_BAD_COORD, map->pars.vars[i][2], 0));
+	p->src_pos.y = get_num_int(map->pars.vars[i][3]);
 	if (p->src_pos.y < 0)
-		return (put_error(0, E_NO_COORD, map->pars.vars[i][3], 0));
+		return (put_error(0, E_BAD_COORD, map->pars.vars[i][3], 0));
 	return (1);
 }
 

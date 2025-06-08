@@ -12,42 +12,37 @@ D box_d
 
 SK box_sk
 
-PT S 6 0 box_p_mus box_p_mus_open maps/bonus/olafur/mus2.map W 8 4
-PT S 15 3 box_p_box box_p_box_open maps/bonus/olafur/box.map W 23 1
+PT SO 6 0 box_p_mus box_p_mus_open maps/bonus/olafur/mus2.map WE 8 4
+PT SO 15 3 box_p_box box_p_box_open maps/bonus/olafur/box.map WE 23 1
 
-SP sprite_box01 collision
-15.5, 1.5
-60.5, 1.5
-26.5, 2.5
-51.5, 2.5
-5.5, 6.5
+SP 15.5 1.5 sprite_box01 collision
+SP 60.5 1.5 sprite_box01 collision
+SP 26.5 2.5 sprite_box01 collision
+SP 51.5 2.5 sprite_box01 collision
+SP 5.5 6.5 sprite_box01 collision
 
-SP sprite_box02 collision
-54.5, 2.5
-57.5, 2.5
-6.5, 3.5
-32.5, 2.5
+SP 54.5 2.5 sprite_box02 collision
+SP 57.5 2.5 sprite_box02 collision
+SP 6.5 3.5 sprite_box02 collision
+SP 32.5 2.5 sprite_box02 collision
 
-SP sprite_box03 collision
-30.5, 1.5
-7.5, 2.5
-9.5, 2.5
-22.5, 3.5
-8.5, 4.5
-9.5, 7.5
+SP 30.5 1.5 sprite_box03 collision
+SP 7.5 2.5 sprite_box03 collision
+SP 9.5 2.5 sprite_box03 collision
+SP 22.5 3.5 sprite_box03 collision
+SP 8.5 4.5 sprite_box03 collision
+SP 9.5 7.5 sprite_box03 collision
 
-SP sprite_soul_idle collectible
-49.5, 1.5
-3.5, 2.5
-18.5, 2.5
-41.5, 2.5
-2.5, 3.5
+SP 49.5 1.5 sprite_soul_idle collectible
+SP 3.5 2.5 sprite_soul_idle collectible
+SP 18.5 2.5 sprite_soul_idle collectible
+SP 41.5 2.5 sprite_soul_idle collectible
+SP 2.5 3.5 sprite_soul_idle collectible
 
-SP sprite_box04
-45.5, 3.5
-69.5, 3.5
-3.5, 5.5
-2.5, 7.5
+SP 45.5 3.5 sprite_box04
+SP 69.5 3.5 sprite_box04
+SP 3.5 5.5 sprite_box04
+SP 2.5 7.5 sprite_box04
 
 M_BG audio/olafur/m_box.mp3
 

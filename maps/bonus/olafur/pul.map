@@ -11,16 +11,13 @@ EA pul_w4
 
 SK pul_sk
 
-PT N 4 9 pul_p pul_p_open maps/bonus/olafur/mus.map S 4 0
+PT NO 4 9 pul_p pul_p_open maps/bonus/olafur/mus.map SO 4 0
 
-SP sprite_legs
-6.8, 8.8
+SP 6.8 8.8 sprite_legs
 
-SP sprite_stairs
-1.4, 1.1
+SP 1.4 1.1 sprite_ladder
 
-SP sprite_soul_idle collectible
-4.5, 2.5
+SP 4.5 2.5 sprite_soul_idle collectible
 
 M_BG audio/olafur/m_pul.mp3
 

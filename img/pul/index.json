@@ -192,11 +192,11 @@
         ]
     },
     {
-        "path": "img/pul/sprite_stairs.png",
+        "path": "img/pul/sprite_ladder.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "sprite_stairs",
+                "id": "sprite_ladder",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
