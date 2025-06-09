@@ -1,7 +1,7 @@
 #include "cimmerian.h"
 
 static int	get_start_index(t_map *map);
-static int	is_map_line(const char *s, int *only_spaces);
+static int	is_map_line(const char *s, int check_spec, int *only_spaces);
 static int	is_char_in_set(char c, const char *set);
 static int	skip_newlines(char **lines, int i);
 
@@ -39,26 +39,31 @@ static int	get_start_index(t_map *map)
 	int	i;
 	int	index_maps;
 	int	only_spaces;
+	int	check_spec;
 
-	i = 0;
+	i = -1;
 	index_maps = -1;
-	while (map->pars.lines[i])
+	check_spec = 1;
+	while (map->pars.lines[++i])
 	{
-		if (is_map_line(map->pars.lines[i], &only_spaces))
+		if (is_map_line(map->pars.lines[i], check_spec, &only_spaces))
 		{
 			if (index_maps < 0 && !only_spaces)
 				index_maps = i;
 		}
-		else if (index_maps >= 0 && strcmp(map->pars.lines[i], "\n"))
-			return (put_error(0, E_VARS_AFTER_MAP, 0, -1));
-		++i;
+		else if (index_maps >= 0)
+		{
+			if (strcmp(map->pars.lines[i], "\n"))
+				return (put_error(0, E_VARS_AFTER_MAP, 0, -1));
+			check_spec = 0;
+		}
 	}
 	if (index_maps < 0)
 		return (put_error(0, E_NO_MAP, 0, -1));
 	return (index_maps);
 }
 
-static int	is_map_line(const char *s, int *only_spaces)
+static int	is_map_line(const char *s, int check_spec, int *only_spaces)
 {
 	int	i;
 	int	space;
@@ -72,7 +77,8 @@ static int	is_map_line(const char *s, int *only_spaces)
 	{
 		space = !!isspace(s[i]);
 		nbr_spaces += space;
-		if (!space && !isdigit(s[i]) && !is_char_in_set(s[i], MAP_CHARS))
+		if (!space && !isdigit(s[i])
+			&& (!check_spec || !is_char_in_set(s[i], MAP_CHARS)))
 			return (0);
 		++i;
 	}

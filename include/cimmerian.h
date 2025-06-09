@@ -265,14 +265,16 @@ int			process_floor_types(t_man *man, t_map *map);
 int			process_ceil_types(t_man *man, t_map *map);
 int			process_portals(t_man *man, t_map *map);
 int			process_sprites(t_man *man, t_map *map);
-
+int			check_map_symbols_and_get_map_size(t_map *map);
+int			set_player_data(t_map *map);
+int			populate_cells(t_map *map);
+void		release_parsing_data(t_map *map);
+void		free_tex_w(char *tex[10][4]);
+void		free_tex_fc(char *tex[10]);
+void		remove_var_line(t_map *map, int i);
+int			is_var_list_empty(t_map *map);
 int			get_num_rgb(const char *arg);
 int			get_num_int(const char *arg);
 double		get_num_dbl(const char *arg);
-
-void		remove_var_line(t_map *map, int i);
-int			is_var_list_empty(t_map *map);
-void		free_tex_w(char *tex[10][4]);
-void		free_tex_fc(char *tex[10]);
 
 #endif

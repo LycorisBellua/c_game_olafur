@@ -26,6 +26,7 @@ int	process_floor_types(t_man *man, t_map *map)
 			map->pars.tex_types_floor[j].symbol = '0' + i;
 			if (!fetch_images(man, tex, i, &map->pars.tex_types_floor[j]))
 				return (0);
+			++j;
 		}
 		++i;
 	}

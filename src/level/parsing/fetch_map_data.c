@@ -12,9 +12,7 @@ t_map	*fetch_map_data(const char *filepath)
 	if (!is_valid_file(filepath))
 		return (0);
 	map = alloc_map_and_read_lines(filepath);
-	if (!map)
-		return (0);
-	if (!extract_maps(map) || !tokenize_var_lines(map))
+	if (!map || !extract_maps(map) || !tokenize_var_lines(map))
 	{
 		free_map(map);
 		return (0);

@@ -110,38 +110,10 @@
 # define E_BAD_SP_TAG "Invalid sprite tag - Valid is \"collectible\" and " \
 	"\"collision\""
 # define E_BAD_VAR "Invalid variable"
-
-/* Parsing (Old) ------------------------------------------------------------ */
-
-//ANNEXE
-# define WHITES "\a\b\t\n\v\f\r "
-# define VALID_MANDATORY " 01"
-# define VALID_MANDA_MAP " 01NSWE\n"
-# define VALID_BONUS " GD43210"
-# define PLAYER "NSWE"
-
-//ERROR MESSAGES
-# define E_NBSPRITES "overreached limit number of sprites"
-# define E_OUTTILE "checked tile is too edgy"
-# define E_UPTILE "upper tile wasn't a valid map char"
-# define E_UNDTILE "under tile wasn't a valid map char"
-# define E_LFTTILE "left tile wasn't a valid map char"
-# define E_RGTTILE "right tile wasn't a valid map char"
-# define E_MISSINFO "missing tex or color"
-# define E_MISSPLAYER "missing player"
-# define E_EMPTYLINE "find an empty line in map"
-# define E_INVALIDCHAR "find an invalid char in map"
-# define E_EMPTYMAP "Empty map!"
-# define E_DOUBLEMAP "double declaration of a map"
-# define E_DOUBLEWALL "double declaration of a wall side"
-# define E_DOUBLEPLAYER "double declaration of player"
-# define E_DOUBLEFCOL "double declaration of f_color"
-# define E_DOUBLECCOL "double declaration of c_color"
-# define E_DOUBLESKYBOX "double declaration of skybox"
-# define E_DOUBLEMUSIC "double declaration of music"
-# define E_WRONGCHAR "parasite char found"
-# define E_WRONGMUSIC "not a valid music address"
-# define E_INCOMPLETE "unfit declaration"
-# define E_INVALIDIDTEX "invalid texture name"
+# define E_BAD_SYM_W "A wall map symbol is missing its texture variable"
+# define E_BAD_SYM_F "A floor map symbol is missing its texture variable"
+# define E_BAD_SYM_C "A ceiling map symbol is missing its texture variable"
+# define E_DUP_PLAYER "The player was found more than once in the wall map"
+# define E_NO_PLAYER "No player was found in the wall map"
 
 #endif

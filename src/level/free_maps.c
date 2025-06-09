@@ -22,22 +22,10 @@ void	free_maps(t_man *man)
 
 void	free_map(t_map *map)
 {
-	int	i;
-
 	if (!map)
 		return ;
+	release_parsing_data(map);
 	free(map->filepath);
-	free_arr((void **)map->pars.lines, free);
-	i = -1;
-	while (map->pars.vars && map->pars.vars[++i])
-		free_arr((void **)map->pars.vars[i], free);
-	free(map->pars.vars);
-	free_arr((void **)map->pars.map_wall, free);
-	free_arr((void **)map->pars.map_floor, free);
-	free_arr((void **)map->pars.map_ceil, free);
-	free(map->pars.tex_types_wall);
-	free(map->pars.tex_types_floor);
-	free(map->pars.tex_types_ceil);
 	free_image(map->skybox, free);
 	free_png(map->background);
 	free_cell_arrays(map);

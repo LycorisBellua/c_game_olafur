@@ -26,6 +26,7 @@ int	process_wall_types(t_man *man, t_map *map)
 				free_tex_w(tex);
 				return (0);
 			}
+			++j;
 		}
 		++i;
 	}
