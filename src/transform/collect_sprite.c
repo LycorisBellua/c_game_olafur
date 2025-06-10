@@ -43,6 +43,7 @@ static int	collect_sprite(t_player *player, t_map *map, int sprite_index)
 		map->sprites[i] = map->sprites[i + 1];
 		++i;
 	}
+	map->sprites[i] = 0;
 	--map->sprite_len;
 	++player->collected;
 	return (1);

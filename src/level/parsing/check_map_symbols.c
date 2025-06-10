@@ -1,10 +1,10 @@
 #include "cimmerian.h"
 
-static int	gather_types_and_size(char **map, int types[12], t_ivec2 *size);
+static int	gather_types(char **map, int types[12]);
 static int	check_types_w(t_map *map, t_wall_type *tex, int types[12]);
 static int	check_types_fc(t_row_type *tex, int types[12]);
 
-int	check_map_symbols_and_get_map_size(t_map *map)
+int	check_map_symbols(t_map *map)
 {
 	int	w_types[12];
 	int	f_types[12];
@@ -13,43 +13,39 @@ int	check_map_symbols_and_get_map_size(t_map *map)
 	bzero(w_types, 12 * sizeof(int));
 	bzero(f_types, 12 * sizeof(int));
 	bzero(c_types, 12 * sizeof(int));
-	if (gather_types_and_size(map->pars.map_wall, w_types, &map->size)
+	if (map->pars.map_wall
+		&& gather_types(map->pars.map_wall, w_types)
 		&& !check_types_w(map, map->pars.tex_types_wall, w_types))
 		return (put_error(0, E_BAD_SYM_W, 0, 0));
-	else if (gather_types_and_size(map->pars.map_floor, f_types, &map->size)
+	else if (map->pars.map_floor
+		&& gather_types(map->pars.map_floor, f_types)
 		&& !check_types_fc(map->pars.tex_types_floor, f_types))
 		return (put_error(0, E_BAD_SYM_F, 0, 0));
-	else if (gather_types_and_size(map->pars.map_ceil, c_types, &map->size)
+	else if (map->pars.map_ceil
+		&& gather_types(map->pars.map_ceil, c_types)
 		&& !check_types_fc(map->pars.tex_types_ceil, c_types))
 		return (put_error(0, E_BAD_SYM_C, 0, 0));
 	return (1);
 }
 
-static int	gather_types_and_size(char **map, int types[12], t_ivec2 *size)
+static int	gather_types(char **map, int types[12])
 {
-	int	i;
-	int	j;
+	t_ivec2	p;
 
-	if (!map)
-		return (0);
-	i = 0;
-	while (map[i])
+	p.y = -1;
+	while (map[++p.y])
 	{
-		j = 0;
-		while (map[i][j])
+		p.x = -1;
+		while (map[p.y][++p.x])
 		{
-			if (isdigit(map[i][j]))
-				types[map[i][j] - '0'] = 1;
-			else if (map[i][j] == 'D')
+			if (isdigit(map[p.y][p.x]))
+				types[map[p.y][p.x] - '0'] = 1;
+			else if (map[p.y][p.x] == 'D')
 				types[10] = 1;
-			else if (map[i][j] == 'G')
+			else if (map[p.y][p.x] == 'G')
 				types[11] = 1;
-			++j;
 		}
-		size->x = max(size->x, j - 1);
-		++i;
 	}
-	size->y = max(size->y, i);
 	return (1);
 }
 

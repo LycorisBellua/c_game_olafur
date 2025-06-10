@@ -17,7 +17,7 @@
 # define SPRITE_RADIUS 0.5
 # define SPRITE_AMOUNT_TO_COLLECT 5
 # define PORTAL_IS_CORRIDOR 0
-# define MAP_EASTER_EGG "maps/bonus/olafur/menu3.map"
+# define MAP_EASTER_EGG "maps/olafur/menu3.map"
 
 # ifdef GL
 #  define PATH_VERTEX_SHADER "src/engine/gl/shaders/vs.glsl"

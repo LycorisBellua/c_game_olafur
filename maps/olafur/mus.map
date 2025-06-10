@@ -12,10 +12,10 @@ EA mus_w3
 
 SK mus_sk
 
-PT SO 4 0 mus_p_pul mus_p_pul_open maps/bonus/olafur/pul.map NO 4 9
-PT EA 0 4 mus_p_afg mus_p_afg_open maps/bonus/olafur/afg.map WE 31 3
-PT WE 8 4 mus_p_dgn mus_p_dgn_open maps/bonus/olafur/dgn.map SO 12 0
-PT NO 4 8 mus_p_menu mus_p_menu_open maps/bonus/olafur/menu.map NO 1 1
+PT SO 4 0 mus_p_pul mus_p_pul_open maps/olafur/pul.map NO 4 9
+PT EA 0 4 mus_p_afg mus_p_afg_open maps/olafur/afg.map WE 31 3
+PT WE 8 4 mus_p_dgn mus_p_dgn_open maps/olafur/dgn.map SO 12 0
+PT NO 4 8 mus_p_menu mus_p_menu_open maps/olafur/menu.map NO 1 1
 
 SP 2.5 2.5 sprite_art1 collision
 SP 6.5 2.5 sprite_art2 collision

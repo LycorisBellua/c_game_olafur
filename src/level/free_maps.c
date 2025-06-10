@@ -74,9 +74,10 @@ static void	free_cell_arrays(t_map *map)
 				free(map->cells[coord.y][coord.x].door);
 				++coord.x;
 			}
+			free(map->cells[coord.y]);
 			++coord.y;
 		}
-		free_arr((void **)map->cells, free);
+		free(map->cells);
 	}
 	map->cells = 0;
 	return ;

@@ -12,8 +12,8 @@ D box_d
 
 SK box_sk
 
-PT SO 6 0 box_p_mus box_p_mus_open maps/bonus/olafur/mus2.map WE 8 4
-PT SO 15 3 box_p_box box_p_box_open maps/bonus/olafur/box.map WE 23 1
+PT SO 6 0 box_p_mus box_p_mus_open maps/olafur/mus2.map WE 8 4
+PT SO 15 3 box_p_box box_p_box_open maps/olafur/box.map WE 23 1
 
 SP 15.5 1.5 sprite_box01 collision
 SP 60.5 1.5 sprite_box01 collision

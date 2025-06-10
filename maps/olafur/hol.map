@@ -13,8 +13,8 @@ G solid
 
 SK hol_sk
 
-PT EA 6 15 dgn_p dgn_p_open maps/bonus/olafur/mus2.map EA 0 4
-PT WE 95 14 dgn_p dgn_p_open maps/bonus/olafur/hol.map WE 24 14
+PT EA 6 15 dgn_p dgn_p_open maps/olafur/mus2.map EA 0 4
+PT WE 95 14 dgn_p dgn_p_open maps/olafur/hol.map WE 24 14
 PT EA 22 14 dgn_p dgn_p_open null NO 0 0
 
 SP 48.5 2.5 sprite_hol01 collision

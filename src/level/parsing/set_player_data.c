@@ -20,7 +20,7 @@ int	set_player_data(t_map *map)
 				if (found_player)
 					return (put_error(0, E_DUP_PLAYER, 0, 0));
 				found_player = 1;
-				set_vec2(&map->start_pos, j, i);
+				set_vec2(&map->start_pos, j + 0.5, i + 0.5);
 				map->start_dir = get_dir_from_cardinal(
 						map->pars.map_wall[i][j]);
 			}

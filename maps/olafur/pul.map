@@ -11,7 +11,7 @@ EA pul_w4
 
 SK pul_sk
 
-PT NO 4 9 pul_p pul_p_open maps/bonus/olafur/mus.map SO 4 0
+PT NO 4 9 pul_p pul_p_open maps/olafur/mus.map SO 4 0
 
 SP 6.8 8.8 sprite_legs
 

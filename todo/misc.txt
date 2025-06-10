@@ -1,15 +1,10 @@
 COMMON
-- Redo parsing.
 - OpenAL: Loop source with multithreading.
-- Are the maps as they should be? Fix anything you notice, so that it matches 
-the original design.
 - The option to have a (flat) sprite not facing the camera, but a specific 
 direction.
 - If the skybox is an animation which changes color, the fog color needs to 
 change as well. The image average color is actually an array, make use of this 
 instead of only using the first array element.
-- About the skybox, why is there a weird jump sometimes after moving for a bit 
-when entering a map?
 
 [COMMON] SOUND
 - Consider sound effects. For example when collecting something (one sound for 

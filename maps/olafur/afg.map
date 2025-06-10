@@ -30,7 +30,7 @@ G null
 
 SK afg_sk
 
-PT WE 31 3 afg_p afg_p_open maps/bonus/olafur/mus.map EA 0 4
+PT WE 31 3 afg_p afg_p_open maps/olafur/mus.map EA 0 4
 
 SP 4.5 20.5 sprite_afg1 collision
 SP 27.5 7.5 sprite_afg2 collision

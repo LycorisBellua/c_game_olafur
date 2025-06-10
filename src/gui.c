@@ -53,7 +53,7 @@ static void	display_collectibles(t_man *man)
 	if (!man->player.to_collect)
 		return ;
 	if (!soul_icon)
-		soul_icon = get_image(man, "sprite_collec_soul_idle");
+		soul_icon = get_image(man, "sprite_soul_idle");
 	set_ivec2(&pos, 0, 0);
 	draw_image(man, soul_icon, pos);
 	if (soul_icon)

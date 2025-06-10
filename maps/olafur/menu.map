@@ -1,7 +1,7 @@
 IMG img/common/index.json
 IMG img/menu/index.json
 
-NO menu_p_open
+NO menu_p
 SO menu_w3
 WE menu_w2
 EA menu_w
@@ -11,12 +11,12 @@ EA menu_w
 
 SK brain_sk
 
-PT NO 1 2 null null maps/bonus/olafur/menu4.map SO 1 0
+PT NO 1 2 null null maps/olafur/mus2.map NO 4 7
 
 M_BG audio/olafur/m_menu.mp3
 
 111
-1S1
+1N1
 111
 
 111

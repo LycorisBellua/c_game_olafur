@@ -11,9 +11,12 @@ int	process_background_image(t_man *man, t_map *map)
 	skybox = 0;
 	if (!process_floor_ceil_colors(map) || !load_skybox(man, map, &skybox))
 		return (0);
-	map->floor_color.a = 255;
-	map->ceil_color.a = 255;
-	map->fog_color.a = 255;
+	if (!skybox)
+	{
+		map->floor_color.a = 255;
+		map->ceil_color.a = 255;
+		map->fog_color.a = 255;
+	}
 	compose_skybox(man, map, skybox);
 	compose_background(man, map);
 	return (1);

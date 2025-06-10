@@ -7,8 +7,6 @@ void	rotate_player(t_man *man, double angle)
 	t_vec2	dir;
 	t_vec2	plane;
 
-	if (!angle)
-		return ;
 	dir = rotate_vec2(man->player.dir, angle);
 	plane = rotate_vec2(man->player.plane, angle);
 	set_vec2(&man->player.dir, dir.x, dir.y);

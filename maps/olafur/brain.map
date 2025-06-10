@@ -14,37 +14,37 @@ D brain_d brain_d_open
 
 SK brain_sk
 
-PT NO 22 20 brain_p brain_p_open maps/bonus/olafur/mus2.map SO 4 0
-PT WE 1 14 brain_p brain_p_open maps/bonus/olafur/brain.map EA 44 14
-PT EA 44 14 brain_p brain_p_open maps/bonus/olafur/brain.map WE 1 14
-PT EA 1 21 brain_p brain_p_open maps/bonus/olafur/brain.map WE 44 21
-PT WE 44 21 brain_p brain_p_open maps/bonus/olafur/brain.map EA 1 21
-PT SO 4 23 brain_p brain_p_open maps/bonus/olafur/brain.map NO 41 23
-PT NO 41 23 brain_p brain_p_open maps/bonus/olafur/brain.map SO 4 23
-PT EA 5 12 brain_p brain_p_open maps/bonus/olafur/brain.map WE 40 12
-PT WE 40 12 brain_p brain_p_open maps/bonus/olafur/brain.map EA 5 12
-PT NO 6 7 brain_p brain_p_open maps/bonus/olafur/brain.map SO 39 7
-PT SO 39 7 brain_p brain_p_open maps/bonus/olafur/brain.map NO 6 7
-PT SO 7 15 brain_p brain_p_open maps/bonus/olafur/brain.map NO 38 15
-PT NO 38 15 brain_p brain_p_open maps/bonus/olafur/brain.map SO 7 15
-PT SO 8 8 brain_p brain_p_open maps/bonus/olafur/brain.map NO 37 8
-PT NO 37 8 brain_p brain_p_open maps/bonus/olafur/brain.map SO 8 8
-PT EA 10 1 brain_p brain_p_open maps/bonus/olafur/brain.map WE 37 1
-PT WE 37 1 brain_p brain_p_open maps/bonus/olafur/brain.map EA 10 1
-PT EA 11 24 brain_p brain_p_open maps/bonus/olafur/brain.map WE 25 24
-PT WE 25 24 brain_p brain_p_open maps/bonus/olafur/brain.map EA 11 24
-PT NO 11 15 brain_p brain_p_open maps/bonus/olafur/brain.map SO 36 15
-PT SO 36 15 brain_p brain_p_open maps/bonus/olafur/brain.map NO 11 15
-PT SO 12 17 brain_p brain_p_open maps/bonus/olafur/brain.map NO 35 17
-PT NO 35 17 brain_p brain_p_open maps/bonus/olafur/brain.map SO 12 17
-PT NO 12 0 brain_p brain_p_open maps/bonus/olafur/brain.map SO 35 0
-PT SO 35 0 brain_p brain_p_open maps/bonus/olafur/brain.map NO 12 0
-PT WE 15 3 brain_p brain_p_open maps/bonus/olafur/brain.map EA 30 3
-PT EA 30 3 brain_p brain_p_open maps/bonus/olafur/brain.map WE 15 3
-PT EA 21 12 brain_p brain_p_open maps/bonus/olafur/brain.map WE 26 12
-PT WE 26 12 brain_p brain_p_open maps/bonus/olafur/brain.map EA 21 12
-PT NO 26 15 brain_p brain_p_open maps/bonus/olafur/brain.map SO 25 15
-PT SO 25 15 brain_p brain_p_open maps/bonus/olafur/brain.map NO 26 15
+PT NO 22 20 brain_p brain_p_open maps/olafur/mus2.map SO 4 0
+PT WE 1 14 brain_p brain_p_open maps/olafur/brain.map EA 44 14
+PT EA 44 14 brain_p brain_p_open maps/olafur/brain.map WE 1 14
+PT EA 1 21 brain_p brain_p_open maps/olafur/brain.map WE 44 21
+PT WE 44 21 brain_p brain_p_open maps/olafur/brain.map EA 1 21
+PT SO 4 23 brain_p brain_p_open maps/olafur/brain.map NO 41 23
+PT NO 41 23 brain_p brain_p_open maps/olafur/brain.map SO 4 23
+PT EA 5 12 brain_p brain_p_open maps/olafur/brain.map WE 40 12
+PT WE 40 12 brain_p brain_p_open maps/olafur/brain.map EA 5 12
+PT NO 6 7 brain_p brain_p_open maps/olafur/brain.map SO 39 7
+PT SO 39 7 brain_p brain_p_open maps/olafur/brain.map NO 6 7
+PT SO 7 15 brain_p brain_p_open maps/olafur/brain.map NO 38 15
+PT NO 38 15 brain_p brain_p_open maps/olafur/brain.map SO 7 15
+PT SO 8 8 brain_p brain_p_open maps/olafur/brain.map NO 37 8
+PT NO 37 8 brain_p brain_p_open maps/olafur/brain.map SO 8 8
+PT EA 10 1 brain_p brain_p_open maps/olafur/brain.map WE 37 1
+PT WE 37 1 brain_p brain_p_open maps/olafur/brain.map EA 10 1
+PT EA 11 24 brain_p brain_p_open maps/olafur/brain.map WE 25 24
+PT WE 25 24 brain_p brain_p_open maps/olafur/brain.map EA 11 24
+PT NO 11 15 brain_p brain_p_open maps/olafur/brain.map SO 36 15
+PT SO 36 15 brain_p brain_p_open maps/olafur/brain.map NO 11 15
+PT SO 12 17 brain_p brain_p_open maps/olafur/brain.map NO 35 17
+PT NO 35 17 brain_p brain_p_open maps/olafur/brain.map SO 12 17
+PT NO 12 0 brain_p brain_p_open maps/olafur/brain.map SO 35 0
+PT SO 35 0 brain_p brain_p_open maps/olafur/brain.map NO 12 0
+PT WE 15 3 brain_p brain_p_open maps/olafur/brain.map EA 30 3
+PT EA 30 3 brain_p brain_p_open maps/olafur/brain.map WE 15 3
+PT EA 21 12 brain_p brain_p_open maps/olafur/brain.map WE 26 12
+PT WE 26 12 brain_p brain_p_open maps/olafur/brain.map EA 21 12
+PT NO 26 15 brain_p brain_p_open maps/olafur/brain.map SO 25 15
+PT SO 25 15 brain_p brain_p_open maps/olafur/brain.map NO 26 15
 
 SP 17.5 13.5 sprite_brain01 collision
 
