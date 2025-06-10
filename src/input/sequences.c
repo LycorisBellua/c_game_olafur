@@ -45,9 +45,9 @@ static void	easter_egg(t_man *man)
 	name_egg = get_filename(MAP_EASTER_EGG);
 	name_curr = get_filename(man->maps[man->curr_map]->filepath);
 	if (!name_egg || !name_curr
-		|| strncmp(name_egg, "menu", 4)
-		|| strncmp(name_curr, "menu", 4)
-		|| !strncmp(name_curr, "menu4", 5))
+		|| strncmp(name_egg, "elev", 4)
+		|| strncmp(name_curr, "elev", 4)
+		|| !strncmp(name_curr, "elev4", 5))
 		return ;
 	if (index_egg < 0)
 		index_egg = add_map(man, MAP_EASTER_EGG);

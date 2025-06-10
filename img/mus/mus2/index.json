@@ -1,10 +1,10 @@
 [
     {
-        "path": "img/mus/mus2/mus2_p_menu2.png",
+        "path": "img/mus/mus2/mus2_p_elev2.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "mus2_p_menu2",
+                "id": "mus2_p_elev2",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -16,11 +16,11 @@
         ]
     },
     {
-        "path": "img/mus/mus2/mus2_p_menu2_open.png",
+        "path": "img/mus/mus2/mus2_p_elev2_open.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "mus2_p_menu2_open",
+                "id": "mus2_p_elev2_open",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

@@ -1,10 +1,10 @@
 [
     {
-        "path": "img/mus/mus/mus_p_menu.png",
+        "path": "img/mus/mus/mus_p_elev.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "mus_p_menu",
+                "id": "mus_p_elev",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -16,11 +16,11 @@
         ]
     },
     {
-        "path": "img/mus/mus/mus_p_menu_open.png",
+        "path": "img/mus/mus/mus_p_elev_open.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "mus_p_menu_open",
+                "id": "mus_p_elev_open",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

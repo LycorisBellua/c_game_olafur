@@ -1,10 +1,10 @@
 [
     {
-        "path": "img/menu/menu_p.png",
+        "path": "img/elev/elev_p.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "menu_p",
+                "id": "elev_p",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -16,11 +16,11 @@
         ]
     },
     {
-        "path": "img/menu/menu_p_open.png",
+        "path": "img/elev/elev_p_open.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "menu_p_open",
+                "id": "elev_p_open",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -32,11 +32,11 @@
         ]
     },
     {
-        "path": "img/menu/menu_c.png",
+        "path": "img/elev/elev_c.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "menu_c",
+                "id": "elev_c",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -48,11 +48,11 @@
         ]
     },
     {
-        "path": "img/menu/menu_f.png",
+        "path": "img/elev/elev_f.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "menu_f",
+                "id": "elev_f",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -64,11 +64,11 @@
         ]
     },
     {
-        "path": "img/menu/menu_w.png",
+        "path": "img/elev/elev_w.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "menu_w",
+                "id": "elev_w",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -80,27 +80,11 @@
         ]
     },
     {
-        "path": "img/menu/menu_w2.png",
+        "path": "img/elev/elev_w2.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "menu_w2",
-                "size": [512, 512],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 0,
-                "cycle": [
-                    [0, 0]
-                ]
-            }
-        ]
-    },
-    {
-        "path": "img/menu/menu_w3.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "menu_w3",
+                "id": "elev_w2",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

@@ -1,0 +1,28 @@
+IMG img/common/index.json
+IMG img/elev/index.json
+
+NO elev_p
+SO elev_w
+WE elev_w2
+EA elev_w
+
+1F elev_f
+1C elev_c
+
+SK brain_sk
+
+PT NO 1 2 null null maps/olafur/mus.map NO 4 8
+
+M_BG audio/olafur/m_elev.mp3
+
+111
+1N1
+111
+
+111
+111
+111
+
+111
+111
+111

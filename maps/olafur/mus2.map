@@ -15,7 +15,7 @@ SK mus_sk
 PT SO 4 0 mus2_p_brain mus2_p_brain_open maps/olafur/brain.map SO 22 13
 PT EA 0 4 mus2_p_hol mus2_p_hol_open maps/olafur/hol.map EA 9 15
 PT WE 8 4 mus2_p_box mus2_p_box_open maps/olafur/box.map EA 5 1
-PT NO 4 8 mus2_p_menu2 mus2_p_menu2_open maps/olafur/menu2.map NO 1 1
+PT NO 4 8 mus2_p_elev2 mus2_p_elev2_open maps/olafur/elev2.map NO 1 2
 
 SP 2.5 2.5 sprite_art1 collision
 SP 6.5 2.5 sprite_art2 collision

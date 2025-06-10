@@ -20,7 +20,7 @@ olafur/m_hol.mp3:
 	Geoxor - Hellscape
 	https://www.youtube.com/watch?v=7aRvxqMq8xE
 
-olafur/m_menu.mp3:
+olafur/m_elev.mp3:
 	The Stanley Parable OST 'Elevator'
 	https://www.youtube.com/watch?v=P99AiAYc0h0
 

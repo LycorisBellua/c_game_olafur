@@ -44,17 +44,16 @@ Wolfenstein 3D - Copyright by id Software
 - dgn/sprite_greenlight.png
 - dgn/sprite_pillar.png
 
-------------------------------------- MENU -------------------------------------
+------------------------------------- ELEV -------------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------
 
 Hellchauffo
-- menu/menu_c.png
-- menu/menu_f.png
-- menu/menu_p.png
-- menu/menu_p_open.png
-- menu/menu_w.png
-- menu/menu_w2.png
-- menu/menu_w3.png
+- elev/elev_c.png
+- elev/elev_f.png
+- elev/elev_p.png
+- elev/elev_p_open.png
+- elev/elev_w.png
+- elev/elev_w2.png
 
 ------------------------------------ MUSEUM ------------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------
@@ -73,8 +72,8 @@ Hellchauffo
 - mus/mus/mus_p_afg_open.png
 - mus/mus/mus_p_dgn.png
 - mus/mus/mus_p_dgn_open.png
-- mus/mus/mus_p_menu.png
-- mus/mus/mus_p_menu_open.png
+- mus/mus/mus_p_elev.png
+- mus/mus/mus_p_elev_open.png
 - mus/mus/mus_p_pul.png
 - mus/mus/mus_p_pul_open.png
 - mus/mus/mus_w.png
@@ -92,8 +91,8 @@ Hellchauffo
 - mus/mus2/mus2_p_brain_open.png
 - mus/mus2/mus2_p_hol.png
 - mus/mus2/mus2_p_hol_open.png
-- mus/mus2/mus2_p_menu2.png
-- mus/mus2/mus2_p_menu2_open.png
+- mus/mus2/mus2_p_elev2.png
+- mus/mus2/mus2_p_elev2_open.png
 - mus/mus2/mus2_w.png
 - mus/mus2/mus2_w2.png
 - mus/mus2/mus2_w3.png

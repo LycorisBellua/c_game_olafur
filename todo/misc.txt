@@ -55,7 +55,7 @@ maps as they came in, with the name being their filename without the extension.
 You can select any of them.
 - For the name being displayed, it's actually not just the filename. It's the 
 path starting after the folder, and without "*.map" at the end. For example, 
-for "maps/bonus" as argument, it's "OLAFUR/AFG" and "TEST/DGN".
+for "maps/" as argument, it's "OLAFUR/AFG" and "TEST/DGN".
 - When you press BACKSPACE, you're brought back to this menu. If there was only 
 one map (which is also the case if you indicated a map and not a directory), 
 then you're brought back there automatically instead of selecting. Besides 
