@@ -6,6 +6,7 @@ system.
 - Within the file, the variables come before the maps.
 - The variables can be ordered in whichever way. They don't have to respect any 
 order.
+- Anything written to the right of hash sign ('#') is a comment.
 - You can use "null" for an image reference to express "no image".
 - The world origin is on the top left corner, and the X axis extends to the 
 right, and the Y axis extends downwards.

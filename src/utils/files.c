@@ -94,7 +94,8 @@ static void	remove_comments(char **lines)
 			*comment = 0;
 		if (comment == lines[i])
 			remove_arr_elems((void **)lines, i, i, free);
-		++i;
+		else
+			++i;
 	}
 	return ;
 }

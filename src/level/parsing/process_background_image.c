@@ -15,7 +15,6 @@ int	process_background_image(t_man *man, t_map *map)
 	{
 		map->floor_color.a = 255;
 		map->ceil_color.a = 255;
-		map->fog_color.a = 255;
 	}
 	compose_skybox(man, map, skybox);
 	compose_background(man, map);
@@ -101,7 +100,5 @@ static int	load_skybox(t_man *man, t_map *map, t_img **skybox)
 		else
 			++i;
 	}
-	if (*skybox)
-		map->fog_color = (*skybox)->average_color[0];
 	return (1);
 }

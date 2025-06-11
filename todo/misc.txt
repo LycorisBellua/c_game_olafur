@@ -2,11 +2,23 @@ COMMON
 - OpenAL: Loop source with multithreading.
 - The option to have a (flat) sprite not facing the camera, but a specific 
 direction.
-- If the skybox is an animation which changes color, the fog color needs to 
-change as well. The image average color is actually an array, make use of this 
-instead of only using the first array element.
 - When the player gets stuck into a wall, why do they keep being stuck? Why is 
 the "unstuck" function no longer working?
+
+[COMMON] COLLECTIBLES
+- Have a general icon for collectibles: a small circle using the same pattern 
+as the goal texture (switching between these two specific colors).
+- It shows the amount of collectibles we already have as well as the amount 
+needed to win the game, hardcoded as 5.
+- When entering a map with collectibles in it, these are showcased right under 
+the general collectible line. The icon of the map collectible is shown, with 
+how many have been found and how many are available. For example, in the AFG 
+map, each book is a single line, because they are different collectibles, and 
+not several instances of the same one.
+- Let's allow the player to collect them all, but with a boolean switch in the 
+macro header. Depending on the boolean value, which is hardcoded, the player 
+can keep collecting even if it's to have more collectibles than needed, 
+otherwise the player cannot collect anymore.
 
 [COMMON] SOUND
 - Consider sound effects. For example when collecting something (one sound for 
@@ -33,21 +45,6 @@ are not allowed, remember that a space can be used to represent a literal empty
 cell, and the walkable areas are still enclosed in walls because they are 
 the inner part of buildings, aka they have walls. What's not allowed is a mere 
 newline.
-
-[COMMON] COLLECTIBLES
-- Have a general icon for collectibles: a small circle using the same pattern 
-as the goal texture (switching between these two specific colors).
-- It shows the amount of collectibles we already have as well as the amount 
-needed to win the game, hardcoded as 5.
-- When entering a map with collectibles in it, these are showcased right under 
-the general collectible line. The icon of the map collectible is shown, with 
-how many have been found and how many are available. For example, in the AFG 
-map, each book is a single line, because they are different collectibles, and 
-not several instances of the same one.
-- Let's allow the player to collect them all, but with a boolean switch in the 
-macro header. Depending on the boolean value, which is hardcoded, the player 
-can keep collecting even if it's to have more collectibles than needed, 
-otherwise the player cannot collect anymore.
 
 [BONUS] LEVELS - SELECT SCREEN
 - Instead of giving a map file as argument, you can give a directory. The game 
