@@ -15,7 +15,7 @@ EA elev_w
 1C elev_c
 
 PT SO 1 0 null null maps/olafur/elev3.map NO 1 2
-PT NO 1 8 null null maps/olafur/elev4.map SO 1 2
+PT NO 1 8 null null maps/olafur/elev4.map SO 1 6
 
 111
 1S1
@@ -43,12 +43,6 @@ PT NO 1 8 null null maps/olafur/elev4.map SO 1 2
 101
 101
 101
-101
-101
-101
-101
-101
-101
 
 111
 111
@@ -76,19 +70,7 @@ PT NO 1 8 null null maps/olafur/elev4.map SO 1 2
 111
 111
 111
-111
-111
-111
-111
-111
-111
 
-111
-111
-111
-111
-111
-111
 111
 111
 111
