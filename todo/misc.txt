@@ -1,9 +1,14 @@
-COMMON
 - OpenAL: Loop source with multithreading.
+
+--------------------------------------------------------------------------------
+
+[COMMON] MISCELLANEOUS
 - The option to have a (flat) sprite not facing the camera, but a specific 
-direction.
-- When the player gets stuck into a wall, why do they keep being stuck? Why is 
-the "unstuck" function no longer working?
+direction. You can use this feature in the pool map, for the ladder. Make it 
+face the "stairs" wall (the one ahead of us when we arrive).
+- In the minimap, instead of a little dash, have a cone to represent the field 
+of view. Either only show what's within the cone, or make what's outside of it 
+darker.
 
 [COMMON] SOUND
 - Consider sound effects. For example when collecting something (one sound for 

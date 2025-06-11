@@ -21,7 +21,7 @@ void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 				continue ;
 			else if (map->sprites[i]->has_collision)
 				pos = calculate_new_pos_on_collision(map->sprites[i], radius,
-					pos);
+						pos);
 		}
 		++i;
 	}
