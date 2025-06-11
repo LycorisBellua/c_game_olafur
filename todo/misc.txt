@@ -5,6 +5,8 @@ direction.
 - If the skybox is an animation which changes color, the fog color needs to 
 change as well. The image average color is actually an array, make use of this 
 instead of only using the first array element.
+- When the player gets stuck into a wall, why do they keep being stuck? Why is 
+the "unstuck" function no longer working?
 
 [COMMON] SOUND
 - Consider sound effects. For example when collecting something (one sound for 

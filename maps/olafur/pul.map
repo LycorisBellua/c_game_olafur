@@ -1,6 +1,10 @@
 IMG img/common/index.json
 IMG img/pul/index.json
 
+M_BG audio/olafur/m_pul.mp3
+
+SK pul_sk
+
 NO pul_w
 SO pul_w2
 WE pul_w3
@@ -9,17 +13,12 @@ EA pul_w4
 1F pul_f
 1C pul_c
 
-SK pul_sk
-
 PT NO 4 9 pul_p pul_p_open maps/olafur/mus.map SO 4 0
 
 SP 6.8 8.8 sprite_legs
-
 SP 1.4 1.1 sprite_ladder
 
 SP 4.5 2.5 sprite_soul_idle collectible
-
-M_BG audio/olafur/m_pul.mp3
 
 1111111111
 1000000001

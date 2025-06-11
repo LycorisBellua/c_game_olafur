@@ -1,6 +1,10 @@
 IMG img/common/index.json
 IMG img/afg/index.json
 
+M_BG audio/olafur/m_afg.mp3
+
+SK afg_sk
+
 1NO afg_1_w
 1SO afg_1_w2
 1WE afg_1_w3
@@ -21,21 +25,18 @@ IMG img/afg/index.json
 4WE afg_4_w3
 4EA afg_4_w4
 
-1C afg_c
-1F afg_f_in
-2F afg_f
-
 D afg_d afg_d_open
 G null
 
-SK afg_sk
+1F afg_f_in
+2F afg_f
+1C afg_c
 
 PT WE 31 3 afg_p afg_p_open maps/olafur/mus.map EA 0 4
 
 SP 4.5 20.5 sprite_afg1 collision
 SP 27.5 7.5 sprite_afg2 collision
 SP 3.5 16.5 sprite_afg3 collision
-
 SP 15.5 12.5 sprite_cage collision
 SP 23.5 15.5 sprite_cage collision
 
@@ -43,8 +44,6 @@ SP 19.5 3.5 sprite_book1 collectible collision
 SP 15.5 7.5 sprite_book2 collectible collision
 SP 13.5 25.5 sprite_book3 collectible collision
 SP 19.5 21.5 sprite_book4 collectible collision
-
-M_BG audio/olafur/m_afg.mp3
 
 11111122211111222111111122211111
 10000020200000202000000020200001

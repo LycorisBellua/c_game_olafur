@@ -2,6 +2,10 @@ IMG img/common/index.json
 IMG img/mus/common/index.json
 IMG img/mus/mus2/index.json
 
+M_BG audio/olafur/m_mus.mp3
+
+SK mus_sk
+
 NO mus2_w2
 SO mus2_w
 WE mus2_w4
@@ -10,19 +14,15 @@ EA mus2_w3
 1F mus2_f
 1C mus2_c
 
-SK mus_sk
-
-PT SO 4 0 mus2_p_brain mus2_p_brain_open maps/olafur/brain.map SO 22 13
-PT EA 0 4 mus2_p_hol mus2_p_hol_open maps/olafur/hol.map EA 9 15
-PT WE 8 4 mus2_p_box mus2_p_box_open maps/olafur/box.map EA 5 1
+PT SO 4 0 mus2_p_brain mus2_p_brain_open maps/olafur/brain.map SO 22 11
+PT EA 0 4 mus2_p_hol mus2_p_hol_open maps/olafur/hol.map EA 6 14
+PT WE 8 4 mus2_p_box mus2_p_box_open maps/olafur/box.map SO 5 0
 PT NO 4 8 mus2_p_elev2 mus2_p_elev2_open maps/olafur/elev2.map NO 1 2
 
 SP 2.5 2.5 sprite_art1 collision
 SP 6.5 2.5 sprite_art2 collision
 SP 2.5 6.5 sprite_art3 collision
 SP 6.5 6.5 sprite_art4 collision
-
-M_BG audio/olafur/m_mus.mp3
 
 111111111
 100000001

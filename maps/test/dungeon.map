@@ -1,6 +1,8 @@
 IMG img/common/index.json
 IMG img/dgn/index.json
 
+SK dgn_sk
+
 1NO dgn_w
 1SO dgn_w
 1WE dgn_w
@@ -21,14 +23,12 @@ IMG img/dgn/index.json
 4WE dgn_w4
 4EA dgn_w4
 
-1F dgn_f_in
-1C dgn_c
-2F dgn_f
-
 D dgn_d
 G solid
 
-SK dgn_sk
+1F dgn_f_in
+2F dgn_f
+1C dgn_c
 
 PT SO 12 0 dgn_p dgn_p_open maps/test/small.map EA 0 5
 PT NO 15 6 dgn_p dgn_p_open maps/test/small.map EA 0 5
