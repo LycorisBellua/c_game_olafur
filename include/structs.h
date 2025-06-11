@@ -262,6 +262,7 @@ struct s_map
 	t_cell		**cells;
 	int			sprite_len;
 	t_spr		**sprites;
+	int			to_collect;
 	t_a_track	*music_track;
 };
 
@@ -273,7 +274,6 @@ typedef struct s_player
 	t_vec2	dir;
 	t_vec2	plane;
 	int		collected;
-	int		to_collect;
 	int		is_in_portal;
 }	t_player;
 

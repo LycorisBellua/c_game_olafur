@@ -32,7 +32,9 @@ The first reference is for when the door is closed, and the second is for when
 it's open.
 
 - **G**: The reference to the goal texture, indicated as 'G' in the wall map. 
-The map doesn't need a goal.
+The map doesn't need a goal. A goal can be crossed if the required amount of 
+collectibles has been gathered. If you don't specify a number as a second 
+argument, after the texture, then this amount will be 0.
 
 - **Digit + F**: The reference to the floor image for a given type. The floor 
 types are used in the floor map.

@@ -15,7 +15,6 @@
 # define FONT_MOD_X  4
 # define FONT_MOD_Y  4
 # define SPRITE_RADIUS 0.5
-# define SPRITE_AMOUNT_TO_COLLECT 5
 # define PORTAL_IS_CORRIDOR 0
 # define MAP_EASTER_EGG "maps/olafur/elev3.map"
 
@@ -105,6 +104,8 @@
 # define E_BAD_COLOR "Invalid RGB or hex color"
 # define E_BAD_CARD "Invalid cardinal - Valid is \"NO\", \"SO\", \"WE\" or " \
 	"\"EA\""
+# define E_BAD_TOCOLLECT "Invalid number of sprites to collect - Valid is " \
+	"[0 - 2147483647]"
 # define E_BAD_COORD "Invalid coordinate - Valid is [0 - 2147483647]"
 # define E_BAD_COORD_DBL "Invalid coordinate - Valid is [0.0 - 2147483647.99]"
 # define E_BAD_SP_TAG "Invalid sprite tag - Valid is \"collectible\" and " \

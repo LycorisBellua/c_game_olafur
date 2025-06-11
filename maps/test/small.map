@@ -9,7 +9,7 @@ SK dgn_sk
 1EA dgn_w
 
 D dgn_d
-G solid
+G solid 5
 
 1F dgn_f_in
 2F dgn_f

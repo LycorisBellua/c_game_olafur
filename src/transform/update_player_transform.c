@@ -63,7 +63,7 @@ static void	adjust_position_on_wall_collision(t_man *man)
 	delta.x = pos.x - man->player.prev_pos.x;
 	delta.y = pos.y - man->player.prev_pos.y;
 	m = man->maps[man->curr_map];
-	cross_goal_if_unlocked(man);
+	cross_goal_if_unlocked(man, m);
 	disable_collision_with_dst_portal_if_within(man, m, pos);
 	if (!push_back_on_collision(man, m, pos, delta))
 		unstuck_from_wall(man, m);

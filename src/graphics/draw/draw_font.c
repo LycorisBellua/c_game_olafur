@@ -2,13 +2,13 @@
 
 static void	fix_initial_pos(t_ivec2 *pos);
 static void	draw_char(t_man *man, t_img *image, t_ivec2 pos);
-static void	alignment_left(char *str, size_t *i, t_ivec2 *pos);
+static void	alignment_left(const char *str, size_t *i, t_ivec2 *pos);
 
 /*
 	The capacity is 90 characters per line ([0-89]).
 	The index is the result of `(pos->x - FONT_PAD) / FONT_SIZE_X`.
 */
-void	draw_font_default(t_man *man, t_ivec2 *pos, char *str)
+void	draw_font_default(t_man *man, t_ivec2 *pos, const char *str)
 {
 	size_t	i;
 	size_t	len;
@@ -69,7 +69,7 @@ static void	draw_char(t_man *man, t_img *image, t_ivec2 pos)
 	return ;
 }
 
-static void	alignment_left(char *str, size_t *i, t_ivec2 *pos)
+static void	alignment_left(const char *str, size_t *i, t_ivec2 *pos)
 {
 	size_t	i_curr_space;
 	char	*p_next_space;

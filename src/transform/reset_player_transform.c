@@ -9,7 +9,6 @@ void	reset_player(t_man *man)
 	}
 	man->player.radius = DEFAULT_PLAYER_RADIUS;
 	man->player.collected = 0;
-	man->player.to_collect = SPRITE_AMOUNT_TO_COLLECT;
 	reset_player_transform(man);
 	return ;
 }

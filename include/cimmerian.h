@@ -48,7 +48,7 @@ void		draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 				t_color edge);
 void		draw_shape(t_man *man, t_vert arr[], int len);
 void		draw_shape_full(t_man *man, t_vert arr[], int len);
-void		draw_font_default(t_man *man, t_ivec2 *pos, char *str);
+void		draw_font_default(t_man *man, t_ivec2 *pos, const char *str);
 void		draw_image(t_man *man, t_img *img, t_ivec2 pos);
 void		draw_png_with_x_offset(t_man *man, t_png *png, int x_offset);
 void		fill_frame(t_man *man, t_color c);
@@ -114,8 +114,7 @@ t_img		*duplicate_image(const char *dst_id, t_img *src);
 
 void		set_dt_and_fps(t_man *man);
 void		display_fps(t_man *man);
-void		display_game_gui(t_man *man);
-void		display_game_over_screen(t_man *man);
+void		display_game_gui(t_man *man, t_map *map);
 void		door_routine(t_man *man);
 void		portal_routine(t_man *man);
 t_portal	*get_portal(t_man *man);
@@ -165,7 +164,7 @@ void		prevent_out_of_bounds(t_man *man);
 void		handle_player_speed(t_man *man, int shift_pressed);
 void		rotate_player(t_man *man, double angle);
 void		echolocation(t_man *man, int has_player_moved);
-void		cross_goal_if_unlocked(t_man *man);
+void		cross_goal_if_unlocked(t_man *man, t_map *m);
 void		disable_collision_with_dst_portal_if_within(t_man *man, t_map *m,
 				t_vec2 pos);
 int			push_back_on_collision(t_man *man, t_map *m, t_vec2 pos,

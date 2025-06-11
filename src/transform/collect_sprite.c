@@ -33,8 +33,7 @@ static int	collect_sprite(t_player *player, t_map *map, int sprite_index)
 {
 	int	i;
 
-	if (!map->sprites[sprite_index]->is_collectible
-		|| player->collected >= player->to_collect)
+	if (!map->sprites[sprite_index]->is_collectible)
 		return (0);
 	free(map->sprites[sprite_index]);
 	i = sprite_index;

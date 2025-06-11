@@ -10,7 +10,7 @@ NO hol_w
 WE hol_w
 EA hol_w2
 
-G solid
+G solid 5
 
 1F hol_f
 1C hol_c
