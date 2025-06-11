@@ -1,6 +1,5 @@
 #include "cimmerian.h"
 
-static void	set_fog_color(t_map *map);
 static void	add_fog_overlay(t_png *png, double fog_width, t_color fog);
 static void	upper_gradient(t_png *png, t_color fog, int h_gradient,
 				t_vert *v);
@@ -17,7 +16,7 @@ void	compose_background(t_man *man, t_map *map)
 	if (!map->background)
 	{
 		set_ivec2(&size, man->res.res.x * 4, man->res.res.y);
-		map->background = create_empty_png(size);
+		map->background = create_empty_png(size, 255);
 		if (!map->background)
 			return ;
 	}
@@ -29,22 +28,9 @@ void	compose_background(t_man *man, t_map *map)
 			map->skybox->cycle[map->skybox->cycle_index],
 			min_len * sizeof(t_color));
 	}
-	set_fog_color(map);
-	add_fog_overlay(map->background, man->fog_width, map->fog_color);
-	return ;
-}
-
-static void	set_fog_color(t_map *map)
-{
 	if (map->skybox)
 		map->fog_color = map->skybox->average_color[map->skybox->cycle_index];
-	else
-	{
-		map->fog_color.r = (map->floor_color.r + map->ceil_color.r) / 8;
-		map->fog_color.g = (map->floor_color.g + map->ceil_color.g) / 8;
-		map->fog_color.b = (map->floor_color.b + map->ceil_color.b) / 8;
-		map->fog_color.a = 255;
-	}
+	add_fog_overlay(map->background, man->fog_width, map->fog_color);
 	return ;
 }
 

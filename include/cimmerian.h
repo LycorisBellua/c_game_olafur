@@ -94,8 +94,8 @@ void		parse_segments(t_png *file, char **lines, size_t *i);
 /* Images ------------------------------------------------------------------- */
 
 t_png		*load_png_from_path(const char *path);
-t_png		*create_empty_png(t_ivec2 size);
-t_img		*create_empty_image(const char *id, t_ivec2 size);
+t_png		*create_empty_png(t_ivec2 size, t_ubyte alpha);
+t_img		*create_empty_image(const char *id, t_ivec2 size, t_ubyte alpha);
 t_img		*add_image(t_man *man, const char *path);
 void		compose_skybox(t_man *man, t_map *map, t_img *src);
 void		compose_background(t_man *man, t_map *map);

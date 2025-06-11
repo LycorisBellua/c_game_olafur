@@ -52,7 +52,7 @@ static int	add_image_slot(t_man *man)
 
 static void	fill_image_slot(t_man *man, int index, char *abs_path, t_png *file)
 {
-	man->images[index] = create_empty_image(abs_path, file->size);
+	man->images[index] = create_empty_image(abs_path, file->size, 0);
 	if (man->images[index])
 	{
 		memcpy(man->images[index]->cycle[0], file->buf,

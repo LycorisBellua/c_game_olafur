@@ -15,6 +15,10 @@ int	process_background_image(t_man *man, t_map *map)
 	{
 		map->floor_color.a = 255;
 		map->ceil_color.a = 255;
+		map->fog_color.r = (map->floor_color.r + map->ceil_color.r) / 8;
+		map->fog_color.g = (map->floor_color.g + map->ceil_color.g) / 8;
+		map->fog_color.b = (map->floor_color.b + map->ceil_color.b) / 8;
+		map->fog_color.a = 255;
 	}
 	compose_skybox(man, map, skybox);
 	compose_background(man, map);
@@ -94,7 +98,11 @@ static int	load_skybox(t_man *man, t_map *map, t_img **skybox)
 			else if (map->pars.vars[i][2])
 				return (put_error(0, E_VAR_VALS, map->pars.vars[i][0], 0));
 			else if (strcmp(map->pars.vars[i][1], "null"))
+			{
 				*skybox = add_image(man, map->pars.vars[i][1]);
+				if (!*skybox)
+					return (put_error(0, E_NO_IMG, map->pars.vars[i][1], 0));
+			}
 			remove_var_line(map, i);
 		}
 		else

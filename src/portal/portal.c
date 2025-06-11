@@ -19,6 +19,7 @@ static t_vec2	compute_entry_dir(t_vec2 player_pos, t_ivec2 portal_pos);
 void	portal_routine(t_man *man)
 {
 	t_portal	*portal;
+	int			map_index;
 
 	open_and_close_portals(man);
 	portal = get_portal(man);
@@ -29,8 +30,11 @@ void	portal_routine(t_man *man)
 		change_game_state(man, GAME_STATE_FAILURE);
 		return ;
 	}
+	map_index = add_map(man, portal->path_dst_map);
+	if (map_index < 0)
+		return ;
+	man->curr_map = map_index;
 	man->player.is_in_portal = 1;
-	man->curr_map = add_map(man, portal->path_dst_map);
 	set_transform(man, portal);
 	if (man->echolocation)
 		update_dof(man, -30);

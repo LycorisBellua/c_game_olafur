@@ -1,6 +1,8 @@
 #include "cimmerian.h"
 
-t_png	*create_empty_png(t_ivec2 size)
+static void	apply_alpha(t_color *buf, t_ivec2 size, t_ubyte alpha);
+
+t_png	*create_empty_png(t_ivec2 size, t_ubyte alpha)
 {
 	t_png	*png;
 
@@ -14,10 +16,11 @@ t_png	*create_empty_png(t_ivec2 size)
 		free_png(png);
 		return (0);
 	}
+	apply_alpha(png->buf, size, alpha);
 	return (png);
 }
 
-t_img	*create_empty_image(const char *id, t_ivec2 size)
+t_img	*create_empty_image(const char *id, t_ivec2 size, t_ubyte alpha)
 {
 	t_img	*img;
 
@@ -40,5 +43,22 @@ t_img	*create_empty_image(const char *id, t_ivec2 size)
 		free_image(img, free);
 		return (0);
 	}
+	apply_alpha(img->cycle[0], size, alpha);
+	img->average_color[0].a = alpha;
+	img->is_see_through[0] = alpha < 255;
 	return (img);
+}
+
+static void	apply_alpha(t_color *buf, t_ivec2 size, t_ubyte alpha)
+{
+	int	i;
+	int	len;
+
+	if (!buf || !alpha)
+		return ;
+	i = 0;
+	len = size.x * size.y;
+	while (i < len)
+		buf[i++].a = alpha;
+	return ;
 }
