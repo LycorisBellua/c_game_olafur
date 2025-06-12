@@ -2,14 +2,6 @@
 
 --------------------------------------------------------------------------------
 
-[COMMON] MISCELLANEOUS
-- The option to have a (flat) sprite not facing the camera, but a specific 
-direction. You can use this feature in the pool map, for the ladder. Make it 
-face the "stairs" wall (the one ahead of us when we arrive).
-- In the minimap, instead of a little dash, have a cone to represent the field 
-of view. Either only show what's within the cone, or make what's outside of it 
-darker.
-
 [COMMON] SOUND
 - Consider sound effects. For example when collecting something (one sound for 
 all collectibles). Also a jingle when reaching the winning screen, and a damage 
@@ -36,15 +28,6 @@ cell, and the walkable areas are still enclosed in walls because they are
 the inner part of buildings, aka they have walls. What's not allowed is a mere 
 newline.
 
-[BONUS] COLLECTIBLES
-- Have a general icon for collectibles: a small circle using the same pattern 
-as the goal texture (switching between these two specific colors).
-- When entering a map with collectibles in it, these are showcased right under 
-the general collectible line. The icon of the map collectible is shown, with 
-how many have been found and how many are available. For example, in the AFG 
-map, each book is a single line, because they are different collectibles, and 
-not several instances of the same one.
-
 [BONUS] LEVELS - SELECT SCREEN
 - Instead of giving a map file as argument, you can give a directory. The game 
 fetches all the map files present there, recursively. If only one map exists, 
@@ -54,7 +37,95 @@ You can select any of them.
 - For the name being displayed, it's actually not just the filename. It's the 
 path starting after the folder, and without "*.map" at the end. For example, 
 for "maps/" as argument, it's "OLAFUR/AFG" and "TEST/DGN".
-- When you press BACKSPACE, you're brought back to this menu. If there was only 
-one map (which is also the case if you indicated a map and not a directory), 
-then you're brought back there automatically instead of selecting. Besides 
-pressing BACKSPACE, also have an explicit menu option.
+- Remove the BACKSPACE shortcut, and use the menu instead, accessible from 
+pressing ESCAPE. It allows you to pick another level, to reset your current 
+level, or to reset your transform in this level.
+
+[BONUS] MISCELLANEOUS
+- In the minimap, instead of a little dash, have a cone to represent the field 
+of view. Either only show what's within the cone, or make what's outside of it 
+darker.
+- When starting the game, have a little menu to decide on the window's size, 
+the aspect ratio, and the resolution. Be able to easily modify that sort of 
+things. I've worked hard on this feature, and yet it doesn't show. I would like 
+to telegraph it to the user.
+
+--------------------------------------------------------------------------------
+
+[BONUS] GAMEPLAY
+- Do we do this thing where reaching the goal can bring us to another level, 
+and if there's no more level then it's victory? I know I already have portals, 
+but it's not just about reaching another level, through not overriding its 
+start point. It's about doing this Doom thing where we see the conclusion of 
+the level: the items we collected, how long we took, and whatever honorable 
+mentions we could think of. I don't know.
+- Have a general icon for collectibles: a small circle using the same pattern 
+as the goal texture (switching between these two specific colors).
+- When entering a map with collectibles in it, these are showcased right under 
+the general collectible line. The icon of the map collectible is shown, with 
+how many have been found and how many are available. For example, in Olafur's 
+afg map, each book is a single line, because they are different collectibles, 
+and not several instances of the same one.
+- A life bar, and losing life when hitting a trap, and recovering life when 
+picking up a healing item.
+- An inventory system. You no longer automatically consume the item on pickup.
+- The ability to drop an item to the ground (without destroying it, so it can 
+be picked up again).
+- Certain doors and portals don't open and close on distance, they require an 
+interaction. It's simply the hit of the Enter key once close enough to the 
+target. Ponder over whether this is useful for a door/portal to have their ways 
+of opening and closing be different.
+- Certain doors require certain items: could be a specific key for this 
+specific door. Also a crowbar or whatever, to break it open if we don't have a 
+key, but not all doors can be broken open this way.
+- Seeing which item we have equipped in our hand, with an animation when using 
+it, for example hitting the door with a crowbar.
+- Ooooh... Lockpicking? I love the lockpicking in Skyrim.
+- You pick up ammo, which is just mana.
+- An enemy to fight.
+- If we want different "weapons", we could just have different types of mana, 
+which is like different kinds of ammo, and the weapon might be a magic item to 
+allow us to cast. This way, it's like having different guns and their 
+respective ammo. Anyway, enemies can give us mana when defeated, and the type 
+of mana they give depends on which enemy it is. They could give none if they're 
+not organic, otherwise they give the default kind of mana, it's the neutral 
+mana. It's like the spectrum of light, this mana would be "white". Then, 
+certain enemies give a specific kind of mana (fire, ice... Or is it: 
+movement/speed, and stillness?). You can find a station to separate your 
+neutral mana into different kinds, or to combine special kinds to obtain 
+neutral (difficult, as you would need all the different kinds to obtain 
+neutral).
+
+[BONUS] ONCE WE NO LONGER USE DDA
+- The following feature is too expensive for DDA, and can only be considered if 
+another algorithm is used, such as BSP. The feature is the option to have a 
+(flat) sprite not facing the camera, but a specific direction. You can use this 
+feature in Olafur's pool map, for the ladder. Make it face the "stairs" wall 
+(the one ahead of us when we arrive). Use it also for the legs. Make them 
+parallel to the entrance wall.
+- Keep the ability to have a billboard sprite (= which always faces the 
+player). It can be like Doom, which couples this with the selection of a 
+different sprite depending on the angle at which we look at the character, 
+giving a rough illusion of 3D. Of course, if the sprite only has on texture, 
+then it's just one image always facing us, it's okay.
+- The ability to look up and down. Use the mouse for that: we already could 
+rotate horizontally with the mouse (as well as with keys), now the mouse is 
+also responsible for the vertical rotation. For the horizontal mouse rotation, 
+it's truly a rotation, the whole player body rotates, it's not just their POV, 
+otherwise this would require them to use the rotation keys as well during 
+action packed gameplay, and it would be too much, it wouldn't be fun. It's 
+easier for them (and for them) to make the whole body rotate. The vertical 
+mouse rotation however is just the point of view. (unsure: If we had 
+multiplayer or a mirror to see the player character, I would like their head to 
+follow the vertical movement.)
+- Jump and crouch.
+- The ability to fall and see the world go higher and higher until our field of 
+view fades to black. Basically, make holes.
+- The ability to swim when in water.
+- The ability to fly?
+- Is it possible to improve the skybox? And about the skybox, can we have 
+different layers? Like, the background, and then another for the clouds, which 
+slowly move even if we stand still?
+- The ability to cast a spell, such as a fireball. You aim with the right click 
+and there's crosshair in the middle of the window when you're in "right-click" 
+mode.

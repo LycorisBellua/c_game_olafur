@@ -19,7 +19,7 @@ else
 	ENGINE_FLAGS = $(MLX_FLAGS)
 endif
 SRC = $(SRC_COMMON) $(ENGINE_SRC)
-OBJ = $(SRC:.c=.o)
+OBJ = $(patsubst %.c, build/%.o, $(SRC))
 LDFLAGS += $(ENGINE_FLAGS)
 
 all: $(MLX_LIB) $(NAME)
@@ -38,7 +38,8 @@ $(MLX_LIB):
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-%.o: %.c
+build/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -D$(ENGINE) -o $@ -c $<
 
 clean:

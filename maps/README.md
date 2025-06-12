@@ -65,9 +65,11 @@ grid. It cannot be in the middle of a cell. Crossing a portal teleports the
 player somewhere else, be it on the same map or another. An example is `PT WE 
 31 3 tex_closed tex_open some.map EA 0 4`. This means that a portal is on the 
 western wall of the (31, 3) cell, and leads to "some.map" on the eastern wall 
-of the (0, 4) cell. The portal uses the "tex_closed" image, and when the player 
-is close enough for the portal to open, "tex_open" is used. There can be more 
-than one PT variable.
+of the (0, 4) cell. The destination cardinal and XY position are optional, if 
+they're not given then the start cardinal and XY position of the destination 
+map will be used instead. Also, this portal uses the "tex_closed" image, and 
+when the player is close enough for the portal to open, "tex_open" is used. 
+There can be more than one PT variable.
 
 ## Maps
 
