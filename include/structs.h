@@ -51,10 +51,12 @@ typedef struct s_a_track
 
 typedef struct s_a_source
 {
-	ALuint		source;
-	t_a_track	*track;
-	int			is_loop;
-	int			is_running;
+	ALuint			source;
+	t_a_track		*track;
+	int				is_loop;
+	pthread_t		loop_thread;
+	int				is_looping;
+	pthread_mutex_t	is_looping_mutex;
 }	t_a_source;
 
 typedef struct s_audio

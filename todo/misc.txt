@@ -1,16 +1,4 @@
-- OpenAL: Loop source with multithreading.
-
---------------------------------------------------------------------------------
-
 [COMMON] SOUND
-- Consider sound effects. For example when collecting something (one sound for 
-all collectibles). Also a jingle when reaching the winning screen, and a damage 
-sound effect when reaching the losing screen. I don't want a sound when 
-crossing a portal, as certain portals ought to be discreet. In any case, don't 
-have these tracks be indicated in a hardcoded manner. They are indicated in the 
-map file. They are their own line. For example, "M_COLLEC", "M_WIN", "M_LOSE", 
-and the simple "M" becomes "M_BG". This could be the "M" of MP3, instead of 
-using "T" for "track" which could remind of "texture".
 - Consider several "music tracks", in the sense as something looping in the 
 background. Each soundtrack is indicated with the "M" var in the map file. For 
 the time being, the parsing only allow one music track. The purpose of another 
@@ -27,28 +15,65 @@ are not allowed, remember that a space can be used to represent a literal empty
 cell, and the walkable areas are still enclosed in walls because they are 
 the inner part of buildings, aka they have walls. What's not allowed is a mere 
 newline.
+- Consider sound effects. For example when collecting something (one sound for 
+all collectibles). Also a jingle when reaching the winning screen, and a damage 
+sound effect when reaching the losing screen. I don't want a sound when 
+crossing a portal, as certain portals ought to be discreet. In any case, don't 
+have these tracks be indicated in a hardcoded manner. They are indicated in the 
+map file. They are their own line. For example, "M_COLLEC", "M_WIN", "M_LOSE", 
+and the simple "M" becomes "M_BG". This could be the "M" of MP3, instead of 
+using "T" for "track" which could remind of "texture".
+
+[COMMON] MISCELLEANEOUS
+- In the minimap, instead of a little dash, have a cone to represent the field 
+of view. Either only show what's within the cone, or make what's outside of it 
+darker.
+- Can it run on Windows? It's the priority now. Make it run on Windows before 
+doing anything else. And then, the only new thing you're doing is to improve 
+performance. Then, make a video to illustrate Olafur and maybe lock the project 
+for now.
+
+--------------------------------------------------------------------------------
+
+[BONUS] PERF
+- Do the thing with the caching of trigo values. Does it help performance?
+- Once you have done your best, implement multithreading for the map loading. 
+Carry on with the game while a map is loading in the background. If we try to 
+access a map which isn't yet loaded (because no map exists yet and we just got 
+here, or because we have hit its portal and should teleport), show a loading 
+screen. Does multithreading help with the lagging at all?
+- If it does help, use it for raycasting as well. Try to cut it in half: one 
+thread for the left side of the screen, and another thread for the right. Does 
+it help? Should you try four threads?
 
 [BONUS] LEVELS - SELECT SCREEN
 - Instead of giving a map file as argument, you can give a directory. The game 
 fetches all the map files present there, recursively. If only one map exists, 
 it's loaded automatically. Otherwise, a select screen shows up. It lists the 
 maps as they came in, with the name being their filename without the extension. 
-You can select any of them.
-- For the name being displayed, it's actually not just the filename. It's the 
-path starting after the folder, and without "*.map" at the end. For example, 
-for "maps/" as argument, it's "OLAFUR/AFG" and "TEST/DGN".
+You can select any of them. For the name being displayed, it's actually not 
+just the filename. It's the path starting after the folder, and without "*.map" 
+at the end. For example, for "maps/" as argument, it's "OLAFUR/AFG" and 
+"TEST/DGN".
 - Remove the BACKSPACE shortcut, and use the menu instead, accessible from 
 pressing ESCAPE. It allows you to pick another level, to reset your current 
-level, or to reset your transform in this level.
+level (destroy the map and load it again but without calling `add_map`, call 
+`create_map` directly - create a function to reset a map and store it where it 
+was in the man->maps array, and if it didn't work then remove this array elem 
+from the array), or to reset your transform in this level.
 
 [BONUS] MISCELLANEOUS
-- In the minimap, instead of a little dash, have a cone to represent the field 
-of view. Either only show what's within the cone, or make what's outside of it 
-darker.
-- When starting the game, have a little menu to decide on the window's size, 
-the aspect ratio, and the resolution. Be able to easily modify that sort of 
-things. I've worked hard on this feature, and yet it doesn't show. I would like 
-to telegraph it to the user.
+- Add a decoration texture to a wall. It's a texture on top of the wall 
+texture. You can use it in the pool map, for the legs and the ladder (place the 
+ladder on the "stairs" wall).
+- I'd be nice if we could see the back textures of a transparent cell, for 
+example the chicken stall in afg. I know I've failed once, but damn, that'd be 
+nice. But be mindful of the case where there's another cell right behind this 
+one. You would show the back tex of A in front of the front tex of B. To test 
+this, place an opaque cell right behind a stall cell.
+- Fix the weird jagged rendering when a wall is taller than 1.0 height.
+- Continue raycasting through portals, both as a corridor and as an Aperture 
+Science's portal.
 
 --------------------------------------------------------------------------------
 

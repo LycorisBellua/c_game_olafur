@@ -113,17 +113,18 @@
         ]
     },
     {
-        "path": "img/mus/common/sprite_art41.png",
+        "path": "img/mus/common/sprite_art4.png",
         "path_shadow": "",
         "segments": [
             {
                 "id": "sprite_art4",
                 "size": [353, 512],
                 "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 0,
+                "still_frame": 2,
+                "cycle_time_in_ms": 500,
                 "cycle": [
-                    [0, 0]
+                    [0, 0],
+                    [353, 0]
                 ]
             }
         ]

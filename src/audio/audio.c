@@ -26,7 +26,7 @@ void	audio_switch_music(t_man *man)
 		return ;
 	prev_track = man->audio.music->track;
 	new_track = man->maps[man->curr_map]->music_track;
-	if (man->audio.music->is_running && prev_track == new_track)
+	if (prev_track == new_track)
 		return ;
 	audio_source_change_track(man->audio.music, new_track);
 	audio_source_play(man->audio.music);

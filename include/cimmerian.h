@@ -10,6 +10,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <sys/stat.h>
+# include <pthread.h>
 # include <math.h>
 # include "math_extra.h"
 // IMAGE ------------
