@@ -1,3 +1,10 @@
+[COMMON] DEBUG
+- Starting in a mini-world of "mus.map" and then crossing a portal to "mus.map" 
+makes the game segfault. It happens from pul and from dgn. Commenting out 
+`sprite_art4` does the trick. Or, switching the position of it with 
+`sprite_art1`. The bug doesn't occur if the FPS are low though, so I cannot use 
+ASAN to understand what causes the segfault.
+
 [COMMON] IMMERSIVE SOUND
 - 3D sound for collectible?
 

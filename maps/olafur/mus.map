@@ -22,10 +22,10 @@ PT EA 0 4 mus_p_afg mus_p_afg_open maps/olafur/afg.map WE 31 3
 PT WE 8 4 mus_p_dgn mus_p_dgn_open maps/olafur/dgn.map SO 12 0
 PT NO 4 8 mus_p_elev mus_p_elev_open maps/olafur/elev.map NO 1 2
 
-SP 2.5 2.5 sprite_art1 collision
+SP 6.5 6.5 sprite_art1 collision
 SP 6.5 2.5 sprite_art2 collision
 SP 2.5 6.5 sprite_art3 collision
-SP 6.5 6.5 sprite_art4 collision
+SP 2.5 2.5 sprite_art4 collision
 SP 2.5 2.5 sprite_mus1
 SP 2.5 6.5 sprite_mus1
 SP 6.5 2.5 sprite_mus1
