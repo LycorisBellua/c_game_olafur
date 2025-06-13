@@ -3,6 +3,7 @@
 - It doesn't have to be in the maps/ folder. It can be located anywhere on the 
 system.
 - It has the \*.map extension.
+- Images are PNG and sounds are MP3.
 - Within the file, the variables come before the maps.
 - The variables can be ordered in whichever way. They don't have to respect any 
 order.
@@ -58,7 +59,15 @@ collides with the player. The tags are optional, that is to say that the sprite
 can be without collision. Another tag which exists is "collectible", and the 
 tags can be listed in any order. There can be more than one SP variable.
 
-- **M_BG**: Background music. It has to be an MP3.
+- **S_MUSIC**: The music.
+
+- **S_AMBIENCE**: The ambience sound.
+
+- **S_WIN**: The sound effect of the positive game over screen.
+
+- **S_LOSE**: The sound effect of the negative game over screen.
+
+- **S_COLLEC**: The sound effect of picking up a collectible item.
 
 - **PT**: Portal. A portal can only be placed where a wall could be, as if on a 
 grid. It cannot be in the middle of a cell. Crossing a portal teleports the 

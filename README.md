@@ -25,17 +25,17 @@ The Test level is where I develop features.
 
 - maps/olafur/\* (recommended entry "mus.map"):  
 The Olafur level is a museum where each painting leads to another mini-world. 
-Besides the "Cimmerian" mini-world, which stems from my test level, the choice 
-of elevator music, and an easter egg accessible from the elevator, the level 
-has been entirely designed by Hellchauffo 
+It has been designed by Hellchauffo, 
 ([Figma](https://www.figma.com/proto/UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974) 
 and [GitHub](https://github.com/Lucie-Kin)), a friend of mine. She is behind 
-the concept, the map layouts, the sprites, the textures, the presence of music 
-and the choice of tracks. This has been quite the undertaking and I thank her 
-for this work. This level was designed in the context of a school project we 
-worked on together, a pseudo-3D game as well, and she allowed me to keep Olafur 
-for my personal project. This comes in quite handy, as now I have a level to 
-showcase what the game is capable of.
+the concept, the map layouts, the sprites, the textures and the choice of music 
+tracks. This has been quite the undertaking and I thank her for this work. This 
+level was designed in the context of a school project we worked on together, a 
+pseudo-3D game as well, and she allowed me to keep Olafur for my personal 
+project. This comes in quite handy, as I have now a level to showcase what the 
+game is capable of. As for my contribution to Olafur, I've picked the elevator 
+music, the sound effects, and added an easter egg accessible from the 
+elevator (and through your keyboard).  
 
 ## Commands
 

@@ -20,7 +20,6 @@ int	main(int argc, char **argv)
 		return (put_error(&g_man, 0, 0, EXIT_FAILURE));
 	add_outline_to_font(get_image(&g_man, "font_default"));
 	audio_init(&g_man.audio);
-	g_man.audio.music = audio_source_create(0);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
 	if (!init_game(&g_man, argv[1]))
@@ -37,6 +36,6 @@ static int	init_game(t_man *man, const char *map_path)
 	if (man->curr_map < 0)
 		return (put_error(man, 0, 0, 0));
 	reset_player(man);
-	man->game_state = GAME_STATE_PLAY;
+	change_game_state(man, GAME_STATE_PLAY);
 	return (1);
 }

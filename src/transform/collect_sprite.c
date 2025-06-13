@@ -1,6 +1,6 @@
 #include "cimmerian.h"
 
-static int		collect_sprite(t_player *player, t_map *map, int sprite_index);
+static int		collect_sprite(t_man *man, t_map *map, int sprite_index);
 static t_vec2	calculate_new_pos_on_collision(t_spr *s, double radius,
 					t_vec2 pos);
 
@@ -17,7 +17,7 @@ void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 	{
 		if (map->sprites[i]->dist < radius)
 		{
-			if (collect_sprite(&man->player, map, i))
+			if (collect_sprite(man, map, i))
 				continue ;
 			else if (map->sprites[i]->has_collision)
 				pos = calculate_new_pos_on_collision(map->sprites[i], radius,
@@ -29,12 +29,13 @@ void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 	return ;
 }
 
-static int	collect_sprite(t_player *player, t_map *map, int sprite_index)
+static int	collect_sprite(t_man *man, t_map *map, int sprite_index)
 {
 	int	i;
 
 	if (!map->sprites[sprite_index]->is_collectible)
 		return (0);
+	audio_source_play(man->audio.sources[SOUND_COLLEC]);
 	free(map->sprites[sprite_index]);
 	i = sprite_index;
 	while (i < map->sprite_len - 1)
@@ -44,7 +45,7 @@ static int	collect_sprite(t_player *player, t_map *map, int sprite_index)
 	}
 	map->sprites[i] = 0;
 	--map->sprite_len;
-	++player->collected;
+	++man->player.collected;
 	return (1);
 }
 

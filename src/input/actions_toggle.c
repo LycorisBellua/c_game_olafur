@@ -25,8 +25,7 @@ void	action_move_to_start(t_man *man, int set)
 {
 	if (set)
 	{
-		cancel_keys_in_game_state(man);
-		man->game_state = GAME_STATE_PLAY;
+		change_game_state(man, GAME_STATE_PLAY);
 		man->curr_map = 0;
 		reset_player_transform(man);
 	}

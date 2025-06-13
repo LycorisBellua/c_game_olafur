@@ -22,6 +22,16 @@ typedef enum e_key_state
 	KEY_STATE_RELEASED
 }	t_key_state;
 
+typedef enum e_sound_type
+{
+	SOUND_NONE,
+	SOUND_MUSIC,
+	SOUND_AMBIENCE,
+	SOUND_SUCCESS,
+	SOUND_FAILURE,
+	SOUND_COLLEC
+}	t_sound_type;
+
 /* Each key has 3 potential game states for 3 potential key states */
 typedef struct s_key
 {
@@ -64,7 +74,7 @@ typedef struct s_audio
 	ALCdevice	*device;
 	ALCcontext	*context;
 	t_a_track	**tracks;
-	t_a_source	*music;
+	t_a_source	*sources[6];
 }	t_audio;
 
 typedef struct s_color
@@ -265,7 +275,7 @@ struct s_map
 	int			sprite_len;
 	t_spr		**sprites;
 	int			to_collect;
-	t_a_track	*music_track;
+	t_a_track	*tracks[6];
 };
 
 typedef struct s_player
@@ -351,7 +361,6 @@ struct s_man
 	int				minimap_cell_amount;
 	t_list			*rays;
 	t_audio			audio;
-	int				bonus;
 };
 
 extern t_man	g_man;

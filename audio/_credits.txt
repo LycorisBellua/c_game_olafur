@@ -32,3 +32,24 @@ olafur/m_pul.mp3:
 	-> Created for the occasion: "Poool.mp3"
 	-> By Max (ml-hote):
 	https://open.spotify.com/user/31fdciar6kfjgf46mxx5ffnbguoe
+
+olafur/a_heart.mp3:
+	Arcane Activations/Arcane Magic/Arcane Heart Beat Twice
+	https://www.shapeforms.com/shop/p/arcane-activations
+
+olafur/a_dark.mp3:
+	Arcane Activations/Ambience/Ambience Dark Chamber Loop
+	https://www.shapeforms.com/shop/p/arcane-activations
+
+olafur/e_win.mp3:
+	Arcane Activations/Arcane Magic/Arcane Energy Aura 03
+	https://www.shapeforms.com/shop/p/arcane-activations
+
+olafur/e_lose.mp3:
+	Arcane Activations/Arcane Magic/Arcane Energy Aura 04
+	https://www.shapeforms.com/shop/p/arcane-activations
+
+olafur/e_collec.mp3:
+	Arcane Activations/Arcane Magic/Activate Glyph Forcefield
+	https://www.shapeforms.com/shop/p/arcane-activations
+

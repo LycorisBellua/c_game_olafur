@@ -3,7 +3,7 @@
 static void	*play_as_loop(void *data);
 static void	play_as_one_shot(t_a_source *s);
 
-t_a_source	*audio_source_create(t_a_track *t)
+t_a_source	*audio_source_create(t_a_track *t, int is_loop)
 {
 	t_a_source	*s;
 
@@ -14,7 +14,7 @@ t_a_source	*audio_source_create(t_a_track *t)
 	s->track = t;
 	if (t)
 		alSourceQueueBuffers(s->source, t->nbr_buffers, t->buffers);
-	s->is_loop = 1;
+	s->is_loop = is_loop;
 	if (s->is_loop)
 		pthread_mutex_init(&s->is_looping_mutex, NULL);
 	return (s);
@@ -45,7 +45,7 @@ void	audio_source_unset_track(t_a_source *s)
 		pthread_mutex_unlock(&s->is_looping_mutex);
 		pthread_join(s->loop_thread, NULL);
 		s->loop_thread = 0;
-	}	
+	}
 	s->track = 0;
 	alSourceStop(s->source);
 	queued = 0;

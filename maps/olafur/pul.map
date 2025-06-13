@@ -1,7 +1,10 @@
 IMG img/common/index.json
 IMG img/pul/index.json
 
-M_BG audio/olafur/m_pul.mp3
+S_MUSIC audio/olafur/m_pul.mp3
+S_WIN audio/olafur/e_win.mp3
+S_LOSE audio/olafur/e_lose.mp3
+S_COLLEC audio/olafur/e_collec.mp3
 
 SK pul_sk
 

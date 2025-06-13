@@ -41,14 +41,20 @@ t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename)
 	return (t);
 }
 
+/*
+	Comb through all sources to find which ones hold a reference to this track, 
+	and unset their track before deleting this track.
+*/
 void	audio_track_delete(t_audio *a, t_a_track **track)
 {
-	/*
-		Comb through all sources to find which ones hold a reference to this 
-		track, and unset their track before deleting this track.
-	*/
-	if (a->music && a->music->track == *track)
-		audio_source_unset_track(a->music);
+	int	i;
+
+	i = 0;
+	while (++i < 6)
+	{
+		if (a->sources[i] && a->sources[i]->track == *track)
+			audio_source_unset_track(a->sources[i]);
+	}
 	if ((*track)->buffers)
 		alDeleteBuffers((*track)->nbr_buffers, (*track)->buffers);
 	free((*track)->buffers);
@@ -105,7 +111,7 @@ static int	load_mp3(const char *filename, t_a_track *t)
 	total_samples = total_pcm_frames * mp3.channels;
 	t->pcm_data = malloc(total_samples * sizeof(drmp3_int16));
 	samples_read = drmp3_read_pcm_frames_s16(&mp3,
-		drmp3_get_pcm_frame_count(&mp3), t->pcm_data);
+			drmp3_get_pcm_frame_count(&mp3), t->pcm_data);
 	t->data_size = samples_read * mp3.channels * sizeof(drmp3_int16);
 	t->freq = mp3.sampleRate;
 	t->format = (mp3.channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;

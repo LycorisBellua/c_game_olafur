@@ -1,28 +1,5 @@
-[COMMON] SOUND
-- Consider several "music tracks", in the sense as something looping in the 
-background. Each soundtrack is indicated with the "M" var in the map file. For 
-the time being, the parsing only allow one music track. The purpose of another 
-one is for example to have ambient sound, such as the wind. Something I have to 
-make clear to future me: DO NOT, I repeat, DO NOT... Try to determine whether 
-the player is indoors or outdoors, this is more complex than you imagine. Let 
-the map designer make their own decisions. It's not complicated for them to 
-have a map with only the outside of buildings, no way to get inside them 
-besides a portal for the door, and then a smaller map for the inside of the 
-building. The "inside" map could encompass all the buildings of a map, the 
-designer doesn't have to create a new map for each building. This way, the 
-sound fits. And if you wonder how such a map can be written when "islands" 
-are not allowed, remember that a space can be used to represent a literal empty 
-cell, and the walkable areas are still enclosed in walls because they are 
-the inner part of buildings, aka they have walls. What's not allowed is a mere 
-newline.
-- Consider sound effects. For example when collecting something (one sound for 
-all collectibles). Also a jingle when reaching the winning screen, and a damage 
-sound effect when reaching the losing screen. I don't want a sound when 
-crossing a portal, as certain portals ought to be discreet. In any case, don't 
-have these tracks be indicated in a hardcoded manner. They are indicated in the 
-map file. They are their own line. For example, "M_COLLEC", "M_WIN", "M_LOSE", 
-and the simple "M" becomes "M_BG". This could be the "M" of MP3, instead of 
-using "T" for "track" which could remind of "texture".
+[COMMON] IMMERSIVE SOUND
+- 3D sound for collectible?
 
 [COMMON] MISCELLEANEOUS
 - In the minimap, instead of a little dash, have a cone to represent the field 
@@ -30,8 +7,11 @@ of view. Either only show what's within the cone, or make what's outside of it
 darker.
 - Can it run on Windows? It's the priority now. Make it run on Windows before 
 doing anything else. And then, the only new thing you're doing is to improve 
-performance. Then, make a video to illustrate Olafur and maybe lock the project 
-for now.
+performance. I might also need to add a menu in order to be able to select a 
+map, because I don't want Windows users to have to use the command line. This 
+feature can be kept for other systems, where we load the maps/ folder 
+automatically. Then, make a video to illustrate Olafur and maybe lock the 
+project for now.
 
 --------------------------------------------------------------------------------
 
