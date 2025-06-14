@@ -25,7 +25,7 @@
 #  include "lib/glfw3.h"
 #  include "gl_functions.h"
 # else
-#  include "mlx.h"
+#  include "sua.h"
 # endif
 # include "macros.h"
 # include "structs.h"

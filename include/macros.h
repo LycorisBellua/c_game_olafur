@@ -22,8 +22,8 @@
 # define MAP_EASTER_EGG "assets/maps/olafur/elev3.map"
 
 # ifdef GL
-#  define PATH_VERTEX_SHADER "src/engine/gl/shaders/vs.glsl"
-#  define PATH_FRAGMENT_SHADER "src/engine/gl/shaders/fs.glsl"
+#  define PATH_VERTEX_SHADER "src/windowing/gl/shaders/vs.glsl"
+#  define PATH_FRAGMENT_SHADER "src/windowing/gl/shaders/fs.glsl"
 # endif
 
 # define NBR_KEYS 15
@@ -73,14 +73,14 @@
 # define E_NO_ARG "Provide a *.map file as argument"
 # define E_TOO_MANY_ARGS "Provide a single *.map file as argument"
 # define E_FAIL_MEM "Memory cannot be allocated"
-# define E_FAIL_MLX "The MLX lib cannot be initialized"
+# define E_FAIL_SUA "The SUA lib cannot be initialized"
 # define E_FAIL_GLFW "The GLFW lib cannot be initialized"
 # define E_FAIL_WINDOW "The window cannot be created"
 # define E_FAIL_WINDOW_GL "The window cannot be created. The issue may be " \
 	"with the GLFW library, but comes more likely from the OpenGL library. " \
 	"Check that your drivers are properly installed"
 # define E_FAIL_GL_FUNC "The OpenGL functions cannot be loaded"
-# define E_FAIL_MLX_IMG "An MLX image cannot be created"
+# define E_FAIL_SUA_IMG "An SUA image cannot be created"
 # define E_FAIL_SHADER "The vertex and/or fragment shaders cannot be compiled"
 # define E_FAIL_SHADER_PROG "The shader program cannot be compiled"
 # define E_FAIL_UNIFORM_FRAME_TEXTURE "The \"frame_texture\" uniform is " \

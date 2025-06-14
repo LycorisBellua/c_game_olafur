@@ -1,38 +1,38 @@
 CC = gcc
-MLX_DIR = lib/mlx
-MLX_LIB = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
+SUA_DIR = sua
+SUA_LIB = $(SUA_DIR)/libsua.a
+SUA_FLAGS = -L$(SUA_DIR) -lsua -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw34
-CFLAGS = -Iinclude -I$(MLX_DIR) -Wall -Wextra -pedantic -O2# -g -fsanitize=address
+CFLAGS = -Iinclude -I$(SUA_DIR) -Wall -Wextra -pedantic -O2# -g -fsanitize=address
 AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN/lib'
 LDFLAGS = -lm $(AL_FLAGS)
 NAME = cimmerian
 
-SRC_COMMON = $(shell find lib -path "$(MLX_DIR)" -prune -o -name '*.c' -print) \
-	$(shell find src -path "src/engine" -prune -o -name '*.c' -print)
-ENGINE ?= MLX
-ifeq ($(ENGINE), GL)
-	ENGINE_SRC = $(shell find src/engine/gl -name '*.c')
-	ENGINE_FLAGS = $(GL_FLAGS)
+SRC_COMMON = $(shell find lib -path "$(SUA_DIR)" -prune -o -name '*.c' -print) \
+	$(shell find src -path "src/windowing" -prune -o -name '*.c' -print)
+WINDOWING ?= SUA
+ifeq ($(WINDOWING), GL)
+	WINDOWING_SRC = $(shell find src/windowing/gl -name '*.c')
+	WINDOWING_FLAGS = $(GL_FLAGS)
 else
-	ENGINE_SRC = $(shell find src/engine/mlx -name '*.c')
-	ENGINE_FLAGS = $(MLX_FLAGS)
+	WINDOWING_SRC = $(shell find src/windowing/sua -name '*.c')
+	WINDOWING_FLAGS = $(SUA_FLAGS)
 endif
-SRC = $(SRC_COMMON) $(ENGINE_SRC)
+SRC = $(SRC_COMMON) $(WINDOWING_SRC)
 OBJ = $(patsubst %.c, build/%.o, $(SRC))
-LDFLAGS += $(ENGINE_FLAGS)
+LDFLAGS += $(WINDOWING_FLAGS)
 
-all: $(MLX_LIB) $(NAME)
+all: $(SUA_LIB) $(NAME)
 
-mlx: $(MLX_LIB)
-	@$(MAKE) ENGINE=MLX
+sua: $(SUA_LIB)
+	@$(MAKE) WINDOWING=SUA
 
 gl:
-	@$(MAKE) ENGINE=GL
+	@$(MAKE) WINDOWING=GL
 
-$(MLX_LIB):
-	@if [ "$(ENGINE)" = "MLX" ]; then \
-		make -s -C $(MLX_DIR); \
+$(SUA_LIB):
+	@if [ "$(WINDOWING)" = "SUA" ]; then \
+		make -s -C $(SUA_DIR); \
 	fi
 
 $(NAME): $(OBJ)
@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 
 build/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -D$(ENGINE) -o $@ -c $<
+	$(CC) $(CFLAGS) -D$(WINDOWING) -o $@ -c $<
 
 clean:
 	rm -rf $(shell find . -name '*.o')
@@ -50,4 +50,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all mlx gl clean fclean re
+.PHONY: all sua gl clean fclean re
