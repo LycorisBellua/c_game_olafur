@@ -1,0 +1,274 @@
+[
+    {
+        "path": "assets/img/mus/mus/mus_p_elev.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_elev",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_elev_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_elev_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_afg.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_afg",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_afg_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_afg_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_dgn.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_dgn",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_dgn_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_dgn_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_pul.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_pul",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_p_pul_open.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_p_pul_open",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_c.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_c",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_f.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_f",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_w.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_w",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_w2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_w2",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_w3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_w3",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/mus_w4.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "mus_w4",
+                "size": [512, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/sprite_mus1.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_mus1",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/sprite_mus2.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_mus2",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mus/mus/sprite_mus3.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "sprite_mus3",
+                "size": [511, 512],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 0,
+                "cycle": [
+                    [0, 0]
+                ]
+            }
+        ]
+    }
+]

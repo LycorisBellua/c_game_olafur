@@ -1,0 +1,51 @@
+IMG assets/img/common/index.json
+IMG assets/img/dgn/index.json
+
+S_AMBIENCE assets/audio/olafur/a_dark.mp3
+S_WIN assets/audio/olafur/e_win.mp3
+S_LOSE assets/audio/olafur/e_lose.mp3
+S_COLLEC assets/audio/olafur/e_collec.mp3
+
+SK dgn_sk
+
+1NO dgn_w
+1SO dgn_w
+1WE dgn_w
+1EA dgn_w
+
+D dgn_d
+G solid 5
+
+1F dgn_f_in
+2F dgn_f
+1C dgn_c
+
+PT EA 0 5 dgn_p dgn_p_open assets/maps/test/dgn.map SO 12 0
+PT WE 6 5 dgn_p dgn_p_open assets/maps/test/dgn.map SO 12 0
+
+1111111
+1S10001
+101000G
+1010001
+1000001
+0000101
+1000001
+1111111
+
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111
+1111111

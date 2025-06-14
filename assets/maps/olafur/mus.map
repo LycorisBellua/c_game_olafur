@@ -1,0 +1,66 @@
+IMG assets/img/common/index.json
+IMG assets/img/mus/common/index.json
+IMG assets/img/mus/mus/index.json
+
+S_MUSIC assets/audio/olafur/m_mus.mp3
+S_WIN assets/audio/olafur/e_win.mp3
+S_LOSE assets/audio/olafur/e_lose.mp3
+S_COLLEC assets/audio/olafur/e_collec.mp3
+
+SK mus_sk
+
+NO mus_w4
+SO mus_w4
+WE mus_w2
+EA mus_w3
+
+1F mus_f
+1C mus_c
+
+PT SO 4 0 mus_p_pul mus_p_pul_open assets/maps/olafur/pul.map NO 4 9
+PT EA 0 4 mus_p_afg mus_p_afg_open assets/maps/olafur/afg.map WE 31 3
+PT WE 8 4 mus_p_dgn mus_p_dgn_open assets/maps/olafur/dgn.map SO 12 0
+PT NO 4 8 mus_p_elev mus_p_elev_open assets/maps/olafur/elev.map NO 1 2
+
+SP 6.5 6.5 sprite_art1 collision
+SP 6.5 2.5 sprite_art2 collision
+SP 2.5 6.5 sprite_art3 collision
+SP 2.5 2.5 sprite_art4 collision
+SP 2.5 2.5 sprite_mus1
+SP 2.5 6.5 sprite_mus1
+SP 6.5 2.5 sprite_mus1
+SP 6.5 6.5 sprite_mus1
+SP 2.5 4.5 sprite_mus2
+SP 6.5 4.5 sprite_mus2
+SP 4.5 3.5 sprite_mus3
+SP 4.5 5.5 sprite_mus3
+
+111111111
+100000001
+100101001
+101101101
+100000000
+101101101
+1001S1001
+100000001
+111111111
+
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111
+111111111

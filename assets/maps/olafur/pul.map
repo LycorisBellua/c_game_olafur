@@ -1,0 +1,57 @@
+IMG assets/img/common/index.json
+IMG assets/img/pul/index.json
+
+S_MUSIC assets/audio/olafur/m_pul.mp3
+S_WIN assets/audio/olafur/e_win.mp3
+S_LOSE assets/audio/olafur/e_lose.mp3
+S_COLLEC assets/audio/olafur/e_collec.mp3
+
+SK pul_sk
+
+NO pul_w
+SO pul_w2
+WE pul_w3
+EA pul_w4
+
+1F pul_f
+1C pul_c
+
+PT NO 4 9 pul_p pul_p_open assets/maps/olafur/mus.map SO 4 0
+
+SP 6.8 8.8 sprite_legs
+SP 1.4 1.1 sprite_ladder
+
+SP 4.5 2.5 sprite_soul_idle collectible
+
+1111111111
+1000000001
+1000000001
+1000000001
+1000S00001
+1000000001
+1000000001
+1000000001
+1000000001
+1111111111
+
+0000000000
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0000000000
+
+0000000000
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0111111110
+0000000000

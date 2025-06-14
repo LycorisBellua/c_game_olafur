@@ -18,9 +18,9 @@ int	main(int argc, char **argv)
 	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!create_window(&g_man, TITLE, window_size, 16.0 / 9)
 		|| !init_frame(&g_man)
-		|| !update_image_array(&g_man, "img/common/index.json"))
+		|| !update_image_array(&g_man, IMG_JSON_DEFAULT))
 		return (put_error(&g_man, 0, 0, EXIT_FAILURE));
-	add_outline_to_font(get_image(&g_man, "font_default"));
+	add_outline_to_font(get_image(&g_man, ID_FONT_DEFAULT));
 	audio_init(&g_man.audio);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);

@@ -21,12 +21,12 @@ question neither. The purpose is to experiment and scratch my low level itch.
 ## Levels
 
 Give a specific \*.map file as argument to the program, or don't give any to 
-default to "maps/olafur/mus.map".  
+default to "assets/maps/olafur/mus.map".  
 
-- maps/test/\*:  
+- assets/maps/test/\*:  
 The Test level is where I develop features.  
 
-- maps/olafur/\* (recommended entry "mus.map"):  
+- assets/maps/olafur/\* (recommended entry "mus.map"):  
 The Olafur level is a museum where each painting leads to another mini-world. 
 It has been designed by Hellchauffo, 
 ([Figma](https://www.figma.com/proto/UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974) 

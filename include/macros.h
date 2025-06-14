@@ -16,8 +16,10 @@
 # define FONT_MOD_Y  4
 # define SPRITE_RADIUS 0.5
 # define PORTAL_IS_CORRIDOR 0
-# define MAP_DEFAULT "maps/olafur/mus.map"
-# define MAP_EASTER_EGG "maps/olafur/elev3.map"
+# define IMG_JSON_DEFAULT "assets/img/common/index.json"
+# define ID_FONT_DEFAULT "font_default"
+# define MAP_DEFAULT "assets/maps/olafur/mus.map"
+# define MAP_EASTER_EGG "assets/maps/olafur/elev3.map"
 
 # ifdef GL
 #  define PATH_VERTEX_SHADER "src/engine/gl/shaders/vs.glsl"

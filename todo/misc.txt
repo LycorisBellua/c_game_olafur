@@ -1,5 +1,6 @@
-[COMMON] MISCELLEANEOUS
-- 3D sound for collectible?
+[COMMON] SOUND
+- 3D sound for collectible.
+- Norm the audio code.
 
 [COMMON] PERF
 - Do the thing with the caching of trigo values. Does it help performance?
@@ -10,27 +11,42 @@ here, or because we have hit its portal and should teleport), show a loading
 screen. Does multithreading help with the lagging at all? Also see if the bug 
 with the sprite remains. Try to reproduce the bug, and if it doesn't happen 
 anymore, remove the entry in the info file.
-- Use multithreading for raycasting as well. Try to cut it in half: one thread 
-for the left side of the screen, and another thread for the right. Should you 
-try four threads? Find a fixed number of threads which allow for 30 FPS both on 
-X11 and OpenGL in fullscreen.
+- Use multithreading for the raycasting as well. Try to cut it in half: one 
+thread for the left side of the screen, and another thread for the right. 
+Should you try four threads? Find a fixed number of threads which allow for 30 
+FPS both on X11 and OpenGL in fullscreen.
 
 [COMMON] PORT TO WINDOWS
 - Can it run on Windows? It's the priority now. Make it run on Windows before 
-doing anything else. And then, the only new thing you're doing is to improve 
-performance. Then, make a video to illustrate Olafur and maybe lock the project 
-for now.
+doing anything else.
+- Do we still have 30 FPS, even on the old Windows PC? Add more raycasting 
+threads if need be.
 
 --------------------------------------------------------------------------------
 
-[BONUS] LEVELS - SELECT SCREEN
+[BONUS] MENU - COMMANDS
+- List the commands.
+- Do we care about allowing people to change the keys? Check on the old Windows 
+PC what happens with WASD. Are the physical keys used, or the value keys? We 
+might have to be able to ask for physical keys, and then we tell the user to 
+use WASD or ZQSD. I won't bother with a French translation though. Just the 
+keys, maybe.
+
+[BONUS] MENU - SOUND
+- Be able to mute only the music.
+- Be able to mute only the ambiance.
+- Be able to mute only the sound effects.
+- Be able to mute everything.
+- Control the volume as well.
+
+[BONUS] MENU - SELECT LEVEL
 - Instead of giving a map file as argument, you can give a directory. The game 
 fetches all the map files present there, recursively. If only one map exists, 
 it's loaded automatically. Otherwise, a select screen shows up. It lists the 
 maps as they came in, with the name being their filename without the extension. 
 You can select any of them. For the name being displayed, it's actually not 
 just the filename. It's the path starting after the folder, and without "*.map" 
-at the end. For example, for "maps/" as argument, it's "OLAFUR/AFG" and 
+at the end. For example, for "assets/maps/" as argument, it's "OLAFUR/AFG" and 
 "TEST/DGN".
 - Remove the BACKSPACE shortcut, and use the menu instead, accessible from 
 pressing ESCAPE. It allows you to pick another level, to reset your current 
@@ -38,6 +54,8 @@ level (destroy the map and load it again but without calling `add_map`, call
 `create_map` directly - create a function to reset a map and store it where it 
 was in the man->maps array, and if it didn't work then remove this array elem 
 from the array), or to reset your transform in this level.
+
+--------------------------------------------------------------------------------
 
 [BONUS] MISCELLANEOUS
 - Add a decoration texture to a wall. It's a texture on top of the wall 
