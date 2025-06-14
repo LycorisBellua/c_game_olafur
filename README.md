@@ -20,6 +20,9 @@ question neither. The purpose is to experiment and scratch my low level itch.
 
 ## Levels
 
+Give a specific \*.map file as argument to the program, or don't give any to 
+default to "maps/olafur/mus.map".  
+
 - maps/test/\*:  
 The Test level is where I develop features.  
 
@@ -32,7 +35,7 @@ the concept, the map layouts, the sprites, the textures and the choice of music
 tracks. This has been quite the undertaking and I thank her for this work. This 
 level was designed in the context of a school project we worked on together, a 
 pseudo-3D game as well, and she allowed me to keep Olafur for my personal 
-project. This comes in quite handy, as I have now a level to showcase what the 
+project. This comes in quite handy, as I now have a level to showcase what the 
 game is capable of. As for my contribution to Olafur, I've picked the elevator 
 music, the sound effects, and added an easter egg accessible from the 
 elevator (and through your keyboard).  

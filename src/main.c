@@ -6,11 +6,13 @@ t_man	g_man;
 
 int	main(int argc, char **argv)
 {
+	const char	*map_path;
 	t_ivec2	window_size;
 
+	map_path = argv[1];
 	bzero(&g_man, sizeof(t_man));
 	if (argc == 1)
-		return (put_error(0, E_NO_ARG, 0, EXIT_FAILURE));
+		map_path = MAP_DEFAULT;
 	else if (argc > 2)
 		return (put_error(0, E_TOO_MANY_ARGS, 0, EXIT_FAILURE));
 	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -22,7 +24,7 @@ int	main(int argc, char **argv)
 	audio_init(&g_man.audio);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
-	if (!init_game(&g_man, argv[1]))
+	if (!init_game(&g_man, map_path))
 		return (EXIT_FAILURE);
 	init_input_handling(&g_man);
 	run_game_loop(&g_man);

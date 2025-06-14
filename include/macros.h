@@ -16,6 +16,7 @@
 # define FONT_MOD_Y  4
 # define SPRITE_RADIUS 0.5
 # define PORTAL_IS_CORRIDOR 0
+# define MAP_DEFAULT "maps/olafur/mus.map"
 # define MAP_EASTER_EGG "maps/olafur/elev3.map"
 
 # ifdef GL
