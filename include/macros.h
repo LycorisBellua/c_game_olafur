@@ -85,6 +85,8 @@
 # define E_FAIL_SHADER_PROG "The shader program cannot be compiled"
 # define E_FAIL_UNIFORM_FRAME_TEXTURE "The \"frame_texture\" uniform is " \
 	"either not found or unused in the shader program"
+# define E_FAIL_MP3_OPEN "Failed to open MP3 file"
+# define E_FAIL_MP3_READ "Failed to read MP3 data"
 
 /* Parsing ------------------------------------------------------------------ */
 

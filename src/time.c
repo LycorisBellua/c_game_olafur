@@ -7,7 +7,7 @@ void	set_dt_and_fps(t_man *man)
 	static struct timeval	prev_time;
 	struct timeval			curr_time;
 
-	gettimeofday(&curr_time, NULL);
+	gettimeofday(&curr_time, 0);
 	if (!prev_time.tv_sec && !prev_time.tv_usec)
 		prev_time = curr_time;
 	man->dt = compute_dt(prev_time, curr_time);

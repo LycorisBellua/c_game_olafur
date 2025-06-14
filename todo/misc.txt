@@ -1,6 +1,10 @@
 [COMMON] SOUND
 - 3D sound for collectible.
-- Norm the audio code.
+
+[COMMON] CURSOR
+- With OpenGL, the default cursor is hidden and replaced with the game one 
+immediately, but with SUA I need to move the cursor first. Make it behave like 
+OpenGL.
 
 [COMMON] PERF
 - Do the thing with the caching of trigo values. Does it help performance?

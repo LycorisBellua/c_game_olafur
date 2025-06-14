@@ -19,7 +19,7 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 		return (put_error(0, E_FAIL_WINDOW, 0, 0));
 	man->title = (char *)title;
 	man->window = glfwCreateWindow(man->res.window_size.x,
-			man->res.window_size.y, man->title, NULL, NULL);
+			man->res.window_size.y, man->title, 0, 0);
 	if (!man->window)
 		return (put_error(man, E_FAIL_WINDOW_GL, 0, 0));
 	more_window_settings(man);

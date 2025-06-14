@@ -211,7 +211,9 @@ void		action_move_to_start(t_man *man, int set);
 void		audio_init(t_audio *a);
 void		audio_deinit(t_audio *a);
 void		audio_switch_map_sounds(t_man *man);
-t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename);
+t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename,
+				int force_mono);
+int			load_mp3(const char *filename, t_a_track *t, int force_mono);
 void		audio_track_delete(t_audio *a, t_a_track **track);
 void		audio_track_delete_all(t_audio *a);
 t_a_source	*audio_source_create(t_a_track *t, int is_loop);

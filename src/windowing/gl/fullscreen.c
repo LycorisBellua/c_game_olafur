@@ -31,7 +31,7 @@ t_ivec2	get_monitor_size(t_man *man)
 
 static void	switch_to_windowed_mode(t_man *man)
 {
-	glfwSetWindowMonitor(man->window, NULL,
+	glfwSetWindowMonitor(man->window, 0,
 		man->res.window_position.x, man->res.window_position.y,
 		man->res.window_size.x, man->res.window_size.y, GLFW_DONT_CARE);
 	glfwFocusWindow(man->window);
