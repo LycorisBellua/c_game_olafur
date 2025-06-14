@@ -147,6 +147,7 @@ void		free_sprite_array(t_map *map);
 void		free_maps(t_man *man);
 void		free_map(t_map *map);
 void		draw_minimap(t_man *man, t_map *map);
+void		draw_rect_minimap(t_man *man, t_vert v);
 void		init_minimap_values(t_man *man);
 void		decrease_minimap_zoom(t_man *man);
 void		increase_minimap_zoom(t_man *man);

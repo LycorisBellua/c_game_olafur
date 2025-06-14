@@ -19,6 +19,11 @@ double	norm_angle(double angle)
 	return (angle);
 }
 
+double	dot(t_vec2 a, t_vec2 b)
+{
+	return (a.x * b.x + a.y * b.y);
+}
+
 t_vec2	rotate_vec2(t_vec2 v, double angle)
 {
 	t_vec2	rotated;

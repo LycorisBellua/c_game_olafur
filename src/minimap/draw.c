@@ -1,7 +1,6 @@
 #include "cimmerian.h"
 
 static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell);
-static void		draw_rect_minimap(t_man *man, t_vert v);
 static void		draw_player(t_man *man);
 static void		draw_bubble(t_man *man);
 
@@ -57,53 +56,15 @@ static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell)
 	return (v);
 }
 
-static void	draw_rect_minimap(t_man *man, t_vert v)
-{
-	t_ivec2	point;
-	t_ivec2	delta;
-	t_ivec2	size;
-	int		circle_radius_sq;
-
-	set_ivec2(&size, man->minimap_zoom - 1, man->minimap_zoom - 1);
-	if (!size.x)
-		set_ivec2(&size, 1, 1);
-	if (v.coord.y <= 0)
-		--size.y;
-	circle_radius_sq = man->minimap_radius * man->minimap_radius;
-	point.y = v.coord.y - 1;
-	while (++point.y <= v.coord.y + size.y - 1)
-	{
-		point.x = v.coord.x - 1;
-		while (++point.x <= v.coord.x + size.x - 1)
-		{
-			delta.x = point.x - man->minimap_center.x;
-			delta.y = point.y - man->minimap_center.y;
-			if (delta.x * delta.x + delta.y * delta.y <= circle_radius_sq
-				+ man->minimap_zoom)
-				draw_point(man, v.color, point.x, point.y);
-		}
-	}
-	return ;
-}
-
 static void	draw_player(t_man *man)
 {
 	t_vert	center;
-	t_vert	v2;
 
 	set_ivec2(&center.coord,
 		man->minimap_center.x - 1,
 		man->minimap_center.y - 1);
 	center.color = get_color_rgba(233, 196, 106, 255);
 	draw_circle_full(man, center, man->minimap_zoom * 0.25);
-	center.color = get_color_rgba(255 * 0.75, 255 * 0.75, 255 * 0.75, 255);
-	center.coord.x += 1 * man->player.dir.x;
-	center.coord.y += 1 * man->player.dir.y;
-	set_ivec2(&v2.coord,
-		center.coord.x + man->minimap_zoom * man->player.dir.x,
-		center.coord.y + man->minimap_zoom * man->player.dir.y);
-	v2.color = center.color;
-	draw_line(man, center, v2);
 	return ;
 }
 

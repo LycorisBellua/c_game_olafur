@@ -1,4 +1,3 @@
-Notes:
 - The minimum window size is 128x128 while the maximum is the monitor size.
 - Use a value inferior or equal to 0.1 as the aspect ratio to express "whatever 
 the monitor's aspect ratio is". For example 0 or -1.
@@ -6,3 +5,15 @@ the monitor's aspect ratio is". For example 0 or -1.
 not respected, the skybox isn't displayed properly.
 - The GUI had been made with a resolution of (640, 360), and isn't adapted to 
 other resolutions. It respects the aspect ratio, however.
+
+--------------------------------------------------------------------------------
+
+- This bug is avoided but not fixed. It does me a confuse:
++------------------------------------------------------------------------------+
+| Starting in "dgn" or "pul" (mini-worlds of "mus.map") and then crossing a    |
+| portal to "mus" makes the game segfault. Commenting out `sprite_art4` does   |
+| the trick. Or, switching its position with `sprite_art1`, which is what I've |
+| done. The bug doesn't occur if the FPS are low though, so I cannot use ASAN  |
+| to understand what causes the segfault, because it lowers them too much.     |
++------------------------------------------------------------------------------+
+

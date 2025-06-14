@@ -43,6 +43,7 @@ typedef struct s_uivec2
 double	deg2rad(double deg);
 double	get_angle_from_dir(t_vec2 dir);
 double	norm_angle(double angle);
+double	dot(t_vec2 a, t_vec2 b);
 t_vec2	rotate_vec2(t_vec2 v, double angle);
 
 /* Clamp -------------------------------------------------------------------- */
