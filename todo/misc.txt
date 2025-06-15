@@ -1,8 +1,3 @@
-[COMMON] CURSOR
-- With OpenGL, the default cursor is hidden and replaced with the game one 
-immediately, but with SUA I need to move the cursor first. Make it behave like 
-OpenGL.
-
 [COMMON] PERF
 - Once you have done your best, implement multithreading for the map loading. 
 Carry on with the game while a map is loading in the background. If we try to 
@@ -24,6 +19,18 @@ doing anything else.
 threads if need be.
 
 --------------------------------------------------------------------------------
+
+[BONUS] CURSOR
+- Make the SUA and OpenGL cursors behave the same. Test going in and out of 
+fullscreen. I've noticed that if you left click in GL while leaving the window, 
+the cursor will remain in left click mode when you re-enter. The thing is that, 
+in order to be like the SUA version, you cannot just set the left and right 
+click actions to false when the cursor exits the window. If you do that, then 
+you lose the ability to keep rotating with the right click, if you exit while 
+still clicking and then go back. The SUA version has this continuity: the 
+rotation stops if the cursor is not within the window, but if it re-enters then 
+there's no need to stop clicking and then reclick, because the right-click 
+action is still ongoing.
 
 [BONUS] MENU - COMMANDS
 - List the commands.

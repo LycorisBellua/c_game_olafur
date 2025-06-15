@@ -25,6 +25,7 @@ void	move_or_resize_window_callback(int x, int y, int width, int height,
 void	init_input_handling(t_man *man)
 {
 	set_ivec2(&man->cursor, -1, -1);
+	sua_mouse_hide(man->xvar);
 	init_input_keys(man);
 	sua_hook(man->xvar, KeyPress, key_press_callback, man);
 	sua_hook(man->xvar, KeyRelease, key_release_callback, man);
