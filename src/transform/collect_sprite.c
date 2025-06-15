@@ -31,11 +31,17 @@ void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 
 static int	collect_sprite(t_man *man, t_map *map, int sprite_index)
 {
-	int	i;
+	int			i;
+	t_a_source	*source;
 
 	if (!map->sprites[sprite_index]->is_collectible)
 		return (0);
-	audio_source_play(man->audio.sources[SOUND_COLLEC]);
+	source = map->sprites[sprite_index]->source_collec;
+	if (source)
+	{
+		audio_source_play(source);
+		source->to_be_deleted = 1;
+	}
 	free(map->sprites[sprite_index]);
 	i = sprite_index;
 	while (i < map->sprite_len - 1)

@@ -67,6 +67,7 @@ typedef struct s_a_source
 	pthread_t		loop_thread;
 	int				is_looping;
 	pthread_mutex_t	is_looping_mutex;
+	int				to_be_deleted;
 }	t_a_source;
 
 typedef struct s_audio
@@ -212,17 +213,18 @@ typedef struct s_cell
 
 typedef struct s_spr
 {
-	int		is_collectible;
-	int		has_collision;
-	t_vec2	pos;
-	t_img	*img;
-	double	dist;
-	t_vec2	transform;
-	int		screen_x;
-	int		v_move_screen;
-	t_ivec2	size;
-	t_ivec2	draw_start;
-	t_ivec2	draw_end;
+	int			is_collectible;
+	int			has_collision;
+	t_vec2		pos;
+	t_img		*img;
+	t_a_source	*source_collec;
+	double		dist;
+	t_vec2		transform;
+	int			screen_x;
+	int			v_move_screen;
+	t_ivec2		size;
+	t_ivec2		draw_start;
+	t_ivec2		draw_end;
 }	t_spr;
 
 typedef struct s_wall_type
@@ -276,6 +278,7 @@ struct s_map
 	t_spr		**sprites;
 	int			to_collect;
 	t_a_track	*tracks[6];
+	t_a_source	**sources;
 };
 
 typedef struct s_player

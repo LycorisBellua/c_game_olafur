@@ -31,6 +31,7 @@ void	free_map(t_map *map)
 	free_cell_arrays(map);
 	free_portal_array(map);
 	free_sprite_array(map);
+	audio_source_delete_map(map);
 	free(map);
 	map = 0;
 	return ;

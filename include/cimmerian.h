@@ -6,6 +6,7 @@
 # include <string.h>
 # include <strings.h>
 # include <ctype.h>
+# include <float.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/time.h>
@@ -211,15 +212,20 @@ void		action_move_to_start(t_man *man, int set);
 void		audio_init(t_audio *a);
 void		audio_deinit(t_audio *a);
 void		audio_switch_map_sounds(t_man *man);
+void		audio_listener_transform(t_player *p);
 t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename,
 				int force_mono);
 int			load_mp3(const char *filename, t_a_track *t, int force_mono);
 void		audio_track_delete(t_audio *a, t_a_track **track);
 void		audio_track_delete_all(t_audio *a);
 t_a_source	*audio_source_create(t_a_track *t, int is_loop);
+void		audio_source_spatialization(t_a_source *s, int enable);
+void		audio_source_pos(t_a_source *s, t_vec2 pos);
 void		audio_source_change_track(t_a_source *s, t_a_track *t);
 void		audio_source_unset_track(t_a_source *s);
 void		audio_source_delete(t_a_source **s);
+void		audio_source_delete_marked(t_map *map);
+void		audio_source_delete_map(t_map *map);
 void		audio_source_play(t_a_source *s);
 void		audio_source_pause(t_a_source *s);
 void		audio_source_stop(t_a_source *s);
@@ -268,6 +274,7 @@ int			process_floor_types(t_man *man, t_map *map);
 int			process_ceil_types(t_man *man, t_map *map);
 int			process_portals(t_man *man, t_map *map);
 int			process_sprites(t_man *man, t_map *map);
+int			create_audio_sources_for_sprites(t_map *map);
 int			check_map_symbols(t_map *map);
 int			make_maps_same_size(t_map *map);
 int			set_player_data(t_map *map);

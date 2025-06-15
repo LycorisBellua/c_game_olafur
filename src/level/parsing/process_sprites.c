@@ -28,7 +28,7 @@ int	process_sprites(t_man *man, t_map *map)
 		else
 			++i;
 	}
-	return (1);
+	return (create_audio_sources_for_sprites(map));
 }
 
 static int	allocate_sprites(t_map *map)

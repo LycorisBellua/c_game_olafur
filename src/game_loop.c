@@ -1,12 +1,16 @@
 #include "cimmerian.h"
 
-static void	rendering(t_man *man);
+static void	rendering(t_man *man, t_map *map);
 
 void	game_loop(t_man *man)
 {
+	t_map	*map;
+
+	map = man->maps[man->curr_map];
 	set_dt_and_fps(man);
 	advance_all_image_cycles(man);
-	rendering(man);
+	audio_source_delete_marked(map);
+	rendering(man, map);
 	if (man->game_state == GAME_STATE_PLAY)
 	{
 		update_player_transform(man);
@@ -16,11 +20,8 @@ void	game_loop(t_man *man)
 	return ;
 }
 
-static void	rendering(t_man *man)
+static void	rendering(t_man *man, t_map *map)
 {
-	t_map	*map;
-
-	map = man->maps[man->curr_map];
 	if (man->game_state == GAME_STATE_PLAY)
 	{
 		if (man->echolocation || map->skybox->cycle_time_in_ms)

@@ -26,6 +26,7 @@ void	update_player_transform(t_man *man)
 		* man->dt);
 	if (man->echolocation)
 		echolocation(man, forward_speed || lateral_speed);
+	audio_listener_transform(&man->player);
 	return ;
 }
 
