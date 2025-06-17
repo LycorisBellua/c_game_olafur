@@ -316,6 +316,7 @@ typedef struct s_res
 	t_ivec2	window_size_default;
 	t_ivec2	window_size;
 	t_ivec2	window_position;
+	double	half_fov_tan;
 	double	ratio;
 	t_ivec2	res;
 	t_ivec2	viewport_size;
@@ -362,6 +363,7 @@ struct s_man
 	int				minimap_radius;
 	int				minimap_zoom;
 	int				minimap_cell_amount;
+	double			minimap_half_90_deg_cos;
 	t_list			*rays;
 	t_audio			audio;
 };

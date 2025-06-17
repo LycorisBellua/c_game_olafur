@@ -223,7 +223,7 @@ void		audio_source_spatialization(t_a_source *s, int enable);
 void		audio_source_pos(t_a_source *s, t_vec2 pos);
 void		audio_source_change_track(t_a_source *s, t_a_track *t);
 void		audio_source_unset_track(t_a_source *s);
-void		audio_source_delete(t_a_source **s);
+void		audio_source_delete(void *data);
 void		audio_source_delete_marked(t_map *map);
 void		audio_source_delete_map(t_map *map);
 void		audio_source_play(t_a_source *s);

@@ -1,11 +1,9 @@
 #include "cimmerian.h"
 
-static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq,
-				double half_fov_cos);
+static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq);
 
 void	draw_rect_minimap(t_man *man, t_vert v)
 {
-	const double	half_fov_cos = cos(deg2rad(90) / 2.0);
 	t_ivec2			point;
 	t_ivec2			size;
 	int				circle_radius_sq;
@@ -22,15 +20,14 @@ void	draw_rect_minimap(t_man *man, t_vert v)
 		point.x = v.coord.x - 1;
 		while (++point.x <= v.coord.x + size.x - 1)
 		{
-			if (should_draw(man, point, circle_radius_sq, half_fov_cos))
+			if (should_draw(man, point, circle_radius_sq))
 				draw_point(man, v.color, point.x, point.y);
 		}
 	}
 	return ;
 }
 
-static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq,
-	double half_fov_cos)
+static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq)
 {
 	t_vec2	delta;
 	double	len;
@@ -46,5 +43,5 @@ static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq,
 		delta.x /= len;
 		delta.y /= len;
 	}
-	return (dot(delta, man->player.dir) >= half_fov_cos);
+	return (dot(delta, man->player.dir) >= man->minimap_half_90_deg_cos);
 }

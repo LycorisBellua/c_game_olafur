@@ -233,7 +233,7 @@ static void	transform_portal_ray(t_ray *r, t_vec2 src_hit, t_vec2 dst_hit,
 	dst_norm = get_dir_from_cardinal(dst_face);
 
 	// Compute rotation angle between the normals
-	angle = atan2(dst_norm.y, dst_norm.x) - atan2(src_norm.y, src_norm.x);
+	angle = get_angle_from_dir(dst_norm) - get_angle_from_dir(src_norm);
 
 	// Rotate offset, direction, and plane
 	rotated_offset = rotate_vec2(offset, angle);

@@ -4,18 +4,6 @@ static void		set_transform(t_man *man, t_portal *portal);
 static t_vec2	compute_start_pos(t_portal *portal, t_vec2 player_pos);
 static t_vec2	compute_entry_dir(t_vec2 player_pos, t_ivec2 portal_pos);
 
-/*
-	Calling `game_loop(man)` right after changing the game state would display 
-	the loading screen, which comes in handy when the new map takes too long to 
-	load. However, even when loading is instantaneous, the loading screen is 
-	present for a frame, and it looks bad.
-
-	There should be another thread checking how long the loading is taking, and 
-	which decides to display the loading screen if it has been long enough.
-
-	Without multithreading, we have chosen not to display the loading screen, 
-	as the maps load fast.
-*/
 void	portal_routine(t_man *man)
 {
 	t_portal	*portal;

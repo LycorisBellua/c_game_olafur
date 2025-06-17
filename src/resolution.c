@@ -12,6 +12,7 @@ int	set_resolution(t_man *man, t_ivec2 window_size, double aspect_ratio)
 	man->res.window_size.x = man->res.window_size_default.x;
 	man->res.window_size.y = man->res.window_size_default.y;
 	set_ivec2(&man->res.window_position, 0, 0);
+	man->res.half_fov_tan = tan(deg2rad(53) / 2.0);
 	man->res.ratio = aspect_ratio;
 	if (aspect_ratio <= 0.1)
 		man->res.ratio = (double)man->res.monitor_size.x

@@ -28,7 +28,9 @@ int	add_map(t_man *man, const char *filepath)
 	man->maps = new_arr;
 	man->maps[count] = create_map(man, abs_path);
 	free(abs_path);
-	return (!man->maps[count] ? -1 : count);
+	if (!man->maps[count])
+		return (-1);
+	return (count);
 }
 
 static int	find_map_index(t_man *man, const char *filepath)

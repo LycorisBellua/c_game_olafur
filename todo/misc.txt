@@ -1,17 +1,3 @@
-[COMMON] PERF
-- Once you have done your best, implement multithreading for the map loading. 
-Carry on with the game while a map is loading in the background. If we try to 
-access a map which isn't yet loaded (because no map exists yet and we just got 
-here, or because we have hit its portal and should teleport), show a loading 
-screen. Does multithreading help with the lagging at all? Also see if the bug 
-with the sprite remains. Try to reproduce the bug, and if it doesn't happen 
-anymore, remove the entry in the info file.
-- Do the thing with the caching of trigo values. Does it help performance?
-- Use multithreading for the raycasting as well. Try to cut it in half: one 
-thread for the left side of the screen, and another thread for the right. 
-Should you try four threads? Find a fixed number of threads which allow for 30 
-FPS both on X11 and OpenGL in fullscreen.
-
 [COMMON] PORT TO WINDOWS
 - Can it run on Windows? It's the priority now. Make it run on Windows before 
 doing anything else.

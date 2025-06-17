@@ -12,10 +12,7 @@ void	audio_source_delete_marked(t_map *map)
 	while (map->sources[i])
 	{
 		if (is_source_to_be_deleted(map->sources[i]))
-		{
-			audio_source_delete(&map->sources[i]);
-			remove_arr_elems((void **)map->sources, i, i, free);
-		}
+			remove_arr_elems((void **)map->sources, i, i, audio_source_delete);
 		else
 			++i;
 	}
