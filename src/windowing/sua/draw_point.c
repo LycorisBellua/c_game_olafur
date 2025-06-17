@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 t_color	get_frame_pixel(t_frame *f, int x, int y);
 void	set_frame_pixel(t_frame *f, t_color c, int x, int y);

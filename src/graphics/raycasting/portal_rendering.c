@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		is_within_portal_and_ray_hits_opp_face(t_ray *r);
 static int		is_ray_hitting_portal(t_cell *cell, t_ray *r);

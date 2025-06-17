@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	gather_types(char **map, int types[12]);
 static int	check_types_w(t_map *map, t_wall_type *tex, int types[12]);

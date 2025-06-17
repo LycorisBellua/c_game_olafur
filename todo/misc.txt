@@ -1,12 +1,4 @@
-[COMMON] PORT TO WINDOWS
-- Can it run on Windows? It's the priority now. Make it run on Windows before 
-doing anything else.
-- Do we still have 30 FPS, even on the old Windows PC? Add more raycasting 
-threads if need be.
-
---------------------------------------------------------------------------------
-
-[BONUS] CURSOR
+CURSOR
 - Make the SUA and OpenGL cursors behave the same. Test going in and out of 
 fullscreen. I've noticed that if you left click in GL while leaving the window, 
 the cursor will remain in left click mode when you re-enter. The thing is that, 
@@ -18,7 +10,7 @@ rotation stops if the cursor is not within the window, but if it re-enters then
 there's no need to stop clicking and then reclick, because the right-click 
 action is still ongoing.
 
-[BONUS] MENU - COMMANDS
+MENU - COMMANDS
 - List the commands.
 - Do we care about allowing people to change the keys? Check on the old Windows 
 PC what happens with WASD. Are the physical keys used, or the value keys? We 
@@ -26,14 +18,14 @@ might have to be able to ask for physical keys, and then we tell the user to
 use WASD or ZQSD. I won't bother with a French translation though. Just the 
 keys, maybe.
 
-[BONUS] MENU - SOUND
+MENU - SOUND
 - Be able to mute only the music.
 - Be able to mute only the ambiance.
 - Be able to mute only the sound effects.
 - Be able to mute everything.
 - Control the volume as well.
 
-[BONUS] MENU - SELECT LEVEL
+MENU - SELECT LEVEL
 - Instead of giving a map file as argument, you can give a directory. The game 
 fetches all the map files present there, recursively. If only one map exists, 
 it's loaded automatically. Otherwise, a select screen shows up. It lists the 
@@ -51,7 +43,7 @@ from the array), or to reset your transform in this level.
 
 --------------------------------------------------------------------------------
 
-[BONUS] MISCELLANEOUS
+MISCELLANEOUS
 - Add a decoration texture to a wall. It's a texture on top of the wall 
 texture. You can use it in the pool map, for the legs and the ladder (place the 
 ladder on the "stairs" wall).
@@ -76,7 +68,7 @@ Science's portal.
 
 --------------------------------------------------------------------------------
 
-[BONUS] TECHNICAL
+TECHNICAL
 - The ability to look up and down. Use the mouse for that: we already could 
 rotate horizontally with the mouse (as well as with keys), now the mouse is 
 also responsible for the vertical rotation. For the horizontal mouse rotation, 
@@ -102,7 +94,7 @@ mode.
 pipe as you look down towards the "ground", until the ground is reached, and 
 you can look up into the pipe?
 
-[BONUS] GAMEPLAY
+GAMEPLAY
 - Do we do this thing where reaching the goal can bring us to another level, 
 and if there's no more level then it's victory? I know I already have portals, 
 but it's not just about reaching another level, through not overriding its 

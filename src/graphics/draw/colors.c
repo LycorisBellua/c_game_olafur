@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	hex_char_to_int(char c);
 

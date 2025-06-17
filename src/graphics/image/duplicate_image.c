@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	duplicate_cycles(t_img *dst, t_img *src);
 static int	duplicate_average_color_and_is_see_through(t_img *dst, t_img *src);

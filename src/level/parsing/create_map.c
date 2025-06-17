@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 t_map	*create_map(t_man *man, const char *filepath)
 {

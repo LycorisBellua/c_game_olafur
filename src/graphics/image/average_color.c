@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_color	calculate_average_color(t_color *buf, size_t len);
 

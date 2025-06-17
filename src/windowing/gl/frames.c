@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void		render_mesh(void);
 

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	size_for_fullscreen_toggle(GLFWwindow *window, int x, int y);
 static void	pos_for_fullscreen_toggle(GLFWwindow *window, int x, int y);

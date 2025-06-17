@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	display_collectibles(t_man *man, t_map *map);
 static void	display_centered_message(t_man *man, t_ivec2 *pos, const char *msg);

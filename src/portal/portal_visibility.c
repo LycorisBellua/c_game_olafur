@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 int	is_portal_visible(t_portal *portal)
 {

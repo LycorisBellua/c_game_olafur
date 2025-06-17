@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	draw_shape_full_unicolor(t_man *man, t_vert arr[], int len);
 static void	draw_full_triangle(t_man *man, t_vert *v);

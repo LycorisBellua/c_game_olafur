@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 #define COLINEAR 0
 #define CLOCKWISE 1

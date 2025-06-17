@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	cut_image_regular(t_png *file, t_img *img, size_t i_seg,
 				size_t i_cyc);

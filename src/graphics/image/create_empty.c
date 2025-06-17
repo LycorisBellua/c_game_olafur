@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	apply_alpha(t_color *buf, t_ivec2 size, t_ubyte alpha);
 

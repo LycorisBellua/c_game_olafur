@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	rotate_on_click(t_man *man);
 static void	init_rotate_click(t_man *man, int *x_first_click, int *x_max_diff);

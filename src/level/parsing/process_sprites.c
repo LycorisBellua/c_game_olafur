@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	allocate_sprites(t_map *map);
 static int	set_sprite(t_man *man, t_map *map, t_spr *s, int i);

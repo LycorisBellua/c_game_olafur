@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	check_top_and_bottom_edges(t_man *man, t_ivec2 *coord, t_ivec2 min,
 				t_ivec2 max);

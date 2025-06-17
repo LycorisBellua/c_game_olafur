@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 /* In `height`, x and y are used as "start" and "end" */
 void	apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height)

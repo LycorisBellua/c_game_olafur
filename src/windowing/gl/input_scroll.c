@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	scroll_callback(GLFWwindow *window, double x_offset, double y_offset)
 {

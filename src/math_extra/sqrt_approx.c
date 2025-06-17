@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 double	sqrt_approx(double n)
 {

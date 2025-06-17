@@ -6,7 +6,7 @@ GL_FLAGS = -lGL -Llib -lglfw34
 CFLAGS = -Iinclude -I$(SUA_DIR) -Wall -Wextra -pedantic -O2# -g -fsanitize=address
 AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN/lib'
 LDFLAGS = -lm $(AL_FLAGS)
-NAME = cimmerian
+NAME = olafur
 
 SRC_COMMON = $(shell find lib -path "$(SUA_DIR)" -prune -o -name '*.c' -print) \
 	$(shell find src -path "src/windowing" -prune -o -name '*.c' -print)

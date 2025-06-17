@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_vert	get_rect_vert(t_man *man, t_ivec2 i_map, t_ivec2 i_cell);
 static void		draw_player(t_man *man);

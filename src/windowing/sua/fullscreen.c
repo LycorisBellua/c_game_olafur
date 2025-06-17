@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	toggle_fullscreen(t_man *man)
 {

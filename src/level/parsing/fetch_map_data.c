@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		is_valid_file(const char *filepath);
 static t_map	*alloc_map_and_read_lines(const char *filepath);

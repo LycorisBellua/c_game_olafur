@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	get_start_index(t_map *map);
 static int	is_map_line(const char *s, int check_spec, int *only_spaces);

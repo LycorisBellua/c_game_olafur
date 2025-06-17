@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	easter_egg(t_man *man);
 static void	transport_player_to_map(t_man *man, int map_index);

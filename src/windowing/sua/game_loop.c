@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	run_game_loop(t_man *man)
 {

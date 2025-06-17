@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 #ifndef GNL_BUFFER_SIZE
 # define GNL_BUFFER_SIZE 42

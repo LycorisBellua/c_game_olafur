@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	set_sprite_values(t_man *man, t_spr *s);
 static void	render_sprite_column(t_man *man, t_spr *s, int x);

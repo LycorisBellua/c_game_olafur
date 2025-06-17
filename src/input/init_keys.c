@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 /*
 	By default, the window closing event is only triggered by the cross window 

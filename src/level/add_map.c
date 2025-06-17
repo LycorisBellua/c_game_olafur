@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	find_map_index(t_man *man, const char *filepath);
 

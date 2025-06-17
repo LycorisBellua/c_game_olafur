@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 int	set_png_file_obj(t_png *file, char **lines)
 {

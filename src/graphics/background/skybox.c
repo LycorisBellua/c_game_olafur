@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	add_ceiling_and_floor_to_skybox(t_map *map);
 static void	apply_ceiling_to_curr_cycle_frame(t_img *img, int h_gradient,

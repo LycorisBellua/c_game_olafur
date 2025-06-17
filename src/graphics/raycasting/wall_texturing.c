@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		calculate_tex_coord_x(t_img *tex, t_ray *r);
 static double	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex);

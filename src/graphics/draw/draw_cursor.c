@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	draw_cursor(t_man *man, t_img *image, t_ivec2 p, int cyc)
 {

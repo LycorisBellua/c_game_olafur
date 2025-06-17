@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	mouse_press_callback(int button, int x, int y, t_man *man)
 {

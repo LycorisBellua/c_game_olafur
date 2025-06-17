@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void		update_p_and_decision(int in_loop, t_ivec2 *p, int *decision,
 					int radius);

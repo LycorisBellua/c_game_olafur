@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	*extract_arr_elem(void **array, size_t index)
 {

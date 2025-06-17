@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 int	min(int a, int b)
 {

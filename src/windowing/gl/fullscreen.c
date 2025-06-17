@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	switch_to_windowed_mode(t_man *man);
 static void	switch_to_fullscreen_mode(t_man *man);

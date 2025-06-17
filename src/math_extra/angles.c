@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 double	deg2rad(double deg)
 {

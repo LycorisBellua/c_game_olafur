@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	determine_map_size(t_ivec2 *size, char **map);
 static int	give_same_height(t_ivec2 map_size, char ***map);

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static drmp3_uint64	read_track(const char *filename, t_a_track *t, drmp3 mp3);
 static int			downmix_stereo_to_mono(t_a_track *t,

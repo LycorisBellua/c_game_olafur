@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	reset_z_buffer(t_man *man);
 static void	process_dda_list(t_man *man, int x);

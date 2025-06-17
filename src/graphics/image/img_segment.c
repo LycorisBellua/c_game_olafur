@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	set_image_from_segment(t_img *img, t_png *file, size_t i_seg);
 static int	allocate_cycles(t_img *img);

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 char	*strjoin(char const *s1, char const *s2)
 {

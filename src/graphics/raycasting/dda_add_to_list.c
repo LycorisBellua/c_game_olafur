@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	set_perp_wall_dist(t_man *man, t_ray **r, t_cell *cell,
 				int *add_to_list);

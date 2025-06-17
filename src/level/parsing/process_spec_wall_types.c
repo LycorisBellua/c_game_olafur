@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	load_door_tex(t_man *man, t_map *map, int i, int *done);
 static int	load_goal_tex(t_man *man, t_map *map, int i, int *done);

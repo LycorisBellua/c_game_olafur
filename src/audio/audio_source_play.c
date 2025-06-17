@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	play_as_one_shot(t_a_source *s);
 static void	*play_as_loop(void *data);

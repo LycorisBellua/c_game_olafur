@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 t_png	*load_png_from_path(const char *path)
 {

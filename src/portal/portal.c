@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void		set_transform(t_man *man, t_portal *portal);
 static t_vec2	compute_start_pos(t_portal *portal, t_vec2 player_pos);

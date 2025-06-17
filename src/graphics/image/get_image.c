@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 t_img	*get_image(t_man *man, const char *id)
 {

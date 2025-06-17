@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	draw_rectangle(t_man *man, t_vert v, t_ivec2 size)
 {

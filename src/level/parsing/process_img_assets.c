@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	load_json_index(t_man *man, t_map *map, int i);
 

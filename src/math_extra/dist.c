@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 double	dist(t_vec2 a, t_vec2 b)
 {

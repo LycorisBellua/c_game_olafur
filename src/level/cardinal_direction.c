@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 t_vec2	get_dir_from_cardinal(char c)
 {

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		is_valid_dbl(const char *arg, int *i_point);
 static double	get_dbl_point(const char *arg, int i_point);

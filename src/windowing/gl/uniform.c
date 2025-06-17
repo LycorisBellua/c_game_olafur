@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 int	create_uniform(t_man *man)
 {

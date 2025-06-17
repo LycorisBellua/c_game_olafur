@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 char	*read_file(const char *filepath)
 {

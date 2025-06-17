@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void			framebuffer_size_callback(GLFWwindow *window, int x, int y);
 void			window_pos_callback(GLFWwindow *window, int xpos, int ypos);

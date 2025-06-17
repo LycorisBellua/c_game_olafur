@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static double	compute_dt(struct timeval prev_time, struct timeval curr_time);
 

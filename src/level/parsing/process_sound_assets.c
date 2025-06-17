@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_sound_type	get_sound_type(t_map *map, int i);
 static int			check_flag(const char *var, int *flag);

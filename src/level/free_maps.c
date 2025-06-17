@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	free_cell_arrays(t_map *map);
 static void	free_portal_array(t_map *map);

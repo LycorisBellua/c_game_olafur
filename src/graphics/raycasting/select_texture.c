@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	set_north_tex(t_ray *r, t_cell *c);
 static void	set_south_tex(t_ray *r, t_cell *c);

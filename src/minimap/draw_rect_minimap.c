@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq);
 

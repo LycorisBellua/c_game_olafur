@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	advance_image_cycle(t_img *image, long dt_ms);
 

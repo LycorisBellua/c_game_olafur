@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static size_t	count_split_nmemb(const char *s, char c);
 static char		**populate_split_list(char **list, const char *s, char c);

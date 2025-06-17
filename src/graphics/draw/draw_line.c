@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_ivec2	get_direction(t_ivec2 v1, t_ivec2 v2);
 static t_color	get_lerp_c(t_color c1, t_color c2, int steps, int total_steps);

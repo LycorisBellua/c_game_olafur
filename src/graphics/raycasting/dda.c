@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	perform_dda(t_man *man, double cam_x)
 {

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 /*
 	Checking for whether the new pixel is opaque is not necessary, the visual 

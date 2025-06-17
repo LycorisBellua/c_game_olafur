@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void		init_row(t_man *man, t_row *row);
 static int		update_row(t_man *man, t_row *row, int *y);

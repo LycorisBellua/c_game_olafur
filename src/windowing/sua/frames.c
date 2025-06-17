@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	set_frame(t_man *man, t_frame *f, int is_swap_buf);
 static int	set_xmap_and_ymap(t_man *man);

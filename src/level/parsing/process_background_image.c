@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	process_floor_ceil_colors(t_map *map);
 static int	load_color(t_map *map, int i, t_color *color);

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	draw_shadow(t_man *man, t_img *img, t_ivec2 pos);
 

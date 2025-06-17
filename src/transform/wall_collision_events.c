@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	cross_goal_if_unlocked(t_man *man, t_map *m)
 {

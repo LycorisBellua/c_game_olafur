@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	fix_initial_pos(t_ivec2 *pos);
 static void	draw_char(t_man *man, t_img *image, t_ivec2 pos);

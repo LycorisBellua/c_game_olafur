@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void		add_doors_already_opened(t_map *map, t_list **list);
 static void		close_doors(t_man *man, t_map *map, t_list **opened_doors,

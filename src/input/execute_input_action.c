@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_key		*find_key(t_man *man, int keycode);
 static t_key_state	get_new_key_state(t_key *key, t_key_state new_state);

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_ivec2	adapt_size_to_ratio(t_man *man, t_ivec2 size);
 

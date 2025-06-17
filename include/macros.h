@@ -1,7 +1,7 @@
 #ifndef MACROS_H
 # define MACROS_H
 
-# define TITLE "Cimmerian"
+# define TITLE "Olafur"
 # define WINDOW_WIDTH  (640 * 1)
 # define WINDOW_HEIGHT (360 * 1)
 # define ECHOLOCATION 0

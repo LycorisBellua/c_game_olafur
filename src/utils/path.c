@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 char	*get_absolute_path(const char *path)
 {

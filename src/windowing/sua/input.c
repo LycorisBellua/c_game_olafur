@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	key_press_callback(int keycode, t_man *man);
 void	key_release_callback(int keycode, t_man *man);

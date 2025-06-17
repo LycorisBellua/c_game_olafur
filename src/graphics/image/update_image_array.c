@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		check_path(t_man *man, const char *path);
 static int		allocate_array(t_man *man, char **lines, size_t *i_img);

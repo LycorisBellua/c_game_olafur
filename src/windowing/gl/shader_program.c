@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static GLuint	compile_shader(GLenum type, const char *filepath);
 static int		get_app_glsl_version(void);

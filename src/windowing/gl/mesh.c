@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static GLuint	VBO; /* Vertex Buffer Object */
 static GLuint	VAO; /* Vertex Array Object */

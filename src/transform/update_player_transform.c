@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	move_in_local_dir(t_man *man, double forward_speed,
 				double lateral_speed);

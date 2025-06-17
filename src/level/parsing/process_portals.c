@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	allocate_portal_array(t_map *map);
 static int	set_portal(t_man *man, t_map *map, t_portal *p, int i);

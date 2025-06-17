@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	audio_source_pos(t_a_source *s, t_vec2 pos)
 {

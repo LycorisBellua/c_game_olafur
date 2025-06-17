@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		is_colliding(t_man *man, t_cell *cell, char opposite_cardinal);
 static t_cell	*get_cell(t_map *m, int x, int y);

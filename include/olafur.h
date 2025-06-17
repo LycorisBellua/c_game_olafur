@@ -1,5 +1,5 @@
-#ifndef CIMMERIAN_H
-# define CIMMERIAN_H
+#ifndef OLAFUR_H
+# define OLAFUR_H
 
 # include <stdio.h>
 # include <stdlib.h>

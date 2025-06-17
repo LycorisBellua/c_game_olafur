@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	populate_tex(t_map *map, char **tex);
 static int	process_ceil_line(t_map *map, char **tex, int i);

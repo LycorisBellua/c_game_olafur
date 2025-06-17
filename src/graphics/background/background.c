@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	add_fog_overlay(t_png *png, double fog_width, t_color fog);
 static void	upper_gradient(t_png *png, t_color fog, int h_gradient,

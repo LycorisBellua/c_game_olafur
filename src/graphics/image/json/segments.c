@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static size_t	get_segment_len(char **lines, size_t start, size_t end);
 static void		fill_seg_array(t_png *file, char **lines, size_t start,

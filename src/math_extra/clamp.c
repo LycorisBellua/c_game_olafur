@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 int	clamp(int n, int min, int max)
 {

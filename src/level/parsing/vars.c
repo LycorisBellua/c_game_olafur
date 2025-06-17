@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	remove_var_line(t_map *map, int i)
 {

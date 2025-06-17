@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static void	get_face_line(char face, t_ivec2 cell, double offset, t_vec2 *line);
 

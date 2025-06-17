@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static char	*get_whole_file(int fd);
 static char	*add_separator(char *line);

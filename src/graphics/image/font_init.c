@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_ivec2	*get_outline_offsets(void);
 static void		set_text_to_white(t_img *img, size_t cycle_index);

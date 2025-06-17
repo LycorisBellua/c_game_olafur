@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	add_image_slot(t_man *man);
 static void	fill_image_slot(t_man *man, int index, char *abs_path, t_png *file);

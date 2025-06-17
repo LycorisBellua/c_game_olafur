@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	allocate_cell_array(t_map *map);
 static void	set_tex_for_wall(t_map *map, t_cell *c, t_ivec2 p);

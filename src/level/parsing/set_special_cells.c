@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static t_portal	*find_portal(t_map *map, t_ivec2 p);
 

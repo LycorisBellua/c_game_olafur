@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int		collect_sprite(t_man *man, t_map *map, int sprite_index);
 static t_vec2	calculate_new_pos_on_collision(t_spr *s, double radius,

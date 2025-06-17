@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static char	**get_line_arr(const char *filepath);
 static char	*remove_leading_whitespaces(char *s);

@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	echolocation(t_man *man, int has_player_moved)
 {

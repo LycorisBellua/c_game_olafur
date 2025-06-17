@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 void	free_shader_program(t_man *man);
 void	free_uniform(t_man *man);

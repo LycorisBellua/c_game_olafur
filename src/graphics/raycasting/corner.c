@@ -1,4 +1,4 @@
-#include "cimmerian.h"
+#include "olafur.h"
 
 static int	check_north_face(t_map *m, t_ray *r, int img_coord_x,
 				int img_size_x);
