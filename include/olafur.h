@@ -61,12 +61,12 @@ void		advance_all_image_cycles(t_man *man);
 /* Fog ---------------------------------------------------------------------- */
 
 void		init_fog(t_man *man);
-void		update_dof(t_man *man, double increment);
-double		get_fog_width(double dof);
+void		update_dof(t_man *man, float increment);
+float		get_fog_width(float dof);
 void		apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height);
 void		apply_corner_shadow(t_color *wall, t_color c, int img_coord_x,
 				int img_size_x);
-void		apply_wall_fog(t_color *wall, t_color c, double dist, double dof);
+void		apply_wall_fog(t_color *wall, t_color c, float dist, float dof);
 
 /* Files -------------------------------------------------------------------- */
 
@@ -126,11 +126,11 @@ int			is_portal_visible(t_portal *portal);
 /* Raycasting --------------------------------------------------------------- */
 
 void		raycasting(t_man *man);
-void		perform_dda(t_man *man, double cam_x);
+void		perform_dda(t_man *man, float cam_x);
 void		init_ray_data_x(t_ray *r);
 void		init_ray_data_y(t_ray *r);
 void		update_ray_data(t_ray *r);
-int			dda_add_to_list(t_man *man, t_ray **r, double *max_height);
+int			dda_add_to_list(t_man *man, t_ray **r, float *max_height);
 t_cell		*resolve_portal_rendering(t_man *man, t_ray **r);
 void		set_texture_and_is_see_through(t_ray *r, t_cell *c);
 void		cast_floor(t_man *man);
@@ -165,7 +165,7 @@ void		set_player_transform(t_man *man, t_vec2 new_pos, t_vec2 new_dir);
 void		update_player_transform(t_man *man);
 void		prevent_out_of_bounds(t_man *man);
 void		handle_player_speed(t_man *man, int shift_pressed);
-void		rotate_player(t_man *man, double angle);
+void		rotate_player(t_man *man, float angle);
 void		echolocation(t_man *man, int has_player_moved);
 void		cross_goal_if_unlocked(t_man *man, t_map *m);
 void		disable_collision_with_dst_portal_if_within(t_man *man, t_map *m,
@@ -184,7 +184,7 @@ void		free_frame(t_man *man);
 /* Windowing ---------------------------------------------------------------- */
 
 int			set_resolution(t_man *man, t_ivec2 window_size,
-				double aspect_ratio);
+				float aspect_ratio);
 void		set_viewport(t_man *man, t_ivec2 window_size);
 
 /* Input -------------------------------------------------------------------- */
@@ -233,7 +233,7 @@ void		audio_source_stop(t_a_source *s);
 /* Init --------------------------------------------------------------------- */
 
 int			create_window(t_man *man, const char *title, t_ivec2 size,
-				double aspect_ratio);
+				float aspect_ratio);
 t_ivec2		get_monitor_size(t_man *man);
 void		init_input_handling(t_man *man);
 void		run_game_loop(t_man *man);
@@ -287,6 +287,6 @@ void		remove_var_line(t_map *map, int i);
 int			is_var_list_empty(t_map *map);
 int			get_num_rgb(const char *arg);
 int			get_num_int(const char *arg);
-double		get_num_dbl(const char *arg);
+float		get_num_flt(const char *arg);
 
 #endif

@@ -49,7 +49,7 @@ static void	apply_ceiling_to_curr_cycle_frame(t_img *img, int h_gradient,
 	t_color top)
 {
 	t_vert	v;
-	double	factor;
+	float	factor;
 
 	if (!top.a)
 		return ;
@@ -57,7 +57,7 @@ static void	apply_ceiling_to_curr_cycle_frame(t_img *img, int h_gradient,
 	while (v.coord.y < img->size.y / 2)
 	{
 		v.coord.x = 0;
-		factor = (double)(v.coord.y) / h_gradient;
+		factor = (float)(v.coord.y) / h_gradient;
 		while (v.coord.x < img->size.x)
 		{
 			v.color.r = (1 - factor) * top.r;
@@ -77,7 +77,7 @@ static void	apply_floor_to_curr_cycle_frame(t_img *img, int h_gradient,
 	t_color bottom)
 {
 	t_vert	v;
-	double	factor;
+	float	factor;
 
 	if (!bottom.a)
 		return ;
@@ -85,7 +85,7 @@ static void	apply_floor_to_curr_cycle_frame(t_img *img, int h_gradient,
 	while (v.coord.y < img->size.y)
 	{
 		v.coord.x = 0;
-		factor = (double)(v.coord.y - img->size.y / 2) / h_gradient;
+		factor = (float)(v.coord.y - img->size.y / 2) / h_gradient;
 		while (v.coord.x < img->size.x)
 		{
 			v.color.r = factor * bottom.r;

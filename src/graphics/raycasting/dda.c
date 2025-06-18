@@ -1,9 +1,9 @@
 #include "olafur.h"
 
-void	perform_dda(t_man *man, double cam_x)
+void	perform_dda(t_man *man, float cam_x)
 {
 	t_ray	*r;
-	double	max_height;
+	float	max_height;
 
 	r = calloc(1, sizeof(t_ray));
 	if (!r)
@@ -29,9 +29,9 @@ void	perform_dda(t_man *man, double cam_x)
 void	init_ray_data_x(t_ray *r)
 {
 	r->ray_dir.x = r->origin_dir.x + r->origin_plane.x * r->cam_x;
-	r->delta_dist.x = HUGE_VAL;
+	r->delta_dist.x = HUGE_VALF;
 	if (r->ray_dir.x)
-		r->delta_dist.x = fabs(1 / r->ray_dir.x);
+		r->delta_dist.x = fabsf(1 / r->ray_dir.x);
 	r->m_index.x = (int)r->origin_pos.x;
 	if (r->ray_dir.x < 0)
 	{
@@ -50,9 +50,9 @@ void	init_ray_data_x(t_ray *r)
 void	init_ray_data_y(t_ray *r)
 {
 	r->ray_dir.y = r->origin_dir.y + r->origin_plane.y * r->cam_x;
-	r->delta_dist.y = HUGE_VAL;
+	r->delta_dist.y = HUGE_VALF;
 	if (r->ray_dir.y)
-		r->delta_dist.y = fabs(1 / r->ray_dir.y);
+		r->delta_dist.y = fabsf(1 / r->ray_dir.y);
 	r->m_index.y = (int)r->origin_pos.y;
 	if (r->ray_dir.y < 0)
 	{

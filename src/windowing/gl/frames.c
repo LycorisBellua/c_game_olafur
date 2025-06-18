@@ -9,7 +9,7 @@ int	init_frame(t_man *man)
 	if (!set_frame(man))
 		return (0);
 	glBindTexture(GL_TEXTURE_2D, man->frame.id);
-	man->z_buf = malloc(man->frame.size.x * sizeof(double));
+	man->z_buf = malloc(man->frame.size.x * sizeof(float));
 	if (!man->z_buf)
 		return (put_error(man, E_FAIL_MEM, 0, 0));
 	return (1);

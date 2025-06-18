@@ -2,10 +2,10 @@
 
 static void	set_perp_wall_dist(t_man *man, t_ray **r, t_cell *cell,
 				int *add_to_list);
-static int	set_perp_wall_dist_with_offset(t_man *man, t_ray *r, double offset);
+static int	set_perp_wall_dist_with_offset(t_man *man, t_ray *r, float offset);
 static void	add_ray_to_list(t_man *man, t_ray **r);
 
-int	dda_add_to_list(t_man *man, t_ray **r, double *max_height)
+int	dda_add_to_list(t_man *man, t_ray **r, float *max_height)
 {
 	t_cell	*cell;
 	int		add_to_list;
@@ -55,7 +55,7 @@ static void	set_perp_wall_dist(t_man *man, t_ray **r, t_cell *cell,
 	return ;
 }
 
-static int	set_perp_wall_dist_with_offset(t_man *man, t_ray *r, double offset)
+static int	set_perp_wall_dist_with_offset(t_man *man, t_ray *r, float offset)
 {
 	t_vec2	wall;
 

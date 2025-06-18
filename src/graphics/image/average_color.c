@@ -28,7 +28,7 @@ int	calculate_image_average_color(t_img *img)
 static t_color	calculate_average_color(t_color *buf, size_t len)
 {
 	size_t	i;
-	double	alpha;
+	float	alpha;
 	int		total_color[4];
 
 	bzero(&total_color, 4 * sizeof(int));

@@ -9,9 +9,9 @@ void	init_fog(t_man *man)
 	return ;
 }
 
-void	update_dof(t_man *man, double increment)
+void	update_dof(t_man *man, float increment)
 {
-	double	prev_dof;
+	float	prev_dof;
 
 	prev_dof = man->dof;
 	man->dof = fclamp(man->dof + increment, 0, 30);
@@ -20,7 +20,7 @@ void	update_dof(t_man *man, double increment)
 	return ;
 }
 
-double	get_fog_width(double dof)
+float	get_fog_width(float dof)
 {
 	if (dof < 2.0)
 		return (1.0);

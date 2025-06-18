@@ -1,7 +1,7 @@
 #include "olafur.h"
 
 static int		calculate_tex_coord_x(t_img *tex, t_ray *r);
-static double	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex);
+static float	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex);
 static t_color	calculate_color(t_man *man, t_ray *r, t_img *tex,
 					t_ivec2 tex_coord);
 
@@ -9,13 +9,13 @@ void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 {
 	int		y;
 	t_ivec2	tex_coord;
-	double	tex_step;
-	double	tex_pos;
+	float	tex_step;
+	float	tex_pos;
 
 	if (!tex)
 		return ;
 	tex_coord.x = calculate_tex_coord_x(tex, r);
-	tex_step = (double)tex->size.y / r->line_height_cubic;
+	tex_step = (float)tex->size.y / r->line_height_cubic;
 	tex_pos = calculate_initial_tex_pos(man, r, tex);
 	y = r->coord1.y;
 	while (r->coord1.y <= r->coord2.y)
@@ -35,13 +35,13 @@ void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 static int	calculate_tex_coord_x(t_img *tex, t_ray *r)
 {
 	int		tex_coord_x;
-	double	wall_x;
+	float	wall_x;
 
 	if (r->side == 0)
 		wall_x = r->origin_pos.y + r->perp_wall_dist * r->ray_dir.y;
 	else
 		wall_x = r->origin_pos.x + r->perp_wall_dist * r->ray_dir.x;
-	wall_x -= floor(wall_x);
+	wall_x -= floorf(wall_x);
 	tex_coord_x = (int)(wall_x * tex->size.x);
 	if ((r->side == 0 && r->ray_dir.x < 0)
 		|| (r->side == 1 && r->ray_dir.y > 0))
@@ -51,15 +51,15 @@ static int	calculate_tex_coord_x(t_img *tex, t_ray *r)
 	return (tex_coord_x);
 }
 
-static double	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex)
+static float	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex)
 {
 	t_cell	*cell;
-	double	y_offset;
-	double	tex_step;
+	float	y_offset;
+	float	tex_step;
 
 	cell = &r->m->cells[r->m_index.y][r->m_index.x];
 	y_offset = tex->size.y * (1.0 - cell->height) * 0.5;
-	tex_step = (double)tex->size.y / r->line_height_cubic;
+	tex_step = (float)tex->size.y / r->line_height_cubic;
 	return (y_offset + (r->coord1.y - (man->frame.size.y * 0.5 - r->line_height
 				* 0.5)) * tex_step);
 }

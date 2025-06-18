@@ -9,7 +9,7 @@ void	init_minimap_values(t_man *man)
 	man->minimap_offset.y = 7;
 	man->minimap_center.x = man->minimap_offset.x + man->minimap_radius;
 	man->minimap_center.y = man->minimap_offset.y + man->minimap_radius;
-	man->minimap_half_90_deg_cos = cos(deg2rad(90) / 2.0);
+	man->minimap_half_90_deg_cos = cosf(deg2rad(90) / 2.0);
 	return ;
 }
 

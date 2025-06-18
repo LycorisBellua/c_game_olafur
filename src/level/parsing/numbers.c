@@ -1,7 +1,7 @@
 #include "olafur.h"
 
-static int		is_valid_dbl(const char *arg, int *i_point);
-static double	get_dbl_point(const char *arg, int i_point);
+static int		is_valid_flt(const char *arg, int *i_point);
+static float	get_flt_point(const char *arg, int i_point);
 
 int	get_num_rgb(const char *arg)
 {
@@ -34,16 +34,16 @@ int	get_num_int(const char *arg)
 			return (-1);
 		++i;
 	}
-	if (!i || i > 10 || (arg[0] == '0' && i > 1))
+	if (!i || i > 5 || (arg[0] == '0' && i > 1))
 		return (-1);
-	if (i == 10)
+	if (i == 5)
 	{
 		i = 0;
 		while (arg[i])
 		{
-			if (arg[i] < "2147483647"[i])
+			if (arg[i] < "15000"[i])
 				return (atoi(arg));
-			else if (arg[i] > "2147483647"[i])
+			else if (arg[i] > "15000"[i])
 				return (-1);
 			++i;
 		}
@@ -51,14 +51,15 @@ int	get_num_int(const char *arg)
 	return (atoi(arg));
 }
 
-double	get_num_dbl(const char *arg)
+float	get_num_flt(const char *arg)
 {
 	int		i_point;
 	int		nbr_whole;
 	char	*substr;
+	float	flt_point;
 
-	if (!is_valid_dbl(arg, &i_point))
-		return (-1);
+	if (!is_valid_flt(arg, &i_point))
+		return (put_error(0, E_BAD_COORD_F, arg, -1));
 	else if (i_point == 0)
 		nbr_whole = 0;
 	else if (i_point < 0)
@@ -67,16 +68,19 @@ double	get_num_dbl(const char *arg)
 	{
 		substr = get_substr(arg, 0, i_point);
 		if (!substr)
-			return ((double)put_error(0, E_FAIL_MEM, 0, -1));
+			return ((float)put_error(0, E_FAIL_MEM, 0, -1));
 		nbr_whole = get_num_int(substr);
 		free(substr);
 		if (nbr_whole < 0)
-			return (-1);
+			return (put_error(0, E_BAD_COORD_F, arg, -1));
 	}
-	return (nbr_whole + get_dbl_point(arg, i_point));
+	flt_point = get_flt_point(arg, i_point);
+	if (flt_point < 0)
+		return (put_error(0, E_FLT_EXTRA_DIGIT, arg, -1));
+	return (nbr_whole + flt_point);
 }
 
-static int	is_valid_dbl(const char *arg, int *i_point)
+static int	is_valid_flt(const char *arg, int *i_point)
 {
 	int	i;
 
@@ -99,7 +103,7 @@ static int	is_valid_dbl(const char *arg, int *i_point)
 	return (1);
 }
 
-static double	get_dbl_point(const char *arg, int i_point)
+static float	get_flt_point(const char *arg, int i_point)
 {
 	int	nbr_point;
 
@@ -111,6 +115,8 @@ static double	get_dbl_point(const char *arg, int i_point)
 			nbr_point = (arg[i_point + 1] - '0') * 10;
 			if (arg[i_point + 2])
 				nbr_point += arg[i_point + 2] - '0';
+			if (arg[i_point + 3])
+				return (-1);
 		}
 	}
 	return (nbr_point / 100.0);

@@ -11,7 +11,7 @@ int	push_back_on_collision(t_man *man, t_map *m, t_vec2 pos, t_vec2 delta)
 	collision[0] = is_colliding(man, get_cell(m, pos.x,
 				pos.y + man->player.radius), 'S');
 	if (collision[0] && delta.y > 0)
-		pos.y = floor(pos.y + man->player.radius) - man->player.radius;
+		pos.y = floorf(pos.y + man->player.radius) - man->player.radius;
 	collision[1] = is_colliding(man, get_cell(m, pos.x,
 				pos.y - man->player.radius), 'N');
 	if (collision[1] && delta.y < 0)
@@ -19,7 +19,7 @@ int	push_back_on_collision(t_man *man, t_map *m, t_vec2 pos, t_vec2 delta)
 	collision[2] = is_colliding(man, get_cell(m, pos.x + man->player.radius,
 				pos.y), 'E');
 	if (collision[2] && delta.x > 0)
-		pos.x = floor(pos.x + man->player.radius) - man->player.radius;
+		pos.x = floorf(pos.x + man->player.radius) - man->player.radius;
 	collision[3] = is_colliding(man, get_cell(m, pos.x - man->player.radius,
 				pos.y), 'W');
 	if (collision[3] && delta.x < 0)

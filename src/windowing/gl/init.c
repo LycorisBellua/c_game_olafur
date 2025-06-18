@@ -11,7 +11,7 @@ static void		more_window_settings(t_man *man);
 static void		set_initial_viewport(t_man *man);
 
 int	create_window(t_man *man, const char *title, t_ivec2 size,
-	double aspect_ratio)
+	float aspect_ratio)
 {
 	if (!init_graphics_lib())
 		return (0);

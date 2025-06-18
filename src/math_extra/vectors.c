@@ -7,7 +7,7 @@
 static int	orientation(t_vec2 start, t_vec2 point, t_vec2 end);
 static int	is_on_segment(t_vec2 start, t_vec2 point, t_vec2 end);
 
-void	set_vec2(t_vec2 *v, double x, double y)
+void	set_vec2(t_vec2 *v, float x, float y)
 {
 	v->x = x;
 	v->y = y;
@@ -42,7 +42,7 @@ int	do_segments_intersect(t_vec2 start1, t_vec2 end1, t_vec2 start2,
 
 static int	orientation(t_vec2 start, t_vec2 point, t_vec2 end)
 {
-	double	val;
+	float	val;
 
 	val = (point.y - start.y) * (end.x - point.x)
 		- (point.x - start.x) * (end.y - point.y);
@@ -55,8 +55,8 @@ static int	orientation(t_vec2 start, t_vec2 point, t_vec2 end)
 
 static int	is_on_segment(t_vec2 start, t_vec2 point, t_vec2 end)
 {
-	return (point.x <= fmax(start.x, end.x)
-		&& point.x >= fmin(start.x, end.x)
-		&& point.y <= fmax(start.y, end.y)
-		&& point.y >= fmin(start.y, end.y));
+	return (point.x <= fmaxf(start.x, end.x)
+		&& point.x >= fminf(start.x, end.x)
+		&& point.y <= fmaxf(start.y, end.y)
+		&& point.y >= fminf(start.y, end.y));
 }

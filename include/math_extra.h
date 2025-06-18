@@ -22,8 +22,8 @@
 
 typedef struct s_vec2
 {
-	double	x;
-	double	y;
+	float	x;
+	float	y;
 }	t_vec2;
 
 typedef struct s_ivec2
@@ -40,21 +40,21 @@ typedef struct s_uivec2
 
 /* Angles ------------------------------------------------------------------- */
 
-double	deg2rad(double deg);
-double	get_angle_from_dir(t_vec2 dir);
-double	norm_angle(double angle);
-double	dot(t_vec2 a, t_vec2 b);
-t_vec2	rotate_vec2(t_vec2 v, double angle);
+float	deg2rad(float deg);
+float	get_angle_from_dir(t_vec2 dir);
+float	norm_angle(float angle);
+float	dot(t_vec2 a, t_vec2 b);
+t_vec2	rotate_vec2(t_vec2 v, float angle);
 
 /* Clamp -------------------------------------------------------------------- */
 
 int		clamp(int n, int min, int max);
-double	fclamp(double n, double min, double max);
+float	fclamp(float n, float min, float max);
 int		norm(int n);
 
 /* Distance ----------------------------------------------------------------- */
 
-double	dist(t_vec2 a, t_vec2 b);
+float	dist(t_vec2 a, t_vec2 b);
 int		is_dist_grid_aligned_and_within_threshold(t_ivec2 a, t_ivec2 b,
 			int threshold);
 
@@ -65,11 +65,11 @@ int		max(int a, int b);
 
 /* Sqrt Approximation ------------------------------------------------------- */
 
-double	sqrt_approx(double n);
+float	sqrt_approx(float n);
 
 /* Vectors ------------------------------------------------------------------ */
 
-void	set_vec2(t_vec2 *v, double x, double y);
+void	set_vec2(t_vec2 *v, float x, float y);
 void	set_ivec2(t_ivec2 *v, int x, int y);
 int		do_segments_intersect(t_vec2 start1, t_vec2 end1, t_vec2 start2,
 			t_vec2 end2);

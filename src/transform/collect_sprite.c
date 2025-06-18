@@ -1,14 +1,14 @@
 #include "olafur.h"
 
 static int		collect_sprite(t_man *man, t_map *map, int sprite_index);
-static t_vec2	calculate_new_pos_on_collision(t_spr *s, double radius,
+static t_vec2	calculate_new_pos_on_collision(t_spr *s, float radius,
 					t_vec2 pos);
 
 void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 {
 	int		i;
 	t_vec2	pos;
-	double	radius;
+	float	radius;
 
 	pos = man->player.pos;
 	radius = man->player.radius + SPRITE_RADIUS;
@@ -55,10 +55,10 @@ static int	collect_sprite(t_man *man, t_map *map, int sprite_index)
 	return (1);
 }
 
-static t_vec2	calculate_new_pos_on_collision(t_spr *s, double radius,
+static t_vec2	calculate_new_pos_on_collision(t_spr *s, float radius,
 	t_vec2 pos)
 {
-	double	overlap;
+	float	overlap;
 	t_vec2	push;
 
 	overlap = radius - s->dist;

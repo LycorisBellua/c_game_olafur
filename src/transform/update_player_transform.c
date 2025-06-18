@@ -1,7 +1,7 @@
 #include "olafur.h"
 
-static void	move_in_local_dir(t_man *man, double forward_speed,
-				double lateral_speed);
+static void	move_in_local_dir(t_man *man, float forward_speed,
+				float lateral_speed);
 static void	adjust_position_on_wall_collision(t_man *man);
 
 /*
@@ -12,8 +12,8 @@ static void	adjust_position_on_wall_collision(t_man *man);
 
 void	update_player_transform(t_man *man)
 {
-	double	forward_speed;
-	double	lateral_speed;
+	float	forward_speed;
+	float	lateral_speed;
 
 	forward_speed = man->move_speed * norm(man->move_action.y) * man->dt;
 	lateral_speed = man->move_speed * norm(man->move_action.x) * man->dt;
@@ -43,8 +43,8 @@ void	prevent_out_of_bounds(t_man *man)
 	return ;
 }
 
-static void	move_in_local_dir(t_man *man, double forward_speed,
-	double lateral_speed)
+static void	move_in_local_dir(t_man *man, float forward_speed,
+	float lateral_speed)
 {
 	man->player.prev_pos = man->player.pos;
 	man->player.pos.x += man->player.dir.x * forward_speed;

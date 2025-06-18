@@ -1,6 +1,6 @@
 #include "olafur.h"
 
-static void	add_fog_overlay(t_png *png, double fog_width, t_color fog);
+static void	add_fog_overlay(t_png *png, float fog_width, t_color fog);
 static void	upper_gradient(t_png *png, t_color fog, int h_gradient,
 				t_vert *v);
 static void	lower_gradient(t_png *png, int h_solid, int h_gradient,
@@ -34,7 +34,7 @@ void	compose_background(t_man *man, t_map *map)
 	return ;
 }
 
-static void	add_fog_overlay(t_png *png, double fog_width, t_color fog)
+static void	add_fog_overlay(t_png *png, float fog_width, t_color fog)
 {
 	int		h_solid;
 	int		h_gradient;
@@ -60,13 +60,13 @@ static void	add_fog_overlay(t_png *png, double fog_width, t_color fog)
 
 static void	upper_gradient(t_png *png, t_color fog, int h_gradient, t_vert *v)
 {
-	double	factor;
+	float	factor;
 
 	v->coord.y = 0;
 	while (v->coord.y < h_gradient)
 	{
 		v->coord.x = 0;
-		factor = (double)v->coord.y / h_gradient;
+		factor = (float)v->coord.y / h_gradient;
 		while (v->coord.x < png->size.x)
 		{
 			v->color.r = fog.r;
@@ -84,13 +84,13 @@ static void	upper_gradient(t_png *png, t_color fog, int h_gradient, t_vert *v)
 static void	lower_gradient(t_png *png, int h_solid, int h_gradient, t_vert *v)
 {
 	t_color	fog;
-	double	factor;
+	float	factor;
 
 	fog = v->color;
 	while (v->coord.y < png->size.y)
 	{
 		v->coord.x = 0;
-		factor = (double)(v->coord.y - png->size.y / 2 - h_solid) / h_gradient;
+		factor = (float)(v->coord.y - png->size.y / 2 - h_solid) / h_gradient;
 		while (v->coord.x < png->size.x)
 		{
 			v->color.r = fog.r;

@@ -15,8 +15,8 @@ void	draw_line(t_man *man, t_vert v1, t_vert v2)
 	steps = max(abs(dir.x), abs(dir.y));
 	coord.x = v1.coord.x;
 	coord.y = v1.coord.y;
-	increment.x = dir.x / (double)steps;
-	increment.y = dir.y / (double)steps;
+	increment.x = dir.x / (float)steps;
+	increment.y = dir.y / (float)steps;
 	++steps;
 	total_steps = steps;
 	while (steps-- > 0)
@@ -47,11 +47,11 @@ static t_ivec2	get_direction(t_ivec2 v1, t_ivec2 v2)
 static t_color	get_lerp_c(t_color c1, t_color c2, int steps, int total_steps)
 {
 	t_color	color;
-	double	factor;
+	float	factor;
 
 	if (total_steps < 1)
 		return (c1);
-	factor = (double)steps / total_steps;
+	factor = (float)steps / total_steps;
 	color.r = c1.r * (1.0 - factor) + c2.r * factor;
 	color.g = c1.g * (1.0 - factor) + c2.g * factor;
 	color.b = c1.b * (1.0 - factor) + c2.b * factor;

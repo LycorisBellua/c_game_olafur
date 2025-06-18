@@ -15,7 +15,7 @@ void	raycasting(t_man *man)
 	x = 0;
 	while (x < man->frame.size.x)
 	{
-		perform_dda(man, 2 * x / (double)man->frame.size.x - 1);
+		perform_dda(man, 2 * x / (float)man->frame.size.x - 1);
 		process_dda_list(man, x);
 		++x;
 	}
@@ -28,7 +28,7 @@ static void	reset_z_buffer(t_man *man)
 
 	i = 0;
 	while (i < man->frame.size.x)
-		man->z_buf[i++] = HUGE_VAL;
+		man->z_buf[i++] = HUGE_VALF;
 	return ;
 }
 

@@ -3,7 +3,7 @@
 void	cross_goal_if_unlocked(t_man *man, t_map *m)
 {
 	t_vec2	pos;
-	double	radius;
+	float	radius;
 	t_cell	*cell[4];
 
 	pos = man->player.pos;

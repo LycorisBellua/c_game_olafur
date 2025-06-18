@@ -2,7 +2,7 @@
 
 void	echolocation(t_man *man, int has_player_moved)
 {
-	static double	dof_elapsed_time;
+	static float	dof_elapsed_time;
 
 	if (has_player_moved)
 	{

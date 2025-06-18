@@ -1,6 +1,6 @@
 #include "olafur.h"
 
-static double	compute_dt(struct timeval prev_time, struct timeval curr_time);
+static float	compute_dt(struct timeval prev_time, struct timeval curr_time);
 
 void	set_dt_and_fps(t_man *man)
 {
@@ -43,13 +43,13 @@ void	display_fps(t_man *man)
 	return ;
 }
 
-static double	compute_dt(struct timeval prev_time, struct timeval curr_time)
+static float	compute_dt(struct timeval prev_time, struct timeval curr_time)
 {
-	double	delta_s;
-	double	delta_ms;
+	float	delta_s;
+	float	delta_ms;
 
-	delta_s = (double)(curr_time.tv_sec - prev_time.tv_sec);
-	delta_ms = (double)(curr_time.tv_usec - prev_time.tv_usec) / 1000000.0;
+	delta_s = (float)(curr_time.tv_sec - prev_time.tv_sec);
+	delta_ms = (float)(curr_time.tv_usec - prev_time.tv_usec) / 1000000.0;
 	if (delta_ms < 0)
 	{
 		delta_s -= 1.0;

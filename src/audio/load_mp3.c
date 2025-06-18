@@ -30,7 +30,7 @@ static drmp3_uint64	read_track(const char *filename, t_a_track *t, drmp3 mp3)
 	drmp3_uint64	samples_read;
 
 	total_pcm_frames = drmp3_get_pcm_frame_count(&mp3);
-	t->seconds = (double)total_pcm_frames / mp3.sampleRate;
+	t->seconds = (float)total_pcm_frames / mp3.sampleRate;
 	t->freq = mp3.sampleRate;
 	t->pcm_data = malloc(total_pcm_frames * mp3.channels * sizeof(drmp3_int16));
 	if (!t->pcm_data)

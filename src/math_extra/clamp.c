@@ -9,7 +9,7 @@ int	clamp(int n, int min, int max)
 	return (n);
 }
 
-double	fclamp(double n, double min, double max)
+float	fclamp(float n, float min, float max)
 {
 	if (n < min)
 		return (min);

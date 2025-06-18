@@ -19,7 +19,7 @@ t_cell	*resolve_portal_rendering(t_man *man, t_ray **r)
 	char	dst_face;
 	t_vec2	src_hit;
 	t_vec2	dst_hit;
-	double	src_perp_wall_dist;
+	float	src_perp_wall_dist;
 
 	/*
 		- In the case of map_0 having two portals on both ends of the map, the 
@@ -160,7 +160,7 @@ static t_vec2	get_hit_point(t_ray *r)
 {
 	t_vec2	hit_point;
 	t_vec2	wall;
-	double	t;
+	float	t;
 
 	if (r->side == 1)
 	{
@@ -182,7 +182,7 @@ static t_vec2	get_hit_point(t_ray *r)
 static t_vec2	project_hit(t_vec2 src_hit, t_ivec2 src_cell, char src_face,
 		t_ivec2 dst_cell, char dst_face)
 {
-	double	offset;
+	float	offset;
 	t_vec2	dst_hit;
 
 	if (src_face == 'N' || src_face == 'S')
@@ -220,7 +220,7 @@ static void	transform_portal_ray(t_ray *r, t_vec2 src_hit, t_vec2 dst_hit,
 	t_vec2	offset;
 	t_vec2	src_norm;
 	t_vec2	dst_norm;
-	double	angle;
+	float	angle;
 	t_vec2	rotated_offset;
 	t_vec2	rotated_dir;
 	t_vec2	rotated_plane;

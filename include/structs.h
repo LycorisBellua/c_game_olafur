@@ -50,7 +50,7 @@ typedef struct s_list
 typedef struct s_a_track
 {
 	char	*name;
-	double	seconds;
+	float	seconds;
 	ALvoid	*pcm_data;
 	ALsizei	data_size;
 	ALenum	format;
@@ -132,7 +132,7 @@ typedef struct s_png
 
 typedef struct s_ray
 {
-	double	cam_x;
+	float	cam_x;
 	t_vec2	origin_pos;
 	t_vec2	origin_dir;
 	t_vec2	origin_plane;
@@ -143,7 +143,7 @@ typedef struct s_ray
 	t_ivec2	step;
 	t_vec2	side_dist;
 	int		side;
-	double	perp_wall_dist;
+	float	perp_wall_dist;
 	int		line_height;
 	int		line_height_cubic;
 	t_ivec2	unclamped_line_height;
@@ -159,8 +159,8 @@ typedef struct s_row
 {
 	t_vec2	ray_dir;
 	t_vec2	ray_dir_step;
-	double	pos_z;
-	double	row_dist;
+	float	pos_z;
+	float	row_dist;
 	t_vec2	floor_step;
 	t_vec2	floor;
 }	t_row;
@@ -200,7 +200,7 @@ typedef struct s_cell
 	int			is_visible;
 	int			is_obstacle;
 	int			is_goal;
-	double		height;
+	float		height;
 	t_img		*tex_floor;
 	t_img		*tex_ceiling;
 	t_img		*tex_north;
@@ -218,7 +218,7 @@ typedef struct s_spr
 	t_vec2		pos;
 	t_img		*img;
 	t_a_source	*source_collec;
-	double		dist;
+	float		dist;
 	t_vec2		transform;
 	int			screen_x;
 	int			v_move_screen;
@@ -283,7 +283,7 @@ struct s_map
 
 typedef struct s_player
 {
-	double	radius;
+	float	radius;
 	t_vec2	pos;
 	t_vec2	prev_pos;
 	t_vec2	dir;
@@ -304,7 +304,7 @@ typedef struct s_frame
 {
 	t_ximg	*img;
 	t_ivec2	size;
-	double	thickness;
+	float	thickness;
 	int		*xmap;
 	int		*ymap;
 }	t_frame;
@@ -316,8 +316,8 @@ typedef struct s_res
 	t_ivec2	window_size_default;
 	t_ivec2	window_size;
 	t_ivec2	window_position;
-	double	half_fov_tan;
-	double	ratio;
+	float	half_fov_tan;
+	float	ratio;
 	t_ivec2	res;
 	t_ivec2	viewport_size;
 	t_ivec2	viewport_offset;
@@ -335,15 +335,15 @@ struct s_man
 	# endif
 	char			*title;
 	t_frame			frame;
-	double			*z_buf;
-	double			dt;
+	float			*z_buf;
+	float			dt;
 	long			dt_ms;
 	int				fps;
 	t_res			res;
 	t_game_state	game_state;
 	t_player		player;
-	double			move_speed;
-	double			rotate_speed;
+	float			move_speed;
+	float			rotate_speed;
 	t_ivec2			move_action;
 	int				rotate_action;
 	int				l_click_action;
@@ -356,14 +356,14 @@ struct s_man
 	t_map			**maps;
 	int				curr_map;
 	int				echolocation;
-	double			dof;
-	double			fog_width;
+	float			dof;
+	float			fog_width;
 	t_ivec2			minimap_offset;
 	t_ivec2			minimap_center;
 	int				minimap_radius;
 	int				minimap_zoom;
 	int				minimap_cell_amount;
-	double			minimap_half_90_deg_cos;
+	float			minimap_half_90_deg_cos;
 	t_list			*rays;
 	t_audio			audio;
 };

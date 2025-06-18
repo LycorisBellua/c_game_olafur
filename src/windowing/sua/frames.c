@@ -18,7 +18,7 @@ int	init_frame(t_man *man)
 	}
 	if (!set_xmap_and_ymap(man))
 		return (put_error(man, 0, 0, 0));
-	man->z_buf = malloc(man->frame.size.x * sizeof(double));
+	man->z_buf = malloc(man->frame.size.x * sizeof(float));
 	if (!man->z_buf)
 		return (put_error(man, E_FAIL_MEM, 0, 0));
 	return (1);
@@ -54,7 +54,7 @@ static int	set_frame(t_man *man, t_frame *f, int is_swap_buf)
 		set_ivec2(&f->size, man->res.viewport_size.x, man->res.viewport_size.y);
 	else
 		set_ivec2(&f->size, man->res.res.x, man->res.res.y);
-	f->thickness = (double)f->size.x / man->res.res.x;
+	f->thickness = (float)f->size.x / man->res.res.x;
 	f->img = sua_image_create(man->xvar, f->size.x, f->size.y);
 	if (!f->img)
 		return (put_error(man, E_FAIL_SUA_IMG, 0, 0));

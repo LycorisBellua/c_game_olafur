@@ -1,6 +1,6 @@
 #include "olafur.h"
 
-double	dist(t_vec2 a, t_vec2 b)
+float	dist(t_vec2 a, t_vec2 b)
 {
 	t_vec2	delta;
 

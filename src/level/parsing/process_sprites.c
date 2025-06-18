@@ -60,12 +60,12 @@ static int	set_sprite(t_man *man, t_map *map, t_spr *s, int i)
 {
 	int	j;
 
-	s->pos.x = get_num_dbl(map->pars.vars[i][1]);
+	s->pos.x = get_num_flt(map->pars.vars[i][1]);
 	if (s->pos.x < 0)
-		return (put_error(0, E_BAD_COORD_DBL, map->pars.vars[i][1], 0));
-	s->pos.y = get_num_dbl(map->pars.vars[i][2]);
+		return (0);
+	s->pos.y = get_num_flt(map->pars.vars[i][2]);
 	if (s->pos.y < 0)
-		return (put_error(0, E_BAD_COORD_DBL, map->pars.vars[i][2], 0));
+		return (0);
 	if (strcmp(map->pars.vars[i][3], "null"))
 	{
 		s->img = add_image(man, map->pars.vars[i][3]);

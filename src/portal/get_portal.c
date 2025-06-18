@@ -1,6 +1,6 @@
 #include "olafur.h"
 
-static void	get_face_line(char face, t_ivec2 cell, double offset, t_vec2 *line);
+static void	get_face_line(char face, t_ivec2 cell, float offset, t_vec2 *line);
 
 /* Trigger portal only if portal face is touched, not just the cell */
 t_portal	*get_portal(t_man *man)
@@ -31,7 +31,7 @@ t_portal	*get_portal(t_man *man)
 	return (0);
 }
 
-static void	get_face_line(char face, t_ivec2 cell, double offset, t_vec2 *line)
+static void	get_face_line(char face, t_ivec2 cell, float offset, t_vec2 *line)
 {
 	t_vec2	dir;
 	t_vec2	p0;

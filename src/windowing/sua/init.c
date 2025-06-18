@@ -1,7 +1,7 @@
 #include "olafur.h"
 
 int	create_window(t_man *man, const char *title, t_ivec2 size,
-	double aspect_ratio)
+	float aspect_ratio)
 {
 	man->xvar = sua_init();
 	if (!man->xvar)

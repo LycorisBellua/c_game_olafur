@@ -43,9 +43,9 @@ static void	set_transform(t_man *man, t_portal *portal)
 	t_vec2	exit_pos;
 	t_vec2	exit_dir;
 	t_vec2	entry_dir;
-	double	player_angle;
-	double	entry_angle;
-	double	relative_angle;
+	float	player_angle;
+	float	entry_angle;
+	float	relative_angle;
 
 	exit_pos = man->maps[man->curr_map]->start_pos;
 	exit_dir = man->maps[man->curr_map]->start_dir;
@@ -69,8 +69,8 @@ static void	set_transform(t_man *man, t_portal *portal)
 static t_vec2	compute_start_pos(t_portal *portal, t_vec2 player_pos)
 {
 	t_vec2	p;
-	double	offset;
-	double	depth;
+	float	offset;
+	float	depth;
 	t_vec2	dir;
 
 	offset = 0.5;
@@ -103,7 +103,7 @@ static t_vec2	compute_entry_dir(t_vec2 player_pos, t_ivec2 portal_pos)
 	set_vec2(&entry_dir, 0, 0);
 	diff.x = player_pos.x - (portal_pos.x + 0.5);
 	diff.y = player_pos.y - (portal_pos.y + 0.5);
-	if (fabs(diff.x) > fabs(diff.y))
+	if (fabsf(diff.x) > fabsf(diff.y))
 	{
 		if (diff.x > 0)
 			entry_dir.x = -1;

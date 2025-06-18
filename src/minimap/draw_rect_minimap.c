@@ -30,7 +30,7 @@ void	draw_rect_minimap(t_man *man, t_vert v)
 static int	should_draw(t_man *man, t_ivec2 point, int circle_radius_sq)
 {
 	t_vec2	delta;
-	double	len;
+	float	len;
 
 	delta.x = point.x - man->minimap_center.x;
 	delta.y = point.y - man->minimap_center.y;

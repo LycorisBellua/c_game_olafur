@@ -2,7 +2,7 @@
 
 static void	update_background_offset(t_man *man);
 
-void	rotate_player(t_man *man, double angle)
+void	rotate_player(t_man *man, float angle)
 {
 	t_vec2	dir;
 	t_vec2	plane;
@@ -18,7 +18,7 @@ void	rotate_player(t_man *man, double angle)
 static void	update_background_offset(t_man *man)
 {
 	t_map	*map;
-	double	angle;
+	float	angle;
 
 	map = man->maps[man->curr_map];
 	if (!map || !map->background)

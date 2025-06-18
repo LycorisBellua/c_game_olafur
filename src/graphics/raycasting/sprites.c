@@ -58,9 +58,9 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 {
 	const int		U_DIV = 1;
 	const int		V_DIV = 1;
-	const double	V_MOVE = 0.0;
+	const float	V_MOVE = 0.0;
 	t_vec2			pos;
-	double			inv_det;
+	float			inv_det;
 
 	set_vec2(&pos, s->pos.x - man->player.pos.x, s->pos.y - man->player.pos.y);
 	inv_det = 1.0 / ((man->player.plane.x * man->player.dir.y
