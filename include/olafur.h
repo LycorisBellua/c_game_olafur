@@ -118,6 +118,9 @@ void		set_dt_and_fps(t_man *man);
 void		display_fps(t_man *man);
 void		display_game_gui(t_man *man, t_map *map);
 void		door_routine(t_man *man);
+t_door		*get_door(t_map *m, int x, int y);
+int			is_player_next_to_door_face(t_door *d, t_ivec2 p);
+void		trigger_door(t_door *d, int is_open);
 void		portal_routine(t_man *man);
 t_portal	*get_portal(t_man *man);
 void		open_and_close_portals(t_man *man);
@@ -131,7 +134,7 @@ void		init_ray_data_x(t_ray *r);
 void		init_ray_data_y(t_ray *r);
 void		update_ray_data(t_ray *r);
 int			dda_add_to_list(t_man *man, t_ray **r, float *max_height);
-t_cell		*resolve_portal_rendering(t_man *man, t_ray **r);
+t_cell		*resolve_portal_rendering(t_man *man, t_ray **r, t_cell *cell);
 void		set_texture_and_is_see_through(t_ray *r, t_cell *c);
 void		cast_floor(t_man *man);
 void		cast_ceiling_x(t_man *man, int x);
@@ -156,6 +159,7 @@ t_vec2		get_dir_from_cardinal(char c);
 t_ivec2		get_dir_from_cardinal_ivec(char c);
 char		opp_cardinal(char cardinal);
 char		get_card_from_str(const char *s);
+char		get_offset_from_str(const char *s);
 
 /* Transform ---------------------------------------------------------------- */
 
@@ -172,6 +176,7 @@ void		disable_collision_with_dst_portal_if_within(t_man *man, t_map *m,
 				t_vec2 pos);
 int			push_back_on_collision(t_man *man, t_map *m, t_vec2 pos,
 				t_vec2 delta);
+t_cell		*get_cell(t_map *m, int x, int y);
 void		unstuck_from_wall(t_man *man, t_map *m);
 void		adjust_position_on_sprite_collision(t_man *man, t_map *map);
 
@@ -272,6 +277,7 @@ int			process_spec_wall_types(t_man *man, t_map *map);
 int			process_background_image(t_man *man, t_map *map);
 int			process_floor_types(t_man *man, t_map *map);
 int			process_ceil_types(t_man *man, t_map *map);
+int			process_doors(t_man *man, t_map *map);
 int			process_portals(t_man *man, t_map *map);
 int			process_sprites(t_man *man, t_map *map);
 int			create_audio_sources_for_sprites(t_map *map);

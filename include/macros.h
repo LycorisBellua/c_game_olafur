@@ -111,6 +111,8 @@
 # define E_BAD_COLOR "Invalid RGB or hex color"
 # define E_BAD_CARD "Invalid cardinal - Valid is \"NO\", \"SO\", \"WE\" or " \
 	"\"EA\""
+# define E_BAD_OFFSET "Invalid offset for doors - Valid is \"ANY\", " \
+	"\"HMID\", \"VMID\", \"NO\", \"SO\", \"WE\" or \"EA\""
 # define E_BAD_TOCOLLECT "Invalid number of sprites to collect - Valid is " \
 	"[0 - 2147483647]"
 # define E_BAD_COORD "Invalid coordinate - Valid is [0 - 15000]"

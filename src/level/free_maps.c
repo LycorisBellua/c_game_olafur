@@ -29,6 +29,7 @@ void	free_map(t_map *map)
 	free_image(map->skybox, free);
 	free_png(map->background);
 	free_cell_arrays(map);
+	free_arr((void **)map->doors, free);
 	free_portal_array(map);
 	free_sprite_array(map);
 	audio_source_delete_map(map);
@@ -68,16 +69,7 @@ static void	free_cell_arrays(t_map *map)
 	{
 		coord.y = 0;
 		while (coord.y < map->size.y)
-		{
-			coord.x = 0;
-			while (coord.x < map->size.x)
-			{
-				free(map->cells[coord.y][coord.x].door);
-				++coord.x;
-			}
-			free(map->cells[coord.y]);
-			++coord.y;
-		}
+			free(map->cells[coord.y++]);
 		free(map->cells);
 	}
 	map->cells = 0;

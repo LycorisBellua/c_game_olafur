@@ -114,9 +114,11 @@ static float	get_flt_point(const char *arg, int i_point)
 		{
 			nbr_point = (arg[i_point + 1] - '0') * 10;
 			if (arg[i_point + 2])
+			{
 				nbr_point += arg[i_point + 2] - '0';
-			if (arg[i_point + 3])
-				return (-1);
+				if (arg[i_point + 3])
+					return (-1);
+			}
 		}
 	}
 	return (nbr_point / 100.0);

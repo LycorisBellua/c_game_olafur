@@ -28,10 +28,6 @@ as "1NO". The digit represents the wall type, which can be anything from 1 to
 9\. A wall type needs all four cardinals, and the argument to a cardinal is the 
 image reference. These variables are the only mandatory ones.
 
-- **D**: The reference to the door textures, indicated as 'D' in the wall map. 
-The first reference is for when the door is closed, and the second is for when 
-it's open.
-
 - **G**: The reference to the goal texture, indicated as 'G' in the wall map. 
 The map doesn't need a goal. A goal can be crossed if the required amount of 
 collectibles has been gathered. If you don't specify a number as a second 
@@ -68,6 +64,13 @@ tags can be listed in any order. There can be more than one SP variable.
 - **S_LOSE**: The sound effect of the negative game over screen.
 
 - **S_COLLEC**: The sound effect of picking up a collectible item.
+
+- **D**: Door. Indicate its X and Y position, the closed texture, the open 
+texture, and an optional orientation. If not specified, the door will be drawn 
+like a wall, as a cube. Otherwise, specify "HMID" for "horizontal middle" to 
+have the door drawn in the middle of the cell on the X axis, "VMID" for 
+"vertical middle" to have it drawn on the Y axis, or a cardinal direction (NO, 
+SO, WE or EA) to have it drawn on a specific cardinal face.
 
 - **PT**: Portal. A portal can only be placed where a wall could be, as if on a 
 grid. It cannot be in the middle of a cell. Crossing a portal teleports the 

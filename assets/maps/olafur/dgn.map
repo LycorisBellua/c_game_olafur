@@ -28,12 +28,14 @@ SK dgn_sk
 4WE dgn_w4
 4EA dgn_w4
 
-D dgn_d
-G solid 5
+G solid2 5
 
 1F dgn_f_in
 2F dgn_f
 1C dgn_c
+
+D 8 4 dgn_d null HMID
+D 8 8 dgn_d null HMID
 
 PT SO 12 0 dgn_p dgn_p_open assets/maps/olafur/mus.map WE 8 4
 
@@ -52,10 +54,8 @@ SP 10.5 15.8 sprite_barrel collision
 
 SP 20.5 11.5 sprite_soul_idle collectible
 SP 18.5 4.5 sprite_soul_idle collectible
-SP 10.0 4.5 sprite_soul_idle collectible
 SP 10.0 12.5 sprite_soul_idle collectible
 SP 3.5 6.5 sprite_soul_idle collectible
-SP 3.5 20.5 sprite_soul_idle collectible
 SP 3.5 14.5 sprite_soul_idle collectible
 SP 14.5 20.5 sprite_soul_idle collectible
 
@@ -63,11 +63,11 @@ SP 14.5 20.5 sprite_soul_idle collectible
 100000000000000000000001
 100000000000000000000001
 100000000000000000000001
-10000022D220000303030001
+100000220220000303030001
 100000200020000000000001
 100000200020000300030001
 100000200020000000000001
-10000022D220000303030001
+100000220220000303030001
 100000000000000000000001
 100000000000000000000001
 100000000000000000000001

@@ -169,7 +169,8 @@ typedef struct s_door
 {
 	t_map		*m;
 	t_ivec2		pos;
-	char		cardinal;
+	char		offset;
+	char		opening_cardinal;
 	t_img		*tex_closed;
 	t_img		*tex_open;
 	int			is_plane;
@@ -252,10 +253,7 @@ typedef struct s_map_pars
 	t_wall_type	*tex_types_wall;
 	t_row_type	*tex_types_floor;
 	t_row_type	*tex_types_ceil;
-	int			door_line_found;
 	int			goal_line_found;
-	t_img		*tex_door_closed;
-	t_img		*tex_door_open;
 	t_img		*tex_goal;
 }	t_map_pars;
 
@@ -272,6 +270,7 @@ struct s_map
 	t_img		*skybox;
 	t_png		*background;
 	int			background_offset;
+	t_door		**doors;
 	t_portal	**portals;
 	t_cell		**cells;
 	int			sprite_len;

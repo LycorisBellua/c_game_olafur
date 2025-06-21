@@ -44,13 +44,12 @@ from the array), or to reset your transform in this level.
 --------------------------------------------------------------------------------
 
 MISCELLANEOUS
+- Can we see the door plane even when within the cell? And, if it's a plane, 
+place the corner shadows on the right corners, instead of on all four door 
+corners.
 - Add a decoration texture to a wall. It's a texture on top of the wall 
 texture. You can use it in the pool map, for the legs and the ladder (place the 
 ladder on the "stairs" wall).
-- Can the door have an offset? Not in the center necessarily, but be on a 
-specific cardinal face? And be seen on both side? For example in the "afg" map, 
-I would like the doors to be on the outside of buildings, and to still be seen 
-when we are within a building.
 - I'd be nice if we could see the back textures of a transparent cell, for 
 example the chicken stall in afg. I know I've failed once, but damn, that'd be 
 nice. But be mindful of the case where there's another cell right behind this 

@@ -15,10 +15,7 @@ int	add_map(t_man *man, const char *filepath)
 		return (put_error(0, E_MAP_READ, filepath, -1));
 	index = find_map_index(man, abs_path);
 	if (index >= 0)
-	{
-		free(abs_path);
-		return (index);
-	}
+		return (free(abs_path), index);
 	count = count_arr_elems((void **)man->maps);
 	new_arr = calloc(count + 1 + 1, sizeof(t_map *));
 	if (!new_arr)

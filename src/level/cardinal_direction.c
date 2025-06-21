@@ -61,3 +61,16 @@ char	get_card_from_str(const char *s)
 		return ('E');
 	return (0);
 }
+
+char	get_offset_from_str(const char *s)
+{
+	if (!s)
+		return (0);
+	else if (!strcmp(s, "ANY"))
+		return ('A');
+	else if (!strcmp(s, "HMID"))
+		return ('H');
+	else if (!strcmp(s, "VMID"))
+		return ('V');
+	return (get_card_from_str(s));
+}

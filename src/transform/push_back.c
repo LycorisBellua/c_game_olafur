@@ -1,7 +1,6 @@
 #include "olafur.h"
 
 static int		is_colliding(t_man *man, t_cell *cell, char opposite_cardinal);
-static t_cell	*get_cell(t_map *m, int x, int y);
 static int		is_in_available_cell(int collision[4]);
 
 int	push_back_on_collision(t_man *man, t_map *m, t_vec2 pos, t_vec2 delta)
@@ -29,6 +28,13 @@ int	push_back_on_collision(t_man *man, t_map *m, t_vec2 pos, t_vec2 delta)
 	return (is_in_available_cell(collision));
 }
 
+t_cell	*get_cell(t_map *m, int x, int y)
+{
+	if (x < 0 || y < 0 || x >= m->size.x || y >= m->size.y)
+		return (0);
+	return (&m->cells[y][x]);
+}
+
 static int	is_colliding(t_man *man, t_cell *cell, char opposite_cardinal)
 {
 	char	portal_face;
@@ -39,13 +45,6 @@ static int	is_colliding(t_man *man, t_cell *cell, char opposite_cardinal)
 	return (!cell || (cell->is_obstacle
 			&& (!portal_face || portal_face == opposite_cardinal)
 			&& (!man->player.is_in_portal || !cell->portal)));
-}
-
-static t_cell	*get_cell(t_map *m, int x, int y)
-{
-	if (x < 0 || y < 0 || x >= m->size.x || y >= m->size.y)
-		return (0);
-	return (&m->cells[y][x]);
 }
 
 static int	is_in_available_cell(int collision[4])

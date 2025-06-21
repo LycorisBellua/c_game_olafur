@@ -28,30 +28,22 @@ SK dgn_sk
 4WE dgn_w4
 4EA dgn_w4
 
-D dgn_d
-G solid 5
+G solid2 5
 
 1F dgn_f_in
 2F dgn_f
 1C dgn_c
 
+D 8 4 dgn_d null HMID
+D 8 8 dgn_d null HMID
+
 PT SO 12 0 dgn_p dgn_p_open assets/maps/test/small.map EA 0 5
 PT NO 15 6 dgn_p dgn_p_open assets/maps/test/small.map EA 0 5
-
-SP 20.5 11.5 sprite_soul_idle collectible
-SP 18.5 4.5 sprite_soul_idle collectible
-SP 10.0 4.5 sprite_soul_idle collectible
-SP 10.0 12.5 sprite_soul_idle collectible
-SP 3.5 6.5 sprite_soul_idle collectible
-SP 3.5 20.5 sprite_soul_idle collectible
-SP 3.5 14.5 sprite_soul_idle collectible
-SP 14.5 20.5 sprite_soul_idle collectible
 
 SP 18.5 10.5 sprite_pillar collision
 SP 18.5 11.5 sprite_pillar collision
 SP 18.5 12.5 sprite_pillar collision
 SP 8.5 7.0 sprite_pillar collision
-
 SP 21.5 1.5 sprite_barrel collision
 SP 15.5 1.5 sprite_barrel collision
 SP 16.0 1.8 sprite_barrel collision
@@ -61,15 +53,22 @@ SP 9.5 15.5 sprite_barrel collision
 SP 10.0 15.1 sprite_barrel collision
 SP 10.5 15.8 sprite_barrel collision
 
+SP 20.5 11.5 sprite_soul_idle collectible
+SP 18.5 4.5 sprite_soul_idle collectible
+SP 10.0 12.5 sprite_soul_idle collectible
+SP 3.5 6.5 sprite_soul_idle collectible
+SP 3.5 14.5 sprite_soul_idle collectible
+SP 14.5 20.5 sprite_soul_idle collectible
+
 111111111111011111111111
 100000000000000000000001
 100000000000000000000001
 100000000000000000000001
-10000022D220000303030001
+100000220220000303030001
 100000200020000000000001
 100000200020000000030001
 100000200020000000000001
-10000022D220000303030001
+100000220220000303030001
 100000000000000000000001
 100000000000000000000001
 100000000000000000000001

@@ -7,7 +7,7 @@ t_man	g_man;
 int	main(int argc, char **argv)
 {
 	const char	*map_path;
-	t_ivec2	window_size;
+	t_ivec2		window_size;
 
 	map_path = argv[1];
 	bzero(&g_man, sizeof(t_man));

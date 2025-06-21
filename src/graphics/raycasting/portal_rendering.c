@@ -9,9 +9,8 @@ static int		should_flip_offset(char src_face, char dst_face);
 static void		transform_portal_ray(t_ray *r, t_vec2 src_hit, t_vec2 dst_hit,
 					char src_face, char dst_face);
 
-t_cell	*resolve_portal_rendering(t_man *man, t_ray **r)
+t_cell	*resolve_portal_rendering(t_man *man, t_ray **r, t_cell *cell)
 {
-	t_cell	*cell;
 	int		internal_hit;
 	int		external_hit;
 	int		map_index;
@@ -52,11 +51,6 @@ t_cell	*resolve_portal_rendering(t_man *man, t_ray **r)
 		in front of them.
 	*/
 
-	if ((*r)->m_index.x < 0 || (*r)->m_index.x >= (*r)->m->size.x
-		|| (*r)->m_index.y < 0 || (*r)->m_index.y >= (*r)->m->size.y)
-		cell = 0;
-	else
-		cell = &(*r)->m->cells[(*r)->m_index.y][(*r)->m_index.x];
 	/**/return (cell);
 	internal_hit = is_within_portal_and_ray_hits_opp_face(*r);
 	external_hit = is_ray_hitting_portal(cell, *r);
