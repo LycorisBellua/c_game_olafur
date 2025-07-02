@@ -41,6 +41,7 @@ static void	set_perp_wall_dist(t_man *man, t_ray **r, t_cell *cell,
 		return ;
 	else if (cell->door && cell->door->is_plane)
 	{
+		offset = 0.5;
 		if (!get_door_plane_offset(cell->door, *r, &offset))
 			*add_to_list = 0;
 		else

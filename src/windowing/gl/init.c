@@ -60,6 +60,9 @@ static void	more_window_settings(t_man *man)
 	set_ivec2(&min, man->res.window_size.x, man->res.window_size.y);
 	set_ivec2(&max, man->res.monitor_size.x, man->res.monitor_size.y);
 	glfwSetWindowSizeLimits(man->window, min.x, min.y, max.x, max.y);
+	glfwSetWindowPos(man->window,
+		man->res.monitor_size.x / 2 - man->res.window_size.x / 2,
+		man->res.monitor_size.y / 2 - man->res.window_size.y / 2);
 	glfwMakeContextCurrent(man->window);
 	set_initial_viewport(man);
 	glfwSetFramebufferSizeCallback(man->window, framebuffer_size_callback);
