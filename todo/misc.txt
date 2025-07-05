@@ -1,3 +1,7 @@
+INPUT
+- The GL version is fine, but the SUA version only has the left SHIFT working, 
+not the right one as well.
+
 CURSOR
 - Make the SUA and OpenGL cursors behave the same. Test going in and out of 
 fullscreen. I've noticed that if you left click in GL while leaving the window, 
