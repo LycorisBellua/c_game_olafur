@@ -21,11 +21,6 @@
 # define MAP_DEFAULT "assets/maps/olafur/mus.map"
 # define MAP_EASTER_EGG "assets/maps/olafur/elev3.map"
 
-# ifdef GL
-#  define PATH_VERTEX_SHADER "src/windowing/gl/shaders/vs.glsl"
-#  define PATH_FRAGMENT_SHADER "src/windowing/gl/shaders/fs.glsl"
-# endif
-
 # define NBR_KEYS 15
 # ifdef GL
 #  define KEY_A         GLFW_KEY_A

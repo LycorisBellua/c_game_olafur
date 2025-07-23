@@ -74,8 +74,8 @@ static void	set_line(t_man *man, int x, t_ray *r)
 	r->unclamped_line_height.y = r->line_height / 2 + man->frame.size.y / 2
 		+ offset;
 	r->coord1.x = x;
-	r->coord1.y = max(r->unclamped_line_height.x, 0);
+	r->coord1.y = imax(r->unclamped_line_height.x, 0);
 	r->coord2.x = x;
-	r->coord2.y = min(r->unclamped_line_height.y, man->frame.size.y - 1);
+	r->coord2.y = imin(r->unclamped_line_height.y, man->frame.size.y - 1);
 	return ;
 }

@@ -8,7 +8,7 @@ void	cross_goal_if_unlocked(t_man *man, t_map *m)
 
 	pos = man->player.pos;
 	radius = man->player.radius;
-	bzero(&cell, 4 * sizeof(t_cell *));
+	memset(&cell, 0, 4 * sizeof(t_cell *));
 	if ((int)(pos.y + radius) < m->size.y)
 		cell[0] = &m->cells[(int)(pos.y + radius)][(int)pos.x];
 	if ((int)(pos.y - radius) >= 0)

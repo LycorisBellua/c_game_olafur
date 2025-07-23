@@ -12,7 +12,7 @@ void	draw_line(t_man *man, t_vert v1, t_vert v2)
 	t_vec2	increment;
 
 	dir = get_direction(v1.coord, v2.coord);
-	steps = max(abs(dir.x), abs(dir.y));
+	steps = imax(abs(dir.x), abs(dir.y));
 	coord.x = v1.coord.x;
 	coord.y = v1.coord.y;
 	increment.x = dir.x / (float)steps;

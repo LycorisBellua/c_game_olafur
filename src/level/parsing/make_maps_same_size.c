@@ -36,9 +36,9 @@ static void	determine_map_size(t_ivec2 *size, char **map)
 				break ;
 			}
 		}
-		size->x = max(size->x, p.x);
+		size->x = imax(size->x, p.x);
 	}
-	size->y = max(size->y, p.y);
+	size->y = imax(size->y, p.y);
 	return ;
 }
 

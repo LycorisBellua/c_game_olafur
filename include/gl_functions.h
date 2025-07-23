@@ -2,6 +2,7 @@
 # define GL_FUNCTIONS_H
 
 # include <GL/gl.h>
+# include <GL/glext.h>
 # include "lib/glfw3.h"
 
 int	init_gl_functions(void);

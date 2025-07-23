@@ -239,7 +239,7 @@ void		audio_source_stop(t_a_source *s);
 
 int			create_window(t_man *man, const char *title, t_ivec2 size,
 				float aspect_ratio);
-t_ivec2		get_monitor_size(t_man *man);
+void		set_monitor_size(t_man *man);
 void		init_input_handling(t_man *man);
 void		run_game_loop(t_man *man);
 void		game_loop(t_man *man);
@@ -249,11 +249,11 @@ void		toggle_fullscreen(t_man *man);
 /* End ---------------------------------------------------------------------- */
 
 void		deinit(t_man *man);
-int			put_error(t_man *man, const char *msg, const char *arg, int errno);
+int			put_error(t_man *man, const char *msg, const char *arg, int errnum);
 
 /* Utils -------------------------------------------------------------------- */
 
-char		*itoa(int number);
+char		*itoa_dec(int number);
 char		**split(const char *s, char c);
 char		*get_substr(const char *s, unsigned int start, size_t len);
 char		*strjoin(char const *s1, char const *s2);

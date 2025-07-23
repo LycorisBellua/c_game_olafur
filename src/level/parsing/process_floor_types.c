@@ -11,7 +11,7 @@ int	process_floor_types(t_man *man, t_map *map)
 	int		i;
 	int		j;
 
-	bzero(tex, 10 * sizeof(char *));
+	memset(tex, 0, 10 * sizeof(char *));
 	if (!populate_tex(map, tex) || !allocate_floor_arr(map, tex))
 	{
 		free_tex_fc(tex);

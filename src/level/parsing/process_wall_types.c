@@ -11,7 +11,7 @@ int	process_wall_types(t_man *man, t_map *map)
 	int		i;
 	int		j;
 
-	bzero(tex, 10 * 4 * sizeof(char *));
+	memset(tex, 0, 10 * 4 * sizeof(char *));
 	if (!populate_tex(map, tex) || !allocate_wall_arr(map, tex))
 		return (0);
 	i = 1;

@@ -22,7 +22,7 @@ void	compose_background(t_man *man, t_map *map)
 	}
 	if (map->skybox)
 	{
-		min_len = min(map->skybox->size.x * map->skybox->size.y,
+		min_len = imin(map->skybox->size.x * map->skybox->size.y,
 				map->background->size.x * map->background->size.y);
 		memcpy(map->background->buf,
 			map->skybox->cycle[map->skybox->cycle_index],

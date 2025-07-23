@@ -98,10 +98,10 @@ static void	draw_full_triangle(t_man *man, t_vert *v)
 	float	denom;
 	float	inv_denom;
 
-	min_coord.x = min(min(v[0].coord.x, v[1].coord.x), v[2].coord.x);
-	min_coord.y = min(min(v[0].coord.y, v[1].coord.y), v[2].coord.y);
-	max_coord.x = max(max(v[0].coord.x, v[1].coord.x), v[2].coord.x);
-	max_coord.y = max(max(v[0].coord.y, v[1].coord.y), v[2].coord.y);
+	min_coord.x = imin(imin(v[0].coord.x, v[1].coord.x), v[2].coord.x);
+	min_coord.y = imin(imin(v[0].coord.y, v[1].coord.y), v[2].coord.y);
+	max_coord.x = imax(imax(v[0].coord.x, v[1].coord.x), v[2].coord.x);
+	max_coord.y = imax(imax(v[0].coord.y, v[1].coord.y), v[2].coord.y);
 	denom = (v[1].coord.y - v[2].coord.y) * (v[0].coord.x - v[2].coord.x)
 		+ (v[2].coord.x - v[1].coord.x) * (v[0].coord.y - v[2].coord.y);
 	inv_denom = 1.0f / denom;

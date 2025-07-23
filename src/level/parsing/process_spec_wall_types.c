@@ -8,7 +8,7 @@ int	process_spec_wall_types(t_man *man, t_map *map)
 	int	types[2];
 
 	i = 0;
-	bzero(types, 2 * sizeof(int));
+	memset(types, 0, 2 * sizeof(int));
 	map->to_collect = -1;
 	while (map->pars.vars[i])
 	{

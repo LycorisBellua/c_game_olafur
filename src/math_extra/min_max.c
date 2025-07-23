@@ -1,13 +1,13 @@
 #include "olafur.h"
 
-int	min(int a, int b)
+int	imin(int a, int b)
 {
 	if (a < b)
 		return (a);
 	return (b);
 }
 
-int	max(int a, int b)
+int	imax(int a, int b)
 {
 	if (a > b)
 		return (a);

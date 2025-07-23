@@ -21,7 +21,7 @@ int	update_image_array(t_man *man, const char *path)
 		return (0);
 	is_success = 1;
 	is_parsing_ongoing = 1;
-	bzero(&file, sizeof(t_png));
+	memset(&file, 0, sizeof(t_png));
 	while (is_parsing_ongoing && is_success)
 	{
 		is_parsing_ongoing = set_png_file_obj(&file, lines);

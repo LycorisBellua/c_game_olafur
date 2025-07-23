@@ -43,6 +43,6 @@ void	free_and_reset_png_file_obj(t_png *file)
 		++i;
 	}
 	free(file->seg);
-	bzero(file, sizeof(t_png));
+	memset(file, 0, sizeof(t_png));
 	return ;
 }

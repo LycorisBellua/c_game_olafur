@@ -60,8 +60,8 @@ int		is_dist_grid_aligned_and_within_threshold(t_ivec2 a, t_ivec2 b,
 
 /* Min-Max ------------------------------------------------------------------ */
 
-int		min(int a, int b);
-int		max(int a, int b);
+int		imin(int a, int b);
+int		imax(int a, int b);
 
 /* Sqrt Approximation ------------------------------------------------------- */
 

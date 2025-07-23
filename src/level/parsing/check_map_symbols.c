@@ -10,9 +10,9 @@ int	check_map_symbols(t_map *map)
 	int	f_types[11];
 	int	c_types[11];
 
-	bzero(w_types, 11 * sizeof(int));
-	bzero(f_types, 11 * sizeof(int));
-	bzero(c_types, 11 * sizeof(int));
+	memset(w_types, 0, 11 * sizeof(int));
+	memset(f_types, 0, 11 * sizeof(int));
+	memset(c_types, 0, 11 * sizeof(int));
 	if (map->pars.map_wall
 		&& gather_types(map->pars.map_wall, w_types)
 		&& !check_types_w(map, map->pars.tex_types_wall, w_types))

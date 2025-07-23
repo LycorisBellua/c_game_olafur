@@ -314,12 +314,14 @@ typedef struct s_res
 	t_ivec2	monitor_size;
 	t_ivec2	window_size_default;
 	t_ivec2	window_size;
-	t_ivec2	window_position;
+	t_ivec2	window_pos;
 	float	half_fov_tan;
 	float	ratio;
 	t_ivec2	res;
 	t_ivec2	viewport_size;
 	t_ivec2	viewport_offset;
+	t_ivec2	fullscreen;
+	int		is_fullscreen;
 }	t_res;
 
 struct s_man

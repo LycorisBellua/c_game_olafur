@@ -2,7 +2,7 @@
 
 static int	get_num_len(long n);
 
-char	*itoa(int number)
+char	*itoa_dec(int number)
 {
 	long	n;
 	int		num_len;

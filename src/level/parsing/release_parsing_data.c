@@ -20,7 +20,7 @@ void	release_parsing_data(t_map *map)
 	free(map->pars.tex_types_wall);
 	free(map->pars.tex_types_floor);
 	free(map->pars.tex_types_ceil);
-	bzero(&map->pars, sizeof(t_map_pars));
+	memset(&map->pars, 0, sizeof(t_map_pars));
 	return ;
 }
 

@@ -11,7 +11,7 @@ int	process_sound_assets(t_man *man, t_map *map)
 	int				flags[6];
 	t_sound_type	type;
 
-	bzero(flags, 6 * sizeof(int));
+	memset(flags, 0, 6 * sizeof(int));
 	i = 0;
 	while (map->pars.vars[i])
 	{

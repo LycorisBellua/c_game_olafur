@@ -73,13 +73,13 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 		* (1 + s->transform.x / s->transform.y);
 	s->v_move_screen = V_MOVE / s->transform.y;
 	s->size.y = abs((int)(man->frame.size.y / s->transform.y)) / V_DIV;
-	s->draw_start.y = max(-s->size.y / 2 + man->frame.size.y / 2
+	s->draw_start.y = imax(-s->size.y / 2 + man->frame.size.y / 2
 			+ s->v_move_screen, 0);
-	s->draw_end.y = min(s->size.y / 2 + man->frame.size.y / 2
+	s->draw_end.y = imin(s->size.y / 2 + man->frame.size.y / 2
 			+ s->v_move_screen, man->frame.size.y - 1);
 	s->size.x = abs((int)(man->frame.size.y / s->transform.y)) / U_DIV;
-	s->draw_start.x = max(-s->size.x / 2 + s->screen_x, 0);
-	s->draw_end.x = min(s->size.x / 2 + s->screen_x, man->frame.size.x);
+	s->draw_start.x = imax(-s->size.x / 2 + s->screen_x, 0);
+	s->draw_end.x = imin(s->size.x / 2 + s->screen_x, man->frame.size.x);
 	return ;
 }
 

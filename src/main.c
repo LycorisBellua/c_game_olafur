@@ -10,7 +10,7 @@ int	main(int argc, char **argv)
 	t_ivec2		window_size;
 
 	map_path = argv[1];
-	bzero(&g_man, sizeof(t_man));
+	memset(&g_man, 0, sizeof(t_man));
 	if (argc == 1)
 		map_path = MAP_DEFAULT;
 	else if (argc > 2)

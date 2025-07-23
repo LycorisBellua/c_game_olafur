@@ -34,7 +34,7 @@ void	display_fps(t_man *man)
 		smoothed_fps = man->fps;
 		dt_ms -= 250;
 	}
-	num = itoa(smoothed_fps);
+	num = itoa_dec(smoothed_fps);
 	s = strjoin("FPS: ", num);
 	set_ivec2(&pos, 20, 40);
 	draw_font_default(man, &pos, s);

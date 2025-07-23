@@ -39,6 +39,6 @@ void	free_image(t_img *img, void (free_fct)(void *))
 	if (free_fct)
 		free(img);
 	else
-		bzero(img, sizeof(t_img));
+		memset(img, 0, sizeof(t_img));
 	return ;
 }

@@ -8,7 +8,7 @@ void	sua_window_fullscreen(t_xvar *xvar, int toggle)
 
 	wm_state = XInternAtom(xvar->display, "_NET_WM_STATE", False);
 	fullscreen = XInternAtom(xvar->display, "_NET_WM_STATE_FULLSCREEN", False);
-	bzero(&ev, sizeof(ev));
+	memset(&ev, 0, sizeof(ev));
 	ev.type = ClientMessage;
 	ev.xclient.window = xvar->window;
 	ev.xclient.message_type = wm_state;

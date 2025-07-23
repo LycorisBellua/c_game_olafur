@@ -43,12 +43,12 @@ static void	display_collectibles(t_man *man, t_map *map)
 	draw_image(man, soul_icon, pos);
 	if (soul_icon)
 		set_ivec2(&pos, pos.x + soul_icon->size.x, pos.y + 14);
-	tmp1 = itoa(man->player.collected);
+	tmp1 = itoa_dec(man->player.collected);
 	if (map->to_collect >= 0)
 	{
 		tmp2 = strjoin(tmp1, "/");
 		free(tmp1);
-		tmp3 = itoa(map->to_collect);
+		tmp3 = itoa_dec(map->to_collect);
 		tmp1 = strjoin(tmp2, tmp3);
 		free(tmp2);
 		free(tmp3);

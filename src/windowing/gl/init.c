@@ -1,7 +1,6 @@
 #include "olafur.h"
 
 void			framebuffer_size_callback(GLFWwindow *window, int x, int y);
-void			window_pos_callback(GLFWwindow *window, int xpos, int ypos);
 int				create_shader_program(void);
 int				create_uniform(t_man *man);
 int				create_mesh(void);
@@ -66,7 +65,6 @@ static void	more_window_settings(t_man *man)
 	glfwMakeContextCurrent(man->window);
 	set_initial_viewport(man);
 	glfwSetFramebufferSizeCallback(man->window, framebuffer_size_callback);
-	glfwSetWindowPosCallback(man->window, window_pos_callback);
 	return ;
 }
 

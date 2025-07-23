@@ -1,22 +1,35 @@
 #include "olafur.h"
 
-static void	switch_to_windowed_mode(t_man *man);
-static void	switch_to_fullscreen_mode(t_man *man);
-
 void	toggle_fullscreen(t_man *man)
 {
-	int	decorated;
+	GLFWmonitor			*monitor;
+	const GLFWvidmode	*mode;
 
-	decorated = !glfwGetWindowAttrib(man->window, GLFW_DECORATED);
-	if (decorated)
-		switch_to_windowed_mode(man);
+	if (!man->res.is_fullscreen)
+	{
+		glfwGetWindowPos(man->window, &man->res.window_pos.x,
+			&man->res.window_pos.y);
+		glfwGetWindowSize(man->window, &man->res.window_size.x,
+			&man->res.window_size.y);
+		monitor = glfwGetPrimaryMonitor();
+		mode = glfwGetVideoMode(monitor);
+		glfwSetWindowMonitor(man->window, monitor,
+			man->res.fullscreen.x, man->res.fullscreen.y,
+			mode->width, mode->height, mode->refreshRate);
+		man->res.is_fullscreen = 1;
+	}
 	else
-		switch_to_fullscreen_mode(man);
-	glfwSetWindowAttrib(man->window, GLFW_DECORATED, decorated);
+	{
+		glfwSetWindowMonitor(man->window, 0,
+			man->res.window_pos.x, man->res.window_pos.y,
+			man->res.window_size.x, man->res.window_size.y, GLFW_DONT_CARE);
+		glfwFocusWindow(man->window);
+		man->res.is_fullscreen = 0;
+	}
 	return ;
 }
 
-t_ivec2	get_monitor_size(t_man *man)
+void	set_monitor_size(t_man *man)
 {
 	t_ivec2				size;
 	const GLFWvidmode	*mode;
@@ -26,29 +39,8 @@ t_ivec2	get_monitor_size(t_man *man)
 	mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	if (mode)
 		set_ivec2(&size, mode->width, mode->height);
-	return (size);
-}
-
-static void	switch_to_windowed_mode(t_man *man)
-{
-	glfwSetWindowMonitor(man->window, 0,
-		man->res.window_position.x, man->res.window_position.y,
-		man->res.window_size.x, man->res.window_size.y, GLFW_DONT_CARE);
-	glfwFocusWindow(man->window);
-	return ;
-}
-
-static void	switch_to_fullscreen_mode(t_man *man)
-{
-	GLFWmonitor			*monitor;
-	const GLFWvidmode	*mode;
-
-	monitor = glfwGetPrimaryMonitor();
-	mode = glfwGetVideoMode(monitor);
-	if (!mode)
-		return ;
-	glfwSetWindowMonitor(man->window, monitor,
-		0, 0,
-		man->res.monitor_size.x, man->res.monitor_size.y, mode->refreshRate);
+	man->res.monitor_size = size;
+	man->res.fullscreen.x = (size.x - man->res.monitor_size.x) / 2;
+	man->res.fullscreen.y = (size.y - man->res.monitor_size.y) / 2;
 	return ;
 }

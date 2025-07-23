@@ -59,5 +59,5 @@ static void	init_rotate_click(t_man *man, int *x_first_click, int *x_max_diff)
 
 static int	get_diff_perc(t_man *man, int diff)
 {
-	return (max(10, abs(diff) * 100 / man->res.window_size_default.x));
+	return (imax(10, abs(diff) * 100 / man->res.window_size_default.x));
 }

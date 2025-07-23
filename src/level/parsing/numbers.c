@@ -59,7 +59,7 @@ float	get_num_flt(const char *arg)
 	float	flt_point;
 
 	if (!is_valid_flt(arg, &i_point))
-		return (put_error(0, E_BAD_COORD_F, arg, -1));
+		return ((float)put_error(0, E_BAD_COORD_F, arg, -1));
 	else if (i_point == 0)
 		nbr_whole = 0;
 	else if (i_point < 0)
@@ -72,11 +72,11 @@ float	get_num_flt(const char *arg)
 		nbr_whole = get_num_int(substr);
 		free(substr);
 		if (nbr_whole < 0)
-			return (put_error(0, E_BAD_COORD_F, arg, -1));
+			return ((float)put_error(0, E_BAD_COORD_F, arg, -1));
 	}
 	flt_point = get_flt_point(arg, i_point);
 	if (flt_point < 0)
-		return (put_error(0, E_FLT_EXTRA_DIGIT, arg, -1));
+		return ((float)put_error(0, E_FLT_EXTRA_DIGIT, arg, -1));
 	return (nbr_whole + flt_point);
 }
 

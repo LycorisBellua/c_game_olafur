@@ -112,7 +112,7 @@ static void	sua_int_deal_shm(t_xvar *xvar)
 /* TrueColor Visual is needed to have *_mask correctly set */
 static void	sua_int_rgb_conversion(t_xvar *xvar)
 {
-	bzero(xvar->decrgb, 6 * sizeof(int));
+	memset(xvar->decrgb, 0, 6 * sizeof(int));
 	while (!(xvar->visual->red_mask & 1))
 	{
 		xvar->visual->red_mask >>= 1;
