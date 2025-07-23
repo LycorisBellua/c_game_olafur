@@ -2,6 +2,10 @@
 
 [Link to the download page (Itch.io)](https://lycorisdev.itch.io/olafur)  
 
+![Game](./screenshots/screenshot_game.png)
+
+## Explanation
+
 *Olafur* is a grid-based pseudo 3D game running solely on the CPU and written 
 in C. It means that a 2D map is translated into 3D using a technique called 
 raycasting. Rays are casted from the camera until walls are hit, which tells us 
