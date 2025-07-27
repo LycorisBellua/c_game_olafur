@@ -46,7 +46,7 @@ The Test level is where I develop features.
 
 - assets/maps/olafur/\* (recommended entry "mus.map"):  
 The Olafur level is a museum where each painting leads to another mini-world. 
-It has been designed by Hellchauffo, 
+It has been designed by Hellchauffo 
 ([Figma](https://www.figma.com/proto/UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974) 
 and [GitHub](https://github.com/Lucie-Kin)), a friend of mine. She is behind 
 the concept, the map layouts, the sprites, the textures and the choice of music 
@@ -67,8 +67,9 @@ Rotate right: D or RIGHT arrow key
 Move left: Q  
 Move right: E  
 Speed: Press SHIFT to run, release to walk  
+Zoom minimap in and out: Scroll  
 
-Quit: ESC  
+Quit: X window button, Alt+F4 or ESC  
 Backspace: Reset player's position and rotation  
 Toggle fullscreen: F11  
 Toggle FPS counter: F12  

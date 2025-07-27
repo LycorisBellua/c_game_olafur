@@ -7,7 +7,7 @@ See "license_monogram.txt"
 See "license_mg.txt"
 - common/cursor.png
 
-Generated with ChatGPT
+Generated with a Python script
 - common/solid.png
 - common/solid2.png
 
@@ -18,18 +18,22 @@ See "license_mc.txt"
 ------------------------------------ DUNGEON -----------------------------------
 ---------------------------- Concept by LycorisDev -----------------------------
 
-Generated with ChatGPT
+https://opengameart.org/content/animated-portal-or-wormhole-several-variants
+Hansjörg Malthaner - http://opengameart.org/users/varkalandar
 - dgn/dgn_p.png
 - dgn/dgn_p_open.png
 
-Link: https://opengameart.org/content/doors
+https://opengameart.org/content/doors
+SpiderDave - https://opengameart.org/users/spiderdave
 - dgn/dgn_d.png
 
 https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set
+https://craftpix.net/file-licenses/
 - dgn/dgn_sk.png
 - dgn/dgn_sk_debug.png
 
 https://opengameart.org/content/textures-collection
+Cethiel - https://opengameart.org/users/cethiel
 - dgn/dgn_c.png
 - dgn/dgn_f.png
 - dgn/dgn_f_in.png
