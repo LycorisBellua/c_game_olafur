@@ -63,6 +63,7 @@ static void	more_window_settings(t_man *man)
 		man->res.monitor_size.x / 2 - man->res.window_size.x / 2,
 		man->res.monitor_size.y / 2 - man->res.window_size.y / 2);
 	glfwMakeContextCurrent(man->window);
+	glfwSwapInterval(1);
 	set_initial_viewport(man);
 	glfwSetFramebufferSizeCallback(man->window, framebuffer_size_callback);
 	return ;

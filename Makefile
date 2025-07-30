@@ -4,7 +4,7 @@ SUA_LIB = $(SUA_DIR)/libsua.a
 SUA_FLAGS = -L$(SUA_DIR) -lsua -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw3
 CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic -g
-AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN/lib'
+AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN'
 LDFLAGS = -lm $(AL_FLAGS)
 DIR_BUILD = build
 DIR_OBJ = $(DIR_BUILD)/unix/objects
@@ -24,6 +24,9 @@ endif
 SRC = $(SRC_COMMON) $(WINDOWING_SRC)
 OBJ = $(patsubst %.c, $(DIR_OBJ)/%.o, $(SRC))
 LDFLAGS += $(WINDOWING_FLAGS)
+
+# Linux: After compilation, place lib/libopenal.so.1 next to the exe
+# Win: After compilation, place lib/win{64-32}/OpenAL32.dll next to the exe
 
 all: $(SUA_LIB) $(BIN)
 
@@ -49,7 +52,6 @@ $(DIR_OBJ)/%.o: %.c
 .PHONY: fclean-unix fclean-win64 fclean-win32 re re-win64 re-win32
 
 # Package: gcc-mingw-w64
-# After compilation, place lib/win{64-32}/OpenAL32.dll next to the executable
 win64:
 	$(MAKE) gl \
 	CC=x86_64-w64-mingw32-gcc \
