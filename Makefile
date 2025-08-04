@@ -7,8 +7,10 @@ CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic -g
 AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN'
 LDFLAGS = -lm $(AL_FLAGS)
 DIR_BUILD = build
-DIR_OBJ = $(DIR_BUILD)/unix/objects
-BIN = $(DIR_BUILD)/unix/olafur
+DIR_OBJ = $(DIR_BUILD)/linux/objects
+BIN_NAME = olafur
+BIN_NAME_WIN = Olafur.exe
+BIN = $(DIR_BUILD)/linux/$(BIN_NAME)
 
 SRC_COMMON = $(shell find lib -path "$(SUA_DIR)" -prune -o -name '*.c' -print) \
 	$(shell find src -path "src/windowing" -prune -o -name '*.c' -print)
@@ -31,10 +33,10 @@ LDFLAGS += $(WINDOWING_FLAGS)
 all: $(SUA_LIB) $(BIN)
 
 sua: $(SUA_LIB)
-	@$(MAKE) WINDOWING=SUA
+	@$(MAKE) --no-print-directory WINDOWING=SUA
 
 gl:
-	@$(MAKE) WINDOWING=GL
+	@$(MAKE) --no-print-directory WINDOWING=GL
 
 $(SUA_LIB):
 	@if [ "$(WINDOWING)" = "SUA" ]; then \
@@ -48,48 +50,48 @@ $(DIR_OBJ)/%.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -D$(WINDOWING) -c $< -o $@
 
-.PHONY: all win64 win32 clean clean-unix clean-win64 clean-win32 fclean 
-.PHONY: fclean-unix fclean-win64 fclean-win32 re re-win64 re-win32
+.PHONY: all win64 win32 clean clean-linux clean-win64 clean-win32 fclean 
+.PHONY: fclean-linux fclean-win64 fclean-win32 re re-win64 re-win32
 
 # Package: gcc-mingw-w64
 win64:
-	$(MAKE) gl \
+	@$(MAKE) --no-print-directory gl \
 	CC=x86_64-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win64/objects \
-	BIN=$(DIR_BUILD)/win64/Olafur-64bit.exe \
+	BIN=$(DIR_BUILD)/win64/$(BIN_NAME_WIN) \
 	AL_FLAGS="-mwindows -Wl,-Bstatic -lpthread -Wl,-Bdynamic -Llib/win64 -lOpenAL32" \
 	GL_FLAGS="-Llib/win64 -lglfw3 -lopengl32 -lgdi32"
 win32:
-	$(MAKE) gl \
+	@$(MAKE) --no-print-directory gl \
 	CC=i686-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win32/objects \
-	BIN=$(DIR_BUILD)/win32/Olafur-32bit.exe \
+	BIN=$(DIR_BUILD)/win32/$(BIN_NAME_WIN) \
 	AL_FLAGS="-mwindows -Wl,-Bstatic -lpthread -Wl,-Bdynamic -Llib/win32 -lOpenAL32" \
 	GL_FLAGS="-Llib/win32 -lglfw3 -lopengl32 -lgdi32"
 
 clean:
-	$(MAKE) clean-unix
-	$(MAKE) clean-win64
-	$(MAKE) clean-win32
-clean-unix:
-	rm -rf $(DIR_BUILD)/unix/objects
+	@$(MAKE) --no-print-directory clean-linux
+	@$(MAKE) --no-print-directory clean-win64
+	@$(MAKE) --no-print-directory clean-win32
+clean-linux:
+	rm -rf $(DIR_BUILD)/linux/objects
 clean-win64:
 	rm -rf $(DIR_BUILD)/win64/objects
 clean-win32:
 	rm -rf $(DIR_BUILD)/win32/objects
 
 fclean:
-	$(MAKE) fclean-unix
-	$(MAKE) fclean-win64
-	$(MAKE) fclean-win32
-fclean-unix:
-	rm -rf $(DIR_BUILD)/unix
-fclean-win64:
-	rm -rf $(DIR_BUILD)/win64
-fclean-win32:
-	rm -rf $(DIR_BUILD)/win32
+	@$(MAKE) --no-print-directory fclean-linux
+	@$(MAKE) --no-print-directory fclean-win64
+	@$(MAKE) --no-print-directory fclean-win32
+fclean-linux: clean-linux
+	rm -rf $(DIR_BUILD)/linux/$(BIN_NAME)
+fclean-win64: clean-win64
+	rm -rf $(DIR_BUILD)/win64/$(BIN_NAME_WIN)
+fclean-win32: clean-win32
+	rm -rf $(DIR_BUILD)/win32/$(BIN_NAME_WIN)
 
-re: fclean-unix all
+re: fclean-linux all
 
 re-win64: fclean-win64 win64
 
