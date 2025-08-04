@@ -206,37 +206,5 @@
                 ]
             }
         ]
-    },
-    {
-        "path": "assets/img/dgn/dgn_p.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "dgn_p",
-                "size": [256, 256],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 0,
-                "cycle": [
-                    [0, 0]
-                ]
-            }
-        ]
-    },
-    {
-        "path": "assets/img/dgn/dgn_p_open.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "dgn_p_open",
-                "size": [256, 256],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 0,
-                "cycle": [
-                    [0, 0]
-                ]
-            }
-        ]
     }
 ]
