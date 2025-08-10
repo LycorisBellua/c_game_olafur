@@ -3,7 +3,7 @@ SUA_DIR = sua
 SUA_LIB = $(SUA_DIR)/libsua.a
 SUA_FLAGS = -L$(SUA_DIR) -lsua -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw3
-CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic -g
+CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic
 AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN'
 LDFLAGS = -lm $(AL_FLAGS)
 DIR_BUILD = build
@@ -66,6 +66,7 @@ win32:
 	CC=i686-w64-mingw32-gcc \
 	DIR_OBJ=$(DIR_BUILD)/win32/objects \
 	BIN=$(DIR_BUILD)/win32/$(BIN_NAME_WIN) \
+	CFLAGS="-msse2 -mfpmath=sse $(CFLAGS)" \
 	AL_FLAGS="-mwindows -Wl,-Bstatic -lpthread -Wl,-Bdynamic -Llib/win32 -lOpenAL32" \
 	GL_FLAGS="-Llib/win32 -lglfw3 -lopengl32 -lgdi32"
 
