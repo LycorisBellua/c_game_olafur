@@ -1,5 +1,5 @@
 ------------------------------------ COMMON ------------------------------------
----------------------------- Concept by LycorisDev -----------------------------
+--------------------------- Concept by LycorisBellua ---------------------------
 
 See "license_monogram.txt"
 - common/monogram.png
@@ -16,7 +16,7 @@ See "license_mc.txt"
 - common/soul_shadow.png
 
 ------------------------------------ DUNGEON -----------------------------------
----------------------------- Concept by LycorisDev -----------------------------
+--------------------------- Concept by LycorisBellua ---------------------------
 
 https://opengameart.org/content/animated-portal-or-wormhole-several-variants
 Hansjörg Malthaner - http://opengameart.org/users/varkalandar

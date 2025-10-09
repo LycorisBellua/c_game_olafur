@@ -1,6 +1,6 @@
 # Olafur
 
-[Link to the download page (Itch.io)](https://lycorisdev.itch.io/olafur)  
+[Link to the download page (Itch.io)](https://lycorisbellua.itch.io/olafur)  
 
 ![Game](./screenshots/screenshot_game.png)
 
