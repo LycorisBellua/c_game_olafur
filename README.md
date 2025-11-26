@@ -1,5 +1,6 @@
 # Olafur
 
+[Link to the video (YouTube)](https://www.youtube.com/watch?v=WFRCX2qkSP4)  
 [Link to the download page (Itch.io)](https://lycorisbellua.itch.io/olafur)  
 
 ![Game](./screenshots/screenshot_game.png)
