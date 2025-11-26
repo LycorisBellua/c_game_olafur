@@ -37,8 +37,8 @@ G solid2 5
 D 8 4 dgn_d null HMID
 D 8 8 dgn_d null HMID
 
-PT SO 12 0 dgn_p dgn_p_open assets/maps/test/small.map EA 0 5
-PT NO 15 6 dgn_p dgn_p_open assets/maps/test/small.map EA 0 5
+PT SO 12 0 dgn_p dgn_p_open assets/maps/test/sml.map EA 0 5
+PT NO 15 6 dgn_p dgn_p_open assets/maps/test/sml.map EA 0 5
 
 SP 18.5 10.5 sprite_pillar collision
 SP 18.5 11.5 sprite_pillar collision

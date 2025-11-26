@@ -7,7 +7,7 @@ olafur/m_box.mp3:
 	Copyright Music] / Waltz
 	https://www.youtube.com/watch?v=KopfLqCkaQ8
 
-olafur/m_brain.mp3:
+olafur/m_brn.mp3:
 	-> Created for the occasion: "1-brainworm 2025-05-28 11_05.m4a"
 	-> By Hellchauffo:
 	https://www.figma.com/proto/UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974
@@ -20,7 +20,7 @@ olafur/m_hol.mp3:
 	Geoxor - Hellscape
 	https://www.youtube.com/watch?v=7aRvxqMq8xE
 
-olafur/m_elev.mp3:
+olafur/m_elv.mp3:
 	The Stanley Parable OST 'Elevator'
 	https://www.youtube.com/watch?v=P99AiAYc0h0
 

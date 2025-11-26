@@ -1,21 +1,21 @@
 IMG assets/img/common/index.json
-IMG assets/img/brain/index.json
-IMG assets/img/elev/index.json
+IMG assets/img/brn/index.json
+IMG assets/img/elv/index.json
 
-S_MUSIC assets/audio/olafur/m_elev.mp3
+S_MUSIC assets/audio/olafur/m_elv.mp3
 S_WIN assets/audio/olafur/e_win.mp3
 S_LOSE assets/audio/olafur/e_lose.mp3
 S_COLLEC assets/audio/olafur/e_collec.mp3
 
-SK brain_sk
+SK brn_sk
 
-NO elev_p
-SO elev_w
-WE elev_w2
-EA elev_w
+NO elv_p
+SO elv_w
+WE elv_w2
+EA elv_w
 
-1F elev_f
-1C elev_c
+1F elv_f
+1C elv_c
 
 PT NO 1 2 null null assets/maps/olafur/mus2.map NO 4 8
 

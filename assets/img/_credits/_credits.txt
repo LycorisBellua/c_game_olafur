@@ -48,16 +48,16 @@ Wolfenstein 3D - Copyright by id Software
 - dgn/sprite_greenlight.png
 - dgn/sprite_pillar.png
 
-------------------------------------- ELEV -------------------------------------
+----------------------------------- ELEVATOR -----------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------
 
 Hellchauffo
-- elev/elev_c.png
-- elev/elev_f.png
-- elev/elev_p.png
-- elev/elev_p_open.png
-- elev/elev_w.png
-- elev/elev_w2.png
+- elv/elv_c.png
+- elv/elv_f.png
+- elv/elv_p.png
+- elv/elv_p_open.png
+- elv/elv_w.png
+- elv/elv_w2.png
 
 ------------------------------------ MUSEUM ------------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------
@@ -76,8 +76,8 @@ Hellchauffo
 - mus/mus/mus_p_afg_open.png
 - mus/mus/mus_p_dgn.png
 - mus/mus/mus_p_dgn_open.png
-- mus/mus/mus_p_elev.png
-- mus/mus/mus_p_elev_open.png
+- mus/mus/mus_p_elv.png
+- mus/mus/mus_p_elv_open.png
 - mus/mus/mus_p_pul.png
 - mus/mus/mus_p_pul_open.png
 - mus/mus/mus_w.png
@@ -91,12 +91,12 @@ Hellchauffo
 - mus/mus2/mus2_f.png
 - mus/mus2/mus2_p_box.png
 - mus/mus2/mus2_p_box_open.png
-- mus/mus2/mus2_p_brain.png
-- mus/mus2/mus2_p_brain_open.png
+- mus/mus2/mus2_p_brn.png
+- mus/mus2/mus2_p_brn_open.png
 - mus/mus2/mus2_p_hol.png
 - mus/mus2/mus2_p_hol_open.png
-- mus/mus2/mus2_p_elev2.png
-- mus/mus2/mus2_p_elev2_open.png
+- mus/mus2/mus2_p_elv2.png
+- mus/mus2/mus2_p_elv2_open.png
 - mus/mus2/mus2_w.png
 - mus/mus2/mus2_w2.png
 - mus/mus2/mus2_w3.png
@@ -156,29 +156,29 @@ Hellchauffo
 ----------------------------- Concept by Hellchauffo ---------------------------
 
 Hellchauffo
-- brain/brain_c.png
-- brain/brain_d.png
-- brain/brain_d_open.png
-- brain/brain_f.png
-- brain/brain_f_in.png
-- brain/brain_p.png
-- brain/brain_p_open.png
-- brain/brain_sk.png
-- brain/brain_w.png
-- brain/brain_w2.png
-- brain/brain_w3.png
-- brain/brain_w4.png
-- brain/sprite_brain01.png
-- brain/sprite_brain02.png
-- brain/sprite_brain03.png
-- brain/sprite_brain04.png
-- brain/sprite_brain05.png
-- brain/sprite_brain06.png
-- brain/sprite_brain07.png
-- brain/sprite_brain08.png
-- brain/sprite_brain09.png
-- brain/sprite_brain10.png
-- brain/sprite_brain11.png
+- brn/brn_c.png
+- brn/brn_d.png
+- brn/brn_d_open.png
+- brn/brn_f.png
+- brn/brn_f_in.png
+- brn/brn_p.png
+- brn/brn_p_open.png
+- brn/brn_sk.png
+- brn/brn_w.png
+- brn/brn_w2.png
+- brn/brn_w3.png
+- brn/brn_w4.png
+- brn/sprite_brn01.png
+- brn/sprite_brn02.png
+- brn/sprite_brn03.png
+- brn/sprite_brn04.png
+- brn/sprite_brn05.png
+- brn/sprite_brn06.png
+- brn/sprite_brn07.png
+- brn/sprite_brn08.png
+- brn/sprite_brn09.png
+- brn/sprite_brn10.png
+- brn/sprite_brn11.png
 
 ------------------------------------- HOLE -------------------------------------
 ----------------------------- Concept by Hellchauffo ---------------------------

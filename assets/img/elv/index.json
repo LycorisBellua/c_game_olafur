@@ -1,10 +1,10 @@
 [
     {
-        "path": "assets/img/elev/elev_p.png",
+        "path": "assets/img/elv/elv_p.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "elev_p",
+                "id": "elv_p",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -16,11 +16,11 @@
         ]
     },
     {
-        "path": "assets/img/elev/elev_p_open.png",
+        "path": "assets/img/elv/elv_p_open.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "elev_p_open",
+                "id": "elv_p_open",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -32,11 +32,11 @@
         ]
     },
     {
-        "path": "assets/img/elev/elev_c.png",
+        "path": "assets/img/elv/elv_c.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "elev_c",
+                "id": "elv_c",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -48,11 +48,11 @@
         ]
     },
     {
-        "path": "assets/img/elev/elev_f.png",
+        "path": "assets/img/elv/elv_f.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "elev_f",
+                "id": "elv_f",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -64,11 +64,11 @@
         ]
     },
     {
-        "path": "assets/img/elev/elev_w.png",
+        "path": "assets/img/elv/elv_w.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "elev_w",
+                "id": "elv_w",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -80,11 +80,11 @@
         ]
     },
     {
-        "path": "assets/img/elev/elev_w2.png",
+        "path": "assets/img/elv/elv_w2.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "elev_w2",
+                "id": "elv_w2",
                 "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

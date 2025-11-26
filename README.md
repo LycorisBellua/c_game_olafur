@@ -3,7 +3,7 @@
 [Link to the video (YouTube)](https://www.youtube.com/watch?v=WFRCX2qkSP4)  
 [Link to the download page (Itch.io)](https://lycorisbellua.itch.io/olafur)  
 
-![Game](./screenshots/screenshot_game.png)
+![Game](./screenshots/main.png)
 
 ## Explanation
 
@@ -14,7 +14,7 @@ how far away they are. Knowing the distance allows us to draw the walls: far
 makes them small, and close makes them big. An example of such a game is 
 Wolfenstein 3D.  
 
-![Raycasting](./screenshots/screenshot_raycasting.png)
+![Raycasting](./screenshots/raycasting.png)
 
 The libraries in use are:
 - the C standard library,
@@ -74,3 +74,15 @@ Quit: X window button, Alt+F4 or ESC
 Backspace: Reset player's position and rotation  
 Toggle fullscreen: F11  
 Toggle FPS counter: F12  
+
+## More Screenshots
+
+![Level DGN](./screenshots/dgn.png)
+![Level AFG](./screenshots/afg.png)
+![Level PUL](./screenshots/pul.png)
+![Level BOX](./screenshots/box.png)
+![Level BRN](./screenshots/brn.png)
+![Level HOL](./screenshots/hol.png)
+![Level ELV](./screenshots/elv.png)
+![Level COR](./screenshots/cor.png)
+

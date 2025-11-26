@@ -19,7 +19,7 @@
 # define IMG_JSON_DEFAULT "assets/img/common/index.json"
 # define ID_FONT_DEFAULT "font_default"
 # define MAP_DEFAULT "assets/maps/olafur/mus.map"
-# define MAP_EASTER_EGG "assets/maps/olafur/elev3.map"
+# define MAP_EASTER_EGG "assets/maps/olafur/elv3.map"
 
 # define NBR_KEYS 15
 # ifdef GL

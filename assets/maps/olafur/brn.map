@@ -1,73 +1,73 @@
 IMG assets/img/common/index.json
-IMG assets/img/brain/index.json
+IMG assets/img/brn/index.json
 
-S_MUSIC assets/audio/olafur/m_brain.mp3
+S_MUSIC assets/audio/olafur/m_brn.mp3
 S_AMBIENCE assets/audio/olafur/a_heart.mp3
 S_WIN assets/audio/olafur/e_win.mp3
 S_LOSE assets/audio/olafur/e_lose.mp3
 S_COLLEC assets/audio/olafur/e_collec.mp3
 
-SK brain_sk
+SK brn_sk
 
-NO brain_w
-SO brain_w2
-WE brain_w3
-EA brain_w4
+NO brn_w
+SO brn_w2
+WE brn_w3
+EA brn_w4
 
-1F brain_f_in
-2F brain_f
-1C brain_c
+1F brn_f_in
+2F brn_f
+1C brn_c
 
-D 22 3 brain_d brain_d_open NO
-D 21 13 brain_d brain_d_open EA
-D 23 13 brain_d brain_d_open WE
-D 22 19 brain_d brain_d_open NO
+D 22 3 brn_d brn_d_open NO
+D 21 13 brn_d brn_d_open EA
+D 23 13 brn_d brn_d_open WE
+D 22 19 brn_d brn_d_open NO
 
-PT NO 22 21 brain_p brain_p_open assets/maps/olafur/mus2.map SO 4 0
-PT EA 21 12 brain_p brain_p_open assets/maps/olafur/brain.map NO 26 12
-PT NO 26 12 brain_p brain_p_open assets/maps/olafur/brain.map EA 21 12
-PT WE 1 14 brain_p brain_p_open assets/maps/olafur/brain.map EA 44 14
-PT EA 44 14 brain_p brain_p_open assets/maps/olafur/brain.map WE 1 14
-PT EA 1 21 brain_p brain_p_open assets/maps/olafur/brain.map WE 44 21
-PT WE 44 21 brain_p brain_p_open assets/maps/olafur/brain.map EA 1 21
-PT SO 4 23 brain_p brain_p_open assets/maps/olafur/brain.map NO 41 23
-PT NO 41 23 brain_p brain_p_open assets/maps/olafur/brain.map SO 4 23
-PT EA 5 12 brain_p brain_p_open assets/maps/olafur/brain.map WE 40 12
-PT WE 40 12 brain_p brain_p_open assets/maps/olafur/brain.map EA 5 12
-PT NO 6 7 brain_p brain_p_open assets/maps/olafur/brain.map SO 39 7
-PT SO 39 7 brain_p brain_p_open assets/maps/olafur/brain.map NO 6 7
-PT SO 7 15 brain_p brain_p_open assets/maps/olafur/brain.map NO 38 15
-PT NO 38 15 brain_p brain_p_open assets/maps/olafur/brain.map SO 7 15
-PT SO 8 8 brain_p brain_p_open assets/maps/olafur/brain.map NO 37 8
-PT NO 37 8 brain_p brain_p_open assets/maps/olafur/brain.map SO 8 8
-PT EA 10 1 brain_p brain_p_open assets/maps/olafur/brain.map WE 37 1
-PT WE 37 1 brain_p brain_p_open assets/maps/olafur/brain.map EA 10 1
-PT EA 11 24 brain_p brain_p_open assets/maps/olafur/brain.map WE 25 24
-PT WE 25 24 brain_p brain_p_open assets/maps/olafur/brain.map EA 11 24
-PT NO 11 15 brain_p brain_p_open assets/maps/olafur/brain.map SO 36 15
-PT SO 36 15 brain_p brain_p_open assets/maps/olafur/brain.map NO 11 15
-PT SO 12 17 brain_p brain_p_open assets/maps/olafur/brain.map NO 35 17
-PT NO 35 17 brain_p brain_p_open assets/maps/olafur/brain.map SO 12 17
-PT NO 12 0 brain_p brain_p_open assets/maps/olafur/brain.map SO 35 0
-PT SO 35 0 brain_p brain_p_open assets/maps/olafur/brain.map NO 12 0
-PT WE 15 3 brain_p brain_p_open assets/maps/olafur/brain.map EA 30 3
-PT EA 30 3 brain_p brain_p_open assets/maps/olafur/brain.map WE 15 3
-PT NO 26 15 brain_p brain_p_open assets/maps/olafur/brain.map SO 25 15
-PT SO 25 15 brain_p brain_p_open assets/maps/olafur/brain.map NO 26 15
+PT NO 22 21 brn_p brn_p_open assets/maps/olafur/mus2.map SO 4 0
+PT EA 21 12 brn_p brn_p_open assets/maps/olafur/brn.map NO 26 12
+PT NO 26 12 brn_p brn_p_open assets/maps/olafur/brn.map EA 21 12
+PT WE 1 14 brn_p brn_p_open assets/maps/olafur/brn.map EA 44 14
+PT EA 44 14 brn_p brn_p_open assets/maps/olafur/brn.map WE 1 14
+PT EA 1 21 brn_p brn_p_open assets/maps/olafur/brn.map WE 44 21
+PT WE 44 21 brn_p brn_p_open assets/maps/olafur/brn.map EA 1 21
+PT SO 4 23 brn_p brn_p_open assets/maps/olafur/brn.map NO 41 23
+PT NO 41 23 brn_p brn_p_open assets/maps/olafur/brn.map SO 4 23
+PT EA 5 12 brn_p brn_p_open assets/maps/olafur/brn.map WE 40 12
+PT WE 40 12 brn_p brn_p_open assets/maps/olafur/brn.map EA 5 12
+PT NO 6 7 brn_p brn_p_open assets/maps/olafur/brn.map SO 39 7
+PT SO 39 7 brn_p brn_p_open assets/maps/olafur/brn.map NO 6 7
+PT SO 7 15 brn_p brn_p_open assets/maps/olafur/brn.map NO 38 15
+PT NO 38 15 brn_p brn_p_open assets/maps/olafur/brn.map SO 7 15
+PT SO 8 8 brn_p brn_p_open assets/maps/olafur/brn.map NO 37 8
+PT NO 37 8 brn_p brn_p_open assets/maps/olafur/brn.map SO 8 8
+PT EA 10 1 brn_p brn_p_open assets/maps/olafur/brn.map WE 37 1
+PT WE 37 1 brn_p brn_p_open assets/maps/olafur/brn.map EA 10 1
+PT EA 11 24 brn_p brn_p_open assets/maps/olafur/brn.map WE 25 24
+PT WE 25 24 brn_p brn_p_open assets/maps/olafur/brn.map EA 11 24
+PT NO 11 15 brn_p brn_p_open assets/maps/olafur/brn.map SO 36 15
+PT SO 36 15 brn_p brn_p_open assets/maps/olafur/brn.map NO 11 15
+PT SO 12 17 brn_p brn_p_open assets/maps/olafur/brn.map NO 35 17
+PT NO 35 17 brn_p brn_p_open assets/maps/olafur/brn.map SO 12 17
+PT NO 12 0 brn_p brn_p_open assets/maps/olafur/brn.map SO 35 0
+PT SO 35 0 brn_p brn_p_open assets/maps/olafur/brn.map NO 12 0
+PT WE 15 3 brn_p brn_p_open assets/maps/olafur/brn.map EA 30 3
+PT EA 30 3 brn_p brn_p_open assets/maps/olafur/brn.map WE 15 3
+PT NO 26 15 brn_p brn_p_open assets/maps/olafur/brn.map SO 25 15
+PT SO 25 15 brn_p brn_p_open assets/maps/olafur/brn.map NO 26 15
 
-SP 17.5 13.5 sprite_brain01 collision
-SP 16.5 12.5 sprite_brain02 collision
-SP 17.5 6.5 sprite_brain03 collision
-SP 30.5 16.5 sprite_brain04 collision
-SP 28.5 3.5 sprite_brain05 collision
-SP 33.5 12.5 sprite_brain05 collision
-SP 11.5 12.5 sprite_brain06 collision
-SP 43.5 7.5 sprite_brain07 collision
-SP 22.5 13.5 sprite_brain08
-SP 26.5 9.5 sprite_brain10 collision
-SP 20.5 2.5 sprite_brain11 collision
+SP 17.5 13.5 sprite_brn01 collision
+SP 16.5 12.5 sprite_brn02 collision
+SP 17.5 6.5 sprite_brn03 collision
+SP 30.5 16.5 sprite_brn04 collision
+SP 28.5 3.5 sprite_brn05 collision
+SP 33.5 12.5 sprite_brn05 collision
+SP 11.5 12.5 sprite_brn06 collision
+SP 43.5 7.5 sprite_brn07 collision
+SP 22.5 13.5 sprite_brn08
+SP 26.5 9.5 sprite_brn10 collision
+SP 20.5 2.5 sprite_brn11 collision
 
-SP 24.5 12.5 sprite_brain09 collectible collision
+SP 24.5 12.5 sprite_brn09 collectible collision
 
          11111111111     11111111111
        11000000100001   10000110100001
