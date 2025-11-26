@@ -18,6 +18,7 @@ int	init_frame(t_man *man)
 void	display_frame(t_man *man)
 {
 	glfwPollEvents();
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, man->frame.size.x,
 		man->frame.size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, man->frame.buf);
