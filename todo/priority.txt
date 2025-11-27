@@ -1,0 +1,12 @@
+- Load and unload maps in order not to have too many maps loaded in, like 
+occlusion culling. This means that the relevant data of these maps needs to be 
+kept, such as collected items, just not the map itself. And if all items have 
+been collected, have a simple boolean or something to indicate it instead of 
+remembering too many collectibles. Maybe the map can have an ID to be 
+remembered by. And I vote for it to be three letters, the first of its name, 
+and in all caps. For example, `some/path/dungeon.map` would be DUN. I already 
+name my map with three characters anyway.
+- Watch the new cat video, to see if there's something interesting for Olafur.
+- Optimize the game as it is before adding any new feature. It's not normal to 
+have such low FPS when Doom does more and yet runs on anything. Of course I'm 
+not trying to be as optimized, but I should get something decent.

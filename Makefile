@@ -1,6 +1,5 @@
 CC = gcc
 SUA_DIR = sua
-SUA_LIB = $(SUA_DIR)/libsua.a
 SUA_FLAGS = -L$(SUA_DIR) -lsua -lXext -lX11
 GL_FLAGS = -lGL -Llib -lglfw3
 CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic
@@ -14,7 +13,7 @@ BIN = $(DIR_BUILD)/linux/$(BIN_NAME)
 
 SRC_COMMON = $(shell find lib -path "$(SUA_DIR)" -prune -o -name '*.c' -print) \
 	$(shell find src -path "src/windowing" -prune -o -name '*.c' -print)
-WINDOWING ?= SUA
+WINDOWING ?= GL
 ifeq ($(WINDOWING), GL)
 	WINDOWING_SRC = $(shell find src/windowing/gl -name '*.c')
 	WINDOWING_FLAGS = $(GL_FLAGS)
@@ -30,18 +29,14 @@ LDFLAGS += $(WINDOWING_FLAGS)
 # Linux: After compilation, place lib/libopenal.so.1 next to the exe
 # Win: After compilation, place lib/win{64-32}/OpenAL32.dll next to the exe
 
-all: $(SUA_LIB) $(BIN)
+all: $(BIN)
 
-sua: $(SUA_LIB)
+sua:
+	@$(MAKE) -s -C $(SUA_DIR)
 	@$(MAKE) --no-print-directory WINDOWING=SUA
 
 gl:
 	@$(MAKE) --no-print-directory WINDOWING=GL
-
-$(SUA_LIB):
-	@if [ "$(WINDOWING)" = "SUA" ]; then \
-		make -s -C $(SUA_DIR); \
-	fi
 
 $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -50,8 +45,10 @@ $(DIR_OBJ)/%.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -D$(WINDOWING) -c $< -o $@
 
-.PHONY: all win64 win32 clean clean-linux clean-win64 clean-win32 fclean 
-.PHONY: fclean-linux fclean-win64 fclean-win32 re re-win64 re-win32
+.PHONY: all sua gl win64 win32
+.PHONY: clean clean-linux clean-win64 clean-win32
+.PHONY: fclean fclean-linux fclean-win64 fclean-win32
+.PHONY: re re-win64 re-win32
 
 # Package: gcc-mingw-w64
 win64:
