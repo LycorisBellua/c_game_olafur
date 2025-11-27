@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 	else if (argc > 2)
 		return (put_error(0, E_TOO_MANY_ARGS, 0, EXIT_FAILURE));
 	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
-	if (!create_window(&g_man, TITLE, window_size, 16.0 / 9)
+	if (!create_window(&g_man, TITLE, window_size, ASPECT_RATIO)
 		|| !init_frame(&g_man)
 		|| !update_image_array(&g_man, IMG_JSON_DEFAULT))
 		return (put_error(&g_man, 0, 0, EXIT_FAILURE));

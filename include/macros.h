@@ -4,6 +4,7 @@
 # define TITLE "Olafur"
 # define WINDOW_WIDTH  (640 * 1)
 # define WINDOW_HEIGHT (360 * 1)
+# define ASPECT_RATIO (9 / 16.0)
 # define ECHOLOCATION 0
 # define DEFAULT_DOF 20
 # define DEFAULT_MOVE_SPEED 2.0

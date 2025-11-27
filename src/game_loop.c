@@ -26,7 +26,7 @@ static void	rendering(t_man *man, t_map *map)
 	{
 		if (man->echolocation || map->skybox->cycle_time_in_ms)
 			compose_background(man, map);
-		draw_png_with_x_offset(man, map->background, map->background_offset);
+		draw_png_bg_with_x_offset(man, map->background, map->background_offset);
 		raycasting(man);
 	}
 	display_game_gui(man, map);

@@ -52,7 +52,7 @@ void		draw_shape(t_man *man, t_vert arr[], int len);
 void		draw_shape_full(t_man *man, t_vert arr[], int len);
 void		draw_font_default(t_man *man, t_ivec2 *pos, const char *str);
 void		draw_image(t_man *man, t_img *img, t_ivec2 pos);
-void		draw_png_with_x_offset(t_man *man, t_png *png, int x_offset);
+void		draw_png_bg_with_x_offset(t_man *man, t_png *png, int x_offset);
 void		fill_frame(t_man *man, t_color c);
 void		draw_cursor(t_man *man, t_img *img, t_ivec2 p, int cyc);
 t_img		*get_image(t_man *man, const char *id);

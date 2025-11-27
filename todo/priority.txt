@@ -1,3 +1,16 @@
+- Can I have any aspect ratio? In `draw_png_bg_with_x_offset`, make it so that 
+the background image isn't glitchy. You need to check the difference between 
+the image's aspect ratio and the game's current aspect ratio. If for example 
+the image is in 16/9, but the game is in 9/16, then you don't start drawing the 
+image from its first column, but from the column that is actually within frame. 
+Of course take the rotation offset into account, when I say "first column", 
+it's "first + offset". In any case, I'd like for the aspect ratio to be 
+editable at runtime, so don't modify the images themselves, just the way you 
+draw them.
+	-> The answer is within `compose_background`. Images (and PNGs) need to 
+	have a 2D buffer, instead of 1D: from [y * size.x + x] to [y][x].
+
+- Can I have any resolution?
 - Load and unload maps in order not to have too many maps loaded in, like 
 occlusion culling. This means that the relevant data of these maps needs to be 
 kept, such as collected items, just not the map itself. And if all items have 

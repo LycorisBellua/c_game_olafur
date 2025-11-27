@@ -25,7 +25,7 @@ void	draw_image(t_man *man, t_img *img, t_ivec2 pos)
 	return ;
 }
 
-void	draw_png_with_x_offset(t_man *man, t_png *png, int x_offset)
+void	draw_png_bg_with_x_offset(t_man *man, t_png *png, int x_offset)
 {
 	t_color	c;
 	t_ivec2	f_coord;
