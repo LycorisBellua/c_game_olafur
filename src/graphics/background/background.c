@@ -9,7 +9,8 @@ static void	lower_gradient(t_png *png, int h_solid, int h_gradient,
 void	compose_background(t_man *man, t_map *map)
 {
 	t_ivec2	size;
-	int		min_len;
+	int		min_width;
+	int		y;
 
 	if (!map)
 		return ;
@@ -22,11 +23,12 @@ void	compose_background(t_man *man, t_map *map)
 	}
 	if (map->skybox)
 	{
-		min_len = imin(map->skybox->size.x * map->skybox->size.y,
-				map->background->size.x * map->background->size.y);
-		memcpy(map->background->buf,
-			map->skybox->cycle[map->skybox->cycle_index],
-			min_len * sizeof(t_color));
+		min_width = imin(map->skybox->size.x, map->background->size.x);
+		y = -1;
+		while (++y < map->background->size.y && y < map->skybox->size.y)
+			memcpy(map->background->buf + y * map->background->size.x,
+				map->skybox->cycle[map->skybox->cycle_index]
+				+ y * map->skybox->size.x, min_width * sizeof(t_color));
 	}
 	if (map->skybox)
 		map->fog_color = map->skybox->average_color[map->skybox->cycle_index];
