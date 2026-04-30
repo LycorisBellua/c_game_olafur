@@ -25,9 +25,11 @@ typedef void	(APIENTRY *GL_GVA)(GLsizei n, GLuint* arrays);
 typedef GLint	(APIENTRY *GL_GUL)(GLuint program, const GLchar* name);
 typedef void	(APIENTRY *GL_GVAI)(GLuint index, GLenum pname, GLuint* params);
 typedef void	(APIENTRY *GL_LP)(GLuint program);
+typedef void*  (APIENTRY *GL_MB)(GLenum target, GLenum access);
 typedef void	(APIENTRY *GL_SS)(GLuint shader, GLsizei count,
 					const GLchar** string, const GLint* length);
 typedef void	(APIENTRY *GL_U1I)(GLint location, GLint v0);
+typedef GLboolean (APIENTRY *GL_UMB)(GLenum target);
 typedef void	(APIENTRY *GL_UP)(GLuint program);
 typedef void	(APIENTRY *GL_VAP)(GLuint index, GLint size, GLenum type,
 					GLboolean normalized, GLsizei stride, const void* pointer);
@@ -49,8 +51,10 @@ extern GL_GVA	glGenVertexArrays;
 extern GL_GUL	glGetUniformLocation;
 extern GL_GVAI	glGetVertexAttribIuiv;
 extern GL_LP	glLinkProgram;
+extern GL_MB   glMapBuffer;
 extern GL_SS	glShaderSource;
 extern GL_U1I	glUniform1i;
+extern GL_UMB  glUnmapBuffer;
 extern GL_UP	glUseProgram;
 extern GL_VAP	glVertexAttribPointer;
 

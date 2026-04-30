@@ -318,6 +318,8 @@ struct s_man
 	GLFWwindow		*window;
 	GLuint			shader_program;
 	GLint			uniform_loc;
+   GLuint      pbo[2];
+   int         pbo_index;
 	char			*title;
 	t_frame			frame;
 	float			*z_buf;
