@@ -21,13 +21,9 @@
 # include "lib/alc.h"
 # include "lib/dr_mp3.h"
 // ------------------
-# ifdef GL
-#  include <GL/gl.h>
-#  include "lib/glfw3.h"
-#  include "gl_functions.h"
-# else
-#  include "sua.h"
-# endif
+# include <GL/gl.h>
+# include "lib/glfw3.h"
+# include "gl_functions.h"
 # include "macros.h"
 # include "structs.h"
 

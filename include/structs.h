@@ -291,23 +291,12 @@ typedef struct s_player
 	int		is_in_portal;
 }	t_player;
 
-# ifdef GL
 typedef struct s_frame
 {
 	GLuint	id;
 	t_color	*buf;
 	t_ivec2	size;
 }	t_frame;
-# else
-typedef struct s_frame
-{
-	t_ximg	*img;
-	t_ivec2	size;
-	float	thickness;
-	int		*xmap;
-	int		*ymap;
-}	t_frame;
-# endif
 
 typedef struct s_res
 {
@@ -326,14 +315,9 @@ typedef struct s_res
 
 struct s_man
 {
-	# ifdef GL
 	GLFWwindow		*window;
 	GLuint			shader_program;
 	GLint			uniform_loc;
-	# else
-	t_xvar			*xvar;
-	t_frame			swap_buf[2];
-	# endif
 	char			*title;
 	t_frame			frame;
 	float			*z_buf;
