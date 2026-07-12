@@ -42,7 +42,8 @@ static void	display_collectibles(t_man *man, t_map *map)
 	set_ivec2(&pos, 0, 0);
 	draw_image(man, soul_icon, pos);
 	if (soul_icon)
-		set_ivec2(&pos, pos.x + soul_icon->size.x, pos.y + 14);
+		set_ivec2(&pos, pos.x + soul_icon->size.x * man->gui_scale,
+			pos.y + 14 * man->gui_scale);
 	tmp1 = itoa_dec(man->player.collected);
 	if (map->to_collect >= 0)
 	{
@@ -62,7 +63,8 @@ static void	display_centered_message(t_man *man, t_ivec2 *pos, const char *msg)
 {
 	if (!msg || !pos)
 		return ;
-	pos->x = man->frame.size.x / 2 - strlen(msg) / 2 * FONT_SIZE_X;
+	pos->x = man->frame.size.x / 2 - strlen(msg) / 2 * FONT_SIZE_X
+		* man->gui_scale;
 	pos->y = man->frame.size.y / 2;
 	draw_font_default(man, pos, msg);
 	return ;

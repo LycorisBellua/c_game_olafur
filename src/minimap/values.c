@@ -2,14 +2,20 @@
 
 void	init_minimap_values(t_man *man)
 {
+	man->gui_scale = man->res.res.y / 360;
+	if (man->gui_scale < 1)
+		man->gui_scale = 1;
 	man->minimap_radius = man->res.res.y / 10;
+	man->minimap_radius_sq = man->minimap_radius * man->minimap_radius;
 	man->minimap_zoom = 9;
 	man->minimap_cell_amount = man->minimap_radius / man->minimap_zoom * 2;
-	man->minimap_offset.x = man->res.res.x - 77;
+	man->minimap_offset.x = man->res.res.x - 2 * man->minimap_radius - 5;
 	man->minimap_offset.y = 7;
 	man->minimap_center.x = man->minimap_offset.x + man->minimap_radius;
 	man->minimap_center.y = man->minimap_offset.y + man->minimap_radius;
 	man->minimap_half_90_deg_cos = cosf(deg2rad(90) / 2.0);
+	man->minimap_half_90_deg_cos_sq = man->minimap_half_90_deg_cos
+		* man->minimap_half_90_deg_cos;
 	return ;
 }
 

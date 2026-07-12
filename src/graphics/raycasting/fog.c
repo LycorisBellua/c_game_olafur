@@ -2,21 +2,8 @@
 
 void	init_fog(t_man *man)
 {
-	man->echolocation = ECHOLOCATION;
-	if (!man->echolocation)
-		man->dof = DEFAULT_DOF;
+	man->dof = DEFAULT_DOF;
 	man->fog_width = get_fog_width(man->dof);
-	return ;
-}
-
-void	update_dof(t_man *man, float increment)
-{
-	float	prev_dof;
-
-	prev_dof = man->dof;
-	man->dof = fclamp(man->dof + increment, 0, 30);
-	if (prev_dof != man->dof)
-		man->fog_width = get_fog_width(man->dof);
 	return ;
 }
 

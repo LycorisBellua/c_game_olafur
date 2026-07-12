@@ -59,21 +59,23 @@ what the game is capable of. As for my contribution to the level, I've picked
 the elevator music, the sound effects, and added an easter egg accessible from 
 the elevator (and through your keyboard).  
 
-## Commands
+## Controls
 
-Move forward: W or UP arrow key  
-Move backward: S or DOWN arrow key  
-Rotate left: A or LEFT arrow key  
-Rotate right: D or RIGHT arrow key  
-Move left: Q  
-Move right: E  
-Speed: Press SHIFT to run, release to walk  
-Zoom minimap in and out: Scroll  
-
-Quit: X window button, Alt+F4 or ESC  
-Backspace: Reset player's position and rotation  
-Toggle fullscreen: F11  
-Toggle FPS counter: F12  
+| Action                             | Control                                                     |
+| ---------------------------------- | ----------------------------------------------------------- |
+| Move forward                       | `W` or `↑` (Up Arrow)                                       |
+| Move backward                      | `S` or `↓` (Down Arrow)                                     |
+| Rotate left                        | `A` or `←` (Left Arrow)                                     |
+| Rotate right                       | `D` or `→` (Right Arrow)                                    |
+| Move left                          | `Q`                                                         |
+| Move right                         | `E`                                                         |
+| Speed                              | Hold `Shift` to run, release to walk                        |
+| Zoom minimap in/out                | Mouse scroll wheel                                          |
+| Quit                               | Click the window close (`X`) button, `Alt` + `F4`, or `Esc` |
+| Reset player position and rotation | `F5`                                                        |
+| Toggle VSync (on by default)       | `F10`                                                       |
+| Toggle fullscreen                  | `F11`                                                       |
+| Toggle VSync status + FPS counter  | `F12`                                                       |
 
 ## More Screenshots
 

@@ -17,7 +17,6 @@ float	sqrt_approx(float n)
 	return (x * n);
 }
 
-/*
 double	sqrt_approx_f64(double n)
 {
 	double	x;
@@ -34,4 +33,3 @@ double	sqrt_approx_f64(double n)
 	x = x * (1.5 - xhalf * x * x);
 	return (x * n);
 }
-*/

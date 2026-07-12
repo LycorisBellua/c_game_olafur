@@ -38,6 +38,14 @@ t_color	alpha_blending(t_color prev, t_color new)
 
 	if (new.a == 0)
 		return (prev);
+	if (prev.a == 255)
+	{
+		blend.a = 255;
+		blend.r = (new.a * new.r + (255 - new.a) * prev.r) / 255;
+		blend.g = (new.a * new.g + (255 - new.a) * prev.g) / 255;
+		blend.b = (new.a * new.b + (255 - new.a) * prev.b) / 255;
+		return (blend);
+	}
 	blend.a = new.a + (255 - new.a) * prev.a / 255;
 	if (!blend.a)
 		return (get_color_rgba(0, 0, 0, 0));

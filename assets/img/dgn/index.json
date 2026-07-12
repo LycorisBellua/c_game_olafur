@@ -348,21 +348,5 @@
                 ]
             }
         ]
-    },
-    {
-        "path": "assets/img/dgn/sprite_greenlight.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "sprite_greenlight",
-                "size": [64, 64],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 0,
-                "cycle": [
-                    [0, 0]
-                ]
-            }
-        ]
     }
 ]

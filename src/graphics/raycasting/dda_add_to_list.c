@@ -12,7 +12,6 @@ int	dda_add_to_list(t_man *man, t_ray **r, float *max_height)
 	int		add_to_list;
 
 	cell = get_cell((*r)->m, (*r)->m_index.x, (*r)->m_index.y);
-	cell = resolve_portal_rendering(man, r, cell);
 	if (!cell)
 		return (-1);
 	else if (!cell->is_visible)
@@ -117,9 +116,7 @@ static int	set_perp_wall_dist_with_offset(t_man *man, t_ray *r, float offset)
 
 static void	add_ray_to_list(t_man *man, t_ray **r)
 {
-	list_add_front(&man->rays, list_new(*r));
-	*r = calloc(1, sizeof(t_ray));
-	if (*r)
-		memcpy(*r, ((t_ray *)man->rays->data), sizeof(t_ray));
+	if (man->ray_count < MAX_COLUMN_RAYS)
+		man->ray_buf[man->ray_count++] = **r;
 	return ;
 }

@@ -37,6 +37,33 @@ t_color		alpha_blending(t_color prev, t_color new);
 
 void		draw_pixel(t_color *buf, t_color c, t_ivec2 coord, t_ivec2 size);
 void		draw_point(t_man *man, t_color color, int x, int y);
+
+static inline void	draw_point_fast(t_man *man, t_color c, int x, int y)
+{
+	if (c.a < 255)
+		c = alpha_blending(man->frame.buf[y * man->frame.size.x + x], c);
+	man->frame.buf[y * man->frame.size.x + x] = c;
+}
+
+/*
+	Draws one source pixel as a scale x scale block, for integer GUI scaling. 
+	Uses the bounds-checked draw_point so off-screen blocks clip safely.
+*/
+static inline void	draw_scaled_point(t_man *man, t_color c, t_ivec2 at,
+	int scale)
+{
+	int	bx;
+	int	by;
+
+	by = -1;
+	while (++by < scale)
+	{
+		bx = -1;
+		while (++bx < scale)
+			draw_point(man, c, at.x + bx, at.y + by);
+	}
+}
+
 void		draw_line(t_man *man, t_vert v1, t_vert v2);
 void		draw_rectangle(t_man *man, t_vert v, t_ivec2 size);
 void		draw_rectangle_full(t_man *man, t_vert v, t_ivec2 size);
@@ -57,12 +84,12 @@ void		advance_all_image_cycles(t_man *man);
 /* Fog ---------------------------------------------------------------------- */
 
 void		init_fog(t_man *man);
-void		update_dof(t_man *man, float increment);
 float		get_fog_width(float dof);
-void		apply_wall_shadow(t_color *wall, t_color c, int y, t_ivec2 height);
-void		apply_corner_shadow(t_color *wall, t_color c, int img_coord_x,
-				int img_size_x);
-void		apply_wall_fog(t_color *wall, t_color c, float dist, float dof);
+int			wall_shadow_factor8(t_ray *r, int y);
+void		set_wall_shadow_params(t_ray *r);
+float		corner_intensity_of(t_ray *r, t_img *tex, int tex_x);
+float		fog_factor_of(float dist, float dof);
+void		apply_fog_factor(t_color *wall, t_color c, int factor8);
 
 /* Files -------------------------------------------------------------------- */
 
@@ -97,6 +124,7 @@ t_img		*create_empty_image(const char *id, t_ivec2 size, t_ubyte alpha);
 t_img		*add_image(t_man *man, const char *path);
 void		compose_skybox(t_man *man, t_map *map, t_img *src);
 void		compose_background(t_man *man, t_map *map);
+void		select_background_frame(t_map *map);
 void		draw_background(t_man *man);
 void		free_png(t_png *png);
 int			update_image_array(t_man *man, const char *path);
@@ -132,13 +160,12 @@ void		update_ray_data(t_ray *r);
 int			dda_add_to_list(t_man *man, t_ray **r, float *max_height);
 t_cell		*resolve_portal_rendering(t_man *man, t_ray **r, t_cell *cell);
 void		set_texture_and_is_see_through(t_ray *r, t_cell *c);
-void		cast_floor(t_man *man);
-void		cast_ceiling_x(t_man *man, int x);
+void		cast_floor_and_ceiling(t_man *man);
 void		draw_wall(t_man *man, t_ray *r, t_img *tex);
 int			is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x);
 void		sort_sprites_by_dist(t_man *man);
 void		swap_elements(void **a, void **b);
-void		cast_sprites(t_man *man, int x);
+void		cast_sprites(t_man *man, int x, float near_bound);
 
 /* Maps --------------------------------------------------------------------- */
 
@@ -166,7 +193,6 @@ void		update_player_transform(t_man *man);
 void		prevent_out_of_bounds(t_man *man);
 void		handle_player_speed(t_man *man, int shift_pressed);
 void		rotate_player(t_man *man, float angle);
-void		echolocation(t_man *man, int has_player_moved);
 void		cross_goal_if_unlocked(t_man *man, t_map *m);
 void		disable_collision_with_dst_portal_if_within(t_man *man, t_map *m,
 				t_vec2 pos);
@@ -205,6 +231,8 @@ void		action_turn_left(t_man *man, int set);
 void		action_run(t_man *man, int set);
 void		action_toggle_fullscreen(t_man *man, int set);
 void		action_toggle_debug(t_man *man, int set);
+void		action_toggle_vsync(t_man *man, int set);
+void		set_vsync(t_man *man);
 void		action_close_window(t_man *man, int set);
 void		action_move_to_start(t_man *man, int set);
 

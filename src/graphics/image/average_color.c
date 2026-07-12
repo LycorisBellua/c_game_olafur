@@ -32,6 +32,8 @@ static t_color	calculate_average_color(t_color *buf, size_t len)
 	int		total_color[4];
 
 	memset(&total_color, 0, 4 * sizeof(int));
+	if (!buf || len == 0)
+		return (get_color_rgba(0, 0, 0, 0));
 	i = 0;
 	while (i < len)
 	{

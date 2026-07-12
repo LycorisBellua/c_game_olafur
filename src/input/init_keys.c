@@ -88,23 +88,28 @@ void	init_input_keys(t_man *man)
 	man->keys[10].actions[game_play][key_pressed] = action_run;
 	man->keys[10].actions[game_play][key_held] = action_run;
 
-	man->keys[11].keycode = KEY_F11;
-	man->keys[11].actions[game_play][key_pressed] = action_toggle_fullscreen;
-	man->keys[11].actions[game_success][key_pressed] = action_toggle_fullscreen;
-	man->keys[11].actions[game_failure][key_pressed] = action_toggle_fullscreen;
+	man->keys[11].keycode = KEY_F5;
+	man->keys[11].actions[game_play][key_pressed] = action_move_to_start;
+	man->keys[11].actions[game_success][key_pressed] = action_move_to_start;
 
-	man->keys[12].keycode = KEY_F12;
-	man->keys[12].actions[game_play][key_pressed] = action_toggle_debug;
-	man->keys[12].actions[game_success][key_pressed] = action_toggle_debug;
-	man->keys[12].actions[game_failure][key_pressed] = action_toggle_debug;
+	man->keys[12].keycode = KEY_F10;
+	man->keys[12].actions[game_play][key_pressed] = action_toggle_vsync;
+	man->keys[12].actions[game_success][key_pressed] = action_toggle_vsync;
+	man->keys[12].actions[game_failure][key_pressed] = action_toggle_vsync;
 
-	man->keys[13].keycode = KEY_ESCAPE;
-	man->keys[13].actions[game_play][key_pressed] = action_close_window;
-	man->keys[13].actions[game_success][key_pressed] = action_close_window;
-	man->keys[13].actions[game_failure][key_pressed] = action_close_window;
+	man->keys[13].keycode = KEY_F11;
+	man->keys[13].actions[game_play][key_pressed] = action_toggle_fullscreen;
+	man->keys[13].actions[game_success][key_pressed] = action_toggle_fullscreen;
+	man->keys[13].actions[game_failure][key_pressed] = action_toggle_fullscreen;
 
-	man->keys[14].keycode = KEY_BACKSPACE;
-	man->keys[14].actions[game_play][key_pressed] = action_move_to_start;
-	man->keys[14].actions[game_success][key_pressed] = action_move_to_start;
+	man->keys[14].keycode = KEY_F12;
+	man->keys[14].actions[game_play][key_pressed] = action_toggle_debug;
+	man->keys[14].actions[game_success][key_pressed] = action_toggle_debug;
+	man->keys[14].actions[game_failure][key_pressed] = action_toggle_debug;
+
+	man->keys[15].keycode = KEY_ESCAPE;
+	man->keys[15].actions[game_play][key_pressed] = action_close_window;
+	man->keys[15].actions[game_success][key_pressed] = action_close_window;
+	man->keys[15].actions[game_failure][key_pressed] = action_close_window;
 	return ;
 }

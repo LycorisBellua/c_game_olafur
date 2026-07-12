@@ -1,0 +1,56 @@
+MISC
+- Do the todo about drawing arbitrary shapes.
+
+---
+
+HARDCODED CONTENT
+- I see "skybox" hardcoded in the codebase in `src/graphics/background/skybox.c`. 
+Does it mean it's wrong if an image read from a file is named "skybox"? If so, 
+reject any such image so that our hardcoded one is the one that exists.
+- I see "cursor" hardcoded in the codebase in `src/gui.c`. What if this image 
+doesn't exist? We need to show the system cursor if we don't have an image cursor. 
+Basically, check that on init, and display or hide the system cursor when in the 
+window depending on whether this image exists. Then, in gui.c, make it so that 
+we don't need to check whether the cursor exists. Basically, draw_cursor() already 
+checks the image pointer anyway, and returns early if it's null. Do not modify 
+draw_cursor(), as I want it to be able to draw any kind of cursor, given as 
+argument. Therefore, within display_game_gui(), check whether we had noticed in 
+the init the existence or absence of the image.
+- I see "sprite_soul_idle" hardcoded in the codebase in `src/gui.c`. Something 
+needs to be done about that.
+- Do we have anything hardcoded when it comes to image or map indexes?
+
+HARDCODED CONTENT
+- Have a general icon for collectibles: a small circle using the same pattern 
+as the goal texture (switching between these two specific colors).
+- When entering a map with collectibles in it, these are showcased right under 
+the general collectible line. The icon of the map collectible is shown, with 
+how many have been found and how many are available. For example, in Olafur's 
+afg map, each book is a single line, because they are different collectibles, 
+and not several instances of the same one.
+- Note that the video shows the soul sprite as the icon.
+
+---
+
+FIRST MAP DYNAMIC SELECTION
+- Instead of having the `MAP_DEFAULT` macro, search for the first map within 
+`assets/maps/`. That is to say that you first look directly at this level to 
+find a *.map file. It's the first one alphabetically. If there's none, then 
+search the first subdirectory (picked alphabetically), and so and so forth, 
+until a dead end is reached. Then, look into the second subdir. If there was 
+truly no .map file at all, close the program.
+    --- `bas.map` should be targeted first. Then, you store it in `test/`.
+    --- Then, it should be `olafur/afg.map`.
+    --- Rename `olafur/mus.map` into `olafur/_mus.map` to make first. It 
+    should be picked now.
+- Of course, it's possible to specify a .map file as argument.
+- And yes I know this system is slow, but I don't want to hardcode the map. 
+This way, anyone can create new maps and run them on Windows or without 
+specifying an argument.
+- Maybe explain that in the map README. Also modify the general README, as it 
+mentions map paths.
+
+DYNAMIC EASTER EGG
+- Instead of hardcoding `MAP_EASTER_EGG` as well as the Konami code sequence, 
+have it be indicated by the map itself. Or maps in this instance, since we 
+have three elevator maps.

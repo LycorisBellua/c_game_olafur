@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic
+CFLAGS = -O2 -Iinclude -Wall -Wextra -pedantic -flto=auto -fno-math-errno
 AL_FLAGS = -Llib -lopenal -Wl,-rpath,'$$ORIGIN'
 GL_FLAGS = -lGL -Llib -lglfw3
 LDFLAGS = -lm $(AL_FLAGS) $(GL_FLAGS)

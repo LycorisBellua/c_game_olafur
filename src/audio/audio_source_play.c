@@ -50,6 +50,7 @@ static void	*play_as_loop(void *data)
 	while (is_looping)
 	{
 		process_buffers(s);
+		usleep(AUDIO_LOOP_POLL_US);
 		pthread_mutex_lock(&s->is_looping_mutex);
 		is_looping = s->is_looping;
 		pthread_mutex_unlock(&s->is_looping_mutex);

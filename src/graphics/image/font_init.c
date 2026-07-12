@@ -74,12 +74,12 @@ static void	add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets)
 			j = -1;
 			while (++j < 8)
 			{
-				p.y = i / img->size.x;
-				p.x = i - p.y * img->size.x;
+				p.x = i / img->size.y;
+				p.y = i - p.x * img->size.y;
 				set_ivec2(&p, p.x + offsets[j].x, p.y + offsets[j].y);
-				if (!cmpc(img->cycle[cycle_index][p.y * img->size.x + p.x],
+				if (!cmpc(img->cycle[cycle_index][p.x * img->size.y + p.y],
 					get_color_rgba(255, 255, 255, 255)))
-					img->cycle[cycle_index][p.y * img->size.x + p.x] = \
+					img->cycle[cycle_index][p.x * img->size.y + p.y] = \
 get_color_rgba(0, 0, 0, 255);
 			}
 		}

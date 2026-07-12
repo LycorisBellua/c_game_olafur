@@ -11,6 +11,7 @@ int	main(int argc, char **argv)
 
 	map_path = argv[1];
 	memset(&g_man, 0, sizeof(t_man));
+	g_man.vsync = 1;
 	if (argc == 1)
 		map_path = MAP_DEFAULT;
 	else if (argc > 2)

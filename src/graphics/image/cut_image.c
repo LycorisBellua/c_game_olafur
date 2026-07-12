@@ -26,21 +26,20 @@ static void	cut_image_regular(t_png *file, t_img *img, size_t i_seg,
 	int		line;
 	t_ivec2	pos;
 	t_color	*file_ptr;
-	t_color	*cycle_ptr;
+	t_color	*frame;
 
 	if (!file->seg[i_seg].cycle)
 		return ;
 	pos.x = file->seg[i_seg].cycle[i_cyc].x;
 	pos.y = file->seg[i_seg].cycle[i_cyc].y;
-	file_ptr = 0;
+	frame = img->cycle[i_cyc];
 	line = 0;
 	while (line < img->size.y)
 	{
-		cycle_ptr = &img->cycle[i_cyc][img->size.x * line];
 		file_ptr = &file->buf[file->size.x * (pos.y + line) + pos.x];
 		i = -1;
 		while (++i < img->size.x)
-			cycle_ptr[i] = file_ptr[i];
+			frame[i * img->size.y + line] = file_ptr[i];
 		++line;
 	}
 	return ;
@@ -53,21 +52,20 @@ static void	cut_image_shadow(t_png *file, t_img *img, size_t i_seg,
 	int		line;
 	t_ivec2	pos;
 	t_color	*file_ptr;
-	t_color	*cycle_ptr;
+	t_color	*frame;
 
 	if (!file->seg[i_seg].cycle || !img->cycle_shadow)
 		return ;
 	pos.x = file->seg[i_seg].cycle[i_cyc].x + file->seg[i_seg].shadow_offset.x;
 	pos.y = file->seg[i_seg].cycle[i_cyc].y + file->seg[i_seg].shadow_offset.y;
-	file_ptr = 0;
+	frame = img->cycle_shadow[i_cyc];
 	line = 0;
 	while (line < img->size.y)
 	{
-		cycle_ptr = &img->cycle_shadow[i_cyc][img->size.x * line];
 		file_ptr = &file->buf_shadow[file->size.x * (pos.y + line) + pos.x];
 		i = -1;
 		while (++i < img->size.x)
-			cycle_ptr[i] = file_ptr[i];
+			frame[i * img->size.y + line] = file_ptr[i];
 		++line;
 	}
 	return ;

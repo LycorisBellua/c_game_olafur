@@ -2,37 +2,40 @@
 
 static void	set_sprite_values(t_man *man, t_spr *s);
 static void	render_sprite_column(t_man *man, t_spr *s, int x);
+static void	blit_sprite_pixel(t_man *man, t_spr *s, t_color c,
+				t_ivec2 screen, t_color fog);
 
 void	sort_sprites_by_dist(t_man *man)
 {
-	int	i;
-	int	j;
+	t_spr	**spr;
+	t_spr	*key;
+	int		i;
+	int		j;
 
+	spr = man->maps[man->curr_map]->sprites;
 	i = 0;
 	while (i < man->maps[man->curr_map]->sprite_len)
 	{
-		man->maps[man->curr_map]->sprites[i]->dist = dist(man->player.pos,
-				man->maps[man->curr_map]->sprites[i]->pos);
+		spr[i]->dist = dist(man->player.pos, spr[i]->pos);
 		++i;
 	}
-	i = 0;
-	while (i < man->maps[man->curr_map]->sprite_len - 1)
+	i = 1;
+	while (i < man->maps[man->curr_map]->sprite_len)
 	{
-		j = 0;
-		while (j < man->maps[man->curr_map]->sprite_len - i - 1)
+		key = spr[i];
+		j = i - 1;
+		while (j >= 0 && spr[j]->dist < key->dist)
 		{
-			if (man->maps[man->curr_map]->sprites[j]->dist
-				< man->maps[man->curr_map]->sprites[j + 1]->dist)
-				swap_elements((void **)(man->maps[man->curr_map]->sprites + j),
-					(void **)(man->maps[man->curr_map]->sprites + j + 1));
-			++j;
+			spr[j + 1] = spr[j];
+			--j;
 		}
+		spr[j + 1] = key;
 		++i;
 	}
 	return ;
 }
 
-void	cast_sprites(t_man *man, int x)
+void	cast_sprites(t_man *man, int x, float near_bound)
 {
 	int		i;
 	t_spr	*s;
@@ -41,14 +44,13 @@ void	cast_sprites(t_man *man, int x)
 	while (i < man->maps[man->curr_map]->sprite_len)
 	{
 		s = man->maps[man->curr_map]->sprites[i];
-		if (s->dist <= man->dof)
-		{
-			if (!x)
-				set_sprite_values(man, s);
-			if (s->img && x >= s->draw_start.x && x < s->draw_end.x
-				&& s->transform.y > 0 && s->transform.y < man->z_buf[x])
-				render_sprite_column(man, s, x);
-		}
+		if (!x)
+			set_sprite_values(man, s);
+		if (s->img && s->transform.y <= man->dof
+			&& x >= s->draw_start.x && x < s->draw_end.x
+			&& s->transform.y > near_bound
+			&& s->transform.y < man->z_buf[x])
+			render_sprite_column(man, s, x);
 		++i;
 	}
 	return ;
@@ -69,6 +71,13 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 		* inv_det;
 	s->transform.y = (-man->player.plane.y * pos.x + man->player.plane.x
 			* pos.y) * inv_det;
+	s->fog_factor8 = (int)(fog_factor_of(s->transform.y, man->dof) * 256.0f);
+	if (s->transform.y <= EPSILON)
+	{
+		s->draw_start.x = 0;
+		s->draw_end.x = 0;
+		return ;
+	}
 	s->screen_x = (man->frame.size.x / 2)
 		* (1 + s->transform.x / s->transform.y);
 	s->v_move_screen = V_MOVE / s->transform.y;
@@ -83,29 +92,52 @@ static void	set_sprite_values(t_man *man, t_spr *s)
 	return ;
 }
 
+static void	blit_sprite_pixel(t_man *man, t_spr *s, t_color c, t_ivec2 screen,
+				t_color fog)
+{
+	if (c.a == 0)
+		return ;
+	apply_fog_factor(&c, fog, s->fog_factor8);
+	draw_point_fast(man, c, screen.x, screen.y);
+	return ;
+}
+
 static void	render_sprite_column(t_man *man, t_spr *s, int x)
 {
 	t_ivec2	tex;
+	t_color	*frame;
+	long	rem;
+	long	den;
 	int		y;
-	int		d;
-	t_color	c;
+	int		col_base;
+	t_color	fog;
 
 	tex.x = (int)(256 * (x - (-s->size.x / 2 + s->screen_x)) * s->img->size.x
-		/ s->size.x) / 256;
+			/ s->size.x) / 256;
 	if (tex.x < 0 || tex.x >= s->img->size.x)
 		return ;
-	y = s->draw_start.y - 1;
-	while (++y < s->draw_end.y)
+	frame = s->img->cycle[s->img->cycle_index];
+	col_base = tex.x * s->img->size.y;
+	fog = man->maps[man->curr_map]->fog_color;
+	den = (long)s->size.y * 256;
+	y = s->draw_start.y;
+	rem = ((long)(y - s->v_move_screen) * 256 - (long)man->frame.size.y * 128
+			+ (long)s->size.y * 128) * s->img->size.y;
+	tex.y = rem / den;
+	rem -= tex.y * den;
+	while (y < s->draw_end.y)
 	{
-		d = (y - s->v_move_screen) * 256 - man->frame.size.y * 128 + s->size.y
-			* 128;
-		tex.y = ((d * s->img->size.y) / s->size.y) / 256;
 		if (tex.y < 0 || tex.y >= s->img->size.y)
 			return ;
-		c = s->img->cycle[s->img->cycle_index][tex.y * s->img->size.x + tex.x];
-		apply_wall_fog(&c, man->maps[man->curr_map]->fog_color, s->dist,
-			man->dof);
-		draw_point(man, c, x, y);
+		blit_sprite_pixel(man, s, frame[col_base + tex.y],
+			(t_ivec2){x, y}, fog);
+		rem += (long)s->img->size.y * 256;
+		while (rem >= den)
+		{
+			++tex.y;
+			rem -= den;
+		}
+		++y;
 	}
 	return ;
 }

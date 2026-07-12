@@ -8,6 +8,11 @@ void	set_dt_and_fps(t_man *man)
 	struct timeval			curr_time;
 
 	gettimeofday(&curr_time, 0);
+	if (man->reset_dt)
+	{
+		prev_time = curr_time;
+		man->reset_dt = 0;
+	}
 	if (!prev_time.tv_sec && !prev_time.tv_usec)
 		prev_time = curr_time;
 	man->dt = compute_dt(prev_time, curr_time);
@@ -35,8 +40,12 @@ void	display_fps(t_man *man)
 		dt_ms -= 250;
 	}
 	num = itoa_dec(smoothed_fps);
+	s = strjoin("VSync: ", man->vsync ? "On" : "Off");
+	set_ivec2(&pos, 20 * man->gui_scale, 40 * man->gui_scale);
+	draw_font_default(man, &pos, s);
+	free(s);
 	s = strjoin("FPS: ", num);
-	set_ivec2(&pos, 20, 40);
+	set_ivec2(&pos, 20 * man->gui_scale, 60 * man->gui_scale);
 	draw_font_default(man, &pos, s);
 	free(s);
 	free(num);

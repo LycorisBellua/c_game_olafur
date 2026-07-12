@@ -104,6 +104,8 @@ static void	draw_full_triangle(t_man *man, t_vert *v)
 	max_coord.y = imax(imax(v[0].coord.y, v[1].coord.y), v[2].coord.y);
 	denom = (v[1].coord.y - v[2].coord.y) * (v[0].coord.x - v[2].coord.x)
 		+ (v[2].coord.x - v[1].coord.x) * (v[0].coord.y - v[2].coord.y);
+	if (denom == 0)
+		return ;
 	inv_denom = 1.0f / denom;
 	p.y = min_coord.y;
 	while (p.y <= max_coord.y)

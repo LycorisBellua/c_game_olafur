@@ -2,27 +2,27 @@
 
 void	perform_dda(t_man *man, float cam_x)
 {
-	t_ray	*r;
+	t_ray	r;
+	t_ray	*rp;
 	float	max_height;
 
-	r = calloc(1, sizeof(t_ray));
-	if (!r)
-		return ;
-	r->cam_x = cam_x;
-	r->m = man->maps[man->curr_map];
-	r->origin_pos = man->player.pos;
-	r->origin_dir = man->player.dir;
-	r->origin_plane = man->player.plane;
-	init_ray_data_x(r);
-	init_ray_data_y(r);
+	memset(&r, 0, sizeof(t_ray));
+	r.cam_x = cam_x;
+	r.m = man->maps[man->curr_map];
+	r.origin_pos = man->player.pos;
+	r.origin_dir = man->player.dir;
+	r.origin_plane = man->player.plane;
+	init_ray_data_x(&r);
+	init_ray_data_y(&r);
 	max_height = 0;
+	man->ray_count = 0;
+	rp = &r;
 	while (1)
 	{
-		update_ray_data(r);
-		if (dda_add_to_list(man, &r, &max_height) < 0)
+		update_ray_data(rp);
+		if (dda_add_to_list(man, &rp, &max_height) < 0)
 			break ;
 	}
-	free(r);
 	return ;
 }
 

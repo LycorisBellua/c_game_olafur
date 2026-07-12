@@ -19,6 +19,7 @@
 # define RAD_180 M_PI
 # define RAD_270 4.71238898
 # define RAD_360 6.283185307
+# define EPSILON 1e-6f
 
 typedef struct s_vec2
 {
@@ -63,9 +64,10 @@ int		is_dist_grid_aligned_and_within_threshold(t_ivec2 a, t_ivec2 b,
 int		imin(int a, int b);
 int		imax(int a, int b);
 
-/* Sqrt Approximation ------------------------------------------------------- */
+/* Square Root Approximation ------------------------------------------------ */
 
 float	sqrt_approx(float n);
+double	sqrt_approx_f64(double n);
 
 /* Vectors ------------------------------------------------------------------ */
 

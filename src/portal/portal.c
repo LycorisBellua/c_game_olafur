@@ -20,12 +20,13 @@ void	portal_routine(t_man *man)
 	}
 	map_index = add_map(man, portal->path_dst_map);
 	if (map_index < 0)
+	{
+		unstuck_from_wall(man, man->maps[man->curr_map]);
 		return ;
+	}
 	man->curr_map = map_index;
 	man->player.is_in_portal = 1;
 	set_transform(man, portal);
-	if (man->echolocation)
-		update_dof(man, -30);
 	return ;
 }
 

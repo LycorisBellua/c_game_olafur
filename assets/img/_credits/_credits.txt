@@ -45,7 +45,6 @@ Cethiel - https://opengameart.org/users/cethiel
 https://lodev.org/cgtutor/raycasting3.html
 Wolfenstein 3D - Copyright by id Software
 - dgn/sprite_barrel.png
-- dgn/sprite_greenlight.png
 - dgn/sprite_pillar.png
 
 ----------------------------------- ELEVATOR -----------------------------------

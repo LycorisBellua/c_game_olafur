@@ -1,10 +1,5 @@
 #include "olafur.h"
 
-/*
-	Checking for whether the new pixel is opaque is not necessary, the visual 
-	result would have been the same with alpha blending. Skipping this part is 
-	only done to improve performance.
-*/
 void	draw_point(t_man *man, t_color c, int x, int y)
 {
 	if (x < 0 || y < 0 || x >= man->frame.size.x || y >= man->frame.size.y)

@@ -12,6 +12,10 @@ int	init_frame(t_man *man)
 	man->z_buf = malloc(man->frame.size.x * sizeof(float));
 	if (!man->z_buf)
 		return (put_error(man, E_FAIL_MEM, 0, 0));
+	man->fc_depth = malloc(man->frame.size.x * man->frame.size.y
+			* sizeof(float));
+	if (!man->fc_depth)
+		return (put_error(man, E_FAIL_MEM, 0, 0));
 	return (1);
 }
 
@@ -56,6 +60,8 @@ void	free_frame(t_man *man)
 	man->frame.buf = 0;
 	free(man->z_buf);
 	man->z_buf = 0;
+	free(man->fc_depth);
+	man->fc_depth = 0;
 	return ;
 }
 

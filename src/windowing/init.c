@@ -51,6 +51,12 @@ static int	init_graphics_lib(void)
 }
 #endif
 
+void	set_vsync(t_man *man)
+{
+	glfwSwapInterval(man->vsync);
+	return ;
+}
+
 static void	more_window_settings(t_man *man)
 {
 	t_ivec2	min;
@@ -63,7 +69,7 @@ static void	more_window_settings(t_man *man)
 		man->res.monitor_size.x / 2 - man->res.window_size.x / 2,
 		man->res.monitor_size.y / 2 - man->res.window_size.y / 2);
 	glfwMakeContextCurrent(man->window);
-	glfwSwapInterval(1);
+	set_vsync(man);
 	set_initial_viewport(man);
 	glfwSetFramebufferSizeCallback(man->window, framebuffer_size_callback);
 	return ;

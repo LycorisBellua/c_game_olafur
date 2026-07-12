@@ -53,6 +53,8 @@ static void	apply_ceiling_to_curr_cycle_frame(t_img *img, int h_gradient,
 
 	if (!top.a)
 		return ;
+	if (h_gradient <= 0)
+		return ;
 	v.coord.y = 0;
 	while (v.coord.y < img->size.y / 2)
 	{
@@ -64,8 +66,8 @@ static void	apply_ceiling_to_curr_cycle_frame(t_img *img, int h_gradient,
 			v.color.g = (1 - factor) * top.g;
 			v.color.b = (1 - factor) * top.b;
 			v.color.a = 255;
-			draw_pixel(img->cycle[img->cycle_index], v.color, v.coord,
-				img->size);
+			img->cycle[img->cycle_index][v.coord.x * img->size.y
+				+ v.coord.y] = v.color;
 			++v.coord.x;
 		}
 		++v.coord.y;
@@ -81,6 +83,8 @@ static void	apply_floor_to_curr_cycle_frame(t_img *img, int h_gradient,
 
 	if (!bottom.a)
 		return ;
+	if (h_gradient <= 0)
+		return ;
 	v.coord.y = img->size.y / 2;
 	while (v.coord.y < img->size.y)
 	{
@@ -92,8 +96,8 @@ static void	apply_floor_to_curr_cycle_frame(t_img *img, int h_gradient,
 			v.color.g = factor * bottom.g;
 			v.color.b = factor * bottom.b;
 			v.color.a = 255;
-			draw_pixel(img->cycle[img->cycle_index], v.color, v.coord,
-				img->size);
+			img->cycle[img->cycle_index][v.coord.x * img->size.y
+				+ v.coord.y] = v.color;
 			++v.coord.x;
 		}
 		++v.coord.y;

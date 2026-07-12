@@ -27,6 +27,7 @@ int	add_map(t_man *man, const char *filepath)
 	free(abs_path);
 	if (!man->maps[count])
 		return (-1);
+	man->reset_dt = 1;
 	return (count);
 }
 

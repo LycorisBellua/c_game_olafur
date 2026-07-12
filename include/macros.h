@@ -1,12 +1,21 @@
 #ifndef MACROS_H
 # define MACROS_H
 
+/*
+	- The minimum window size is 128x128 while the maximum is the monitor size.
+	- Use a value inferior or equal to 0.1 as the aspect ratio to express 
+	"whatever the monitor's aspect ratio is". For example 0 or -1.
+	- The skybox image is meant to have a size of (res.x * 4, res.y). If this 
+	is not respected, we make do but the skybox will not be the prettiest.
+*/
+
 # define TITLE "Olafur"
 # define WINDOW_WIDTH  (640 * 1)
 # define WINDOW_HEIGHT (360 * 1)
 # define ASPECT_RATIO (16.0 / 9)
-# define ECHOLOCATION 0
 # define DEFAULT_DOF 20
+# define MAX_COLUMN_RAYS 256
+# define AUDIO_LOOP_POLL_US 10000
 # define DEFAULT_MOVE_SPEED 2.0
 # define DEFAULT_ROTATE_SPEED 1.0
 # define DEFAULT_PLAYER_RADIUS 0.25
@@ -22,7 +31,7 @@
 # define MAP_DEFAULT "assets/maps/olafur/mus.map"
 # define MAP_EASTER_EGG "assets/maps/olafur/elv3.map"
 
-# define NBR_KEYS 15
+# define NBR_KEYS 16
 # define KEY_A         GLFW_KEY_A
 # define KEY_B         GLFW_KEY_B
 # define KEY_D         GLFW_KEY_D
@@ -30,13 +39,14 @@
 # define KEY_Q         GLFW_KEY_Q
 # define KEY_S         GLFW_KEY_S
 # define KEY_W         GLFW_KEY_W
-# define KEY_BACKSPACE GLFW_KEY_BACKSPACE
 # define KEY_ENTER     GLFW_KEY_ENTER
 # define KEY_ESCAPE    GLFW_KEY_ESCAPE
 # define KEY_LEFT      GLFW_KEY_LEFT
 # define KEY_UP        GLFW_KEY_UP
 # define KEY_RIGHT     GLFW_KEY_RIGHT
 # define KEY_DOWN      GLFW_KEY_DOWN
+# define KEY_F5        GLFW_KEY_F5
+# define KEY_F10       GLFW_KEY_F10
 # define KEY_F11       GLFW_KEY_F11
 # define KEY_F12       GLFW_KEY_F12
 # define KEY_SHIFT     -1

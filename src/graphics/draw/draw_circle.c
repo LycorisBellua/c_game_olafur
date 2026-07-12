@@ -66,10 +66,11 @@ void	draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 {
 	t_ivec2	p;
 	int		distance_squared;
-	float	linear_ratio;
 	float	adjusted_ratio;
 	t_color	c;
 
+	if (radius <= 0)
+		return ;
 	p.y = -radius;
 	while (p.y <= radius)
 	{
@@ -79,8 +80,8 @@ void	draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 			distance_squared = p.x * p.x + p.y * p.y;
 			if (distance_squared <= radius * radius)
 			{
-				linear_ratio = sqrt_approx((float)distance_squared) / radius;
-				adjusted_ratio = linear_ratio * linear_ratio;
+				adjusted_ratio = (float)distance_squared
+					/ (float)(radius * radius);
 				c = interpolate_color(center.color, edge, adjusted_ratio);
 				draw_point(man, c, center.coord.x + p.x, center.coord.y + p.y);
 			}

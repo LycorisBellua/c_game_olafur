@@ -20,6 +20,22 @@ void	free_maps(t_man *man)
 	return ;
 }
 
+static void	free_bg_frames(t_map *map)
+{
+	int	i;
+
+	if (map->bg_frames)
+	{
+		i = -1;
+		while (++i < map->bg_frame_count)
+			free_png(map->bg_frames[i]);
+		free(map->bg_frames);
+		map->bg_frames = 0;
+	}
+	map->background = 0;
+	return ;
+}
+
 void	free_map(t_map *map)
 {
 	if (!map)
@@ -27,7 +43,7 @@ void	free_map(t_map *map)
 	release_parsing_data(map);
 	free(map->filepath);
 	free_image(map->skybox, free);
-	free_png(map->background);
+	free_bg_frames(map);
 	free_cell_arrays(map);
 	free_arr((void **)map->doors, free);
 	free_portal_array(map);
@@ -61,15 +77,12 @@ void	free_sprite_array(t_map *map)
 
 static void	free_cell_arrays(t_map *map)
 {
-	t_ivec2	coord;
-
 	if (!map)
 		return ;
 	if (map->cells)
 	{
-		coord.y = 0;
-		while (coord.y < map->size.y)
-			free(map->cells[coord.y++]);
+		if (map->size.y > 0)
+			free(map->cells[0]);
 		free(map->cells);
 	}
 	map->cells = 0;

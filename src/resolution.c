@@ -16,7 +16,7 @@ int	set_resolution(t_man *man, t_ivec2 window_size, float aspect_ratio)
 	if (aspect_ratio <= 0.1)
 		man->res.ratio = (float)man->res.monitor_size.x
 			/ man->res.monitor_size.y;
-	if (aspect_ratio <= 0.1)
+	if (man->res.ratio <= 0.1)
 		return (0);
 	man->res.res = adapt_size_to_ratio(man, man->res.window_size_default);
 	return (1);

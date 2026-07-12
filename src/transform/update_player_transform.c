@@ -24,8 +24,6 @@ void	update_player_transform(t_man *man)
 	prevent_out_of_bounds(man);
 	rotate_player(man, man->rotate_speed * RAD_45 * norm(man->rotate_action)
 		* man->dt);
-	if (man->echolocation)
-		echolocation(man, forward_speed || lateral_speed);
 	audio_listener_transform(&man->player);
 	return ;
 }

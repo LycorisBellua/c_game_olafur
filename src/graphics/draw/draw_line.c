@@ -15,6 +15,11 @@ void	draw_line(t_man *man, t_vert v1, t_vert v2)
 	steps = imax(abs(dir.x), abs(dir.y));
 	coord.x = v1.coord.x;
 	coord.y = v1.coord.y;
+	if (steps == 0)
+	{
+		draw_point(man, v1.color, coord.x, coord.y);
+		return ;
+	}
 	increment.x = dir.x / (float)steps;
 	increment.y = dir.y / (float)steps;
 	++steps;

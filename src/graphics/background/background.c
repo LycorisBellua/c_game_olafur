@@ -2,37 +2,87 @@
 
 static void	add_fog_overlay(t_png *png, float fog_width, t_color fog);
 static void	upper_gradient(t_png *png, t_color fog, int h_gradient,
-				t_vert *v);
+					t_vert *v);
 static void	lower_gradient(t_png *png, int h_solid, int h_gradient,
-				t_vert *v);
+					t_vert *v);
+static void	compose_one_frame(t_man *man, t_map *map, int frame_i, t_png *dst);
 
 void	compose_background(t_man *man, t_map *map)
 {
 	t_ivec2	size;
-	int		min_width;
-	int		y;
+	int		count;
+	int		i;
 
-	if (!map)
+	if (!map || map->bg_frames)
 		return ;
-	if (!map->background)
+	count = 1;
+	if (map->skybox && map->skybox->cycle_time_in_ms)
+		count = map->skybox->cycle_len;
+	map->bg_frames = calloc(count, sizeof(t_png *));
+	if (!map->bg_frames)
+		return ;
+	map->bg_frame_count = count;
+	set_ivec2(&size, man->res.res.x * 4, man->res.res.y);
+	i = -1;
+	while (++i < count)
 	{
-		set_ivec2(&size, man->res.res.x * 4, man->res.res.y);
-		map->background = create_empty_png(size, 255);
-		if (!map->background)
-			return ;
+		map->bg_frames[i] = create_empty_png(size, 255);
+		if (map->bg_frames[i])
+			compose_one_frame(man, map, i, map->bg_frames[i]);
 	}
+	map->background = map->bg_frames[0];
+	if (map->skybox)
+		map->fog_color = map->skybox->average_color[0];
+	return ;
+}
+
+static void	compose_one_frame(t_man *man, t_map *map, int frame_i, t_png *dst)
+{
+	int		x;
+	int		y;
+	int		sky_x;
+	int		sky_y;
+	t_color	fog;
+
+	fog = map->fog_color;
 	if (map->skybox)
 	{
-		min_width = imin(map->skybox->size.x, map->background->size.x);
 		y = -1;
-		while (++y < map->background->size.y && y < map->skybox->size.y)
-			memcpy(map->background->buf + y * map->background->size.x,
-				map->skybox->cycle[map->skybox->cycle_index]
-				+ y * map->skybox->size.x, min_width * sizeof(t_color));
+		while (++y < dst->size.y)
+		{
+			sky_y = y * map->skybox->size.y / dst->size.y;
+			if (sky_y >= map->skybox->size.y)
+				sky_y = map->skybox->size.y - 1;
+			sky_x = 0;
+			x = 0;
+			while (x < dst->size.x)
+			{
+				dst->buf[y * dst->size.x + x] = map->skybox->cycle[frame_i]
+					[sky_x * map->skybox->size.y + sky_y];
+				++x;
+				if (++sky_x >= map->skybox->size.x)
+					sky_x = 0;
+			}
+		}
+		fog = map->skybox->average_color[frame_i];
 	}
+	add_fog_overlay(dst, man->fog_width, fog);
+	return ;
+}
+
+void	select_background_frame(t_map *map)
+{
+	int	idx;
+
+	if (!map || !map->bg_frames)
+		return ;
+	idx = 0;
 	if (map->skybox)
-		map->fog_color = map->skybox->average_color[map->skybox->cycle_index];
-	add_fog_overlay(map->background, man->fog_width, map->fog_color);
+	{
+		idx = map->skybox->cycle_index;
+		map->fog_color = map->skybox->average_color[idx];
+	}
+	map->background = map->bg_frames[idx];
 	return ;
 }
 
@@ -88,6 +138,8 @@ static void	lower_gradient(t_png *png, int h_solid, int h_gradient, t_vert *v)
 	t_color	fog;
 	float	factor;
 
+	if (h_gradient <= 0)
+		return ;
 	fog = v->color;
 	while (v->coord.y < png->size.y)
 	{

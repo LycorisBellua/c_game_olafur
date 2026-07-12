@@ -25,5 +25,8 @@ static void	update_background_offset(t_man *man)
 		return ;
 	angle = get_angle_from_dir(man->player.dir) + RAD_90;
 	map->background_offset = angle / RAD_360 * map->background->size.x;
+	map->background_offset %= map->background->size.x;
+	if (map->background_offset < 0)
+		map->background_offset += map->background->size.x;
 	return ;
 }

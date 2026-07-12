@@ -62,6 +62,11 @@ static t_vec2	calculate_new_pos_on_collision(t_spr *s, float radius,
 	t_vec2	push;
 
 	overlap = radius - s->dist;
+	if (s->dist <= EPSILON)
+	{
+		set_vec2(&pos, pos.x + overlap, pos.y);
+		return (pos);
+	}
 	push.x = (pos.x - s->pos.x) / s->dist * overlap;
 	push.y = (pos.y - s->pos.y) / s->dist * overlap;
 	set_vec2(&pos, pos.x + push.x, pos.y + push.y);

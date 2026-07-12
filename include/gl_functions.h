@@ -34,6 +34,38 @@ typedef void	(APIENTRY *GL_UP)(GLuint program);
 typedef void	(APIENTRY *GL_VAP)(GLuint index, GLint size, GLenum type,
 					GLboolean normalized, GLsizei stride, const void* pointer);
 
+/*
+	These GL 2.0+/3.0+ entry points are loaded at runtime as function pointers.
+	libGL exports functions of the same names, so we alias the GL names onto
+	prefixed variables (the GLEW/glad approach). This prevents our pointer
+	objects from colliding with libGL's exported functions: a clash that is
+	harmless under separate compilation but flagged, and best avoided, under LTO.
+	glfwGetProcAddress lookups use string literals, so they are unaffected.
+*/
+# define glAttachShader ol_glAttachShader
+# define glBindBuffer ol_glBindBuffer
+# define glBindVertexArray ol_glBindVertexArray
+# define glBufferData ol_glBufferData
+# define glCompileShader ol_glCompileShader
+# define glCreateProgram ol_glCreateProgram
+# define glCreateShader ol_glCreateShader
+# define glDeleteBuffers ol_glDeleteBuffers
+# define glDeleteProgram ol_glDeleteProgram
+# define glDeleteShader ol_glDeleteShader
+# define glDeleteVertexArrays ol_glDeleteVertexArrays
+# define glEnableVertexArrayAttrib ol_glEnableVertexArrayAttrib
+# define glGenBuffers ol_glGenBuffers
+# define glGenVertexArrays ol_glGenVertexArrays
+# define glGetUniformLocation ol_glGetUniformLocation
+# define glGetVertexAttribIuiv ol_glGetVertexAttribIuiv
+# define glLinkProgram ol_glLinkProgram
+# define glMapBuffer ol_glMapBuffer
+# define glShaderSource ol_glShaderSource
+# define glUniform1i ol_glUniform1i
+# define glUnmapBuffer ol_glUnmapBuffer
+# define glUseProgram ol_glUseProgram
+# define glVertexAttribPointer ol_glVertexAttribPointer
+
 extern GL_AS	glAttachShader;
 extern GL_BB	glBindBuffer;
 extern GL_BVA	glBindVertexArray;
