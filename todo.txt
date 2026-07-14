@@ -1,8 +1,3 @@
-MISC
-- Do the todo about drawing arbitrary shapes.
-
----
-
 HARDCODED CONTENT
 - I see "skybox" hardcoded in the codebase in `src/graphics/background/skybox.c`. 
 Does it mean it's wrong if an image read from a file is named "skybox"? If so, 
