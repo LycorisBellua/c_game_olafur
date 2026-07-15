@@ -1,32 +1,3 @@
-HARDCODED CONTENT
-- I see "skybox" hardcoded in the codebase in `src/graphics/background/skybox.c`. 
-Does it mean it's wrong if an image read from a file is named "skybox"? If so, 
-reject any such image so that our hardcoded one is the one that exists.
-- I see "cursor" hardcoded in the codebase in `src/gui.c`. What if this image 
-doesn't exist? We need to show the system cursor if we don't have an image cursor. 
-Basically, check that on init, and display or hide the system cursor when in the 
-window depending on whether this image exists. Then, in gui.c, make it so that 
-we don't need to check whether the cursor exists. Basically, draw_cursor() already 
-checks the image pointer anyway, and returns early if it's null. Do not modify 
-draw_cursor(), as I want it to be able to draw any kind of cursor, given as 
-argument. Therefore, within display_game_gui(), check whether we had noticed in 
-the init the existence or absence of the image.
-- I see "sprite_soul_idle" hardcoded in the codebase in `src/gui.c`. Something 
-needs to be done about that.
-- Do we have anything hardcoded when it comes to image or map indexes?
-
-HARDCODED CONTENT
-- Have a general icon for collectibles: a small circle using the same pattern 
-as the goal texture (switching between these two specific colors).
-- When entering a map with collectibles in it, these are showcased right under 
-the general collectible line. The icon of the map collectible is shown, with 
-how many have been found and how many are available. For example, in Olafur's 
-afg map, each book is a single line, because they are different collectibles, 
-and not several instances of the same one.
-- Note that the video shows the soul sprite as the icon.
-
----
-
 FIRST MAP DYNAMIC SELECTION
 - Instead of having the `MAP_DEFAULT` macro, search for the first map within 
 `assets/maps/`. That is to say that you first look directly at this level to 
@@ -46,6 +17,6 @@ specifying an argument.
 mentions map paths.
 
 DYNAMIC EASTER EGG
-- Instead of hardcoding `MAP_EASTER_EGG` as well as the Konami code sequence, 
+- Instead of hardcoding `EASTER_EGG_MAP` as well as the Konami code sequence, 
 have it be indicated by the map itself. Or maps in this instance, since we 
 have three elevator maps.

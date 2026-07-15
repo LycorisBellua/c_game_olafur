@@ -40,7 +40,8 @@ void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		return ;
 	}
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	if (g_man.img_cursor)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 	rotate_on_click(&g_man);
 	return ;
 }

@@ -37,8 +37,8 @@ G solid2 5
 D 8 4 dgn_d null HMID
 D 8 8 dgn_d null HMID
 
-PT SO 12 0 dgn_p dgn_p_open assets/maps/test/sml.map EA 0 5
-PT NO 15 6 dgn_p dgn_p_open assets/maps/test/sml.map EA 0 5
+PT SO 12 0 p p_open assets/maps/test/sml.map EA 0 5
+PT NO 15 6 p p_open assets/maps/test/sml.map EA 0 5
 
 SP 18.5 10.5 sprite_pillar collision
 SP 18.5 11.5 sprite_pillar collision
@@ -53,12 +53,12 @@ SP 9.5 15.5 sprite_barrel collision
 SP 10.0 15.1 sprite_barrel collision
 SP 10.5 15.8 sprite_barrel collision
 
-SP 20.5 11.5 sprite_soul_idle collectible
-SP 18.5 4.5 sprite_soul_idle collectible
-SP 10.0 12.5 sprite_soul_idle collectible
-SP 3.5 6.5 sprite_soul_idle collectible
-SP 3.5 14.5 sprite_soul_idle collectible
-SP 14.5 20.5 sprite_soul_idle collectible
+SP 20.5 11.5 gui_collectible collectible
+SP 18.5 4.5 gui_collectible collectible
+SP 10.0 12.5 gui_collectible collectible
+SP 3.5 6.5 gui_collectible collectible
+SP 3.5 14.5 gui_collectible collectible
+SP 14.5 20.5 gui_collectible collectible
 
 111111111111011111111111
 100000000000000000000001

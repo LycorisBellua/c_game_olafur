@@ -17,17 +17,11 @@ t_portal	*get_portal(t_man *man)
 		return (0);
 	if (!man->player.is_in_portal)
 		get_face_line(portal->src_cardinal, portal->src_pos, 0, face_line);
-	else if (portal->is_corridor)
-		get_face_line(opp_cardinal(portal->src_cardinal), portal->src_pos, 0.01,
-			face_line);
 	else
 		return (0);
 	if (do_segments_intersect(face_line[0], face_line[1], man->player.prev_pos,
 			man->player.pos))
-	{
-		portal->trigger_opposite = man->player.is_in_portal;
 		return (portal);
-	}
 	return (0);
 }
 

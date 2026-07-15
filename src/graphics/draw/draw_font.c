@@ -13,15 +13,13 @@ static void	alignment_left(const char *str, size_t *i, t_ivec2 *pos, int s);
 	shape: since the framebuffer and the metrics scale by the same factor, the 
 	per-line character count and grid snapping are unchanged.
 */
-void	draw_font_default(t_man *man, t_ivec2 *pos, const char *str)
+void	draw_font(t_man *man, t_ivec2 *pos, const char *str)
 {
 	size_t	i;
 	size_t	len;
-	t_img	*img;
 	int		s;
 
-	img = get_image(man, "font_default");
-	if (!str || !img)
+	if (!man->img_font || !str)
 		return ;
 	s = man->gui_scale;
 	i = 0;
@@ -29,9 +27,10 @@ void	draw_font_default(t_man *man, t_ivec2 *pos, const char *str)
 	fix_initial_pos(pos, s);
 	while (i <= len)
 	{
-		img->cycle_index = clamp(str[i] - ' ', 0, img->cycle_len - 1);
+		man->img_font->cycle_index = clamp(str[i] - ' ', 0,
+			man->img_font->cycle_len - 1);
 		alignment_left(str, &i, pos, s);
-		draw_char(man, img, *pos);
+		draw_char(man, man->img_font, *pos);
 		pos->x += FONT_SIZE_X * s;
 		if (str[i] == '\n')
 			set_ivec2(pos, FONT_PAD * s, pos->y + FONT_SIZE_Y * 2 * s);

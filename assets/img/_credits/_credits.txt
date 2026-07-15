@@ -12,16 +12,16 @@ Generated with a Python script
 - common/solid2.png
 
 See "license_mc.txt"
-- common/soul.png
-- common/soul_shadow.png
-
------------------------------------- DUNGEON -----------------------------------
---------------------------- Concept by LycorisBellua ---------------------------
+- common/soul_idle.png
+- common/soul_idle_shadow.png
 
 https://opengameart.org/content/animated-portal-or-wormhole-several-variants
 Hansjörg Malthaner - http://opengameart.org/users/varkalandar
-- dgn/dgn_p.png
-- dgn/dgn_p_open.png
+- common/p.png
+- common/p_open.png
+
+------------------------------------ DUNGEON -----------------------------------
+--------------------------- Concept by LycorisBellua ---------------------------
 
 https://opengameart.org/content/doors
 SpiderDave - https://opengameart.org/users/spiderdave

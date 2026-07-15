@@ -4,7 +4,7 @@
         "path_shadow": "",
         "segments": [
             {
-                "id": "font_default",
+                "id": "font",
                 "size": [7, 12],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -128,6 +128,25 @@
         ]
     },
     {
+        "path": "assets/img/common/soul_idle.png",
+        "path_shadow": "assets/img/common/soul_idle_shadow.png",
+        "segments": [
+            {
+                "id": "gui_collectible",
+                "size": [32, 32],
+                "shadow_offset": [0, 0],
+                "still_frame": 3,
+                "cycle_time_in_ms": 300,
+                "cycle": [
+                    [0, 0],
+                    [32, 0],
+                    [64, 0],
+                    [96, 0]
+                ]
+            }
+        ]
+    },
+    {
         "path": "assets/img/common/solid.png",
         "path_shadow": "",
         "segments": [
@@ -162,30 +181,11 @@
         ]
     },
     {
-        "path": "assets/img/common/soul.png",
-        "path_shadow": "assets/img/common/soul_shadow.png",
-        "segments": [
-            {
-                "id": "sprite_soul_idle",
-                "size": [32, 32],
-                "shadow_offset": [0, 0],
-                "still_frame": 3,
-                "cycle_time_in_ms": 300,
-                "cycle": [
-                    [0, 0],
-                    [32, 0],
-                    [64, 0],
-                    [96, 0]
-                ]
-            }
-        ]
-    },
-    {
-        "path": "assets/img/dgn/dgn_p.png",
+        "path": "assets/img/common/p.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "dgn_p",
+                "id": "p",
                 "size": [300, 300],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -260,11 +260,11 @@
         ]
     },
     {
-        "path": "assets/img/dgn/dgn_p_open.png",
+        "path": "assets/img/common/p_open.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "dgn_p_open",
+                "id": "p_open",
                 "size": [300, 300],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,

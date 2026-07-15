@@ -11,6 +11,8 @@ void	add_outline_to_font(t_img *font)
 	size_t	cycle_index;
 	t_ivec2	*offsets;
 
+	if (!font)
+		return;
 	offsets = get_outline_offsets();
 	if (!offsets)
 		return ;

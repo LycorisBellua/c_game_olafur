@@ -1,5 +1,6 @@
 #include "olafur.h"
 
+static void	fetch_default_images(t_man *man);
 static int	init_game(t_man *man, const char *map_path);
 
 t_man	g_man;
@@ -21,7 +22,7 @@ int	main(int argc, char **argv)
 		|| !init_frame(&g_man)
 		|| !update_image_array(&g_man, IMG_JSON_DEFAULT))
 		return (put_error(&g_man, 0, 0, EXIT_FAILURE));
-	add_outline_to_font(get_image(&g_man, ID_FONT_DEFAULT));
+	fetch_default_images(&g_man);
 	audio_init(&g_man.audio);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
@@ -31,6 +32,16 @@ int	main(int argc, char **argv)
 	run_game_loop(&g_man);
 	deinit(&g_man);
 	return (EXIT_SUCCESS);
+}
+
+static void	fetch_default_images(t_man *man)
+{
+	man->img_font = get_image(man, ID_FONT);
+	if (man->img_font)
+		add_outline_to_font(man->img_font);
+	man->img_cursor = get_image(man, ID_CURSOR);
+	man->img_collec = get_image(man, ID_GUI_COLLEC);
+	return ;
 }
 
 static int	init_game(t_man *man, const char *map_path)

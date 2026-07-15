@@ -18,9 +18,9 @@ G solid 5
 1F hol_f
 1C hol_c
 
-PT EA 6 14 dgn_p dgn_p_open assets/maps/olafur/mus2.map EA 0 4
-PT WE 95 14 dgn_p dgn_p_open assets/maps/olafur/hol.map WE 25 14
-PT EA 22 14 dgn_p dgn_p_open null
+PT EA 6 14 p p_open assets/maps/olafur/mus2.map EA 0 4
+PT WE 95 14 p p_open assets/maps/olafur/hol.map WE 25 14
+PT EA 22 14 p p_open null
 
 SP 48.5 2.5 sprite_hol01 collision
 SP 48.5 26.5 sprite_hol02 collision

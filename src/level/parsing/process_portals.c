@@ -62,7 +62,6 @@ static int	set_portal(t_man *man, t_map *map, t_portal *p, int i)
 	size_t	arg_len;
 
 	p->src_map = map;
-	p->is_corridor = PORTAL_IS_CORRIDOR;
 	arg_len = count_arr_elems((void **)map->pars.vars[i] + 1);
 	if (arg_len != 6 && arg_len != 9)
 		return (put_error(0, E_VAR_VAL, map->pars.vars[i][0], 0));

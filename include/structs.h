@@ -185,9 +185,7 @@ typedef struct s_door
 
 typedef struct s_portal
 {
-	int		preview;
 	t_map	*src_map;
-	int		is_corridor;
 	char	src_cardinal;
 	t_ivec2	src_pos;
 	char	*path_dst_map;
@@ -198,7 +196,6 @@ typedef struct s_portal
 	t_img	*tex_open;
 	int		is_open;
 	int		is_visible;
-	int		trigger_opposite;
 }	t_portal;
 
 typedef struct s_cell
@@ -369,6 +366,9 @@ struct s_man
 	t_ray			ray_buf[MAX_COLUMN_RAYS];
 	int				ray_count;
 	t_audio			audio;
+	t_img 			*img_font;
+	t_img 			*img_cursor;
+	t_img			*img_collec;
 };
 
 extern t_man	g_man;

@@ -42,11 +42,11 @@ void	display_fps(t_man *man)
 	num = itoa_dec(smoothed_fps);
 	s = strjoin("VSync: ", man->vsync ? "On" : "Off");
 	set_ivec2(&pos, 20 * man->gui_scale, 40 * man->gui_scale);
-	draw_font_default(man, &pos, s);
+	draw_font(man, &pos, s);
 	free(s);
 	s = strjoin("FPS: ", num);
 	set_ivec2(&pos, 20 * man->gui_scale, 60 * man->gui_scale);
-	draw_font_default(man, &pos, s);
+	draw_font(man, &pos, s);
 	free(s);
 	free(num);
 	return ;

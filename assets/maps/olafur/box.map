@@ -63,11 +63,11 @@ SP 69.5 3.5 sprite_box04
 SP 3.5 5.5 sprite_box04
 SP 2.5 7.5 sprite_box04
 
-SP 49.5 1.5 sprite_soul_idle collectible
-SP 3.5 2.5 sprite_soul_idle collectible
-SP 18.5 2.5 sprite_soul_idle collectible
-SP 41.5 2.5 sprite_soul_idle collectible
-SP 2.5 3.5 sprite_soul_idle collectible
+SP 49.5 1.5 gui_collectible collectible
+SP 3.5 2.5 gui_collectible collectible
+SP 18.5 2.5 gui_collectible collectible
+SP 41.5 2.5 gui_collectible collectible
+SP 2.5 3.5 gui_collectible collectible
 
 111111111111111111111111111111111111111111111111111111111111111111111
 10000E000000000000000000000000000000000000000000000000000000000000001

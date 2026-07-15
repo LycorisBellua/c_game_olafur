@@ -19,8 +19,8 @@ G solid 5
 2F dgn_f
 1C dgn_c
 
-PT EA 0 5 dgn_p dgn_p_open assets/maps/test/dgn.map SO 12 0
-PT WE 6 5 dgn_p dgn_p_open assets/maps/test/dgn.map SO 12 0
+PT EA 0 5 p p_open assets/maps/test/dgn.map SO 12 0
+PT WE 6 5 p p_open assets/maps/test/dgn.map SO 12 0
 
 1111111
 1S10001

@@ -5,8 +5,7 @@ static void	display_centered_message(t_man *man, t_ivec2 *pos, const char *msg);
 
 void	display_game_gui(t_man *man, t_map *map)
 {
-	static t_img	*cursor;
-	t_ivec2			pos;
+	t_ivec2	pos;
 
 	if (man->game_state == GAME_STATE_SUCCESS)
 	{
@@ -22,28 +21,27 @@ void	display_game_gui(t_man *man, t_map *map)
 	display_collectibles(man, map);
 	if (man->show_debug)
 		display_fps(man);
-	if (!cursor)
-		cursor = get_image(man, "cursor");
 	if (man->cursor.x >= 0 && man->cursor.y >= 0)
-		draw_cursor(man, cursor, man->cursor, man->l_click_action);
+		draw_cursor(man, man->img_cursor, man->cursor, man->l_click_action);
 	return ;
 }
 
 static void	display_collectibles(t_man *man, t_map *map)
 {
-	static t_img	*soul_icon;
-	t_ivec2			pos;
-	char			*tmp1;
-	char			*tmp2;
-	char			*tmp3;
+	t_ivec2	pos;
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
 
-	if (!soul_icon)
-		soul_icon = get_image(man, "sprite_soul_idle");
+	if (!man->img_font || (!man->img_collec && !man->player.collected))
+		return ;
 	set_ivec2(&pos, 0, 0);
-	draw_image(man, soul_icon, pos);
-	if (soul_icon)
-		set_ivec2(&pos, pos.x + soul_icon->size.x * man->gui_scale,
+	if (man->img_collec)
+	{
+		draw_image(man, man->img_collec, pos);
+		set_ivec2(&pos, pos.x + man->img_collec->size.x * man->gui_scale,
 			pos.y + 14 * man->gui_scale);
+	}
 	tmp1 = itoa_dec(man->player.collected);
 	if (map->to_collect >= 0)
 	{
@@ -54,7 +52,7 @@ static void	display_collectibles(t_man *man, t_map *map)
 		free(tmp2);
 		free(tmp3);
 	}
-	draw_font_default(man, &pos, tmp1);
+	draw_font(man, &pos, tmp1);
 	free(tmp1);
 	return ;
 }
@@ -66,6 +64,6 @@ static void	display_centered_message(t_man *man, t_ivec2 *pos, const char *msg)
 	pos->x = man->frame.size.x / 2 - strlen(msg) / 2 * FONT_SIZE_X
 		* man->gui_scale;
 	pos->y = man->frame.size.y / 2;
-	draw_font_default(man, pos, msg);
+	draw_font(man, pos, msg);
 	return ;
 }

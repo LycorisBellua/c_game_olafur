@@ -42,13 +42,14 @@ static void	easter_egg(t_man *man)
 	const char	*name_egg;
 	const char	*name_curr;
 
-	name_egg = get_filename(MAP_EASTER_EGG);
+	name_egg = get_filename(EASTER_EGG_MAP);
 	name_curr = get_filename(man->maps[man->curr_map]->filepath);
-	if (!name_egg || !name_curr || strncmp(name_egg, "elv", 3)
-		|| strncmp(name_curr, "elv", 3) || !strncmp(name_curr, "cor", 3))
+	if (!name_egg || !name_curr || strncmp(name_egg, EASTER_EGG_ELV, 3)
+		|| strncmp(name_curr, EASTER_EGG_ELV, 3)
+		|| !strncmp(name_curr, EASTER_EGG_COR, 3))
 		return ;
 	if (index_egg < 0)
-		index_egg = add_map(man, MAP_EASTER_EGG);
+		index_egg = add_map(man, EASTER_EGG_MAP);
 	if (index_egg < 0)
 		return ;
 	if (index_curr < 0)

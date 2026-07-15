@@ -50,9 +50,7 @@ static void	set_transform(t_man *man, t_portal *portal)
 
 	exit_pos = man->maps[man->curr_map]->start_pos;
 	exit_dir = man->maps[man->curr_map]->start_dir;
-	if (portal->dst_cardinal && portal->trigger_opposite)
-		exit_dir = get_dir_from_cardinal(opp_cardinal(portal->dst_cardinal));
-	else if (portal->dst_cardinal)
+	if (portal->dst_cardinal)
 		exit_dir = get_dir_from_cardinal(portal->dst_cardinal);
 	if (portal->override_start_pos)
 	{
@@ -80,15 +78,10 @@ static t_vec2	compute_start_pos(t_portal *portal, t_vec2 player_pos)
 	else if (portal->src_cardinal == 'E' || portal->src_cardinal == 'W')
 		offset = player_pos.y - portal->src_pos.y;
 	offset = fclamp(offset, 0.0, 1.0);
-	depth = 0.1;
-	if (!portal->is_corridor || portal->trigger_opposite)
-		depth += 0.5;
+	depth = 0.6;
 	dir = get_dir_from_cardinal(portal->dst_cardinal);
-	set_vec2(&p, portal->dst_pos.x + 0.5, portal->dst_pos.y + 0.5);
-	if (portal->is_corridor && !portal->trigger_opposite)
-		set_vec2(&p, p.x - dir.x * (0.5 - depth), p.y - dir.y * (0.5 - depth));
-	else
-		set_vec2(&p, p.x + dir.x * depth, p.y + dir.y * depth);
+	p.x = portal->dst_pos.x + 0.5 + dir.x * depth;
+	p.y = portal->dst_pos.y + 0.5 + dir.y * depth;
 	if (!dir.x)
 		p.x = portal->dst_pos.x + offset;
 	else

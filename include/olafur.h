@@ -73,7 +73,7 @@ void		draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 				t_color edge);
 void		draw_shape(t_man *man, t_vert arr[], int len);
 void		draw_shape_full(t_man *man, t_vert arr[], int len);
-void		draw_font_default(t_man *man, t_ivec2 *pos, const char *str);
+void		draw_font(t_man *man, t_ivec2 *pos, const char *str);
 void		draw_image(t_man *man, t_img *img, t_ivec2 pos);
 void		draw_png_bg_with_x_offset(t_man *man, t_png *png, int x_offset);
 void		fill_frame(t_man *man, t_color c);
@@ -180,7 +180,6 @@ void		decrease_minimap_zoom(t_man *man);
 void		increase_minimap_zoom(t_man *man);
 t_vec2		get_dir_from_cardinal(char c);
 t_ivec2		get_dir_from_cardinal_ivec(char c);
-char		opp_cardinal(char cardinal);
 char		get_card_from_str(const char *s);
 char		get_offset_from_str(const char *s);
 

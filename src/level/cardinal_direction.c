@@ -34,19 +34,6 @@ t_ivec2	get_dir_from_cardinal_ivec(char c)
 	return (dir);
 }
 
-char	opp_cardinal(char cardinal)
-{
-	if (cardinal == 'N')
-		return ('S');
-	else if (cardinal == 'S')
-		return ('N');
-	else if (cardinal == 'E')
-		return ('W');
-	else if (cardinal == 'W')
-		return ('E');
-	return (0);
-}
-
 char	get_card_from_str(const char *s)
 {
 	if (!s)

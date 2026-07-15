@@ -2,7 +2,7 @@
 
 int	is_portal_visible(t_portal *portal)
 {
-	if (!portal || portal->is_corridor)
+	if (!portal)
 		return (0);
 	if (portal->is_open)
 		return (portal->tex_open && portal->tex_open->id);
