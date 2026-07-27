@@ -9,10 +9,15 @@ S_COLLEC assets/audio/olafur/e_collec.mp3
 
 SK mus_sk
 
-NO mus_w4
-SO mus_w4
-WE mus_w2
-EA mus_w3
+1NO mus_w4
+1SO mus_w4
+1WE mus_w2
+1EA mus_w3
+
+2NO mus_w4
+2SO mus_w4
+2WE mus_w4
+2EA mus_w4
 
 1F mus_f
 1C mus_c
@@ -39,7 +44,7 @@ SP 4.5 5.5 sprite_mus3
 100000001
 100101001
 101101101
-100000000
+100000002
 101101101
 1001S1001
 100000001

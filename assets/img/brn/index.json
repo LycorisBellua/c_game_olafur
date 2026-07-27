@@ -21,7 +21,7 @@
         "segments": [
             {
                 "id": "brn_d",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -37,7 +37,7 @@
         "segments": [
             {
                 "id": "brn_d_open",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -53,7 +53,7 @@
         "segments": [
             {
                 "id": "brn_p",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -69,7 +69,7 @@
         "segments": [
             {
                 "id": "brn_p_open",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -117,7 +117,7 @@
         "segments": [
             {
                 "id": "brn_f_in",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -149,7 +149,7 @@
         "segments": [
             {
                 "id": "brn_w2",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -181,7 +181,7 @@
         "segments": [
             {
                 "id": "brn_w4",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -261,7 +261,7 @@
         "segments": [
             {
                 "id": "sprite_brn05",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,

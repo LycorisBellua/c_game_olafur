@@ -2,6 +2,7 @@
 
 static int		calculate_tex_coord_x(t_img *tex, t_ray *r);
 static float	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex);
+static t_ivec2	calculate_texel_range(t_ray *r, t_img *tex);
 static t_color	shade_wall_pixel(t_ray *r, t_color c, t_color fog, int k);
 static int		wall_pixel_occluded(t_man *man, t_ray *r);
 
@@ -11,6 +12,7 @@ void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 	int		it_prev;
 	int		it_new;
 	t_ivec2	tex_coord;
+	t_ivec2	texel_range;
 	float	tex_step;
 	float	tex_pos;
 	t_color	*frame;
@@ -31,7 +33,8 @@ void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 	shade_k = (256 - r->corner_factor8) * (256 - r->fog_factor8);
 	tex_step = (float)tex_h / r->line_height_cubic;
 	tex_pos = calculate_initial_tex_pos(man, r, tex);
-	it_prev = (int)tex_pos;
+	texel_range = calculate_texel_range(r, tex);
+	it_prev = imin(imax((int)floorf(tex_pos), texel_range.x), texel_range.y);
 	tex_coord.y = it_prev % tex_h;
 	if (tex_coord.y < 0)
 		tex_coord.y += tex_h;
@@ -43,7 +46,8 @@ void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 					frame[col_base + tex_coord.y], shade_fog, shade_k),
 				r->coord1.x, r->coord1.y);
 		tex_pos += tex_step;
-		it_new = (int)tex_pos;
+		it_new = imin(imax((int)floorf(tex_pos), texel_range.x),
+				texel_range.y);
 		tex_coord.y += it_new - it_prev;
 		it_prev = it_new;
 		while (tex_coord.y >= tex_h)
@@ -94,6 +98,19 @@ static float	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex)
 	tex_step = (float)tex->size.y / r->line_height_cubic;
 	return (y_offset + (r->coord1.y - (man->frame.size.y * 0.5 - r->line_height
 				* 0.5)) * tex_step);
+}
+
+static t_ivec2	calculate_texel_range(t_ray *r, t_img *tex)
+{
+	t_cell	*cell;
+	float	y_offset;
+	t_ivec2	range;
+
+	cell = &r->m->cells[r->m_index.y][r->m_index.x];
+	y_offset = tex->size.y * (1.0f - cell->height) * 0.5f;
+	range.x = (int)floorf(y_offset);
+	range.y = (int)ceilf(y_offset + cell->height * tex->size.y) - 1;
+	return (range);
 }
 
 static t_color	shade_wall_pixel(t_ray *r, t_color c, t_color fog, int k)

@@ -37,7 +37,7 @@
         "segments": [
             {
                 "id": "mus2_p_box",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -101,7 +101,7 @@
         "segments": [
             {
                 "id": "mus2_p_hol",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -133,7 +133,7 @@
         "segments": [
             {
                 "id": "mus2_c",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -149,7 +149,7 @@
         "segments": [
             {
                 "id": "mus2_f",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -197,7 +197,7 @@
         "segments": [
             {
                 "id": "mus2_w3",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -213,7 +213,7 @@
         "segments": [
             {
                 "id": "mus2_w4",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,

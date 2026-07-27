@@ -1,3 +1,11 @@
+RECURSIVE MAP LOADING
+- Consider loading maps recursively from the initial map. The game doesn't have 
+a lot of maps, so it's okay. You can add a max amount for the initial load if 
+you want. I personally have 12 maps, so maybe the max is 15. Also, don't forget 
+to call `glfwPollEvents()` in between consecutive map loads, or the OS will 
+think the app crashed.
+- Don't forget to add a loading screen. It could say "Loading game world...".
+
 FIRST MAP DYNAMIC SELECTION
 - Instead of having the `MAP_DEFAULT` macro, search for the first map within 
 `assets/maps/`. That is to say that you first look directly at this level to 

@@ -62,7 +62,7 @@ static int	set_door(t_man *man, t_map *map, t_door *d, int i)
 
 	d->m = map;
 	arg_len = count_arr_elems((void **)map->pars.vars[i] + 1);
-	if (arg_len < 5)
+	if (arg_len < 4)
 		return (put_error(0, E_VAR_VAL, map->pars.vars[i][0], 0));
 	d->pos.x = get_num_int(map->pars.vars[i][1]);
 	if (d->pos.x < 0)
@@ -90,7 +90,10 @@ static int	set_offset_and_opening_cardinal(t_map *map, t_door *d, int i,
 {
 	if (arg_len > 6)
 		return (put_error(0, E_VAR_VALS, map->pars.vars[i][0], 0));
-	d->offset = get_offset_from_str(map->pars.vars[i][5]);
+	if (arg_len == 4)
+		d->offset = 'A';
+	else
+		d->offset = get_offset_from_str(map->pars.vars[i][5]);
 	if (!d->offset)
 		return (put_error(0, E_BAD_OFFSET, map->pars.vars[i][5], 0));
 	if (d->offset == 'A')

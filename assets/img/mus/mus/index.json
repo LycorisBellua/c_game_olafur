@@ -37,7 +37,7 @@
         "segments": [
             {
                 "id": "mus_p_afg",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -133,7 +133,7 @@
         "segments": [
             {
                 "id": "mus_c",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -149,7 +149,7 @@
         "segments": [
             {
                 "id": "mus_f",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -197,7 +197,7 @@
         "segments": [
             {
                 "id": "mus_w3",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -229,7 +229,7 @@
         "segments": [
             {
                 "id": "sprite_mus1",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -245,7 +245,7 @@
         "segments": [
             {
                 "id": "sprite_mus2",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
@@ -261,7 +261,7 @@
         "segments": [
             {
                 "id": "sprite_mus3",
-                "size": [511, 512],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,

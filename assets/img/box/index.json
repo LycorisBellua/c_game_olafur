@@ -101,7 +101,7 @@
         "segments": [
             {
                 "id": "box_f",
-                "size": [256, 256],
+                "size": [512, 512],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
