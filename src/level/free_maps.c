@@ -7,6 +7,8 @@ void	free_maps(t_man *man)
 {
 	int	i;
 
+	free(man->first_map_path);
+	man->first_map_path = 0;
 	if (!man->maps)
 		return ;
 	i = 0;

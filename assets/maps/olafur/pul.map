@@ -16,7 +16,7 @@ EA pul_w4
 1F pul_f
 1C pul_c
 
-PT NO 4 9 pul_p pul_p_open assets/maps/olafur/mus.map SO 4 0
+PT NO 4 9 pul_p pul_p_open assets/maps/olafur/_mus.map SO 4 0
 
 SP 6.8 8.8 sprite_legs
 SP 1.4 1.1 sprite_ladder

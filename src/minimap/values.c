@@ -2,9 +2,6 @@
 
 void	init_minimap_values(t_man *man)
 {
-	man->gui_scale = man->res.res.y / 360;
-	if (man->gui_scale < 1)
-		man->gui_scale = 1;
 	man->minimap_radius = man->res.res.y / 10;
 	man->minimap_radius_sq = man->minimap_radius * man->minimap_radius;
 	man->minimap_zoom = 9;

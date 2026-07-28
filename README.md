@@ -39,13 +39,13 @@ potential future project.
 
 ## Levels
 
-Give a specific \*.map file as argument to the program, or don't give any to 
-default to "assets/maps/olafur/mus.map".  
+Give a specific `*.map` file as argument to the program, or don't give any to 
+default to the first map of the `assets/maps/` folder.  
 
-- assets/maps/test/\*:  
+- `assets/maps/test/*`:  
 The Test level is where I develop features.  
 
-- assets/maps/olafur/\* (recommended entry "mus.map"):  
+- `assets/maps/olafur/*` (recommended entry `_mus.map`):  
 The Olafur level is a museum where each painting leads to another mini-world. 
 It has been designed by Hellchauffo 
 ([Figma](https://www.figma.com/proto/UshKwYvv5vY0WgejO4WXR2/Workflow?node-id=82-974) 

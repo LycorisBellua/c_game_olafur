@@ -322,6 +322,7 @@ typedef struct s_res
 
 struct s_man
 {
+	char			*first_map_path;
 	GLFWwindow		*window;
 	GLuint			shader_program;
 	GLint			uniform_loc;

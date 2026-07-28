@@ -1,8 +1,11 @@
 # How to format a map file
 
-- It doesn't have to be in the assets/maps/ folder. It can be located anywhere on the 
-system.
-- It has the \*.map extension.
+- The first map file in alphabetical order within the assets/maps/ folder will 
+be selected. The search goes into sub-folders if needed.
+- A map file can be manually given instead, as argument to the executable. If 
+so, then it doesn't need to be located in assets/maps/ and can be anywhere on 
+the system.
+- The file has the \*.map extension.
 - Images are PNG and sounds are MP3.
 - Within the file, the variables come before the maps.
 - The variables can be ordered in whichever way. They don't have to respect any 

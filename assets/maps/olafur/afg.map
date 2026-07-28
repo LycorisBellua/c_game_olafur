@@ -49,7 +49,7 @@ D 9 21 afg_d afg_d_open SO
 D 8 23 afg_d afg_d_open NO
 D 28 25 afg_d afg_d_open EA
 
-PT WE 31 3 afg_p afg_p_open assets/maps/olafur/mus.map EA 0 4
+PT WE 31 3 afg_p afg_p_open assets/maps/olafur/_mus.map EA 0 4
 
 SP 4.5 20.5 sprite_afg1 collision
 SP 27.5 7.5 sprite_afg2 collision

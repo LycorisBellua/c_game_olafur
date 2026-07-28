@@ -1,30 +1,11 @@
+DYNAMIC EASTER EGG
+- Instead of hardcoding `EASTER_EGG_MAP` as well as the Konami code sequence, 
+have it be indicated by the map itself. Or maps in this instance, since we 
+have three elevator maps.
+
 RECURSIVE MAP LOADING
 - Consider loading maps recursively from the initial map. The game doesn't have 
 a lot of maps, so it's okay. You can add a max amount for the initial load if 
 you want. I personally have 12 maps, so maybe the max is 15. Also, don't forget 
 to call `glfwPollEvents()` in between consecutive map loads, or the OS will 
 think the app crashed.
-- Don't forget to add a loading screen. It could say "Loading game world...".
-
-FIRST MAP DYNAMIC SELECTION
-- Instead of having the `MAP_DEFAULT` macro, search for the first map within 
-`assets/maps/`. That is to say that you first look directly at this level to 
-find a *.map file. It's the first one alphabetically. If there's none, then 
-search the first subdirectory (picked alphabetically), and so and so forth, 
-until a dead end is reached. Then, look into the second subdir. If there was 
-truly no .map file at all, close the program.
-    --- `bas.map` should be targeted first. Then, you store it in `test/`.
-    --- Then, it should be `olafur/afg.map`.
-    --- Rename `olafur/mus.map` into `olafur/_mus.map` to make first. It 
-    should be picked now.
-- Of course, it's possible to specify a .map file as argument.
-- And yes I know this system is slow, but I don't want to hardcode the map. 
-This way, anyone can create new maps and run them on Windows or without 
-specifying an argument.
-- Maybe explain that in the map README. Also modify the general README, as it 
-mentions map paths.
-
-DYNAMIC EASTER EGG
-- Instead of hardcoding `EASTER_EGG_MAP` as well as the Konami code sequence, 
-have it be indicated by the map itself. Or maps in this instance, since we 
-have three elevator maps.

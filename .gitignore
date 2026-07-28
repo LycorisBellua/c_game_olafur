@@ -6,5 +6,4 @@
 *.a
 *.so
 *.exe
-build
-olafur
+build/

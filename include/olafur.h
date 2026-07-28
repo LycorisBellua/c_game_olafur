@@ -268,6 +268,7 @@ void		run_game_loop(t_man *man);
 void		game_loop(t_man *man);
 void		update_mouse_pos(t_man *man);
 void		toggle_fullscreen(t_man *man);
+char		*find_first_map_path(const char *dir_path);
 
 /* End ---------------------------------------------------------------------- */
 

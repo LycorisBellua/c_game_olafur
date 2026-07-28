@@ -25,13 +25,13 @@
 # define FONT_SIZE_Y 12
 # define FONT_MOD_X 4
 # define FONT_MOD_Y 4
+# define MAP_DIR "assets/maps"
 # define IMG_JSON_DEFAULT "assets/img/common/index.json"
 # define ID_FONT "font"
 # define ID_CURSOR "cursor"
 # define ID_GUI_COLLEC "gui_collectible"
 # define ID_SKYBOX "composed_skybox"
 
-# define MAP_DEFAULT "assets/maps/olafur/mus.map"
 # define EASTER_EGG_MAP "assets/maps/olafur/elv3.map"
 # define EASTER_EGG_ELV "elv"
 # define EASTER_EGG_COR "cor"
