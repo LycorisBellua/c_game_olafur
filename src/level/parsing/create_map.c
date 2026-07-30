@@ -12,8 +12,9 @@ t_map	*create_map(t_man *man, const char *filepath)
 		|| !process_floor_types(man, map) || !process_ceil_types(man, map)
 		|| !process_background_image(man, map) || !process_doors(man, map)
 		|| !process_portals(man, map) || !process_sprites(man, map)
-		|| !is_var_list_empty(map) || !check_map_symbols(map)
-		|| !set_player_data(map) || !populate_cells(map))
+		|| !process_teleport(map) || !is_var_list_empty(map)
+		|| !check_map_symbols(map) || !set_player_data(map)
+		|| !populate_cells(map))
 	{
 		free_map(map);
 		return (0);

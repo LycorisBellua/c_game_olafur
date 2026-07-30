@@ -1,0 +1,103 @@
+IMG assets/img/common/index.json
+IMG assets/img/brn/index.json
+IMG assets/img/elv/index.json
+
+S_MUSIC assets/audio/olafur/m_elv.mp3
+S_AMBIENCE assets/audio/olafur/a_dark.mp3
+S_WIN assets/audio/olafur/e_win.mp3
+S_LOSE assets/audio/olafur/e_lose.mp3
+S_COLLEC assets/audio/olafur/e_collec.mp3
+
+SK brn_sk
+
+NO elv_w
+SO elv_p_open
+WE elv_w
+EA elv_w
+
+1F elv_f
+1C elv_c
+
+PT SO 1 0 null null assets/maps/olafur/elv4.map NO 1 2
+PT NO 1 8 null null assets/maps/olafur/cor2.map SO 1 6
+
+111
+1S1
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+101
+
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111
+111

@@ -285,6 +285,7 @@ struct s_map
 	int			to_collect;
 	t_a_track	*tracks[6];
 	t_a_source	**sources;
+	char		*tp_path_map;
 };
 
 typedef struct s_player

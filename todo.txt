@@ -1,7 +1,6 @@
 DYNAMIC EASTER EGG
-- Instead of hardcoding `EASTER_EGG_MAP` as well as the Konami code sequence, 
-have it be indicated by the map itself. Or maps in this instance, since we 
-have three elevator maps.
+- Instead of hardcoding the Konami code sequence, have it written in the map 
+itself. Also note that a sequence needs at least two keys.
 
 RECURSIVE MAP LOADING
 - Consider loading maps recursively from the initial map. The game doesn't have 

@@ -9,7 +9,7 @@ S_COLLEC assets/audio/olafur/e_collec.mp3
 
 SK brn_sk
 
-NO elv_p
+NO elv_p_open
 SO elv_w
 WE elv_w2
 EA elv_w
@@ -17,12 +17,12 @@ EA elv_w
 1F elv_f
 1C elv_c
 
-PT NO 1 2 null null assets/maps/olafur/_mus.map NO 4 8
+PT NO 1 2 null null assets/maps/olafur/cor2.map SO 1 0
 
-TP assets/maps/olafur/elv4.map
+TP assets/maps/olafur/elv2.map
 
 111
-1N1
+1S1
 111
 
 111

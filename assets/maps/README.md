@@ -86,6 +86,12 @@ map will be used instead. Also, this portal uses the "tex_closed" image, and
 when the player is close enough for the portal to open, "tex_open" is used. 
 There can be more than one PT variable.
 
+- **TP**: Teleport. Indicate the path of the destination map file. The 
+teleportation is triggered through the Konami code, and the player's position 
+and rotation are maintained. If this position is in a wall or out of bounds in 
+the destination map, then the destination map's entrance is selected as the new 
+position.
+
 ## Maps
 
 - The first map is mandatory. This is the wall map.

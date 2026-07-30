@@ -32,10 +32,6 @@
 # define ID_GUI_COLLEC "gui_collectible"
 # define ID_SKYBOX "composed_skybox"
 
-# define EASTER_EGG_MAP "assets/maps/olafur/elv3.map"
-# define EASTER_EGG_ELV "elv"
-# define EASTER_EGG_COR "cor"
-
 # define NBR_KEYS 16
 # define KEY_A         GLFW_KEY_A
 # define KEY_B         GLFW_KEY_B

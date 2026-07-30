@@ -304,6 +304,7 @@ int			process_ceil_types(t_man *man, t_map *map);
 int			process_doors(t_man *man, t_map *map);
 int			process_portals(t_man *man, t_map *map);
 int			process_sprites(t_man *man, t_map *map);
+int			process_teleport(t_map *map);
 int			create_audio_sources_for_sprites(t_map *map);
 int			check_map_symbols(t_map *map);
 int			make_maps_same_size(t_map *map);

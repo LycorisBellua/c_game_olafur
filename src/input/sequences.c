@@ -1,7 +1,6 @@
 #include "olafur.h"
 
-static void	easter_egg(t_man *man);
-static void	transport_player_to_map(t_man *man, int map_index);
+static void	teleport(t_man *man);
 
 void	konami_code(t_man *man, int pressed_key)
 {
@@ -26,52 +25,28 @@ void	konami_code(t_man *man, int pressed_key)
 	if (index == sizeof(sequence) / sizeof(int))
 	{
 		index = 0;
-		easter_egg(man);
+		teleport(man);
 	}
 	return ;
 }
 
-/*
-	If in the elevator, go to the secret corridor.
-	If in the secret corridor, go back to the previous elevator.
-*/
-static void	easter_egg(t_man *man)
-{
-	static int	index_egg = -1;
-	static int	index_curr = -1;
-	const char	*name_egg;
-	const char	*name_curr;
-
-	name_egg = get_filename(EASTER_EGG_MAP);
-	name_curr = get_filename(man->maps[man->curr_map]->filepath);
-	if (!name_egg || !name_curr || strncmp(name_egg, EASTER_EGG_ELV, 3)
-		|| strncmp(name_curr, EASTER_EGG_ELV, 3)
-		|| !strncmp(name_curr, EASTER_EGG_COR, 3))
-		return ;
-	if (index_egg < 0)
-		index_egg = add_map(man, EASTER_EGG_MAP);
-	if (index_egg < 0)
-		return ;
-	if (index_curr < 0)
-		index_curr = man->curr_map;
-	if (man->curr_map != index_egg)
-		transport_player_to_map(man, index_egg);
-	else
-	{
-		transport_player_to_map(man, index_curr);
-		index_curr = -1;
-	}
-	return ;
-}
-
-static void	transport_player_to_map(t_man *man, int map_index)
+static void	teleport(t_man *man)
 {
 	t_map	*map;
+	int		index_tp;
+	t_ivec2	pos;
 
-	man->curr_map = map_index;
 	map = man->maps[man->curr_map];
-	if ((int)man->player.pos.x >= map->size.x
-		|| (int)man->player.pos.y >= map->size.y)
+	if (!map->tp_path_map)
+		return ;
+	index_tp = add_map(man, map->tp_path_map);
+	if (index_tp < 0 || index_tp == man->curr_map)
+		return ;
+	man->curr_map = index_tp;
+	map = man->maps[man->curr_map];
+	set_ivec2(&pos, man->player.pos.x, man->player.pos.y);
+	if (pos.x >= map->size.x || pos.y >= map->size.y
+		|| map->cells[pos.y][pos.x].is_obstacle)
 		set_player_transform(man, map->start_pos, man->player.dir);
 	return ;
 }
