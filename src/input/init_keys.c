@@ -44,43 +44,43 @@ void	init_input_keys(t_man *man)
 
 	(void)key_released;
 
-	man->keys[0].keycode = KEY_W;
+	man->keys[0].keycode = GLFW_KEY_W;
 	man->keys[0].actions[game_play][key_pressed] = action_move_forward;
 	man->keys[0].actions[game_play][key_held] = action_move_forward;
 
-	man->keys[1].keycode = KEY_A;
+	man->keys[1].keycode = GLFW_KEY_A;
 	man->keys[1].actions[game_play][key_pressed] = action_turn_left;
 	man->keys[1].actions[game_play][key_held] = action_turn_left;
 
-	man->keys[2].keycode = KEY_S;
+	man->keys[2].keycode = GLFW_KEY_S;
 	man->keys[2].actions[game_play][key_pressed] = action_move_backward;
 	man->keys[2].actions[game_play][key_held] = action_move_backward;
 
-	man->keys[3].keycode = KEY_D;
+	man->keys[3].keycode = GLFW_KEY_D;
 	man->keys[3].actions[game_play][key_pressed] = action_turn_right;
 	man->keys[3].actions[game_play][key_held] = action_turn_right;
 
-	man->keys[4].keycode = KEY_Q;
+	man->keys[4].keycode = GLFW_KEY_Q;
 	man->keys[4].actions[game_play][key_pressed] = action_move_left;
 	man->keys[4].actions[game_play][key_held] = action_move_left;
 
-	man->keys[5].keycode = KEY_E;
+	man->keys[5].keycode = GLFW_KEY_E;
 	man->keys[5].actions[game_play][key_pressed] = action_move_right;
 	man->keys[5].actions[game_play][key_held] = action_move_right;
 
-	man->keys[6].keycode = KEY_UP;
+	man->keys[6].keycode = GLFW_KEY_UP;
 	man->keys[6].actions[game_play][key_pressed] = action_move_forward;
 	man->keys[6].actions[game_play][key_held] = action_move_forward;
 
-	man->keys[7].keycode = KEY_LEFT;
+	man->keys[7].keycode = GLFW_KEY_LEFT;
 	man->keys[7].actions[game_play][key_pressed] = action_turn_left;
 	man->keys[7].actions[game_play][key_held] = action_turn_left;
 
-	man->keys[8].keycode = KEY_DOWN;
+	man->keys[8].keycode = GLFW_KEY_DOWN;
 	man->keys[8].actions[game_play][key_pressed] = action_move_backward;
 	man->keys[8].actions[game_play][key_held] = action_move_backward;
 
-	man->keys[9].keycode = KEY_RIGHT;
+	man->keys[9].keycode = GLFW_KEY_RIGHT;
 	man->keys[9].actions[game_play][key_pressed] = action_turn_right;
 	man->keys[9].actions[game_play][key_held] = action_turn_right;
 
@@ -88,26 +88,26 @@ void	init_input_keys(t_man *man)
 	man->keys[10].actions[game_play][key_pressed] = action_run;
 	man->keys[10].actions[game_play][key_held] = action_run;
 
-	man->keys[11].keycode = KEY_F5;
+	man->keys[11].keycode = GLFW_KEY_F5;
 	man->keys[11].actions[game_play][key_pressed] = action_move_to_start;
 	man->keys[11].actions[game_success][key_pressed] = action_move_to_start;
 
-	man->keys[12].keycode = KEY_F10;
+	man->keys[12].keycode = GLFW_KEY_F10;
 	man->keys[12].actions[game_play][key_pressed] = action_toggle_vsync;
 	man->keys[12].actions[game_success][key_pressed] = action_toggle_vsync;
 	man->keys[12].actions[game_failure][key_pressed] = action_toggle_vsync;
 
-	man->keys[13].keycode = KEY_F11;
+	man->keys[13].keycode = GLFW_KEY_F11;
 	man->keys[13].actions[game_play][key_pressed] = action_toggle_fullscreen;
 	man->keys[13].actions[game_success][key_pressed] = action_toggle_fullscreen;
 	man->keys[13].actions[game_failure][key_pressed] = action_toggle_fullscreen;
 
-	man->keys[14].keycode = KEY_F12;
+	man->keys[14].keycode = GLFW_KEY_F12;
 	man->keys[14].actions[game_play][key_pressed] = action_toggle_debug;
 	man->keys[14].actions[game_success][key_pressed] = action_toggle_debug;
 	man->keys[14].actions[game_failure][key_pressed] = action_toggle_debug;
 
-	man->keys[15].keycode = KEY_ESCAPE;
+	man->keys[15].keycode = GLFW_KEY_ESCAPE;
 	man->keys[15].actions[game_play][key_pressed] = action_close_window;
 	man->keys[15].actions[game_success][key_pressed] = action_close_window;
 	man->keys[15].actions[game_failure][key_pressed] = action_close_window;

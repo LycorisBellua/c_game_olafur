@@ -31,26 +31,8 @@
 # define ID_CURSOR "cursor"
 # define ID_GUI_COLLEC "gui_collectible"
 # define ID_SKYBOX "composed_skybox"
-
 # define NBR_KEYS 16
-# define KEY_A         GLFW_KEY_A
-# define KEY_B         GLFW_KEY_B
-# define KEY_D         GLFW_KEY_D
-# define KEY_E         GLFW_KEY_E
-# define KEY_Q         GLFW_KEY_Q
-# define KEY_S         GLFW_KEY_S
-# define KEY_W         GLFW_KEY_W
-# define KEY_ENTER     GLFW_KEY_ENTER
-# define KEY_ESCAPE    GLFW_KEY_ESCAPE
-# define KEY_LEFT      GLFW_KEY_LEFT
-# define KEY_UP        GLFW_KEY_UP
-# define KEY_RIGHT     GLFW_KEY_RIGHT
-# define KEY_DOWN      GLFW_KEY_DOWN
-# define KEY_F5        GLFW_KEY_F5
-# define KEY_F10       GLFW_KEY_F10
-# define KEY_F11       GLFW_KEY_F11
-# define KEY_F12       GLFW_KEY_F12
-# define KEY_SHIFT     -1
+# define KEY_SHIFT -1
 
 # define E_NO_ARG "Provide a *.map file as argument"
 # define E_TOO_MANY_ARGS "Provide a single *.map file as argument"

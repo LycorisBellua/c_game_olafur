@@ -9,16 +9,16 @@ void	konami_code(t_man *man, int pressed_key)
 
 	if (!sequence[0])
 	{
-		sequence[0] = KEY_UP;
-		sequence[1] = KEY_UP;
-		sequence[2] = KEY_DOWN;
-		sequence[3] = KEY_DOWN;
-		sequence[4] = KEY_LEFT;
-		sequence[5] = KEY_RIGHT;
-		sequence[6] = KEY_LEFT;
-		sequence[7] = KEY_RIGHT;
-		sequence[8] = KEY_B;
-		sequence[9] = KEY_A;
+		sequence[0] = GLFW_KEY_UP;
+		sequence[1] = GLFW_KEY_UP;
+		sequence[2] = GLFW_KEY_DOWN;
+		sequence[3] = GLFW_KEY_DOWN;
+		sequence[4] = GLFW_KEY_LEFT;
+		sequence[5] = GLFW_KEY_RIGHT;
+		sequence[6] = GLFW_KEY_LEFT;
+		sequence[7] = GLFW_KEY_RIGHT;
+		sequence[8] = GLFW_KEY_B;
+		sequence[9] = GLFW_KEY_A;
 	}
 	if (pressed_key != sequence[index++])
 		index = 0;
