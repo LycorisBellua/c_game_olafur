@@ -84,32 +84,36 @@ void	init_input_keys(t_man *man)
 	man->keys[9].actions[game_play][key_pressed] = action_turn_right;
 	man->keys[9].actions[game_play][key_held] = action_turn_right;
 
-	man->keys[10].keycode = KEY_SHIFT;
+	man->keys[10].keycode = GLFW_KEY_LEFT_SHIFT;
 	man->keys[10].actions[game_play][key_pressed] = action_run;
 	man->keys[10].actions[game_play][key_held] = action_run;
 
-	man->keys[11].keycode = GLFW_KEY_F5;
-	man->keys[11].actions[game_play][key_pressed] = action_move_to_start;
-	man->keys[11].actions[game_success][key_pressed] = action_move_to_start;
+	man->keys[11].keycode = GLFW_KEY_RIGHT_SHIFT;
+	man->keys[11].actions[game_play][key_pressed] = action_run;
+	man->keys[11].actions[game_play][key_held] = action_run;
 
-	man->keys[12].keycode = GLFW_KEY_F10;
-	man->keys[12].actions[game_play][key_pressed] = action_toggle_vsync;
-	man->keys[12].actions[game_success][key_pressed] = action_toggle_vsync;
-	man->keys[12].actions[game_failure][key_pressed] = action_toggle_vsync;
+	man->keys[12].keycode = GLFW_KEY_F5;
+	man->keys[12].actions[game_play][key_pressed] = action_move_to_start;
+	man->keys[12].actions[game_success][key_pressed] = action_move_to_start;
 
-	man->keys[13].keycode = GLFW_KEY_F11;
-	man->keys[13].actions[game_play][key_pressed] = action_toggle_fullscreen;
-	man->keys[13].actions[game_success][key_pressed] = action_toggle_fullscreen;
-	man->keys[13].actions[game_failure][key_pressed] = action_toggle_fullscreen;
+	man->keys[13].keycode = GLFW_KEY_F10;
+	man->keys[13].actions[game_play][key_pressed] = action_toggle_vsync;
+	man->keys[13].actions[game_success][key_pressed] = action_toggle_vsync;
+	man->keys[13].actions[game_failure][key_pressed] = action_toggle_vsync;
 
-	man->keys[14].keycode = GLFW_KEY_F12;
-	man->keys[14].actions[game_play][key_pressed] = action_toggle_debug;
-	man->keys[14].actions[game_success][key_pressed] = action_toggle_debug;
-	man->keys[14].actions[game_failure][key_pressed] = action_toggle_debug;
+	man->keys[14].keycode = GLFW_KEY_F11;
+	man->keys[14].actions[game_play][key_pressed] = action_toggle_fullscreen;
+	man->keys[14].actions[game_success][key_pressed] = action_toggle_fullscreen;
+	man->keys[14].actions[game_failure][key_pressed] = action_toggle_fullscreen;
 
-	man->keys[15].keycode = GLFW_KEY_ESCAPE;
-	man->keys[15].actions[game_play][key_pressed] = action_close_window;
-	man->keys[15].actions[game_success][key_pressed] = action_close_window;
-	man->keys[15].actions[game_failure][key_pressed] = action_close_window;
+	man->keys[15].keycode = GLFW_KEY_F12;
+	man->keys[15].actions[game_play][key_pressed] = action_toggle_debug;
+	man->keys[15].actions[game_success][key_pressed] = action_toggle_debug;
+	man->keys[15].actions[game_failure][key_pressed] = action_toggle_debug;
+
+	man->keys[16].keycode = GLFW_KEY_ESCAPE;
+	man->keys[16].actions[game_play][key_pressed] = action_close_window;
+	man->keys[16].actions[game_success][key_pressed] = action_close_window;
+	man->keys[16].actions[game_failure][key_pressed] = action_close_window;
 	return ;
 }

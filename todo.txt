@@ -1,11 +1,3 @@
-DYNAMIC EASTER EGG
-- Instead of hardcoding the Konami code sequence, have it written in the map 
-itself. Also note that a sequence needs at least two keys.
-- Konami code: UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A.
-- Note that uppercase letters and digit characters have the same value than in 
-ASCII. So, besides arrow keys, and Enter, we can easily allow uppercase letters 
-and digits.
-
 RECURSIVE MAP LOADING
 - Consider loading maps recursively from the initial map. The game doesn't have 
 a lot of maps, so it's okay. You can add a max amount for the initial load if 

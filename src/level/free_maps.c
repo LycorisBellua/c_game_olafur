@@ -44,7 +44,8 @@ void	free_map(t_map *map)
 		return ;
 	release_parsing_data(map);
 	free(map->filepath);
-	free(map->tp_path_map);
+	free(map->tp.map_path);
+	free(map->tp.sequence);
 	free_image(map->skybox, free);
 	free_bg_frames(map);
 	free_cell_arrays(map);

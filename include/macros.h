@@ -31,8 +31,7 @@
 # define ID_CURSOR "cursor"
 # define ID_GUI_COLLEC "gui_collectible"
 # define ID_SKYBOX "composed_skybox"
-# define NBR_KEYS 16
-# define KEY_SHIFT -1
+# define NBR_KEYS 17
 
 # define E_NO_ARG "Provide a *.map file as argument"
 # define E_TOO_MANY_ARGS "Provide a single *.map file as argument"
@@ -88,5 +87,7 @@
 # define E_BAD_SYM_C "A ceiling map symbol is missing its texture variable"
 # define E_DUP_PLAYER "The player was found more than once in the wall map"
 # define E_NO_PLAYER "No player was found in the wall map"
+# define E_BAD_KEY "Invalid key - Valid is ENTER, UP, DOWN, LEFT, RIGHT, " \
+	"digits and uppercase letters"
 
 #endif

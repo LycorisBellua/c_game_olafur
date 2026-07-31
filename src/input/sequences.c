@@ -1,45 +1,17 @@
 #include "olafur.h"
 
-static void	teleport(t_man *man);
+static int	check_key_sequence(t_map *map, int key);
 
-void	konami_code(t_man *man, int pressed_key)
-{
-	static int	sequence[10];
-	static int	index;
-
-	if (!sequence[0])
-	{
-		sequence[0] = GLFW_KEY_UP;
-		sequence[1] = GLFW_KEY_UP;
-		sequence[2] = GLFW_KEY_DOWN;
-		sequence[3] = GLFW_KEY_DOWN;
-		sequence[4] = GLFW_KEY_LEFT;
-		sequence[5] = GLFW_KEY_RIGHT;
-		sequence[6] = GLFW_KEY_LEFT;
-		sequence[7] = GLFW_KEY_RIGHT;
-		sequence[8] = GLFW_KEY_B;
-		sequence[9] = GLFW_KEY_A;
-	}
-	if (pressed_key != sequence[index++])
-		index = 0;
-	if (index == sizeof(sequence) / sizeof(int))
-	{
-		index = 0;
-		teleport(man);
-	}
-	return ;
-}
-
-static void	teleport(t_man *man)
+void	teleport_through_key_sequence(t_man *man, int key)
 {
 	t_map	*map;
 	int		index_tp;
 	t_ivec2	pos;
 
 	map = man->maps[man->curr_map];
-	if (!map->tp_path_map)
+	if (!map->tp.map_path || !check_key_sequence(map, key))
 		return ;
-	index_tp = add_map(man, map->tp_path_map);
+	index_tp = add_map(man, map->tp.map_path);
 	if (index_tp < 0 || index_tp == man->curr_map)
 		return ;
 	man->curr_map = index_tp;
@@ -49,4 +21,16 @@ static void	teleport(t_man *man)
 		|| map->cells[pos.y][pos.x].is_obstacle)
 		set_player_transform(man, map->start_pos, man->player.dir);
 	return ;
+}
+
+static int	check_key_sequence(t_map *map, int key)
+{
+	if (key != map->tp.sequence[map->tp.seq_index++])
+		map->tp.seq_index = 0;
+	if (map->tp.seq_index == map->tp.seq_len)
+	{
+		map->tp.seq_index = 0;
+		return (1);
+	}
+	return (0);
 }

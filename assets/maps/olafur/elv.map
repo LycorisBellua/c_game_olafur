@@ -19,7 +19,7 @@ EA elv_w
 
 PT NO 1 2 null null assets/maps/olafur/mus2.map NO 4 8
 
-TP assets/maps/olafur/elv3.map
+TP assets/maps/olafur/elv3.map UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A
 
 111
 1N1

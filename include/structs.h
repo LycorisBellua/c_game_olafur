@@ -261,6 +261,14 @@ typedef struct s_map_pars
 	t_img		*tex_goal;
 }	t_map_pars;
 
+typedef struct s_teleport
+{
+	char	*map_path;
+	int		*sequence;
+	int		seq_len;
+	int		seq_index;
+}	t_teleport;
+
 struct s_map
 {
 	t_map_pars	pars;
@@ -285,7 +293,7 @@ struct s_map
 	int			to_collect;
 	t_a_track	*tracks[6];
 	t_a_source	**sources;
-	char		*tp_path_map;
+	t_teleport	tp;
 };
 
 typedef struct s_player
