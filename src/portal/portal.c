@@ -18,7 +18,7 @@ void	portal_routine(t_man *man)
 		change_game_state(man, GAME_STATE_FAILURE);
 		return ;
 	}
-	map_index = add_map(man, portal->path_dst_map);
+	map_index = add_map_and_submaps(man, portal->path_dst_map);
 	if (map_index < 0)
 	{
 		unstuck_from_wall(man, man->maps[man->curr_map]);

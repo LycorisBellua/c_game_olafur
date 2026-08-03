@@ -11,7 +11,7 @@ void	teleport_through_key_sequence(t_man *man, int key)
 	map = man->maps[man->curr_map];
 	if (!map->tp.map_path || !check_key_sequence(map, key))
 		return ;
-	index_tp = add_map(man, map->tp.map_path);
+	index_tp = add_map_and_submaps(man, map->tp.map_path);
 	if (index_tp < 0 || index_tp == man->curr_map)
 		return ;
 	man->curr_map = index_tp;

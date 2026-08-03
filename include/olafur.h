@@ -170,6 +170,8 @@ void		cast_sprites(t_man *man, int x, float near_bound);
 /* Maps --------------------------------------------------------------------- */
 
 int			add_map(t_man *man, const char *filepath);
+int			add_map_and_submaps(t_man *man, const char *filepath);
+int			add_map_and_submaps_recursive(t_man *man, const char *filepath);
 void		free_sprite_array(t_map *map);
 void		free_maps(t_man *man);
 void		free_map(t_map *map);

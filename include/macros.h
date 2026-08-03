@@ -7,12 +7,15 @@
 	"whatever the monitor's aspect ratio is". For example 0 or -1.
 	- The skybox image is meant to have a size of (res.x * 4, res.y). If this 
 	is not respected, we make do but the skybox will not be the prettiest.
+	- `INITIAL_MAP_LOADING_DEPTH` is about how many maps maximum to load on 
+	startup. New maps can be loaded later as you go through the game.
 */
 
 # define TITLE "Olafur"
 # define WINDOW_WIDTH  (640 * 1)
 # define WINDOW_HEIGHT (360 * 1)
 # define ASPECT_RATIO (16.0 / 9)
+# define INITIAL_MAP_LOADING_DEPTH 15
 # define DEFAULT_DOF 20
 # define MAX_COLUMN_RAYS 256
 # define AUDIO_LOOP_POLL_US 10000

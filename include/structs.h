@@ -294,6 +294,7 @@ struct s_map
 	t_a_track	*tracks[6];
 	t_a_source	**sources;
 	t_teleport	tp;
+	int			submaps_added;
 };
 
 typedef struct s_player
@@ -332,6 +333,7 @@ typedef struct s_res
 struct s_man
 {
 	char			*first_map_path;
+	int				initial_map_loading_depth;
 	GLFWwindow		*window;
 	GLuint			shader_program;
 	GLint			uniform_loc;

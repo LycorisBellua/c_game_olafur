@@ -54,7 +54,7 @@ void	free_frame(t_man *man)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	if (man->frame.id > 0)
 		glDeleteTextures(1, &man->frame.id);
-   glDeleteBuffers(2, man->pbo);
+	glDeleteBuffers(2, man->pbo);
 	free(man->frame.buf);
 	man->frame.id = 0;
 	man->frame.buf = 0;
@@ -67,11 +67,11 @@ void	free_frame(t_man *man)
 
 static int	set_frame(t_man *man)
 {
-   int buf_size;
+	int buf_size;
 
 	set_ivec2(&man->frame.size, man->res.res.x, man->res.res.y);
-   buf_size = man->frame.size.x * man->frame.size.y * sizeof(t_color);
-	man->frame.buf = malloc(buf_size);
+	buf_size = man->frame.size.x * man->frame.size.y * sizeof(t_color);
+	man->frame.buf = calloc(man->frame.size.x * man->frame.size.y, sizeof(t_color));
 	if (!man->frame.buf)
 		return (put_error(man, E_FAIL_MEM, 0, 0));
 	glGenTextures(1, &man->frame.id);
@@ -80,9 +80,9 @@ static int	set_frame(t_man *man)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, man->frame.size.x,
-       man->frame.size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, man->frame.buf);
-   glGenBuffers(2, man->pbo);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, man->frame.size.x,
+		man->frame.size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, man->frame.buf);
+	glGenBuffers(2, man->pbo);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, man->pbo[0]);
 	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf_size, 0, GL_STREAM_DRAW);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, man->pbo[1]);

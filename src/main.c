@@ -49,7 +49,8 @@ static void	fetch_default_images(t_man *man)
 
 static int	init_game(t_man *man)
 {
-	man->curr_map = add_map(man, man->first_map_path);
+	man->initial_map_loading_depth = INITIAL_MAP_LOADING_DEPTH;
+	man->curr_map = add_map_and_submaps_recursive(man, man->first_map_path);
 	if (man->curr_map < 0)
 		return (put_error(man, 0, 0, 0));
 	reset_player(man);
