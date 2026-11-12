@@ -25,7 +25,8 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 	if (!man->window)
 		return (put_error(E_FAIL_WINDOW_GL, 0, 0));
 	more_window_settings(man);
-	if (!init_gl_functions())
+	man->gl_loaded = init_gl_functions();
+	if (!man->gl_loaded)
 		return (put_error(E_FAIL_GL_FUNC, 0, 0));
 	man->shader_program = create_shader_program();
 	if (!man->shader_program || !create_uniform(man) || !create_mesh())

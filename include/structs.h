@@ -340,6 +340,7 @@ struct s_man
 	GLuint			pbo[2];
 	int				pbo_index;
 	char			*title;
+	int				gl_loaded;
 	t_frame			frame;
 	float			*z_buf;
 	float			*fc_depth;

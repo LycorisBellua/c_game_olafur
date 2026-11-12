@@ -51,10 +51,13 @@ void	display_frame(t_man *man)
 
 void	free_frame(t_man *man)
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
-	if (man->frame.id > 0)
-		glDeleteTextures(1, &man->frame.id);
-	glDeleteBuffers(2, man->pbo);
+	if (man->gl_loaded)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+		if (man->frame.id > 0)
+			glDeleteTextures(1, &man->frame.id);
+		glDeleteBuffers(2, man->pbo);
+	}
 	free(man->frame.buf);
 	man->frame.id = 0;
 	man->frame.buf = 0;
