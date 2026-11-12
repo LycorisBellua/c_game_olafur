@@ -1,6 +1,6 @@
 #include "olafur.h"
 
-static void	fetch_default_images(t_man *man);
+static int	init_default_images(t_man *man);
 static int	init_game(t_man *man);
 static int	deinit_and_fail(t_man *man);
 
@@ -21,9 +21,8 @@ int	main(int argc, char **argv)
 	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!create_window(&g_man, TITLE, window_size, ASPECT_RATIO)
 		|| !init_frame(&g_man)
-		|| !update_image_array(&g_man, IMG_JSON_DEFAULT))
+		|| !init_default_images(&g_man))
 		return (deinit_and_fail(&g_man));
-	fetch_default_images(&g_man);
 	audio_init(&g_man.audio);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
@@ -35,8 +34,10 @@ int	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-static void	fetch_default_images(t_man *man)
+static int	init_default_images(t_man *man)
 {
+	if (!update_image_array(man, IMG_JSON_DEFAULT))
+		return (put_error(E_FAIL_JSON, IMG_JSON_DEFAULT, 0));
 	man->img_font = get_image(man, ID_FONT);
 	if (man->img_font)
 		add_outline_to_font(man->img_font);
@@ -45,7 +46,7 @@ static void	fetch_default_images(t_man *man)
 	man->gui_scale = man->res.res.y / 360;
 	if (man->gui_scale < 1)
 		man->gui_scale = 1;
-	return ;
+	return (1);
 }
 
 static int	init_game(t_man *man)
