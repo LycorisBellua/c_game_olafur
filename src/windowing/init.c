@@ -5,15 +5,18 @@ int				create_shader_program(void);
 int				create_uniform(t_man *man);
 int				create_mesh(void);
 
-static int		init_graphics_lib(void);
 static void		more_window_settings(t_man *man);
 static void		set_initial_viewport(t_man *man);
 
 int	create_window(t_man *man, const char *title, t_ivec2 size,
 	float aspect_ratio)
 {
-	if (!init_graphics_lib())
-		return (0);
+	if (!glfwInit())
+		return (put_error(0, E_FAIL_GLFW, 0, 0));
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	if (!set_resolution(man, size, aspect_ratio))
 		return (put_error(0, E_FAIL_WINDOW, 0, 0));
 	man->title = (char *)title;
@@ -29,27 +32,6 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 		return (put_error(man, 0, 0, 0));
 	return (1);
 }
-
-#ifdef __APPLE__
-/* These window hints are to be called before creating the window */
-static int	init_graphics_lib(void)
-{
-	if (!glfwInit())
-		return (put_error(0, E_FAIL_GLFW, 0, 0));
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	return (1);
-}
-#else
-static int	init_graphics_lib(void)
-{
-	if (!glfwInit())
-		return (put_error(0, E_FAIL_GLFW, 0, 0));
-	return (1);
-}
-#endif
 
 void	set_vsync(t_man *man)
 {

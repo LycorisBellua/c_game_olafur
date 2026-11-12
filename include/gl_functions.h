@@ -19,28 +19,27 @@ typedef void	(APIENTRY *GL_DB)(GLsizei n, const GLuint* buffers);
 typedef void	(APIENTRY *GL_DP)(GLuint program);
 typedef void	(APIENTRY *GL_DS)(GLuint shader);
 typedef void	(APIENTRY *GL_DVA)(GLsizei n, const GLuint* arrays);
-typedef void	(APIENTRY *GL_EVAA)(GLuint vaobj, GLuint index);
+typedef void	(APIENTRY *GL_EVAA)(GLuint index);
 typedef void	(APIENTRY *GL_GB)(GLsizei n, GLuint* buffers);
 typedef void	(APIENTRY *GL_GVA)(GLsizei n, GLuint* arrays);
 typedef GLint	(APIENTRY *GL_GUL)(GLuint program, const GLchar* name);
 typedef void	(APIENTRY *GL_GVAI)(GLuint index, GLenum pname, GLuint* params);
 typedef void	(APIENTRY *GL_LP)(GLuint program);
-typedef void*  (APIENTRY *GL_MB)(GLenum target, GLenum access);
+/**/typedef void*  (APIENTRY *GL_MB)(GLenum target, GLenum access);
 typedef void	(APIENTRY *GL_SS)(GLuint shader, GLsizei count,
 					const GLchar** string, const GLint* length);
 typedef void	(APIENTRY *GL_U1I)(GLint location, GLint v0);
-typedef GLboolean (APIENTRY *GL_UMB)(GLenum target);
+/**/typedef GLboolean (APIENTRY *GL_UMB)(GLenum target);
 typedef void	(APIENTRY *GL_UP)(GLuint program);
 typedef void	(APIENTRY *GL_VAP)(GLuint index, GLint size, GLenum type,
 					GLboolean normalized, GLsizei stride, const void* pointer);
 
 /*
-	These GL 2.0+/3.0+ entry points are loaded at runtime as function pointers.
-	libGL exports functions of the same names, so we alias the GL names onto
-	prefixed variables (the GLEW/glad approach). This prevents our pointer
-	objects from colliding with libGL's exported functions: a clash that is
-	harmless under separate compilation but flagged, and best avoided, under LTO.
-	glfwGetProcAddress lookups use string literals, so they are unaffected.
+	System GL libraries only guarantee exports up to OpenGL 1.1. Newer functions 
+   live in the graphics driver, so their addresses are queried at runtime 
+   (after a context is made current). Each name is aliased to a prefixed 
+   variable to avoid clashing with symbols the system library may export under 
+   the same names.
 */
 # define glAttachShader ol_glAttachShader
 # define glBindBuffer ol_glBindBuffer
@@ -53,7 +52,7 @@ typedef void	(APIENTRY *GL_VAP)(GLuint index, GLint size, GLenum type,
 # define glDeleteProgram ol_glDeleteProgram
 # define glDeleteShader ol_glDeleteShader
 # define glDeleteVertexArrays ol_glDeleteVertexArrays
-# define glEnableVertexArrayAttrib ol_glEnableVertexArrayAttrib
+# define glEnableVertexAttribArray ol_glEnableVertexAttribArray
 # define glGenBuffers ol_glGenBuffers
 # define glGenVertexArrays ol_glGenVertexArrays
 # define glGetUniformLocation ol_glGetUniformLocation
@@ -77,7 +76,7 @@ extern GL_DB	glDeleteBuffers;
 extern GL_DP	glDeleteProgram;
 extern GL_DS	glDeleteShader;
 extern GL_DVA	glDeleteVertexArrays;
-extern GL_EVAA	glEnableVertexArrayAttrib;
+extern GL_EVAA	glEnableVertexAttribArray;
 extern GL_GB	glGenBuffers;
 extern GL_GVA	glGenVertexArrays;
 extern GL_GUL	glGetUniformLocation;

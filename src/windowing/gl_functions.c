@@ -16,7 +16,7 @@ GL_DB	glDeleteBuffers;
 GL_DP	glDeleteProgram;
 GL_DS	glDeleteShader;
 GL_DVA	glDeleteVertexArrays;
-GL_EVAA	glEnableVertexArrayAttrib;
+GL_EVAA	glEnableVertexAttribArray;
 GL_GB	glGenBuffers;
 GL_GVA	glGenVertexArrays;
 GL_GUL	glGetUniformLocation;
@@ -74,8 +74,8 @@ static int	init_gl_functions_for_vertices(void)
 {
 	glBindVertexArray = (GL_BVA)glfwGetProcAddress("glBindVertexArray");
 	glDeleteVertexArrays = (GL_DVA)glfwGetProcAddress("glDeleteVertexArrays");
-	glEnableVertexArrayAttrib = \
-		(GL_EVAA)glfwGetProcAddress("glEnableVertexArrayAttrib");
+	glEnableVertexAttribArray = \
+		(GL_EVAA)glfwGetProcAddress("glEnableVertexAttribArray");
 	glGenVertexArrays = (GL_GVA)glfwGetProcAddress("glGenVertexArrays");
 	glGetVertexAttribIuiv = \
 		(GL_GVAI)glfwGetProcAddress("glGetVertexAttribIuiv");
@@ -83,7 +83,7 @@ static int	init_gl_functions_for_vertices(void)
 	glGetUniformLocation = (GL_GUL)glfwGetProcAddress("glGetUniformLocation");
 	glUniform1i = (GL_U1I)glfwGetProcAddress("glUniform1i");
 	return (glBindVertexArray && glDeleteVertexArrays
-		&& glEnableVertexArrayAttrib && glGenVertexArrays
+		&& glEnableVertexAttribArray && glGenVertexArrays
 		&& glGetVertexAttribIuiv && glVertexAttribPointer
 		&& glGetUniformLocation && glUniform1i);
 }
