@@ -29,13 +29,13 @@ static int	is_valid_file(const char *filepath)
 
 	if (!filepath || access(filepath, R_OK) < 0 || stat(filepath, &st) < 0
 		|| !S_ISREG(st.st_mode))
-		return (put_error(0, E_MAP_READ, filepath, 0));
+		return (put_error(E_MAP_READ, filepath, 0));
 	name = get_filename(filepath);
 	len = strlen(name);
 	if (len < 4 || strcmp(name + len - 4, ".map"))
-		return (put_error(0, E_MAP_TYPE, filepath, 0));
+		return (put_error(E_MAP_TYPE, filepath, 0));
 	if (len < 5)
-		return (put_error(0, E_MAP_NAME, filepath, 0));
+		return (put_error(E_MAP_NAME, filepath, 0));
 	return (1);
 }
 
@@ -53,7 +53,7 @@ static t_map	*alloc_map_and_read_lines(const char *filepath)
 	if (!map || !map->filepath || !map->pars.lines)
 	{
 		free_map(map);
-		put_error(0, E_FAIL_MEM, "alloc_map_and_read_lines", 0);
+		put_error(E_FAIL_MEM, "alloc_map_and_read_lines", 0);
 		map = 0;
 	}
 	return (map);
@@ -66,16 +66,16 @@ static int	tokenize_var_lines(t_map *map)
 
 	len = remove_whitespace_only_lines(map);
 	if (!map->pars.lines || !map->pars.lines[0])
-		return (put_error(0, E_NO_VAR, 0, 0));
+		return (put_error(E_NO_VAR, 0, 0));
 	map->pars.vars = calloc(len + 1, sizeof(char **));
 	if (!map->pars.vars)
-		return (put_error(0, E_FAIL_MEM, "tokenize_var_lines", 0));
+		return (put_error(E_FAIL_MEM, "tokenize_var_lines", 0));
 	i = 0;
 	while (map->pars.lines[i])
 	{
 		map->pars.vars[i] = split(map->pars.lines[i], ' ');
 		if (!map->pars.vars[i])
-			return (put_error(0, E_FAIL_MEM, "tokenize_var_lines", 0));
+			return (put_error(E_FAIL_MEM, "tokenize_var_lines", 0));
 		++i;
 	}
 	free_arr((void **)map->pars.lines, free);

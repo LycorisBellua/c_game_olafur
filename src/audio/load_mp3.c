@@ -10,7 +10,7 @@ int	load_mp3(const char *filename, t_a_track *t, int force_mono)
 	drmp3_uint64	samples_read;
 
 	if (!drmp3_init_file(&mp3, filename, 0))
-		return (put_error(0, E_FAIL_MP3_OPEN, filename, 0));
+		return (put_error(E_FAIL_MP3_OPEN, filename, 0));
 	samples_read = read_track(filename, t, mp3);
 	if (!samples_read)
 		return (0);
@@ -36,7 +36,7 @@ static drmp3_uint64	read_track(const char *filename, t_a_track *t, drmp3 mp3)
 	if (!t->pcm_data)
 	{
 		drmp3_uninit(&mp3);
-		put_error(0, E_FAIL_MEM, 0, 0);
+		put_error(E_FAIL_MEM, 0, 0);
 		return (0);
 	}
 	samples_read = drmp3_read_pcm_frames_s16(&mp3, total_pcm_frames,
@@ -46,7 +46,7 @@ static drmp3_uint64	read_track(const char *filename, t_a_track *t, drmp3 mp3)
 	{
 		free(t->pcm_data);
 		t->pcm_data = 0;
-		put_error(0, E_FAIL_MP3_READ, filename, 0);
+		put_error(E_FAIL_MP3_READ, filename, 0);
 	}
 	return (samples_read);
 }
@@ -63,7 +63,7 @@ static int	downmix_stereo_to_mono(t_a_track *t, drmp3_uint64 samples_read)
 	{
 		free(t->pcm_data);
 		t->pcm_data = 0;
-		return (put_error(0, E_FAIL_MEM, 0, 0));
+		return (put_error(E_FAIL_MEM, 0, 0));
 	}
 	i = 0;
 	while (i < samples_read)

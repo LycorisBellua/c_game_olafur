@@ -108,8 +108,10 @@ void		remove_arr_elems(void **array, size_t from, size_t to,
 
 char		**get_json_content(t_man *man, const char *filepath);
 void		free_json_content(char **content);
-int			set_png_file_obj(t_png *file, char **lines);
+int			set_png_file_obj(t_png *file, char **lines, size_t *i);
 void		free_and_reset_png_file_obj(t_png *file);
+void		free_segments(t_png *file);
+void		set_string_value(char **dst, char *line);
 int			is_field(char *line, const char *field);
 char		*get_string_value(char *line);
 int			get_int_value(char *line);
@@ -128,6 +130,9 @@ void		select_background_frame(t_map *map);
 void		draw_background(t_man *man);
 void		free_png(t_png *png);
 int			update_image_array(t_man *man, const char *path);
+int			register_json_path(t_man *man, const char *path);
+void		discard_new_images(t_man *man, size_t start, const char *path);
+int			check_png_segments(t_png *file);
 int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
 void		cut_image(t_png *file, t_img *img, size_t i);
 void		free_images(t_man *man);
@@ -275,7 +280,7 @@ char		*find_first_map_path(const char *dir_path);
 /* End ---------------------------------------------------------------------- */
 
 void		deinit(t_man *man);
-int			put_error(t_man *man, const char *msg, const char *arg, int errnum);
+int			put_error(const char *msg, const char *arg, int errnum);
 
 /* Utils -------------------------------------------------------------------- */
 

@@ -54,7 +54,7 @@ static int	give_same_height(t_ivec2 map_size, char ***map)
 	{
 		new_map = calloc(map_size.y + 1, sizeof(char *));
 		if (!new_map)
-			return (put_error(0, E_FAIL_MEM, 0, 0));
+			return (put_error(E_FAIL_MEM, 0, 0));
 		memcpy(new_map, *map, height * sizeof(char *));
 		free(*map);
 		*map = new_map;
@@ -75,7 +75,7 @@ static int	give_same_width(t_ivec2 map_size, char **map)
 		{
 			map[i] = calloc(map_size.x + 1, sizeof(char));
 			if (!map[i])
-				return (put_error(0, E_FAIL_MEM, 0, 0));
+				return (put_error(E_FAIL_MEM, 0, 0));
 			memset(map[i], ' ', map_size.x * sizeof(char));
 		}
 		else if (!add_spaces(map_size, map, i))
@@ -94,7 +94,7 @@ static int	add_spaces(t_ivec2 map_size, char **map, int i)
 	{
 		new_str = calloc(map_size.x + 1, sizeof(char));
 		if (!new_str)
-			return (put_error(0, E_FAIL_MEM, 0, 0));
+			return (put_error(E_FAIL_MEM, 0, 0));
 		memcpy(new_str, map[i], len * sizeof(char));
 		free(map[i]);
 		map[i] = new_str;

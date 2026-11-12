@@ -14,10 +14,10 @@ int	process_teleport(t_map *map)
 		if (!strcmp(map->pars.vars[i][0], "TP"))
 		{
 			if (map->tp.map_path)
-				return (put_error(0, E_DUP_VAR, map->pars.vars[i][0], 0));
+				return (put_error(E_DUP_VAR, map->pars.vars[i][0], 0));
 			arg_len = count_arr_elems((void **)map->pars.vars[i] + 1);
 			if (arg_len < 3)
-				return (put_error(0, E_VAR_VAL, map->pars.vars[i][0], 0));
+				return (put_error(E_VAR_VAL, map->pars.vars[i][0], 0));
 			free(map->tp.map_path);
 			free(map->tp.sequence);
 			map->tp.map_path = strdup(map->pars.vars[i][1]);
@@ -38,7 +38,7 @@ static int	set_sequence(t_map *map, int i)
 
 	map->tp.sequence = calloc(map->tp.seq_len, sizeof(int));
 	if (!map->tp.sequence)
-		return (put_error(0, E_FAIL_MEM, map->pars.vars[i][0], 0));
+		return (put_error(E_FAIL_MEM, map->pars.vars[i][0], 0));
 	j = -1;
 	while (++j < map->tp.seq_len)
 	{
@@ -56,7 +56,7 @@ static int	set_sequence(t_map *map, int i)
 			&& is_digit_or_upper(map->pars.vars[i][2 + j][0]))
 			map->tp.sequence[j] = map->pars.vars[i][2 + j][0];
 		else
-			return (put_error(0, E_BAD_KEY, map->pars.vars[i][0], 0));
+			return (put_error(E_BAD_KEY, map->pars.vars[i][0], 0));
 	}
 	return (1);
 }

@@ -12,7 +12,7 @@ void	add_outline_to_font(t_img *font)
 	t_ivec2	*offsets;
 
 	if (!font)
-		return;
+		return ;
 	offsets = get_outline_offsets();
 	if (!offsets)
 		return ;
@@ -66,24 +66,21 @@ static void	add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets)
 	int		i;
 	int		j;
 	t_ivec2	p;
+	t_color	*buf;
 
+	buf = img->cycle[cycle_index];
 	i = -1;
 	while (++i < img->size.x * img->size.y)
 	{
-		if (cmpc(img->cycle[cycle_index][i],
-			get_color_rgba(255, 255, 255, 255)))
+		j = -1;
+		while (cmpc(buf[i], get_color_rgba(255, 255, 255, 255)) && ++j < 8)
 		{
-			j = -1;
-			while (++j < 8)
-			{
-				p.x = i / img->size.y;
-				p.y = i - p.x * img->size.y;
-				set_ivec2(&p, p.x + offsets[j].x, p.y + offsets[j].y);
-				if (!cmpc(img->cycle[cycle_index][p.x * img->size.y + p.y],
+			p.x = i / img->size.y + offsets[j].x;
+			p.y = i % img->size.y + offsets[j].y;
+			if (p.x >= 0 && p.y >= 0 && p.x < img->size.x && p.y < img->size.y
+				&& !cmpc(buf[p.x * img->size.y + p.y],
 					get_color_rgba(255, 255, 255, 255)))
-					img->cycle[cycle_index][p.x * img->size.y + p.y] = \
-get_color_rgba(0, 0, 0, 255);
-			}
+				buf[p.x * img->size.y + p.y] = get_color_rgba(0, 0, 0, 255);
 		}
 	}
 	return ;

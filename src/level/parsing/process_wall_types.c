@@ -76,13 +76,13 @@ static int	process_wall_line(t_map *map, char *tex[10][4], int i, int digit)
 	else
 		digit = map->pars.vars[i][0][0] - '0';
 	if (!digit)
-		return (put_error(0, E_TYPE_0, map->pars.vars[i][0], 0));
+		return (put_error(E_TYPE_0, map->pars.vars[i][0], 0));
 	else if (tex[digit][card])
-		return (put_error(0, E_DUP_VAR, map->pars.vars[i][0], 0));
+		return (put_error(E_DUP_VAR, map->pars.vars[i][0], 0));
 	else if (!map->pars.vars[i][1])
-		return (put_error(0, E_VAR_VAL, map->pars.vars[i][0], 0));
+		return (put_error(E_VAR_VAL, map->pars.vars[i][0], 0));
 	else if (map->pars.vars[i][2])
-		return (put_error(0, E_VAR_VALS, map->pars.vars[i][0], 0));
+		return (put_error(E_VAR_VALS, map->pars.vars[i][0], 0));
 	tex[digit][card] = strdup(map->pars.vars[i][1]);
 	remove_var_line(map, i);
 	return (1);
@@ -102,7 +102,7 @@ static int	allocate_wall_arr(t_map *map, char *tex[10][4])
 		if (four > 0 && four < 4)
 		{
 			free_tex_w(tex);
-			return (put_error(0, E_CARD_NOT_FOUR, 0, 0));
+			return (put_error(E_CARD_NOT_FOUR, 0, 0));
 		}
 		++nbr_types;
 		++i;
@@ -111,7 +111,7 @@ static int	allocate_wall_arr(t_map *map, char *tex[10][4])
 	if (!map->pars.tex_types_wall)
 	{
 		free_tex_w(tex);
-		return (put_error(0, E_FAIL_MEM, 0, 0));
+		return (put_error(E_FAIL_MEM, 0, 0));
 	}
 	return (1);
 }
@@ -122,25 +122,25 @@ static int	fetch_images(t_man *man, char *tex[10][4], int i, t_wall_type *w)
 	{
 		w->tex_north = add_image(man, tex[i][0]);
 		if (!w->tex_north)
-			return (put_error(0, E_NO_IMG, tex[i][0], 0));
+			return (put_error(E_NO_IMG, tex[i][0], 0));
 	}
 	if (strcmp(tex[i][1], "null"))
 	{
 		w->tex_south = add_image(man, tex[i][1]);
 		if (!w->tex_south)
-			return (put_error(0, E_NO_IMG, tex[i][1], 0));
+			return (put_error(E_NO_IMG, tex[i][1], 0));
 	}
 	if (strcmp(tex[i][2], "null"))
 	{
 		w->tex_west = add_image(man, tex[i][2]);
 		if (!w->tex_west)
-			return (put_error(0, E_NO_IMG, tex[i][2], 0));
+			return (put_error(E_NO_IMG, tex[i][2], 0));
 	}
 	if (strcmp(tex[i][3], "null"))
 	{
 		w->tex_east = add_image(man, tex[i][3]);
 		if (!w->tex_east)
-			return (put_error(0, E_NO_IMG, tex[i][3], 0));
+			return (put_error(E_NO_IMG, tex[i][3], 0));
 	}
 	return (1);
 }

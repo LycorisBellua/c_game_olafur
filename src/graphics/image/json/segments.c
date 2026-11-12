@@ -11,6 +11,7 @@ void	parse_segments(t_png *file, char **lines, size_t *i)
 	size_t	start;
 	size_t	end;
 
+	free_segments(file);
 	start = *i;
 	while (lines[*i])
 	{
@@ -47,12 +48,12 @@ static void	fill_seg_array(t_png *file, char **lines, size_t start, size_t end)
 	size_t	i_seg;
 
 	i_seg = 0;
-	while (lines[start] && start <= end)
+	while (lines[start] && start <= end && i_seg < file->segment_len)
 	{
 		if (lines[start][0] == '}')
 			++i_seg;
 		else if (is_field(lines[start], "id"))
-			file->seg[i_seg].id = get_string_value(lines[start]);
+			set_string_value(&file->seg[i_seg].id, lines[start]);
 		else if (is_field(lines[start], "size"))
 			file->seg[i_seg].size = get_ivec2_value(lines[start]);
 		else if (is_field(lines[start], "shadow_offset"))
@@ -73,6 +74,8 @@ static void	parse_cycle(t_png_seg *seg, char **lines, size_t *start,
 {
 	size_t	i;
 
+	free(seg->cycle);
+	seg->cycle_len = 0;
 	i = *start;
 	while (lines[i] && i <= end)
 	{

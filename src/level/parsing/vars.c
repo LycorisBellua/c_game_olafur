@@ -10,6 +10,6 @@ void	remove_var_line(t_map *map, int i)
 int	is_var_list_empty(t_map *map)
 {
 	if (map->pars.vars[0])
-		return (put_error(0, E_BAD_VAR, map->pars.vars[0][0], 0));
+		return (put_error(E_BAD_VAR, map->pars.vars[0][0], 0));
 	return (1);
 }

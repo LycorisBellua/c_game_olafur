@@ -12,24 +12,24 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 	float aspect_ratio)
 {
 	if (!glfwInit())
-		return (put_error(0, E_FAIL_GLFW, 0, 0));
+		return (put_error(E_FAIL_GLFW, 0, 0));
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	if (!set_resolution(man, size, aspect_ratio))
-		return (put_error(0, E_FAIL_WINDOW, 0, 0));
+		return (put_error(E_FAIL_WINDOW, 0, 0));
 	man->title = (char *)title;
 	man->window = glfwCreateWindow(man->res.window_size.x,
 			man->res.window_size.y, man->title, 0, 0);
 	if (!man->window)
-		return (put_error(man, E_FAIL_WINDOW_GL, 0, 0));
+		return (put_error(E_FAIL_WINDOW_GL, 0, 0));
 	more_window_settings(man);
 	if (!init_gl_functions())
-		return (put_error(man, E_FAIL_GL_FUNC, 0, 0));
+		return (put_error(E_FAIL_GL_FUNC, 0, 0));
 	man->shader_program = create_shader_program();
 	if (!man->shader_program || !create_uniform(man) || !create_mesh())
-		return (put_error(man, 0, 0, 0));
+		return (0);
 	return (1);
 }
 

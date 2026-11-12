@@ -59,13 +59,13 @@ static int	process_floor_line(t_map *map, char **tex, int i)
 
 	digit = map->pars.vars[i][0][0] - '0';
 	if (!digit)
-		return (put_error(0, E_TYPE_0, map->pars.vars[i][0], 0));
+		return (put_error(E_TYPE_0, map->pars.vars[i][0], 0));
 	else if (tex[digit])
-		return (put_error(0, E_DUP_VAR, map->pars.vars[i][0], 0));
+		return (put_error(E_DUP_VAR, map->pars.vars[i][0], 0));
 	else if (!map->pars.vars[i][1])
-		return (put_error(0, E_VAR_VAL, map->pars.vars[i][0], 0));
+		return (put_error(E_VAR_VAL, map->pars.vars[i][0], 0));
 	else if (map->pars.vars[i][2])
-		return (put_error(0, E_VAR_VALS, map->pars.vars[i][0], 0));
+		return (put_error(E_VAR_VALS, map->pars.vars[i][0], 0));
 	tex[digit] = strdup(map->pars.vars[i][1]);
 	remove_var_line(map, i);
 	return (1);
@@ -85,7 +85,7 @@ static int	allocate_floor_arr(t_map *map, char **tex)
 	}
 	map->pars.tex_types_floor = calloc(nbr_types + 1, sizeof(t_row_type));
 	if (!map->pars.tex_types_floor)
-		return (put_error(0, E_FAIL_MEM, 0, 0));
+		return (put_error(E_FAIL_MEM, 0, 0));
 	return (1);
 }
 
@@ -96,7 +96,7 @@ static int	fetch_images(t_man *man, char **tex, int i, t_row_type *f)
 		f->tex = add_image(man, tex[i]);
 		if (!f->tex)
 		{
-			put_error(0, E_NO_IMG, tex[i], 0);
+			put_error(E_NO_IMG, tex[i], 0);
 			free_tex_fc(tex);
 			return (0);
 		}

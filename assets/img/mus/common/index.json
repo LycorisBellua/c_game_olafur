@@ -120,7 +120,7 @@
                 "id": "sprite_art4",
                 "size": [353, 512],
                 "shadow_offset": [0, 0],
-                "still_frame": 2,
+                "still_frame": 1,
                 "cycle_time_in_ms": 500,
                 "cycle": [
                     [0, 0],

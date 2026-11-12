@@ -50,14 +50,24 @@ static int	add_image_slot(t_man *man)
 	return (count);
 }
 
+/* PNG rows are stored as columns, the layout the raycaster reads. */
 static void	fill_image_slot(t_man *man, int index, char *abs_path, t_png *file)
 {
+	int		x;
+	int		y;
+	t_color	*dst;
+
 	man->images[index] = create_empty_image(abs_path, file->size, 0);
-	if (man->images[index])
+	if (!man->images[index])
+		return ;
+	dst = man->images[index]->cycle[0];
+	x = -1;
+	while (++x < file->size.x)
 	{
-		memcpy(man->images[index]->cycle[0], file->buf,
-			file->size.x * file->size.y * sizeof(t_color));
-		calculate_image_average_color(man->images[index]);
+		y = -1;
+		while (++y < file->size.y)
+			dst[x * file->size.y + y] = file->buf[y * file->size.x + x];
 	}
+	calculate_image_average_color(man->images[index]);
 	return ;
-}	
+}

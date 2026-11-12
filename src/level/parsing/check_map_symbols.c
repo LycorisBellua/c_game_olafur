@@ -16,15 +16,15 @@ int	check_map_symbols(t_map *map)
 	if (map->pars.map_wall
 		&& gather_types(map->pars.map_wall, w_types)
 		&& !check_types_w(map, map->pars.tex_types_wall, w_types))
-		return (put_error(0, E_BAD_SYM_W, 0, 0));
+		return (put_error(E_BAD_SYM_W, 0, 0));
 	else if (map->pars.map_floor
 		&& gather_types(map->pars.map_floor, f_types)
 		&& !check_types_fc(map->pars.tex_types_floor, f_types))
-		return (put_error(0, E_BAD_SYM_F, 0, 0));
+		return (put_error(E_BAD_SYM_F, 0, 0));
 	else if (map->pars.map_ceil
 		&& gather_types(map->pars.map_ceil, c_types)
 		&& !check_types_fc(map->pars.tex_types_ceil, c_types))
-		return (put_error(0, E_BAD_SYM_C, 0, 0));
+		return (put_error(E_BAD_SYM_C, 0, 0));
 	return (1);
 }
 

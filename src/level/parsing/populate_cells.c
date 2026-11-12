@@ -40,13 +40,13 @@ static int	allocate_cell_array(t_map *map)
 
 	map->cells = calloc(map->size.y, sizeof(t_cell *));
 	if (!map->cells)
-		return (put_error(0, E_FAIL_MEM, 0, 0));
+		return (put_error(E_FAIL_MEM, 0, 0));
 	i = 0;
 	while (i < map->size.y)
 	{
 		map->cells[i] = calloc(map->size.x, sizeof(t_cell));
 		if (!map->cells[i])
-			return (put_error(0, E_FAIL_MEM, 0, 0));
+			return (put_error(E_FAIL_MEM, 0, 0));
 		++i;
 	}
 	return (1);

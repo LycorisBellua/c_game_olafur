@@ -46,7 +46,7 @@ static t_sound_type	get_sound_type(t_map *map, int i)
 static int	check_flag(const char *var, int *flag)
 {
 	if (*flag)
-		return (put_error(0, E_DUP_VAR, var, 0));
+		return (put_error(E_DUP_VAR, var, 0));
 	*flag = 1;
 	return (1);
 }
@@ -54,15 +54,15 @@ static int	check_flag(const char *var, int *flag)
 static int	load_track(t_man *man, t_map *map, int i, t_sound_type type)
 {
 	if (!map->pars.vars[i][1])
-		return (put_error(0, E_VAR_VAL, map->pars.vars[i][0], 0));
+		return (put_error(E_VAR_VAL, map->pars.vars[i][0], 0));
 	else if (map->pars.vars[i][2])
-		return (put_error(0, E_VAR_VALS, map->pars.vars[i][0], 0));
+		return (put_error(E_VAR_VALS, map->pars.vars[i][0], 0));
 	if (strcmp(map->pars.vars[i][1], "null"))
 	{
 		map->tracks[type] = audio_track_create(&man->audio,
 				map->pars.vars[i][1], type == SOUND_COLLEC);
 		if (!map->tracks[type])
-			return (put_error(0, E_NO_TRACK, map->pars.vars[i][1], 0));
+			return (put_error(E_NO_TRACK, map->pars.vars[i][1], 0));
 	}
 	remove_var_line(map, i);
 	return (1);

@@ -5,6 +5,7 @@ void	free_images(t_man *man)
 	size_t	i;
 
 	free_arr((void **)man->json_paths, free);
+	man->json_paths = 0;
 	if (!man->images)
 		return ;
 	i = 0;

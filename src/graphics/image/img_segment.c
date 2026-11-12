@@ -9,21 +9,14 @@ int	create_images_from_file(t_man *man, t_png *file, size_t *i_img)
 	t_img	*img;
 
 	i = 0;
-	img = man->images[*i_img];
 	while (i < file->segment_len)
 	{
 		img = man->images[*i_img];
-		if (!set_image_from_segment(img, file, i))
-		{
-			free_images(man);
-			return (0);
-		}
+		if (!img || !set_image_from_segment(img, file, i))
+			return (put_error(E_FAIL_MEM, 0, 0));
 		cut_image(file, img, i);
 		if (!calculate_image_average_color(img))
-		{
-			free_images(man);
-			return (0);
-		}
+			return (put_error(E_FAIL_MEM, 0, 0));
 		++i;
 		++*i_img;
 	}

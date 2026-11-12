@@ -6,6 +6,7 @@ static char	*remove_leading_whitespaces(char *s);
 char	**get_json_content(t_man *man, const char *filepath)
 {
 	size_t	i;
+	size_t	len;
 	int		fd;
 	char	*line;
 	char	**lines;
@@ -24,7 +25,9 @@ char	**get_json_content(t_man *man, const char *filepath)
 	line = gnl(fd);
 	while (line)
 	{
-		line[strlen(line) - 1] = 0;
+		len = strlen(line);
+		if (len && line[len - 1] == '\n')
+			line[len - 1] = 0;
 		lines[i++] = remove_leading_whitespaces(line);
 		line = gnl(fd);
 	}

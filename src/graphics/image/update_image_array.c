@@ -1,140 +1,128 @@
 #include "olafur.h"
 
-static int		check_path(t_man *man, const char *path);
+static int		load_json_file(t_man *man, const char *path);
 static int		allocate_array(t_man *man, char **lines, size_t *i_img);
 static int		set_pixel_data(t_man *man, t_png *file, size_t *i_img);
-static t_color	*get_pixel_data(t_png *file, int is_shadow);
+static t_color	*get_pixel_data(const char *path, t_ivec2 *size);
 
+/*
+	The path is made absolute, so that the same JSON file reached through
+	different relative paths is still only loaded once.
+*/
 int	update_image_array(t_man *man, const char *path)
 {
-	char	**lines;
-	t_png	file;
-	size_t	i_img;
+	char	*abs_path;
 	int		is_success;
-	int		is_parsing_ongoing;
 
-	if (!path || check_path(man, path))
+	if (!path)
 		return (1);
-	lines = get_json_content(man, path);
-	i_img = 0;
-	if (!lines || !allocate_array(man, lines, &i_img))
+	abs_path = get_absolute_path(path);
+	if (!abs_path)
 		return (0);
 	is_success = 1;
-	is_parsing_ongoing = 1;
-	memset(&file, 0, sizeof(t_png));
-	while (is_parsing_ongoing && is_success)
-	{
-		is_parsing_ongoing = set_png_file_obj(&file, lines);
-		if (is_parsing_ongoing)
-			is_success = set_pixel_data(man, &file, &i_img);
-		free_and_reset_png_file_obj(&file);
-	}
-	free_json_content(lines);
+	if (!register_json_path(man, abs_path))
+		is_success = load_json_file(man, abs_path);
+	free(abs_path);
 	return (is_success);
 }
 
-static int	check_path(t_man *man, const char *path)
+/*
+	i[0] is the current line of the JSON file, i[1] the next image slot.
+	On failure, only the images added by this call are discarded, since the
+	ones loaded before may already be in use by maps.
+*/
+static int	load_json_file(t_man *man, const char *path)
 {
-	size_t	i;
-	char	**new_arr;
+	char	**lines;
+	t_png	file;
+	size_t	i[2];
+	size_t	old_count;
+	int		is_success;
 
-	if (!man->json_paths)
-		return (0);
-	i = 0;
-	while (man->json_paths[i])
+	old_count = count_arr_elems((void **)man->images);
+	i[0] = 0;
+	i[1] = old_count;
+	lines = get_json_content(man, path);
+	is_success = lines && allocate_array(man, lines, &i[1]);
+	memset(&file, 0, sizeof(t_png));
+	while (is_success && set_png_file_obj(&file, lines, &i[0]))
 	{
-		if (!strcmp(man->json_paths[i], path))
-			return (1);
-		++i;
+		is_success = set_pixel_data(man, &file, &i[1]);
+		free_and_reset_png_file_obj(&file);
 	}
-	new_arr = calloc(i + 1 + 1, sizeof(char *));
-	if (new_arr)
-	{
-		memcpy(new_arr, man->json_paths, i * sizeof(char *));
-		free(man->json_paths);
-		man->json_paths = new_arr;
-		man->json_paths[i] = strdup(path);
-	}
-	return (0);
+	free_and_reset_png_file_obj(&file);
+	free_json_content(lines);
+	if (!is_success)
+		discard_new_images(man, old_count, path);
+	else
+		discard_new_images(man, i[1], 0);
+	return (is_success);
 }
 
 static int	allocate_array(t_man *man, char **lines, size_t *i_img)
 {
 	size_t	i;
 	size_t	count;
-	size_t	old_count;
 	t_img	**new_arr;
 
 	i = 0;
 	count = 0;
-	while (lines && lines[i])
-	{
-		if (strstr(lines[i], "\"id\":"))
-			++count;
-		++i;
-	}
+	while (lines[i])
+		count += is_field(lines[i++], "id");
 	if (!count)
-		return (0);
-	old_count = count_arr_elems((void **)man->images);
-	new_arr = calloc(old_count + count + 1, sizeof(t_img *));
+		return (put_error(E_IMG_NO_ID, 0, 0));
+	new_arr = calloc(*i_img + count + 1, sizeof(t_img *));
 	if (!new_arr)
-		return (0);
-	memcpy(new_arr, man->images, old_count * sizeof(t_img *));
+		return (put_error(E_FAIL_MEM, 0, 0));
+	if (man->images)
+		memcpy(new_arr, man->images, *i_img * sizeof(t_img *));
 	free(man->images);
 	man->images = new_arr;
-	*i_img = old_count;
 	i = 0;
 	while (i < count)
 	{
-		man->images[old_count + i] = calloc(1, sizeof(t_img));
-		if (!man->images[old_count + i])
-		{
-			free_images(man);
-			return (0);
-		}
+		man->images[*i_img + i] = calloc(1, sizeof(t_img));
+		if (!man->images[*i_img + i])
+			return (put_error(E_FAIL_MEM, 0, 0));
 		++i;
 	}
-	return (!!man->images);
+	return (1);
 }
 
 static int	set_pixel_data(t_man *man, t_png *file, size_t *i_img)
 {
-	size_t	i;
+	t_ivec2	size_shadow;
 
-	file->buf = get_pixel_data(file, 0);
+	if (!file->path)
+		return (put_error(E_IMG_NO_PATH, 0, 0));
+	file->buf = get_pixel_data(file->path, &file->size);
 	if (!file->buf)
 		return (0);
 	if (file->path_shadow)
 	{
-		file->buf_shadow = get_pixel_data(file, 1);
+		file->buf_shadow = get_pixel_data(file->path_shadow, &size_shadow);
 		if (!file->buf_shadow)
 			return (0);
+		if (size_shadow.x != file->size.x || size_shadow.y != file->size.y)
+			return (put_error(E_IMG_SHADOW_SIZE, file->path_shadow, 0));
 	}
-	i = 0;
-	while (i < file->segment_len)
-	{
-		file->seg[i].size.x = clamp(file->seg[i].size.x, 0, file->size.x);
-		file->seg[i].size.y = clamp(file->seg[i].size.y, 0, file->size.y);
-		++i;
-	}
+	if (!check_png_segments(file))
+		return (0);
 	return (create_images_from_file(man, file, i_img));
 }
 
-static t_color	*get_pixel_data(t_png *file, int is_shadow)
+/* The pixels are taken over from LodePNG's buffer instead of being copied. */
+static t_color	*get_pixel_data(const char *path, t_ivec2 *size)
 {
-	char	*path;
 	t_png	*png;
 	t_color	*data;
 
-	path = file->path;
-	if (is_shadow)
-		path = file->path_shadow;
 	png = load_png_from_path(path);
 	if (!png)
 		return (0);
-	set_ivec2(&file->size, png->size.x, png->size.y);
-	data = malloc(png->size.x * png->size.y * sizeof(t_color));
-	memcpy(data, png->buf, png->size.x * png->size.y * sizeof(t_color));
+	set_ivec2(size, png->size.x, png->size.y);
+	data = png->buf;
+	png->buf = 0;
 	free_png(png);
 	return (data);
 }

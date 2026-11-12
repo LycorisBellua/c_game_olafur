@@ -1,9 +1,7 @@
 #include "olafur.h"
 
-int	put_error(t_man *man, const char *msg, const char *arg, int errnum)
+int	put_error(const char *msg, const char *arg, int errnum)
 {
-	if (man)
-		deinit(man);
 	if (msg)
 	{
 		fprintf(stderr, "Error: %s", msg);

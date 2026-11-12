@@ -30,7 +30,7 @@ int	extract_maps(t_map *map)
 	}
 	start = skip_newlines(map->pars.lines, start);
 	if (map->pars.lines[start])
-		return (put_error(0, E_TOO_MANY_MAPS, 0, 0));
+		return (put_error(E_TOO_MANY_MAPS, 0, 0));
 	return (1);
 }
 
@@ -54,12 +54,12 @@ static int	get_start_index(t_map *map)
 		else if (index_maps >= 0)
 		{
 			if (strcmp(map->pars.lines[i], "\n"))
-				return (put_error(0, E_VARS_AFTER_MAP, 0, -1));
+				return (put_error(E_VARS_AFTER_MAP, 0, -1));
 			check_spec = 0;
 		}
 	}
 	if (index_maps < 0)
-		return (put_error(0, E_NO_MAP, 0, -1));
+		return (put_error(E_NO_MAP, 0, -1));
 	return (index_maps);
 }
 

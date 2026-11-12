@@ -2,6 +2,7 @@
 
 static void	fetch_default_images(t_man *man);
 static int	init_game(t_man *man);
+static int	deinit_and_fail(t_man *man);
 
 t_man	g_man;
 
@@ -16,18 +17,18 @@ int	main(int argc, char **argv)
 	else if (argc == 2)
 		g_man.first_map_path = strdup(argv[1]);
 	else
-		return (put_error(0, E_TOO_MANY_ARGS, 0, EXIT_FAILURE));
+		return (put_error(E_TOO_MANY_ARGS, 0, EXIT_FAILURE));
 	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!create_window(&g_man, TITLE, window_size, ASPECT_RATIO)
 		|| !init_frame(&g_man)
 		|| !update_image_array(&g_man, IMG_JSON_DEFAULT))
-		return (put_error(&g_man, 0, 0, EXIT_FAILURE));
+		return (deinit_and_fail(&g_man));
 	fetch_default_images(&g_man);
 	audio_init(&g_man.audio);
 	init_minimap_values(&g_man);
 	init_fog(&g_man);
 	if (!init_game(&g_man))
-		return (EXIT_FAILURE);
+		return (deinit_and_fail(&g_man));
 	init_input_handling(&g_man);
 	run_game_loop(&g_man);
 	deinit(&g_man);
@@ -52,8 +53,15 @@ static int	init_game(t_man *man)
 	man->initial_map_loading_depth = INITIAL_MAP_LOADING_DEPTH;
 	man->curr_map = add_map_and_submaps_recursive(man, man->first_map_path);
 	if (man->curr_map < 0)
-		return (put_error(man, 0, 0, 0));
+		return (0);
 	reset_player(man);
 	change_game_state(man, GAME_STATE_PLAY);
 	return (1);
+}
+
+/* The error is already printed where it happened. */
+static int	deinit_and_fail(t_man *man)
+{
+	deinit(man);
+	return (EXIT_FAILURE);
 }
