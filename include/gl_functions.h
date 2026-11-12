@@ -22,6 +22,12 @@ typedef void	(APIENTRY *GL_DVA)(GLsizei n, const GLuint* arrays);
 typedef void	(APIENTRY *GL_EVAA)(GLuint index);
 typedef void	(APIENTRY *GL_GB)(GLsizei n, GLuint* buffers);
 typedef void	(APIENTRY *GL_GVA)(GLsizei n, GLuint* arrays);
+typedef void	(APIENTRY *GL_GPI)(GLuint program, GLenum pname, GLint* params);
+typedef void	(APIENTRY *GL_GPIL)(GLuint program, GLsizei max_len,
+					GLsizei* len, GLchar* log);
+typedef void	(APIENTRY *GL_GSI)(GLuint shader, GLenum pname, GLint* params);
+typedef void	(APIENTRY *GL_GSIL)(GLuint shader, GLsizei max_len,
+					GLsizei* len, GLchar* log);
 typedef GLint	(APIENTRY *GL_GUL)(GLuint program, const GLchar* name);
 typedef void	(APIENTRY *GL_GVAI)(GLuint index, GLenum pname, GLuint* params);
 typedef void	(APIENTRY *GL_LP)(GLuint program);
@@ -55,6 +61,10 @@ typedef void	(APIENTRY *GL_VAP)(GLuint index, GLint size, GLenum type,
 # define glEnableVertexAttribArray ol_glEnableVertexAttribArray
 # define glGenBuffers ol_glGenBuffers
 # define glGenVertexArrays ol_glGenVertexArrays
+# define glGetProgramiv ol_glGetProgramiv
+# define glGetProgramInfoLog ol_glGetProgramInfoLog
+# define glGetShaderiv ol_glGetShaderiv
+# define glGetShaderInfoLog ol_glGetShaderInfoLog
 # define glGetUniformLocation ol_glGetUniformLocation
 # define glGetVertexAttribIuiv ol_glGetVertexAttribIuiv
 # define glLinkProgram ol_glLinkProgram
@@ -79,6 +89,10 @@ extern GL_DVA	glDeleteVertexArrays;
 extern GL_EVAA	glEnableVertexAttribArray;
 extern GL_GB	glGenBuffers;
 extern GL_GVA	glGenVertexArrays;
+extern GL_GPI	glGetProgramiv;
+extern GL_GPIL	glGetProgramInfoLog;
+extern GL_GSI	glGetShaderiv;
+extern GL_GSIL	glGetShaderInfoLog;
 extern GL_GUL	glGetUniformLocation;
 extern GL_GVAI	glGetVertexAttribIuiv;
 extern GL_LP	glLinkProgram;
