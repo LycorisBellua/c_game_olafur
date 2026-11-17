@@ -19,16 +19,6 @@ void	free_arr(void **arr, void (free_fct)(void *))
 	return ;
 }
 
-void	swap_elements(void **a, void **b)
-{
-	void	*tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-	return ;
-}
-
 size_t	count_arr_elems(void **arr)
 {
 	size_t	count;

@@ -11,6 +11,7 @@ int	main(int argc, char **argv)
 	t_ivec2	window_size;
 
 	memset(&g_man, 0, sizeof(t_man));
+	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
 	g_man.vsync = 1;
 	if (argc == 1)
 		g_man.first_map_path = find_first_map_path(MAP_DIR);
@@ -18,10 +19,10 @@ int	main(int argc, char **argv)
 		g_man.first_map_path = strdup(argv[1]);
 	else
 		return (put_error(E_TOO_MANY_ARGS, 0, EXIT_FAILURE));
-	set_ivec2(&window_size, WINDOW_WIDTH, WINDOW_HEIGHT);
+	if (argc == 1 && !g_man.first_map_path)
+		return (put_error(E_NO_MAP, MAP_DIR, EXIT_FAILURE));
 	if (!create_window(&g_man, TITLE, window_size, ASPECT_RATIO)
-		|| !init_frame(&g_man)
-		|| !init_default_images(&g_man))
+		|| !init_frame(&g_man) || !init_default_images(&g_man))
 		return (deinit_and_fail(&g_man));
 	audio_init(&g_man.audio);
 	init_minimap_values(&g_man);
@@ -60,7 +61,6 @@ static int	init_game(t_man *man)
 	return (1);
 }
 
-/* The error is already printed where it happened. */
 static int	deinit_and_fail(t_man *man)
 {
 	deinit(man);

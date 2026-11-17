@@ -29,11 +29,9 @@ int	process_img_assets(t_man *man, t_map *map)
 static int	load_json_index(t_man *man, t_map *map, int i)
 {
 	const char	*name;
-	size_t		len;
 
 	name = get_filename(map->pars.vars[i][1]);
-	len = strlen(name);
-	if (len < 6 || strcmp(name + len - 5, ".json"))
+	if (!has_extension(name, ".json"))
 		return (put_error(E_BAD_JSON, map->pars.vars[i][1], 0));
 	else if (!update_image_array(man, map->pars.vars[i][1]))
 		return (put_error(E_FAIL_JSON, map->pars.vars[i][1], 0));

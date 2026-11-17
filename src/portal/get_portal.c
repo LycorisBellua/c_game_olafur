@@ -2,7 +2,7 @@
 
 static void	get_face_line(char face, t_ivec2 cell, float offset, t_vec2 *line);
 
-/* Trigger portal only if portal face is touched, not just the cell */
+/* Trigger portal only if portal face is touched, not just the cell. */
 t_portal	*get_portal(t_man *man)
 {
 	t_map		*map;
@@ -20,7 +20,7 @@ t_portal	*get_portal(t_man *man)
 	else
 		return (0);
 	if (do_segments_intersect(face_line[0], face_line[1], man->player.prev_pos,
-			man->player.pos))
+		man->player.pos))
 		return (portal);
 	return (0);
 }

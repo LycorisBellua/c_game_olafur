@@ -121,5 +121,5 @@ static float	get_flt_point(const char *arg, int i_point)
 			}
 		}
 	}
-	return (nbr_point / 100.0);
+	return (nbr_point / 100.0f);
 }

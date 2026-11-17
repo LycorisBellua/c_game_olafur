@@ -10,15 +10,15 @@
 /* # define RAD_180 (M_PI) */
 /* # define RAD_270 (M_PI / 2 * 3) */
 /* # define RAD_360 (M_PI * 2) */
-# define PI_OVER_180 0.017453293
-# define PI_OVER_180_INVERSE 57.295779515
-# define RAD_1 0.017453293
-# define RAD_45 0.785398163
-# define RAD_60 1.047197551
-# define RAD_90 1.570796327
-# define RAD_180 M_PI
-# define RAD_270 4.71238898
-# define RAD_360 6.283185307
+# define PI_OVER_180 0.017453293f
+# define PI_OVER_180_INVERSE 57.295779515f
+# define RAD_1 0.017453293f
+# define RAD_45 0.785398163f
+# define RAD_60 1.047197551f
+# define RAD_90 1.570796327f
+# define RAD_180 3.141592654f
+# define RAD_270 4.71238898f
+# define RAD_360 6.283185307f
 # define EPSILON 1e-6f
 
 typedef struct s_vec2

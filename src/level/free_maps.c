@@ -9,6 +9,8 @@ void	free_maps(t_man *man)
 
 	free(man->first_map_path);
 	man->first_map_path = 0;
+	list_clear(&man->opened_doors, 0);
+	list_clear(&man->opened_portals, 0);
 	if (!man->maps)
 		return ;
 	i = 0;
@@ -58,35 +60,17 @@ void	free_map(t_map *map)
 	return ;
 }
 
-void	free_sprite_array(t_map *map)
+static void	free_cell_arrays(t_map *map)
 {
 	int	i;
 
 	if (!map)
 		return ;
-	if (map->sprites)
-	{
-		i = 0;
-		while (map->sprites[i])
-		{
-			free(map->sprites[i]);
-			++i;
-		}
-		free(map->sprites);
-	}
-	map->sprites = 0;
-	map->sprite_len = 0;
-	return ;
-}
-
-static void	free_cell_arrays(t_map *map)
-{
-	if (!map)
-		return ;
 	if (map->cells)
 	{
-		if (map->size.y > 0)
-			free(map->cells[0]);
+		i = 0;
+		while (i < map->size.y)
+			free(map->cells[i++]);
 		free(map->cells);
 	}
 	map->cells = 0;

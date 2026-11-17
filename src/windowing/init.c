@@ -1,10 +1,5 @@
 #include "olafur.h"
 
-void			framebuffer_size_callback(GLFWwindow *window, int x, int y);
-int				create_shader_program(void);
-int				create_uniform(t_man *man);
-int				create_mesh(void);
-
 static void		more_window_settings(t_man *man);
 static void		set_initial_viewport(t_man *man);
 
@@ -21,7 +16,7 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 		return (put_error(E_FAIL_WINDOW, 0, 0));
 	man->title = (char *)title;
 	man->window = glfwCreateWindow(man->res.window_size.x,
-			man->res.window_size.y, man->title, 0, 0);
+		man->res.window_size.y, man->title, 0, 0);
 	if (!man->window)
 		return (put_error(E_FAIL_WINDOW_GL, 0, 0));
 	more_window_settings(man);
@@ -29,9 +24,7 @@ int	create_window(t_man *man, const char *title, t_ivec2 size,
 	if (!man->gl_loaded)
 		return (put_error(E_FAIL_GL_FUNC, 0, 0));
 	man->shader_program = create_shader_program();
-	if (!man->shader_program || !create_uniform(man) || !create_mesh())
-		return (0);
-	return (1);
+	return (!!man->shader_program && !!create_uniform(man) && !!create_mesh());
 }
 
 void	set_vsync(t_man *man)

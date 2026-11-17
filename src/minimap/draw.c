@@ -8,11 +8,11 @@ void	draw_minimap(t_man *man, t_map *map)
 {
 	t_ivec2	i_map;
 
-	i_map.y = (int)man->player.pos.y - man->minimap_cell_amount * 0.5 - 1;
+	i_map.y = (int)man->player.pos.y - man->minimap_cell_amount * 0.5f - 1;
 	while (i_map.y < (int)man->player.pos.y + man->minimap_cell_amount
 		* 0.5 + 1)
 	{
-		i_map.x = (int)man->player.pos.x - man->minimap_cell_amount * 0.5 - 1;
+		i_map.x = (int)man->player.pos.x - man->minimap_cell_amount * 0.5f - 1;
 		while (i_map.x < (int)man->player.pos.x + man->minimap_cell_amount
 			* 0.5 + 1)
 		{
@@ -54,11 +54,9 @@ static void	draw_player(t_man *man)
 {
 	t_vert	center;
 
-	set_ivec2(&center.coord,
-		man->minimap_center.x,
-		man->minimap_center.y);
+	set_ivec2(&center.coord, man->minimap_center.x, man->minimap_center.y);
 	center.color = get_color_rgba(233, 196, 106, 255);
-	draw_circle_full(man, center, man->minimap_zoom * 0.25);
+	draw_circle_full(man, center, man->minimap_zoom * 0.25f);
 	return ;
 }
 
@@ -67,8 +65,8 @@ static void	draw_bubble(t_man *man)
 	t_vert	center;
 
 	set_ivec2(&center.coord, man->minimap_center.x, man->minimap_center.y);
-	center.color = get_color_rgba(255 * 0.25, 255 * 0.25, 255 * 0.25,
-			255 * 0.25);
+	center.color = get_color_rgba(255 * 0.25f, 255 * 0.25f, 255 * 0.25f,
+		255 * 0.25f);
 	draw_circle_full_gradient(man, center, man->minimap_radius,
 		man->maps[man->curr_map]->fog_color);
 	center.color = get_color_rgba(38, 70, 83, 255);

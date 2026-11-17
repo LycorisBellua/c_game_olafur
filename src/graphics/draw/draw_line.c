@@ -13,15 +13,13 @@ void	draw_line(t_man *man, t_vert v1, t_vert v2)
 
 	dir = get_direction(v1.coord, v2.coord);
 	steps = imax(abs(dir.x), abs(dir.y));
-	coord.x = v1.coord.x;
-	coord.y = v1.coord.y;
+	set_vec2(&coord, v1.coord.x, v1.coord.y);
 	if (steps == 0)
 	{
 		draw_point(man, v1.color, coord.x, coord.y);
 		return ;
 	}
-	increment.x = dir.x / (float)steps;
-	increment.y = dir.y / (float)steps;
+	set_vec2(&increment, dir.x / (float)steps, dir.y / (float)steps);
 	++steps;
 	total_steps = steps;
 	while (steps-- > 0)
@@ -57,9 +55,9 @@ static t_color	get_lerp_c(t_color c1, t_color c2, int steps, int total_steps)
 	if (total_steps < 1)
 		return (c1);
 	factor = (float)steps / total_steps;
-	color.r = c1.r * (1.0 - factor) + c2.r * factor;
-	color.g = c1.g * (1.0 - factor) + c2.g * factor;
-	color.b = c1.b * (1.0 - factor) + c2.b * factor;
-	color.a = c1.a * (1.0 - factor) + c2.a * factor;
+	color.r = c1.r * (1.0f - factor) + c2.r * factor;
+	color.g = c1.g * (1.0f - factor) + c2.g * factor;
+	color.b = c1.b * (1.0f - factor) + c2.b * factor;
+	color.a = c1.a * (1.0f - factor) + c2.a * factor;
 	return (color);
 }

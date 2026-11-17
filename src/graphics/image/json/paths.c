@@ -1,9 +1,5 @@
 #include "olafur.h"
 
-/*
-	Returns 1 if the JSON file at `path` was already loaded. Otherwise, the
-	path is registered and 0 is returned.
-*/
 int	register_json_path(t_man *man, const char *path)
 {
 	size_t	i;
@@ -27,10 +23,6 @@ int	register_json_path(t_man *man, const char *path)
 	return (0);
 }
 
-/*
-	Frees the images from index `start` onward. If `path` is given, loading its
-	JSON file failed, so it's unregistered to allow a later attempt.
-*/
 void	discard_new_images(t_man *man, size_t start, const char *path)
 {
 	size_t	i;

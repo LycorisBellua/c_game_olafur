@@ -47,7 +47,7 @@ static int	duplicate_cycles(t_img *dst, t_img *src)
 		dst->cycle[i] = calloc(dst->size.x * dst->size.y, sizeof(t_color));
 		if (src->cycle_shadow)
 			dst->cycle_shadow[i] = calloc(dst->size.x * dst->size.y,
-					sizeof(t_color));
+				sizeof(t_color));
 		if (!dst->cycle[i] || (src->cycle_shadow && !dst->cycle_shadow[i]))
 			return (0);
 		memcpy(dst->cycle[i], src->cycle[i],

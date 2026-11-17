@@ -4,7 +4,7 @@ static void		update_p_and_decision(int in_loop, t_ivec2 *p, int *decision,
 					int radius);
 static t_color	interpolate_color(t_color start, t_color end, float ratio);
 
-/* Bresenham/Midpoint Circle Drawing algorithm */
+/* Bresenham/Midpoint Circle Drawing algorithm. */
 void	draw_circle(t_man *man, t_vert center, int radius)
 {
 	t_ivec2	p;
@@ -31,7 +31,7 @@ void	draw_circle(t_man *man, t_vert center, int radius)
 	return ;
 }
 
-/* Bresenham/Midpoint Circle Drawing algorithm */
+/* Bresenham/Midpoint Circle Drawing algorithm. */
 void	draw_circle_full(t_man *man, t_vert center, int radius)
 {
 	t_ivec2	p;
@@ -66,7 +66,6 @@ void	draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 {
 	t_ivec2	p;
 	int		distance_squared;
-	float	adjusted_ratio;
 	t_color	c;
 
 	if (radius <= 0)
@@ -80,9 +79,8 @@ void	draw_circle_full_gradient(t_man *man, t_vert center, int radius,
 			distance_squared = p.x * p.x + p.y * p.y;
 			if (distance_squared <= radius * radius)
 			{
-				adjusted_ratio = (float)distance_squared
-					/ (float)(radius * radius);
-				c = interpolate_color(center.color, edge, adjusted_ratio);
+				c = interpolate_color(center.color, edge,
+					(float)distance_squared / (float)(radius * radius));
 				draw_point(man, c, center.coord.x + p.x, center.coord.y + p.y);
 			}
 			++p.x;

@@ -50,7 +50,6 @@ static int	add_image_slot(t_man *man)
 	return (count);
 }
 
-/* PNG rows are stored as columns, the layout the raycaster reads. */
 static void	fill_image_slot(t_man *man, int index, char *abs_path, t_png *file)
 {
 	int		x;

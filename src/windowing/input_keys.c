@@ -22,13 +22,13 @@ void	physical_key_callback(GLFWwindow *window, int key, int scancode,
 	return ;
 }
 
+/*
+	Ignore the action of the Num Lock key itself being pressed, otherwise it 
+	would interrupt a sequence when the user wants to use the key pad for 
+	both digits and arrows.
+*/
 static int	normalize_keypad_keys(int num_lock, int key)
 {
-	/*
-		Ignore the action of the Num Lock key itself being pressed, otherwise 
-		it would interrupt a TP sequence when the user wants to use the key pad 
-		for both digits and arrows.
-	*/
 	if (key == GLFW_KEY_NUM_LOCK)
 		return (GLFW_KEY_UNKNOWN);
 	else if (key == GLFW_KEY_KP_ENTER)

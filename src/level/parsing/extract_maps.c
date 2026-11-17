@@ -26,7 +26,7 @@ int	extract_maps(t_map *map)
 		while (map->pars.lines[end] && strcmp(map->pars.lines[end], "\n"))
 			++end;
 		*maps[i_maps] = (char **)extract_arr_elems((void **)map->pars.lines,
-				start, end - 1);
+			start, end - 1);
 	}
 	start = skip_newlines(map->pars.lines, start);
 	if (map->pars.lines[start])
@@ -59,7 +59,7 @@ static int	get_start_index(t_map *map)
 		}
 	}
 	if (index_maps < 0)
-		return (put_error(E_NO_MAP, 0, -1));
+		return (put_error(E_NO_WALL_MAP, 0, -1));
 	return (index_maps);
 }
 

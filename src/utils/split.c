@@ -2,6 +2,7 @@
 
 static size_t	count_split_nmemb(const char *s, char c);
 static char		**populate_split_list(char **list, const char *s, char c);
+static char		*copy_part(const char *start, size_t len);
 
 char	**split(const char *s, char c)
 {
@@ -75,14 +76,30 @@ static char	**populate_split_list(char **list, const char *s, char c)
 				++len;
 			else if (len)
 			{
-				list[nmemb++] = get_substr(s, i - len, len);
+				list[nmemb++] = copy_part(s + i - len, len);
 				len = 0;
 			}
 			++i;
 		}
 		if (len)
-			list[nmemb++] = get_substr(s, i - len, len);
+			list[nmemb++] = copy_part(s + i - len, len);
 	}
 	list[nmemb] = 0;
 	return (list);
+}
+
+/*
+	Unlike get_substr(), the length of the whole string isn't measured for
+	each part, which would make splitting a long string take quadratic time.
+*/
+static char	*copy_part(const char *start, size_t len)
+{
+	char	*part;
+
+	part = malloc((len + 1) * sizeof(char));
+	if (!part)
+		return (0);
+	memcpy(part, start, len);
+	part[len] = 0;
+	return (part);
 }

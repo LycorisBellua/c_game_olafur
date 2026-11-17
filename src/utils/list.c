@@ -22,15 +22,6 @@ t_list	*list_new(void *data)
 	return (new);
 }
 
-void	list_add_front(t_list **list, t_list *new)
-{
-	if (!new)
-		return ;
-	new->next = *list;
-	*list = new;
-	return ;
-}
-
 void	list_add_back(t_list **list, t_list *new)
 {
 	t_list	*last;
@@ -63,5 +54,12 @@ void	list_del_one(t_list **list, void (*del)(void *))
 		prev->next = next;
 	if (next)
 		next->prev = prev;
+	return ;
+}
+
+void	list_clear(t_list **list, void (*del)(void *))
+{
+	while (list && *list)
+		list_del_one(list, del);
 	return ;
 }

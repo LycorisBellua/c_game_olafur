@@ -14,6 +14,7 @@ void	perform_dda(t_man *man, float cam_x)
 	r.origin_plane = man->player.plane;
 	init_ray_data_x(&r);
 	init_ray_data_y(&r);
+	r.ray_len = sqrtf(r.ray_dir.x * r.ray_dir.x + r.ray_dir.y * r.ray_dir.y);
 	max_height = 0;
 	man->ray_count = 0;
 	rp = &r;
@@ -41,7 +42,7 @@ void	init_ray_data_x(t_ray *r)
 	else
 	{
 		r->step.x = 1;
-		r->side_dist.x = (r->m_index.x + 1.0 - r->origin_pos.x)
+		r->side_dist.x = (r->m_index.x + 1.0f - r->origin_pos.x)
 			* r->delta_dist.x;
 	}
 	return ;
@@ -62,7 +63,7 @@ void	init_ray_data_y(t_ray *r)
 	else
 	{
 		r->step.y = 1;
-		r->side_dist.y = (r->m_index.y + 1.0 - r->origin_pos.y)
+		r->side_dist.y = (r->m_index.y + 1.0f - r->origin_pos.y)
 			* r->delta_dist.y;
 	}
 	return ;

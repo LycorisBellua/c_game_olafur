@@ -5,25 +5,21 @@ static void		close_portals(t_man *man, t_map *map, t_list **opened_portals,
 					int max_dist);
 static void		open_new_portal(t_man *man, t_list **opened_portals,
 					int max_dist);
-static t_portal	*get_portal_ptr(t_map *m, int x, int y);
-static int		is_player_next_to_face(t_portal *pt, t_ivec2 p);
 static void		add_portal_to_list(t_list **list, t_portal *portal);
-static void		trigger_portal(t_portal *p, int is_open);
 
 void	open_and_close_portals(t_man *man)
 {
-	static t_list	*opened_portals;
-	static int		curr_map = -1;
-	t_map			*map;
+	static int	curr_map = -1;
+	t_map		*map;
 
 	map = man->maps[man->curr_map];
 	if (curr_map != man->curr_map)
 	{
-		add_portals_already_opened(map, &opened_portals);
+		add_portals_already_opened(map, &man->opened_portals);
 		curr_map = man->curr_map;
 	}
-	close_portals(man, map, &opened_portals, 1);
-	open_new_portal(man, &opened_portals, 1);
+	close_portals(man, map, &man->opened_portals, 1);
+	open_new_portal(man, &man->opened_portals, 1);
 	return ;
 }
 
@@ -90,14 +86,14 @@ static void	open_new_portal(t_man *man, t_list **opened_portals, int max_dist)
 	i = -max_dist;
 	while (i <= max_dist)
 	{
-		pt = get_portal_ptr(m, p.x + i, p.y);
-		if (pt && !pt->is_open && is_player_next_to_face(pt, p))
+		pt = get_portal_at(m, p.x + i, p.y);
+		if (pt && !pt->is_open && is_player_next_to_portal_face(pt, p))
 		{
 			add_portal_to_list(opened_portals, pt);
 			break ;
 		}
-		pt = get_portal_ptr(m, p.x, p.y + i);
-		if (pt && !pt->is_open && is_player_next_to_face(pt, p))
+		pt = get_portal_at(m, p.x, p.y + i);
+		if (pt && !pt->is_open && is_player_next_to_portal_face(pt, p))
 		{
 			add_portal_to_list(opened_portals, pt);
 			break ;
@@ -105,26 +101,6 @@ static void	open_new_portal(t_man *man, t_list **opened_portals, int max_dist)
 		++i;
 	}
 	return ;
-}
-
-static t_portal	*get_portal_ptr(t_map *m, int x, int y)
-{
-	if (x < 0 || x >= m->size.x || y < 0 || y >= m->size.y)
-		return (0);
-	return (m->cells[y][x].portal);
-}
-
-static int	is_player_next_to_face(t_portal *pt, t_ivec2 p)
-{
-	if (pt->src_cardinal == 'N')
-		return (p.y < pt->src_pos.y);
-	else if (pt->src_cardinal == 'S')
-		return (p.y > pt->src_pos.y);
-	else if (pt->src_cardinal == 'W')
-		return (p.x < pt->src_pos.x);
-	else if (pt->src_cardinal == 'E')
-		return (p.x > pt->src_pos.x);
-	return (1);
 }
 
 static void	add_portal_to_list(t_list **list, t_portal *portal)
@@ -136,16 +112,5 @@ static void	add_portal_to_list(t_list **list, t_portal *portal)
 		return ;
 	list_add_back(list, node);
 	trigger_portal(portal, 1);
-	return ;
-}
-
-static void	trigger_portal(t_portal *p, int is_open)
-{
-	t_cell	*c;
-
-	p->is_open = is_open;
-	c = &p->src_map->cells[p->src_pos.y][p->src_pos.x];
-	c->is_visible = is_portal_visible(p) || c->tex_north || c->tex_south
-		|| c->tex_west || c->tex_east;
 	return ;
 }

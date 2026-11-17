@@ -1,12 +1,13 @@
 #include "olafur.h"
 
-static int		load_json_file(t_man *man, const char *path);
-static int		allocate_array(t_man *man, char **lines, size_t *i_img);
+static int		load_json_file(t_man *man, const char *path,
+					const char *abs_path);
+static int		allocate_array(t_man *man, t_json *j, size_t *i_img);
 static int		set_pixel_data(t_man *man, t_png *file, size_t *i_img);
 static t_color	*get_pixel_data(const char *path, t_ivec2 *size);
 
 /*
-	The path is made absolute, so that the same JSON file reached through
+	The path is made absolute, so that the same JSON file reached through 
 	different relative paths is still only loaded once.
 */
 int	update_image_array(t_man *man, const char *path)
@@ -21,20 +22,20 @@ int	update_image_array(t_man *man, const char *path)
 		return (0);
 	is_success = 1;
 	if (!register_json_path(man, abs_path))
-		is_success = load_json_file(man, abs_path);
+		is_success = load_json_file(man, path, abs_path);
 	free(abs_path);
 	return (is_success);
 }
 
 /*
-	i[0] is the current line of the JSON file, i[1] the next image slot.
-	On failure, only the images added by this call are discarded, since the
-	ones loaded before may already be in use by maps.
+	i[0] is the current image object of the JSON file, i[1] the next image 
+	slot. Each object's pixels are freed once its images are created. On 
+	failure, only the images added by this call are discarded, since the ones 
+	loaded before may already be in use by maps.
 */
-static int	load_json_file(t_man *man, const char *path)
+static int	load_json_file(t_man *man, const char *path, const char *abs_path)
 {
-	char	**lines;
-	t_png	file;
+	t_json	j;
 	size_t	i[2];
 	size_t	old_count;
 	int		is_success;
@@ -42,24 +43,22 @@ static int	load_json_file(t_man *man, const char *path)
 	old_count = count_arr_elems((void **)man->images);
 	i[0] = 0;
 	i[1] = old_count;
-	lines = get_json_content(man, path);
-	is_success = lines && allocate_array(man, lines, &i[1]);
-	memset(&file, 0, sizeof(t_png));
-	while (is_success && set_png_file_obj(&file, lines, &i[0]))
+	is_success = parse_json_images(&j, path, abs_path)
+		&& allocate_array(man, &j, &i[1]);
+	while (is_success && i[0] < j.file_len)
 	{
-		is_success = set_pixel_data(man, &file, &i[1]);
-		free_and_reset_png_file_obj(&file);
+		is_success = set_pixel_data(man, &j.files[i[0]], &i[1]);
+		free_and_reset_png_file_obj(&j.files[i[0]++]);
 	}
-	free_and_reset_png_file_obj(&file);
-	free_json_content(lines);
+	free_json_images(&j);
 	if (!is_success)
-		discard_new_images(man, old_count, path);
+		discard_new_images(man, old_count, abs_path);
 	else
 		discard_new_images(man, i[1], 0);
 	return (is_success);
 }
 
-static int	allocate_array(t_man *man, char **lines, size_t *i_img)
+static int	allocate_array(t_man *man, t_json *j, size_t *i_img)
 {
 	size_t	i;
 	size_t	count;
@@ -67,8 +66,8 @@ static int	allocate_array(t_man *man, char **lines, size_t *i_img)
 
 	i = 0;
 	count = 0;
-	while (lines[i])
-		count += is_field(lines[i++], "id");
+	while (i < j->file_len)
+		count += j->files[i++].segment_len;
 	if (!count)
 		return (put_error(E_IMG_NO_ID, 0, 0));
 	new_arr = calloc(*i_img + count + 1, sizeof(t_img *));
@@ -82,9 +81,8 @@ static int	allocate_array(t_man *man, char **lines, size_t *i_img)
 	while (i < count)
 	{
 		man->images[*i_img + i] = calloc(1, sizeof(t_img));
-		if (!man->images[*i_img + i])
+		if (!man->images[*i_img + i++])
 			return (put_error(E_FAIL_MEM, 0, 0));
-		++i;
 	}
 	return (1);
 }
@@ -111,7 +109,6 @@ static int	set_pixel_data(t_man *man, t_png *file, size_t *i_img)
 	return (create_images_from_file(man, file, i_img));
 }
 
-/* The pixels are taken over from LodePNG's buffer instead of being copied. */
 static t_color	*get_pixel_data(const char *path, t_ivec2 *size)
 {
 	t_png	*png;

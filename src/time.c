@@ -1,6 +1,7 @@
 #include "olafur.h"
 
 static float	compute_dt(struct timeval prev_time, struct timeval curr_time);
+static long		to_ms(struct timeval time);
 
 void	set_dt_and_fps(t_man *man)
 {
@@ -16,11 +17,8 @@ void	set_dt_and_fps(t_man *man)
 	if (!prev_time.tv_sec && !prev_time.tv_usec)
 		prev_time = curr_time;
 	man->dt = compute_dt(prev_time, curr_time);
-	man->dt_ms = man->dt * 1000;
-	if (!man->dt)
-		man->fps = 0;
-	else
-		man->fps = (int)(1 / man->dt);
+	man->dt_ms = to_ms(curr_time) - to_ms(prev_time);
+	man->fps = !man->dt ? 0 : (int)(1 / man->dt);
 	prev_time = curr_time;
 	return ;
 }
@@ -37,7 +35,7 @@ void	display_fps(t_man *man)
 	if (dt_ms >= 250)
 	{
 		smoothed_fps = man->fps;
-		dt_ms -= 250;
+		dt_ms %= 250;
 	}
 	num = itoa_dec(smoothed_fps);
 	s = strjoin("VSync: ", man->vsync ? "On" : "Off");
@@ -45,7 +43,7 @@ void	display_fps(t_man *man)
 	draw_font(man, &pos, s);
 	free(s);
 	s = strjoin("FPS: ", num);
-	set_ivec2(&pos, 20 * man->gui_scale, 60 * man->gui_scale);
+	set_ivec2(&pos, 20 * man->gui_scale, 56 * man->gui_scale);
 	draw_font(man, &pos, s);
 	free(s);
 	free(num);
@@ -58,11 +56,16 @@ static float	compute_dt(struct timeval prev_time, struct timeval curr_time)
 	float	delta_ms;
 
 	delta_s = (float)(curr_time.tv_sec - prev_time.tv_sec);
-	delta_ms = (float)(curr_time.tv_usec - prev_time.tv_usec) / 1000000.0;
+	delta_ms = (float)(curr_time.tv_usec - prev_time.tv_usec) / 1000000.0f;
 	if (delta_ms < 0)
 	{
-		delta_s -= 1.0;
-		delta_ms += 1.0;
+		delta_s -= 1.0f;
+		delta_ms += 1.0f;
 	}
 	return (delta_s + delta_ms);
+}
+
+static long	to_ms(struct timeval time)
+{
+	return (time.tv_sec * 1000L + time.tv_usec / 1000);
 }

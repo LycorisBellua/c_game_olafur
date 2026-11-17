@@ -4,6 +4,7 @@
 typedef unsigned char	t_ubyte;
 typedef unsigned int	t_uint;
 typedef struct s_man	t_man;
+typedef void			(*t_action)(t_man *man, int set);
 typedef struct s_map	t_map;
 
 typedef enum e_game_state
@@ -32,13 +33,27 @@ typedef enum e_sound_type
 	SOUND_COLLEC
 }	t_sound_type;
 
-/* Each key has 3 potential game states for 3 potential key states */
+/* Each key has 3 potential game states for 3 potential key states. */
 typedef struct s_key
 {
 	int				keycode;
 	t_key_state		state;
-	void			(*actions[3][3])(t_man *man, int set);
+	t_action		actions[3][3];
 }	t_key;
+
+typedef struct s_strlist
+{
+	char	**items;
+	size_t	count;
+	size_t	cap;
+}	t_strlist;
+
+typedef struct s_strbuf
+{
+	char	*s;
+	size_t	len;
+	size_t	cap;
+}	t_strbuf;
 
 typedef struct s_list
 {
@@ -92,6 +107,14 @@ typedef struct s_vert
 	t_color	color;
 }	t_vert;
 
+typedef struct s_scanline
+{
+	t_ivec2	p;
+	int		n;
+	float	*xs;
+	int		*dir;
+}	t_scanline;
+
 typedef struct s_img
 {
 	char	*id;
@@ -114,7 +137,7 @@ typedef struct s_png_seg
 	t_ivec2	size;
 	t_ivec2	shadow_offset;
 	int		still_frame;
-	long	cycle_time_in_ms;
+	int		cycle_time_in_ms;
 	size_t	cycle_len;
 	t_ivec2	*cycle;
 }	t_png_seg;
@@ -130,6 +153,18 @@ typedef struct s_png
 	t_png_seg	*seg;
 }	t_png;
 
+typedef struct s_json
+{
+	char		*text;
+	size_t		i;
+	size_t		key_pos;
+	const char	*path;
+	t_png		*files;
+	size_t		file_len;
+}	t_json;
+
+typedef int				(*t_json_item)(t_json *j, void *ctx);
+
 typedef struct s_ray
 {
 	float	cam_x;
@@ -144,6 +179,7 @@ typedef struct s_ray
 	t_vec2	side_dist;
 	int		side;
 	float	perp_wall_dist;
+	float	ray_len;
 	int		fog_factor8;
 	int		corner_factor8;
 	int		shadow_middle_y;
@@ -160,12 +196,27 @@ typedef struct s_ray
 	int		invert_tex;
 }	t_ray;
 
+typedef struct s_wall_tex
+{
+	t_color	*frame;
+	int		tex_h;
+	int		col_base;
+	int		tex_y;
+	int		it_prev;
+	t_ivec2	range;
+	float	step;
+	float	pos;
+	t_color	fog;
+	int		k;
+}	t_wall_tex;
+
 typedef struct s_row
 {
 	t_vec2	ray_dir;
 	t_vec2	ray_dir_step;
 	float	pos_z;
 	float	row_dist;
+	float	fog_scale;
 	int		fog_factor8;
 	t_vec2	floor_step;
 	t_vec2	floor;
@@ -321,19 +372,16 @@ typedef struct s_res
 	t_ivec2	window_size_default;
 	t_ivec2	window_size;
 	t_ivec2	window_pos;
-	float	half_fov_tan;
 	float	ratio;
 	t_ivec2	res;
 	t_ivec2	viewport_size;
 	t_ivec2	viewport_offset;
-	t_ivec2	fullscreen;
 	int		is_fullscreen;
+	float	half_fov_tan;
 }	t_res;
 
 struct s_man
 {
-	char			*first_map_path;
-	int				initial_map_loading_depth;
 	GLFWwindow		*window;
 	GLuint			shader_program;
 	GLint			uniform_loc;
@@ -342,8 +390,6 @@ struct s_man
 	char			*title;
 	int				gl_loaded;
 	t_frame			frame;
-	float			*z_buf;
-	float			*fc_depth;
 	float			dt;
 	long			dt_ms;
 	int				fps;
@@ -351,18 +397,27 @@ struct s_man
 	t_res			res;
 	t_game_state	game_state;
 	t_player		player;
-	float			move_speed;
-	float			rotate_speed;
-	t_ivec2			move_action;
-	int				rotate_action;
-	int				l_click_action;
-	int				r_click_action;
 	t_key			keys[NBR_KEYS + 1];
 	t_ivec2			cursor;
 	int				show_debug;
 	int				vsync;
 	char			**json_paths;
 	t_img			**images;
+	int				gui_scale;
+	t_img			*img_font;
+	t_img			*img_cursor;
+	t_img			*img_collec;
+	char			*first_map_path;
+	int				initial_map_loading_depth;
+	float			*z_buf;
+	float			*ray_len;
+	float			*fc_depth;
+	float			move_speed;
+	float			rotate_speed;
+	t_ivec2			move_action;
+	int				rotate_action;
+	int				l_click_action;
+	int				r_click_action;
 	t_map			**maps;
 	int				curr_map;
 	float			dof;
@@ -375,13 +430,14 @@ struct s_man
 	int				minimap_cell_amount;
 	float			minimap_half_90_deg_cos;
 	float			minimap_half_90_deg_cos_sq;
-	int				gui_scale;
 	t_ray			ray_buf[MAX_COLUMN_RAYS];
 	int				ray_count;
 	t_audio			audio;
-	t_img 			*img_font;
-	t_img 			*img_cursor;
-	t_img			*img_collec;
+	int				drag_anchor_x;
+	int				drag_max_diff;
+	float			drag_rotate_speed;
+	t_list			*opened_doors;
+	t_list			*opened_portals;
 };
 
 extern t_man	g_man;

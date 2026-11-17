@@ -1,60 +1,55 @@
 #include "olafur.h"
 
-static int		calculate_tex_coord_x(t_img *tex, t_ray *r);
-static float	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex);
-static t_ivec2	calculate_texel_range(t_ray *r, t_img *tex);
-static t_color	shade_wall_pixel(t_ray *r, t_color c, t_color fog, int k);
+static void		init_wall_tex(t_man *man, t_ray *r, t_img *tex, t_wall_tex *w);
 static int		wall_pixel_occluded(t_man *man, t_ray *r);
+static t_color	shade_wall_pixel(t_ray *r, t_wall_tex *w);
 
 void	draw_wall(t_man *man, t_ray *r, t_img *tex)
 {
-	int		y;
-	int		it_prev;
-	int		it_new;
-	t_ivec2	tex_coord;
-	t_ivec2	texel_range;
-	float	tex_step;
-	float	tex_pos;
-	t_color	*frame;
-	int		tex_h;
-	int		col_base;
-	t_color	shade_fog;
-	int		shade_k;
+	t_wall_tex	w;
+	int			y;
+	int			it_new;
 
 	if (!tex)
 		return ;
-	tex_coord.x = calculate_tex_coord_x(tex, r);
-	r->corner_factor8 = (int)(corner_intensity_of(r, tex, tex_coord.x) * 256.0f);
-	set_wall_shadow_params(r);
-	frame = tex->cycle[tex->cycle_index];
-	tex_h = tex->size.y;
-	col_base = tex_coord.x * tex_h;
-	shade_fog = r->m->fog_color;
-	shade_k = (256 - r->corner_factor8) * (256 - r->fog_factor8);
-	tex_step = (float)tex_h / r->line_height_cubic;
-	tex_pos = calculate_initial_tex_pos(man, r, tex);
-	texel_range = calculate_texel_range(r, tex);
-	it_prev = imin(imax((int)floorf(tex_pos), texel_range.x), texel_range.y);
-	tex_coord.y = it_prev % tex_h;
-	if (tex_coord.y < 0)
-		tex_coord.y += tex_h;
+	init_wall_tex(man, r, tex, &w);
 	y = r->coord1.y;
 	while (r->coord1.y <= r->coord2.y)
 	{
 		if (!wall_pixel_occluded(man, r))
-			draw_point_fast(man, shade_wall_pixel(r,
-					frame[col_base + tex_coord.y], shade_fog, shade_k),
-				r->coord1.x, r->coord1.y);
-		tex_pos += tex_step;
-		it_new = imin(imax((int)floorf(tex_pos), texel_range.x),
-				texel_range.y);
-		tex_coord.y += it_new - it_prev;
-		it_prev = it_new;
-		while (tex_coord.y >= tex_h)
-			tex_coord.y -= tex_h;
+			draw_point_fast(man, shade_wall_pixel(r, &w), r->coord1.x,
+				r->coord1.y);
+		w.pos += w.step;
+		it_new = imin(imax((int)floorf(w.pos), w.range.x), w.range.y);
+		w.tex_y += it_new - w.it_prev;
+		w.it_prev = it_new;
+		while (w.tex_y >= w.tex_h)
+			w.tex_y -= w.tex_h;
 		++r->coord1.y;
 	}
 	r->coord1.y = y;
+	return ;
+}
+
+static void	init_wall_tex(t_man *man, t_ray *r, t_img *tex, t_wall_tex *w)
+{
+	int	tex_x;
+
+	tex_x = calculate_tex_coord_x(tex, r);
+	r->corner_factor8 = (int)(corner_intensity_of(r, tex, tex_x) * 256.0f);
+	set_wall_shadow_params(r);
+	w->frame = tex->cycle[tex->cycle_index];
+	w->tex_h = tex->size.y;
+	w->col_base = tex_x * w->tex_h;
+	w->fog = r->m->fog_color;
+	w->k = (256 - r->corner_factor8) * (256 - r->fog_factor8);
+	w->step = (float)w->tex_h / r->line_height_cubic;
+	w->pos = calculate_initial_tex_pos(man, r, tex);
+	w->range = calculate_texel_range(r, tex);
+	w->it_prev = imin(imax((int)floorf(w->pos), w->range.x), w->range.y);
+	w->tex_y = w->it_prev % w->tex_h;
+	if (w->tex_y < 0)
+		w->tex_y += w->tex_h;
 	return ;
 }
 
@@ -68,62 +63,19 @@ static int	wall_pixel_occluded(t_man *man, t_ray *r)
 	return (r->perp_wall_dist > man->fc_depth[idx]);
 }
 
-static int	calculate_tex_coord_x(t_img *tex, t_ray *r)
+static t_color	shade_wall_pixel(t_ray *r, t_wall_tex *w)
 {
-	int		tex_coord_x;
-	float	wall_x;
-
-	if (r->side == 0)
-		wall_x = r->origin_pos.y + r->perp_wall_dist * r->ray_dir.y;
-	else
-		wall_x = r->origin_pos.x + r->perp_wall_dist * r->ray_dir.x;
-	wall_x -= floorf(wall_x);
-	tex_coord_x = (int)(wall_x * tex->size.x);
-	if ((r->side == 0 && r->ray_dir.x < 0)
-		|| (r->side == 1 && r->ray_dir.y > 0))
-		tex_coord_x = tex->size.x - tex_coord_x - 1;
-	if (r->invert_tex)
-		tex_coord_x = tex->size.x - tex_coord_x - 1;
-	return (tex_coord_x);
-}
-
-static float	calculate_initial_tex_pos(t_man *man, t_ray *r, t_img *tex)
-{
-	t_cell	*cell;
-	float	y_offset;
-	float	tex_step;
-
-	cell = &r->m->cells[r->m_index.y][r->m_index.x];
-	y_offset = tex->size.y * (1.0 - cell->height) * 0.5;
-	tex_step = (float)tex->size.y / r->line_height_cubic;
-	return (y_offset + (r->coord1.y - (man->frame.size.y * 0.5 - r->line_height
-				* 0.5)) * tex_step);
-}
-
-static t_ivec2	calculate_texel_range(t_ray *r, t_img *tex)
-{
-	t_cell	*cell;
-	float	y_offset;
-	t_ivec2	range;
-
-	cell = &r->m->cells[r->m_index.y][r->m_index.x];
-	y_offset = tex->size.y * (1.0f - cell->height) * 0.5f;
-	range.x = (int)floorf(y_offset);
-	range.y = (int)ceilf(y_offset + cell->height * tex->size.y) - 1;
-	return (range);
-}
-
-static t_color	shade_wall_pixel(t_ray *r, t_color c, t_color fog, int k)
-{
+	t_color	c;
 	int		s8;
 	int		g8;
 
+	c = w->frame[w->col_base + w->tex_y];
 	s8 = wall_shadow_factor8(r, r->coord1.y);
-	g8 = 256 - (((256 - s8) * k) >> 16);
+	g8 = 256 - (((256 - s8) * w->k) >> 16);
 	if (c.a > 0)
-		c.a = ((256 - s8) * c.a + s8 * fog.a) >> 8;
-	c.r = ((256 - g8) * c.r + g8 * fog.r) >> 8;
-	c.g = ((256 - g8) * c.g + g8 * fog.g) >> 8;
-	c.b = ((256 - g8) * c.b + g8 * fog.b) >> 8;
+		c.a = ((256 - s8) * c.a + s8 * w->fog.a) >> 8;
+	c.r = ((256 - g8) * c.r + g8 * w->fog.r) >> 8;
+	c.g = ((256 - g8) * c.g + g8 * w->fog.g) >> 8;
+	c.b = ((256 - g8) * c.b + g8 * w->fog.b) >> 8;
 	return (c);
 }

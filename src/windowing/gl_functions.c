@@ -26,10 +26,10 @@ GL_GSIL	glGetShaderInfoLog;
 GL_GUL	glGetUniformLocation;
 GL_GVAI	glGetVertexAttribIuiv;
 GL_LP	glLinkProgram;
-GL_MB glMapBuffer;
+GL_MB	glMapBuffer;
 GL_SS	glShaderSource;
 GL_U1I	glUniform1i;
-GL_UMB glUnmapBuffer;
+GL_UMB	glUnmapBuffer;
 GL_UP	glUseProgram;
 GL_VAP	glVertexAttribPointer;
 
@@ -61,10 +61,10 @@ static int	init_gl_functions_for_buffers(void)
 	glBufferData = (GL_BD)glfwGetProcAddress("glBufferData");
 	glDeleteBuffers = (GL_DB)glfwGetProcAddress("glDeleteBuffers");
 	glGenBuffers = (GL_GB)glfwGetProcAddress("glGenBuffers");
-   glMapBuffer = (GL_MB)glfwGetProcAddress("glMapBuffer");
-   glUnmapBuffer = (GL_UMB)glfwGetProcAddress("glUnmapBuffer");
+	glMapBuffer = (GL_MB)glfwGetProcAddress("glMapBuffer");
+	glUnmapBuffer = (GL_UMB)glfwGetProcAddress("glUnmapBuffer");
 	return (glBindBuffer && glBufferData && glDeleteBuffers && glGenBuffers
-       && glMapBuffer && glUnmapBuffer);
+		&& glMapBuffer && glUnmapBuffer);
 }
 
 static int	init_gl_functions_for_programs(void)

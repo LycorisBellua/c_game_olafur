@@ -4,6 +4,10 @@ static int		collect_sprite(t_man *man, t_map *map, int sprite_index);
 static t_vec2	calculate_new_pos_on_collision(t_spr *s, float radius,
 					t_vec2 pos);
 
+/*
+	The distances are measured from the current position, after this frame's
+	movement and any push from a previous sprite.
+*/
 void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 {
 	int		i;
@@ -15,13 +19,14 @@ void	adjust_position_on_sprite_collision(t_man *man, t_map *map)
 	i = 0;
 	while (i < map->sprite_len)
 	{
+		map->sprites[i]->dist = dist(pos, map->sprites[i]->pos);
 		if (map->sprites[i]->dist < radius)
 		{
 			if (collect_sprite(man, map, i))
 				continue ;
 			else if (map->sprites[i]->has_collision)
 				pos = calculate_new_pos_on_collision(map->sprites[i], radius,
-						pos);
+					pos);
 		}
 		++i;
 	}

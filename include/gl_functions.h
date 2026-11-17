@@ -31,21 +31,21 @@ typedef void	(APIENTRY *GL_GSIL)(GLuint shader, GLsizei max_len,
 typedef GLint	(APIENTRY *GL_GUL)(GLuint program, const GLchar* name);
 typedef void	(APIENTRY *GL_GVAI)(GLuint index, GLenum pname, GLuint* params);
 typedef void	(APIENTRY *GL_LP)(GLuint program);
-/**/typedef void*  (APIENTRY *GL_MB)(GLenum target, GLenum access);
+typedef void	*(APIENTRY *GL_MB)(GLenum target, GLenum access);
 typedef void	(APIENTRY *GL_SS)(GLuint shader, GLsizei count,
 					const GLchar** string, const GLint* length);
 typedef void	(APIENTRY *GL_U1I)(GLint location, GLint v0);
-/**/typedef GLboolean (APIENTRY *GL_UMB)(GLenum target);
+typedef GLboolean	(APIENTRY *GL_UMB)(GLenum target);
 typedef void	(APIENTRY *GL_UP)(GLuint program);
 typedef void	(APIENTRY *GL_VAP)(GLuint index, GLint size, GLenum type,
 					GLboolean normalized, GLsizei stride, const void* pointer);
 
 /*
-	System GL libraries only guarantee exports up to OpenGL 1.1. Newer functions 
-   live in the graphics driver, so their addresses are queried at runtime 
-   (after a context is made current). Each name is aliased to a prefixed 
-   variable to avoid clashing with symbols the system library may export under 
-   the same names.
+	System GL libraries only guarantee exports up to OpenGL 1.1. Newer 
+	functions live in the graphics driver, so their addresses are queried at 
+	runtime (after a context is made current). Each name is aliased to a 
+	prefixed variable to avoid clashing with symbols the system library may 
+	export under the same names.
 */
 # define glAttachShader ol_glAttachShader
 # define glBindBuffer ol_glBindBuffer
@@ -96,10 +96,10 @@ extern GL_GSIL	glGetShaderInfoLog;
 extern GL_GUL	glGetUniformLocation;
 extern GL_GVAI	glGetVertexAttribIuiv;
 extern GL_LP	glLinkProgram;
-extern GL_MB   glMapBuffer;
+extern GL_MB	glMapBuffer;
 extern GL_SS	glShaderSource;
 extern GL_U1I	glUniform1i;
-extern GL_UMB  glUnmapBuffer;
+extern GL_UMB	glUnmapBuffer;
 extern GL_UP	glUseProgram;
 extern GL_VAP	glVertexAttribPointer;
 

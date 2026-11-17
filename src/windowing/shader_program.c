@@ -4,32 +4,30 @@ static GLuint	compile_shader(GLenum type, const char *text);
 static GLuint	link_program(GLuint vertex_shader, GLuint fragment_shader);
 static int		check_status(GLuint id, int is_program);
 
-const char	*g_vertex_shader =
-"#version 400 core\n"
-"layout(location = 0) in vec2 in_pos;\n"
-"layout(location = 1) in vec2 in_tex_coord;\n"
-"out vec2 frag_tex_coord;\n"
-"void main()\n"
-"{\n"
-"	gl_Position = vec4(in_pos, 0.0, 1.0);\n"
-"	frag_tex_coord = in_tex_coord;\n"
-"}\n";
+static const char	*g_vertex_shader = "#version 400 core\n"
+	"layout(location = 0) in vec2 in_pos;\n"
+	"layout(location = 1) in vec2 in_tex_coord;\n"
+	"out vec2 frag_tex_coord;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_Position = vec4(in_pos, 0.0, 1.0);\n"
+	"	frag_tex_coord = in_tex_coord;\n"
+	"}\n";
 
-const char	*g_fragment_shader =
-"#version 400 core\n"
-"in vec2 frag_tex_coord;\n"
-"uniform sampler2D frame_texture;\n"
-"out vec4 frag_color;\n"
-"void main()\n"
-"{\n"
-"	vec3 colors = texture(frame_texture, frag_tex_coord).rgb;\n"
-"	frag_color = vec4(colors, 1.0);\n"
-"}\n";
+static const char	*g_fragment_shader = "#version 400 core\n"
+	"in vec2 frag_tex_coord;\n"
+	"uniform sampler2D frame_texture;\n"
+	"out vec4 frag_color;\n"
+	"void main()\n"
+	"{\n"
+	"	vec3 colors = texture(frame_texture, frag_tex_coord).rgb;\n"
+	"	frag_color = vec4(colors, 1.0);\n"
+	"}\n";
 
 /*
-	The shaders are freed at the end, whether linking succeeded or not. Once
-	linked, they live in the shader program, so they're no longer needed
-	unless you want to use them in another shader program.
+	The shaders are freed at the end, whether linking succeeded or not. Once 
+	linked, they live in the shader program, so they're no longer needed unless 
+	you want to use them in another shader program.
 */
 int	create_shader_program(void)
 {
@@ -93,7 +91,6 @@ static GLuint	link_program(GLuint vertex_shader, GLuint fragment_shader)
 	return (program);
 }
 
-/* On failure, the driver's log is printed, since it says what went wrong. */
 static int	check_status(GLuint id, int is_program)
 {
 	GLint	status;

@@ -1,6 +1,5 @@
 #include "olafur.h"
 
-/* In `height`, x and y are used as "start" and "end" */
 int	wall_shadow_factor8(t_ray *r, int y)
 {
 	float	edge_dist;
@@ -35,7 +34,7 @@ float	corner_intensity_of(t_ray *r, t_img *tex, int tex_x)
 
 	if (!is_corner(r->m, r, tex_x, tex->size.x))
 		return (0.0f);
-	ten_percent = tex->size.x * 0.1;
+	ten_percent = tex->size.x * 0.1f;
 	if (ten_percent <= 0)
 		return (0.0f);
 	corner_boundary = tex->size.x - 1;

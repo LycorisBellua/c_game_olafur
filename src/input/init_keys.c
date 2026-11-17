@@ -1,119 +1,63 @@
 #include "olafur.h"
 
+static void	init_system_keys(t_key *k);
+static void	set_key(t_key *key, int keycode, t_action pressed, t_action held);
+static void	set_key_in_all_states(t_key *key, int keycode, t_action pressed);
+
 /*
 	By default, the window closing event is only triggered by the cross window 
 	button or Alt+F4. We also add ESC.
 */
-
-void	cancel_keys_in_game_state(t_man *man)
-{
-	int	i;
-
-	i = 0;
-	while (man->keys[i].keycode)
-	{
-		if (man->keys[i].state != KEY_STATE_NONE)
-			execute_input_action(man, man->keys[i].keycode, KEY_STATE_NONE);
-		++i;
-	}
-	return ;
-}
-
-void	change_game_state(t_man *man, t_game_state new_state)
-{
-	cancel_keys_in_game_state(man);
-	if (man->game_state != new_state)
-	{
-		if (new_state == GAME_STATE_SUCCESS)
-			audio_source_play(man->audio.sources[SOUND_SUCCESS]);
-		else if (new_state == GAME_STATE_FAILURE)
-			audio_source_play(man->audio.sources[SOUND_FAILURE]);
-	}
-	man->game_state = new_state;
-	return ;
-}
-
 void	init_input_keys(t_man *man)
 {
-	const int	game_play = GAME_STATE_PLAY - 1;
-	const int	game_success = GAME_STATE_SUCCESS - 1;
-	const int	game_failure = GAME_STATE_FAILURE - 1;
-	const int	key_pressed = KEY_STATE_PRESSED - 1;
-	const int	key_held = KEY_STATE_HELD - 1;
-	const int	key_released = KEY_STATE_RELEASED - 1;
+	t_key	*k;
 
-	(void)key_released;
+	k = man->keys;
+	set_key(&k[0], GLFW_KEY_W, action_move_forward, action_move_forward);
+	set_key(&k[1], GLFW_KEY_A, action_turn_left, action_turn_left);
+	set_key(&k[2], GLFW_KEY_S, action_move_backward, action_move_backward);
+	set_key(&k[3], GLFW_KEY_D, action_turn_right, action_turn_right);
+	set_key(&k[4], GLFW_KEY_Q, action_move_left, action_move_left);
+	set_key(&k[5], GLFW_KEY_E, action_move_right, action_move_right);
+	set_key(&k[6], GLFW_KEY_UP, action_move_forward, action_move_forward);
+	set_key(&k[7], GLFW_KEY_LEFT, action_turn_left, action_turn_left);
+	set_key(&k[8], GLFW_KEY_DOWN, action_move_backward, action_move_backward);
+	set_key(&k[9], GLFW_KEY_RIGHT, action_turn_right, action_turn_right);
+	set_key(&k[10], GLFW_KEY_LEFT_SHIFT, action_run, action_run);
+	set_key(&k[11], GLFW_KEY_RIGHT_SHIFT, action_run, action_run);
+	init_system_keys(k);
+	set_key(&k[17], GLFW_KEY_PAGE_UP, action_move_forward, action_move_forward);
+	set_key(&k[18], GLFW_KEY_PAGE_DOWN, action_move_backward,
+		action_move_backward);
+	return ;
+}
 
-	man->keys[0].keycode = GLFW_KEY_W;
-	man->keys[0].actions[game_play][key_pressed] = action_move_forward;
-	man->keys[0].actions[game_play][key_held] = action_move_forward;
+/* Keys that aren't about movement: F5, F10, F11, F12, ESC. */
+static void	init_system_keys(t_key *k)
+{
+	set_key(&k[12], GLFW_KEY_F5, action_move_to_start, 0);
+	k[12].actions[GAME_STATE_SUCCESS - 1][KEY_STATE_PRESSED - 1]
+		= action_move_to_start;
+	set_key_in_all_states(&k[13], GLFW_KEY_F10, action_toggle_vsync);
+	set_key_in_all_states(&k[14], GLFW_KEY_F11, action_toggle_fullscreen);
+	set_key_in_all_states(&k[15], GLFW_KEY_F12, action_toggle_debug);
+	set_key_in_all_states(&k[16], GLFW_KEY_ESCAPE, action_close_window);
+	return ;
+}
 
-	man->keys[1].keycode = GLFW_KEY_A;
-	man->keys[1].actions[game_play][key_pressed] = action_turn_left;
-	man->keys[1].actions[game_play][key_held] = action_turn_left;
+static void	set_key(t_key *key, int keycode, t_action pressed, t_action held)
+{
+	key->keycode = keycode;
+	key->actions[GAME_STATE_PLAY - 1][KEY_STATE_PRESSED - 1] = pressed;
+	key->actions[GAME_STATE_PLAY - 1][KEY_STATE_HELD - 1] = held;
+	return ;
+}
 
-	man->keys[2].keycode = GLFW_KEY_S;
-	man->keys[2].actions[game_play][key_pressed] = action_move_backward;
-	man->keys[2].actions[game_play][key_held] = action_move_backward;
-
-	man->keys[3].keycode = GLFW_KEY_D;
-	man->keys[3].actions[game_play][key_pressed] = action_turn_right;
-	man->keys[3].actions[game_play][key_held] = action_turn_right;
-
-	man->keys[4].keycode = GLFW_KEY_Q;
-	man->keys[4].actions[game_play][key_pressed] = action_move_left;
-	man->keys[4].actions[game_play][key_held] = action_move_left;
-
-	man->keys[5].keycode = GLFW_KEY_E;
-	man->keys[5].actions[game_play][key_pressed] = action_move_right;
-	man->keys[5].actions[game_play][key_held] = action_move_right;
-
-	man->keys[6].keycode = GLFW_KEY_UP;
-	man->keys[6].actions[game_play][key_pressed] = action_move_forward;
-	man->keys[6].actions[game_play][key_held] = action_move_forward;
-
-	man->keys[7].keycode = GLFW_KEY_LEFT;
-	man->keys[7].actions[game_play][key_pressed] = action_turn_left;
-	man->keys[7].actions[game_play][key_held] = action_turn_left;
-
-	man->keys[8].keycode = GLFW_KEY_DOWN;
-	man->keys[8].actions[game_play][key_pressed] = action_move_backward;
-	man->keys[8].actions[game_play][key_held] = action_move_backward;
-
-	man->keys[9].keycode = GLFW_KEY_RIGHT;
-	man->keys[9].actions[game_play][key_pressed] = action_turn_right;
-	man->keys[9].actions[game_play][key_held] = action_turn_right;
-
-	man->keys[10].keycode = GLFW_KEY_LEFT_SHIFT;
-	man->keys[10].actions[game_play][key_pressed] = action_run;
-	man->keys[10].actions[game_play][key_held] = action_run;
-
-	man->keys[11].keycode = GLFW_KEY_RIGHT_SHIFT;
-	man->keys[11].actions[game_play][key_pressed] = action_run;
-	man->keys[11].actions[game_play][key_held] = action_run;
-
-	man->keys[12].keycode = GLFW_KEY_F5;
-	man->keys[12].actions[game_play][key_pressed] = action_move_to_start;
-	man->keys[12].actions[game_success][key_pressed] = action_move_to_start;
-
-	man->keys[13].keycode = GLFW_KEY_F10;
-	man->keys[13].actions[game_play][key_pressed] = action_toggle_vsync;
-	man->keys[13].actions[game_success][key_pressed] = action_toggle_vsync;
-	man->keys[13].actions[game_failure][key_pressed] = action_toggle_vsync;
-
-	man->keys[14].keycode = GLFW_KEY_F11;
-	man->keys[14].actions[game_play][key_pressed] = action_toggle_fullscreen;
-	man->keys[14].actions[game_success][key_pressed] = action_toggle_fullscreen;
-	man->keys[14].actions[game_failure][key_pressed] = action_toggle_fullscreen;
-
-	man->keys[15].keycode = GLFW_KEY_F12;
-	man->keys[15].actions[game_play][key_pressed] = action_toggle_debug;
-	man->keys[15].actions[game_success][key_pressed] = action_toggle_debug;
-	man->keys[15].actions[game_failure][key_pressed] = action_toggle_debug;
-
-	man->keys[16].keycode = GLFW_KEY_ESCAPE;
-	man->keys[16].actions[game_play][key_pressed] = action_close_window;
-	man->keys[16].actions[game_success][key_pressed] = action_close_window;
-	man->keys[16].actions[game_failure][key_pressed] = action_close_window;
+static void	set_key_in_all_states(t_key *key, int keycode, t_action pressed)
+{
+	key->keycode = keycode;
+	key->actions[GAME_STATE_PLAY - 1][KEY_STATE_PRESSED - 1] = pressed;
+	key->actions[GAME_STATE_SUCCESS - 1][KEY_STATE_PRESSED - 1] = pressed;
+	key->actions[GAME_STATE_FAILURE - 1][KEY_STATE_PRESSED - 1] = pressed;
 	return ;
 }

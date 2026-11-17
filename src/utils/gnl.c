@@ -1,12 +1,13 @@
-#include "olafur.h"
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 #ifndef GNL_BUFFER_SIZE
 # define GNL_BUFFER_SIZE 42
 #endif
 
-static int	search_newline(char *buffer, int fd, char **line, char **newline);
-static char	*add_to_line(char *line, char *added, int free_added);
-static char	*get_line(char *src, char *newline_in_src);
+static char	*search_newline(char *buffer, int fd, char **line, size_t *len);
+static int	append(char **line, size_t *len, const char *added, size_t n);
 static void	shift_buffer(char *buffer, char *newline);
 
 /*
@@ -14,8 +15,8 @@ static void	shift_buffer(char *buffer, char *newline);
 	----------------------------------------------------------------------------
 	- GNL returns a dynamically allocated line read from an fd. A line either 
 	ends with '\n' (included) or EOF.
-	- If the function is called after EOF or if an error occurred, NULL is 
-	returned instead.
+	- If the function is called after EOF or if an error occurred (failed read 
+	or allocation), NULL is returned instead, and nothing is leaked.
 	- GNL may retain some content that has been read but was after a newline. 
 	Therefore, after using GNL even once with a specific file, some content 
 	might be missing if the same file is directly read with the read system 
@@ -35,6 +36,7 @@ char	*gnl(int fd)
 	static char	buffer[GNL_BUFFER_SIZE + 1];
 	static int	previous_fd;
 	char		*line;
+	size_t		len;
 	char		*newline_in_buffer;
 
 	if (GNL_BUFFER_SIZE < 1)
@@ -46,82 +48,79 @@ char	*gnl(int fd)
 			return (0);
 		previous_fd = fd;
 	}
-	if (!search_newline(buffer, fd, &line, &newline_in_buffer))
+	newline_in_buffer = search_newline(buffer, fd, &line, &len);
+	if (newline_in_buffer)
+		append(&line, &len, buffer, newline_in_buffer - buffer + 1);
+	else if (!len)
 	{
 		free(line);
 		return (0);
 	}
-	if (newline_in_buffer)
-		line = add_to_line(line, get_line(buffer, newline_in_buffer), 1);
 	shift_buffer(buffer, newline_in_buffer);
 	return (line);
 }
 
-static int	search_newline(char *buffer, int fd, char **line, char **newline)
+static char	*search_newline(char *buffer, int fd, char **line, size_t *len)
 {
 	ssize_t	read_amount;
+	char	*newline;
 
 	*line = 0;
-	*newline = strchr(buffer, '\n');
-	while (!*newline)
+	*len = 0;
+	newline = strchr(buffer, '\n');
+	while (!newline)
 	{
-		*line = add_to_line(*line, buffer, 0);
-		read_amount = read(fd, buffer, GNL_BUFFER_SIZE);
-		if (read_amount >= 0)
-			buffer[read_amount] = 0;
-		if (read_amount < 0)
+		if (!append(line, len, buffer, strlen(buffer)))
 			return (0);
-		else if (!read_amount)
+		buffer[0] = 0;
+		read_amount = read(fd, buffer, GNL_BUFFER_SIZE);
+		if (read_amount < 0)
 		{
-			if (!*line[0])
-				return (0);
-			break ;
+			free(*line);
+			*line = 0;
+			*len = 0;
+			return (0);
 		}
-		else
-			*newline = strchr(buffer, '\n');
+		buffer[read_amount] = 0;
+		if (!read_amount)
+			return (0);
+		newline = strchr(buffer, '\n');
 	}
-	return (1);
+	return (newline);
 }
 
-static char	*add_to_line(char *line, char *added, int free_added)
+/*
+	The line's capacity is always the smallest of 64, 128, 256... that fits it, 
+	so it can be worked out from the length alone. It doubles whenever the line 
+	fills up, so a long line is copied a handful of times instead of once per 
+	buffer read.
+*/
+static int	append(char **line, size_t *len, const char *added, size_t n)
 {
-	size_t	len;
-	char	*joined;
+	char	*grown;
+	size_t	cap;
 
-	if (!line)
-		line = calloc(1, sizeof(char));
-	if (line)
+	cap = 64;
+	while (cap < *len + 1)
+		cap *= 2;
+	if (!*line || *len + n + 1 > cap)
 	{
-		len = strlen(line);
-		if (added)
-			len += strlen(added);
-		joined = malloc((len + 1) * sizeof(char));
-		if (joined)
+		while (cap < *len + n + 1)
+			cap *= 2;
+		grown = realloc(*line, cap);
+		if (!grown)
 		{
-			joined[0] = 0;
-			strncat(joined, line, len);
-			strncat(joined, added, len);
-			free(line);
-			line = joined;
+			free(*line);
+			*line = 0;
+			*len = 0;
+			return (0);
 		}
+		*line = grown;
 	}
-	if (free_added)
-		free(added);
-	return (line);
-}
-
-static char	*get_line(char *src, char *newline_in_src)
-{
-	char	*dup;
-	size_t	len;
-
-	len = newline_in_src - src + 1;
-	dup = malloc((len + 1) * sizeof(char));
-	if (!dup)
-		return (0);
-	dup[0] = 0;
-	strncat(dup, src, len);
-	return (dup);
+	memcpy(*line + *len, added, n);
+	*len += n;
+	(*line)[*len] = 0;
+	return (1);
 }
 
 static void	shift_buffer(char *buffer, char *newline)

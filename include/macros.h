@@ -14,29 +14,37 @@
 # define TITLE "Olafur"
 # define WINDOW_WIDTH  (640 * 1)
 # define WINDOW_HEIGHT (360 * 1)
-# define ASPECT_RATIO (16.0 / 9)
+# define ASPECT_RATIO (16.0f / 9)
 # define INITIAL_MAP_LOADING_DEPTH 15
 # define DEFAULT_DOF 20
 # define MAX_COLUMN_RAYS 256
 # define AUDIO_LOOP_POLL_US 10000
-# define DEFAULT_MOVE_SPEED 2.0
-# define DEFAULT_ROTATE_SPEED 1.0
-# define DEFAULT_PLAYER_RADIUS 0.25
-# define SPRITE_RADIUS 0.5
+# define DEFAULT_MOVE_SPEED 2.0f
+# define DEFAULT_ROTATE_SPEED 1.0f
+# define DRAG_ROTATE_SPEED 3.0f
+# define MAX_MOVE_DT 0.1f
+# define DEFAULT_PLAYER_RADIUS 0.25f
+# define SPRITE_RADIUS 0.5f
+# define SPRITE_U_DIV 1
+# define SPRITE_V_DIV 1
+# define SPRITE_V_MOVE 0.0f
+# define SPRITE_NEAR 0.01f
+# define MAX_LINE_HEIGHT 1e8f
 # define FONT_PAD 4
 # define FONT_SIZE_X 7
 # define FONT_SIZE_Y 12
-# define FONT_MOD_X 4
-# define FONT_MOD_Y 4
 # define MAP_DIR "assets/maps"
 # define IMG_JSON_DEFAULT "assets/img/common/index.json"
+# define JSON_REJECT_UNKNOWN_FIELDS 1
+# define PATH_MSG_SIZE 1024
+# define ERROR_BOX_SIZE 4096
 # define ID_FONT "font"
 # define ID_CURSOR "cursor"
 # define ID_GUI_COLLEC "gui_collectible"
 # define ID_SKYBOX "composed_skybox"
-# define NBR_KEYS 17
+# define NBR_KEYS 19
 
-# define E_NO_ARG "Provide a *.map file as argument"
+# define E_NO_MAP "No *.map file was found"
 # define E_TOO_MANY_ARGS "Provide a single *.map file as argument"
 # define E_FAIL_MEM "Memory cannot be allocated"
 # define E_FAIL_GLFW "The GLFW lib cannot be initialized"
@@ -59,19 +67,39 @@
 # define E_MAP_READ "The map file cannot be read"
 # define E_MAP_TYPE "The map file doesn't have the *.map extension"
 # define E_MAP_NAME "The map file doesn't have a name"
+# define E_MAP_EMPTY "The map file is empty"
 # define E_VARS_AFTER_MAP "Variable found after map content"
-# define E_NO_MAP "No wall map was found"
+# define E_NO_WALL_MAP "No wall map was found"
 # define E_TOO_MANY_MAPS "There are more than three maps"
 # define E_NO_VAR "No var was found"
 # define E_BAD_JSON "Not a JSON file"
 # define E_FAIL_JSON "The JSON file for images cannot be loaded"
+# define E_JSON_EOF "Unexpected end of the file"
+# define E_JSON_ARRAY "Expected '['"
+# define E_JSON_ARRAY_CLOSE "Expected ']'"
+# define E_JSON_ARRAY_END "Expected ',' or ']'"
+# define E_JSON_OBJECT "Expected '{'"
+# define E_JSON_OBJECT_END "Expected ',' or '}'"
+# define E_JSON_COLON "Expected ':'"
+# define E_JSON_COMMA "Expected ','"
+# define E_JSON_STRING "Expected a string in double quotes"
+# define E_JSON_STRING_END "Missing '\"' at the end of the string"
+# define E_JSON_ESCAPE "Invalid or unsupported escape sequence"
+# define E_JSON_INT "Expected an integer"
+# define E_JSON_INT_RANGE "The integer is too large"
+# define E_JSON_NUMBER "Invalid number"
+# define E_JSON_VALUE "Expected a value"
+# define E_JSON_UNKNOWN "Unknown field"
+# define E_JSON_TRAILING "Unexpected text after the end of the JSON data"
 # define E_IMG_NO_PATH "An image object of the JSON file has no \"path\""
 # define E_IMG_NO_SEG "An image object of the JSON file has no segment"
 # define E_IMG_NO_ID "An image segment has no \"id\""
 # define E_IMG_BAD_SIZE "An image segment has no \"size\", or a size of 0"
 # define E_IMG_NO_CYCLE "An image segment has no frame in its \"cycle\""
-# define E_IMG_BAD_STILL "The \"still_frame\" of an image segment is outside of " \
-	"its cycle"
+# define E_IMG_BAD_STILL "The \"still_frame\" of an image segment is " \
+	"outside of its cycle"
+# define E_IMG_BAD_TIME "The \"cycle_time_in_ms\" of an image segment is " \
+	"negative"
 # define E_IMG_OUT_OF_BOUNDS "An image segment reaches outside of its PNG file"
 # define E_IMG_SHADOW_SIZE "The shadow PNG doesn't have the size of its image"
 # define E_TYPE_0 "Invalid cell type - Valid is [1 - 9]"

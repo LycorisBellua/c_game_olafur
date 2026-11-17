@@ -5,7 +5,7 @@ static void		set_text_to_white(t_img *img, size_t cycle_index);
 static void		add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets);
 static int		cmpc(t_color a, t_color b);
 
-/* White text and black outline */
+/* White text and black outline. */
 void	add_outline_to_font(t_img *font)
 {
 	size_t	cycle_index;
@@ -79,7 +79,7 @@ static void	add_outline(t_img *img, size_t cycle_index, t_ivec2 *offsets)
 			p.y = i % img->size.y + offsets[j].y;
 			if (p.x >= 0 && p.y >= 0 && p.x < img->size.x && p.y < img->size.y
 				&& !cmpc(buf[p.x * img->size.y + p.y],
-					get_color_rgba(255, 255, 255, 255)))
+				get_color_rgba(255, 255, 255, 255)))
 				buf[p.x * img->size.y + p.y] = get_color_rgba(0, 0, 0, 255);
 		}
 	}

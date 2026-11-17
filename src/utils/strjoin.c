@@ -17,24 +17,3 @@ char	*strjoin(char const *s1, char const *s2)
 	strcpy(joined + len1, s2);
 	return (joined);
 }
-
-char	*strjoin_arr(char **arr, size_t start, size_t end)
-{
-	char	*tmp1;
-	char	*tmp2;
-
-	if (!arr || start > end)
-		return (0);
-	tmp1 = malloc(1 * sizeof(char));
-	if (!tmp1)
-		return (0);
-	tmp1[0] = 0;
-	while (start < end && arr[start])
-	{
-		tmp2 = strjoin(tmp1, arr[start]);
-		free(tmp1);
-		tmp1 = tmp2;
-		++start;
-	}
-	return (tmp1);
-}

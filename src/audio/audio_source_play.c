@@ -11,7 +11,13 @@ void	audio_source_play(t_a_source *s)
 	else if (!s->is_loop)
 		play_as_one_shot(s);
 	else if (!s->loop_thread)
-		pthread_create(&s->loop_thread, 0, play_as_loop, s);
+	{
+		pthread_mutex_lock(&s->is_looping_mutex);
+		s->is_looping = 1;
+		pthread_mutex_unlock(&s->is_looping_mutex);
+		if (pthread_create(&s->loop_thread, 0, play_as_loop, s))
+			s->loop_thread = 0;
+	}
 	return ;
 }
 
@@ -43,10 +49,7 @@ static void	*play_as_loop(void *data)
 		return (0);
 	s = (t_a_source *)data;
 	alSourcePlay(s->source);
-	pthread_mutex_lock(&s->is_looping_mutex);
-	s->is_looping = 1;
 	is_looping = 1;
-	pthread_mutex_unlock(&s->is_looping_mutex);
 	while (is_looping)
 	{
 		process_buffers(s);

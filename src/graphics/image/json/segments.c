@@ -1,99 +1,82 @@
 #include "olafur.h"
 
-static size_t	get_segment_len(char **lines, size_t start, size_t end);
-static void		fill_seg_array(t_png *file, char **lines, size_t start,
-					size_t end);
-static void		parse_cycle(t_png_seg *seg, char **lines, size_t *start,
-					size_t end);
+static int	segment_item(t_json *j, void *ctx);
+static int	segment_member(t_json *j, void *ctx);
+static int	parse_cycle(t_json *j, t_png_seg *seg);
+static int	cycle_item(t_json *j, void *ctx);
 
-void	parse_segments(t_png *file, char **lines, size_t *i)
+int	json_parse_segments(t_json *j, t_png *file)
 {
-	size_t	start;
-	size_t	end;
-
 	free_segments(file);
-	start = *i;
-	while (lines[*i])
-	{
-		++*i;
-		if (lines[*i - 1][0] == '}' && lines[*i] && lines[*i][0] == ']')
-			break ;
-	}
-	if (!lines[*i])
-		--*i;
-	end = *i;
-	file->segment_len = get_segment_len(lines, start, end);
-	file->seg = calloc(file->segment_len, sizeof(t_png_seg));
-	if (file->seg)
-		fill_seg_array(file, lines, start, end);
-	return ;
+	if (!json_expect(j, '[', E_JSON_ARRAY))
+		return (0);
+	return (json_list(j, ']', segment_item, file));
 }
 
-static size_t	get_segment_len(char **lines, size_t start, size_t end)
+static int	segment_item(t_json *j, void *ctx)
 {
-	size_t	len;
+	t_png		*file;
+	t_png_seg	*new_arr;
 
-	len = 0;
-	while (lines[start] && start <= end)
-	{
-		if (lines[start][0] == '}')
-			++len;
-		++start;
-	}
-	return (len);
+	file = ctx;
+	new_arr = realloc(file->seg, (file->segment_len + 1) * sizeof(t_png_seg));
+	if (!new_arr)
+		return (put_error(E_FAIL_MEM, 0, 0));
+	file->seg = new_arr;
+	memset(&file->seg[file->segment_len], 0, sizeof(t_png_seg));
+	++file->segment_len;
+	if (!json_expect(j, '{', E_JSON_OBJECT))
+		return (0);
+	return (json_list(j, '}', segment_member, &file->seg[file->segment_len
+		- 1]));
 }
 
-static void	fill_seg_array(t_png *file, char **lines, size_t start, size_t end)
+static int	segment_member(t_json *j, void *ctx)
 {
-	size_t	i_seg;
+	t_png_seg	*seg;
+	char		*key;
+	int			ok;
 
-	i_seg = 0;
-	while (lines[start] && start <= end && i_seg < file->segment_len)
-	{
-		if (lines[start][0] == '}')
-			++i_seg;
-		else if (is_field(lines[start], "id"))
-			set_string_value(&file->seg[i_seg].id, lines[start]);
-		else if (is_field(lines[start], "size"))
-			file->seg[i_seg].size = get_ivec2_value(lines[start]);
-		else if (is_field(lines[start], "shadow_offset"))
-			file->seg[i_seg].shadow_offset = get_ivec2_value(lines[start]);
-		else if (is_field(lines[start], "still_frame"))
-			file->seg[i_seg].still_frame = get_int_value(lines[start]);
-		else if (is_field(lines[start], "cycle_time_in_ms"))
-			file->seg[i_seg].cycle_time_in_ms = get_int_value(lines[start]);
-		else if (is_field(lines[start], "cycle"))
-			parse_cycle(file->seg + i_seg, lines, &start, end);
-		++start;
-	}
-	return ;
+	seg = ctx;
+	ok = json_key(j, &key);
+	if (ok && key && !strcmp(key, "id"))
+		ok = json_string(j, &seg->id);
+	else if (ok && key && !strcmp(key, "size"))
+		ok = json_ivec2(j, &seg->size);
+	else if (ok && key && !strcmp(key, "shadow_offset"))
+		ok = json_ivec2(j, &seg->shadow_offset);
+	else if (ok && key && !strcmp(key, "still_frame"))
+		ok = json_int(j, &seg->still_frame);
+	else if (ok && key && !strcmp(key, "cycle_time_in_ms"))
+		ok = json_int(j, &seg->cycle_time_in_ms);
+	else if (ok && key && !strcmp(key, "cycle"))
+		ok = parse_cycle(j, seg);
+	else if (ok)
+		ok = json_unknown_field(j, key);
+	free(key);
+	return (ok);
 }
 
-static void	parse_cycle(t_png_seg *seg, char **lines, size_t *start,
-	size_t end)
+static int	parse_cycle(t_json *j, t_png_seg *seg)
 {
-	size_t	i;
-
 	free(seg->cycle);
+	seg->cycle = 0;
 	seg->cycle_len = 0;
-	i = *start;
-	while (lines[i] && i <= end)
-	{
-		if (lines[i][0] == '[')
-			++seg->cycle_len;
-		else if (lines[i][0] == ']')
-			end = i;
-		++i;
-	}
-	seg->cycle = calloc(seg->cycle_len, sizeof(t_ivec2));
-	if (!seg->cycle)
-		return ;
-	i = 0;
-	while (lines[*start] && *start < end)
-	{
-		if (lines[*start][0] == '[')
-			seg->cycle[i++] = get_ivec2_value(lines[*start]);
-		++*start;
-	}
-	return ;
+	if (!json_expect(j, '[', E_JSON_ARRAY))
+		return (0);
+	return (json_list(j, ']', cycle_item, seg));
+}
+
+static int	cycle_item(t_json *j, void *ctx)
+{
+	t_png_seg	*seg;
+	t_ivec2		*new_arr;
+
+	seg = ctx;
+	new_arr = realloc(seg->cycle, (seg->cycle_len + 1) * sizeof(t_ivec2));
+	if (!new_arr)
+		return (put_error(E_FAIL_MEM, 0, 0));
+	seg->cycle = new_arr;
+	++seg->cycle_len;
+	return (json_ivec2(j, &seg->cycle[seg->cycle_len - 1]));
 }

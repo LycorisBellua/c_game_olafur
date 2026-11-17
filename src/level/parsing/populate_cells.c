@@ -23,7 +23,7 @@ int	populate_cells(t_map *map)
 				return (0);
 			c->is_obstacle = c->is_empty_space || c->door || c->is_goal
 				|| (isdigit(map->pars.map_wall[p.y][p.x])
-					&& map->pars.map_wall[p.y][p.x] != '0');
+				&& map->pars.map_wall[p.y][p.x] != '0');
 			c->is_visible = (c->is_obstacle && !c->is_empty_space)
 				|| is_portal_visible(c->portal);
 			set_tex_for_wall(map, c, p);

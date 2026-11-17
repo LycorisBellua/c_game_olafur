@@ -2,6 +2,7 @@
 
 static void	display_collectibles(t_man *man, t_map *map);
 static void	display_centered_message(t_man *man, t_ivec2 *pos, const char *msg);
+static char	*get_collectible_text(t_man *man, t_map *map);
 
 void	display_game_gui(t_man *man, t_map *map)
 {
@@ -29,9 +30,7 @@ void	display_game_gui(t_man *man, t_map *map)
 static void	display_collectibles(t_man *man, t_map *map)
 {
 	t_ivec2	pos;
-	char	*tmp1;
-	char	*tmp2;
-	char	*tmp3;
+	char	*text;
 
 	if (!man->img_font || (!man->img_collec && !man->player.collected))
 		return ;
@@ -40,8 +39,20 @@ static void	display_collectibles(t_man *man, t_map *map)
 	{
 		draw_image(man, man->img_collec, pos);
 		set_ivec2(&pos, pos.x + man->img_collec->size.x * man->gui_scale,
-			pos.y + 14 * man->gui_scale);
+			pos.y + 8 * man->gui_scale);
 	}
+	text = get_collectible_text(man, map);
+	draw_font(man, &pos, text);
+	free(text);
+	return ;
+}
+
+static char	*get_collectible_text(t_man *man, t_map *map)
+{
+	char	*tmp1;
+	char	*tmp2;
+	char	*tmp3;
+
 	tmp1 = itoa_dec(man->player.collected);
 	if (map->to_collect >= 0)
 	{
@@ -52,18 +63,16 @@ static void	display_collectibles(t_man *man, t_map *map)
 		free(tmp2);
 		free(tmp3);
 	}
-	draw_font(man, &pos, tmp1);
-	free(tmp1);
-	return ;
+	return (tmp1);
 }
 
 static void	display_centered_message(t_man *man, t_ivec2 *pos, const char *msg)
 {
 	if (!msg || !pos)
 		return ;
-	pos->x = man->frame.size.x / 2 - strlen(msg) / 2 * FONT_SIZE_X
-		* man->gui_scale;
-	pos->y = man->frame.size.y / 2;
+	pos->x = man->frame.size.x / 2 - (int)strlen(msg) * FONT_SIZE_X
+		* man->gui_scale / 2;
+	pos->y = man->frame.size.y / 2 - 4 * man->gui_scale;
 	draw_font(man, pos, msg);
 	return ;
 }

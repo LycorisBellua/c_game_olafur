@@ -18,7 +18,7 @@ void	cross_goal_if_unlocked(t_man *man, t_map *m)
 	if ((int)(pos.x - radius) >= 0)
 		cell[3] = &m->cells[(int)pos.y][(int)(pos.x - radius)];
 	if (((cell[0] && cell[0]->is_goal) || (cell[1] && cell[1]->is_goal)
-			|| (cell[2] && cell[2]->is_goal) || (cell[3] && cell[3]->is_goal))
+		|| (cell[2] && cell[2]->is_goal) || (cell[3] && cell[3]->is_goal))
 		&& man->player.collected >= m->to_collect)
 		change_game_state(man, GAME_STATE_SUCCESS);
 	return ;

@@ -1,6 +1,6 @@
 #include "olafur.h"
 
-/* Spatialization only works if the track is mono */
+/* Spatialization only works if the track is mono. */
 void	audio_source_spatialization(t_a_source *s, int enable)
 {
 	if (enable)

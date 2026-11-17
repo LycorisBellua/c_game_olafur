@@ -9,17 +9,17 @@ void	init_fog(t_man *man)
 
 float	get_fog_width(float dof)
 {
-	if (dof < 2.0)
-		return (1.0);
-	else if (dof >= 2.0 && dof < 3.79)
-		return (0.80 - (dof - 2.0) / 2 * 0.5);
-	else if (dof >= 3.8 && dof < 5)
-		return (0.40);
-	else if (dof >= 5 && dof < 8)
-		return (0.30);
-	else if (dof >= 8 && dof < 8.5)
-		return (0.2);
-	else if (dof >= 8.5 && dof < 9)
-		return (0.15);
-	return (0.1);
+	if (dof < 2.0f)
+		return (1.0f);
+	else if (dof < 3.8f)
+		return (0.80f - (dof - 2.0f) / 2 * 0.5f);
+	else if (dof < 5)
+		return (0.40f);
+	else if (dof < 8)
+		return (0.30f);
+	else if (dof < 8.5f)
+		return (0.2f);
+	else if (dof < 9)
+		return (0.15f);
+	return (0.1f);
 }

@@ -64,7 +64,7 @@ static int	allocate_cycles(t_img *img)
 		if (img->cycle_shadow)
 		{
 			img->cycle_shadow[i] = calloc(img->size.x * img->size.y,
-					sizeof(t_color));
+				sizeof(t_color));
 			if (!img->cycle_shadow[i])
 				return (0);
 		}

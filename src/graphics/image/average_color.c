@@ -37,7 +37,7 @@ static t_color	calculate_average_color(t_color *buf, size_t len)
 	i = 0;
 	while (i < len)
 	{
-		alpha = buf[i].a / 255.0;
+		alpha = buf[i].a / 255.0f;
 		total_color[0] += buf[i].r * alpha;
 		total_color[1] += buf[i].g * alpha;
 		total_color[2] += buf[i].b * alpha;
@@ -45,5 +45,5 @@ static t_color	calculate_average_color(t_color *buf, size_t len)
 		++i;
 	}
 	return (get_color_rgba(total_color[0] / len, total_color[1] / len,
-			total_color[2] / len, total_color[3] / len));
+		total_color[2] / len, total_color[3] / len));
 }

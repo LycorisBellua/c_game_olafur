@@ -1,6 +1,7 @@
 #include "olafur.h"
 
-static int	find_map_index(t_man *man, const char *filepath);
+static int		find_map_index(t_man *man, const char *filepath);
+static t_map	**grow_map_array(t_map **maps, int count);
 
 /*
 	Not a boolean. Returns the index of the map or -1 if failure.
@@ -23,10 +24,9 @@ int	add_map(t_man *man, const char *filepath)
 	if (index >= 0)
 		return (free(abs_path), index);
 	count = count_arr_elems((void **)man->maps);
-	new_arr = calloc(count + 1 + 1, sizeof(t_map *));
+	new_arr = grow_map_array(man->maps, count);
 	if (!new_arr)
 		return (-1);
-	memcpy(new_arr, man->maps, count * sizeof(t_map *));
 	free(man->maps);
 	man->maps = new_arr;
 	man->maps[count] = create_map(man, abs_path);
@@ -104,4 +104,15 @@ static int	find_map_index(t_man *man, const char *filepath)
 		++i;
 	}
 	return (-1);
+}
+
+/* One more slot for the new map, and one for the terminating NULL. */
+static t_map	**grow_map_array(t_map **maps, int count)
+{
+	t_map	**new_arr;
+
+	new_arr = calloc(count + 1 + 1, sizeof(t_map *));
+	if (new_arr && maps)
+		memcpy(new_arr, maps, count * sizeof(t_map *));
+	return (new_arr);
 }

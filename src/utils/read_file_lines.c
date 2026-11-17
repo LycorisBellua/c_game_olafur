@@ -1,7 +1,8 @@
 #include "olafur.h"
 
 static char	*get_whole_file(int fd);
-static char	*add_separator(char *line);
+static int	append_line(t_strbuf *b, const char *line);
+static int	reserve(t_strbuf *b, size_t size);
 static void	remove_comments(char **lines);
 
 char	**read_file_lines(const char *filepath)
@@ -13,7 +14,7 @@ char	**read_file_lines(const char *filepath)
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("Error: Couldn't open file \"%s\" for reading\n", filepath);
+		put_error(E_MAP_READ, filepath, 0);
 		return (0);
 	}
 	whole = get_whole_file(fd);
@@ -24,51 +25,77 @@ char	**read_file_lines(const char *filepath)
 	return (lines);
 }
 
+/*
+	The lines are appended to a buffer that doubles in size when full, so the
+	file is read in a time proportional to its size.
+*/
 static char	*get_whole_file(int fd)
 {
-	char	*tmp1;
-	char	*tmp2;
-	char	*tmp3;
+	t_strbuf	b;
+	char		*line;
 
-	tmp1 = add_separator(gnl(fd));
-	tmp2 = gnl(fd);
-	while (tmp2)
+	memset(&b, 0, sizeof(t_strbuf));
+	line = gnl(fd);
+	while (line)
 	{
-		tmp3 = strjoin(tmp1, tmp2);
-		free(tmp1);
-		free(tmp2);
-		tmp1 = add_separator(tmp3);
-		tmp2 = gnl(fd);
+		if (!append_line(&b, line))
+		{
+			free(line);
+			free(b.s);
+			return (0);
+		}
+		free(line);
+		line = gnl(fd);
 	}
-	return (tmp1);
+	return (b.s);
 }
 
-static char	*add_separator(char *line)
+/*
+	Lines are separated by '\x1C'. A line ending with a backslash (before its
+	newline, if any) continues on the next one: the backslash and the newline
+	are dropped, and no separator is added.
+*/
+static int	append_line(t_strbuf *b, const char *line)
 {
 	size_t	len;
-	char	*slash;
-	char	*tmp;
+	int		is_continued;
 
-	slash = 0;
-	if (line)
-	{
-		len = strlen(line);
-		if (!len)
-			return (0);
-		if (line[len - 1] == '\\')
-			slash = line + (len - 1);
-		else if (line[len - 2] == '\\')
-			slash = line + (len - 2);
-		if (slash)
-			*slash = 0;
-	}
-	if (!slash)
-	{
-		tmp = strjoin(line, "\x1C");
-		free(line);
-		return (tmp);
-	}
-	return (line);
+	len = strlen(line);
+	is_continued = 1;
+	if (len >= 1 && line[len - 1] == '\\')
+		len -= 1;
+	else if (len >= 2 && line[len - 2] == '\\')
+		len -= 2;
+	else
+		is_continued = 0;
+	if (!reserve(b, b->len + len + 2))
+		return (0);
+	memcpy(b->s + b->len, line, len);
+	b->len += len;
+	if (!is_continued)
+		b->s[b->len++] = '\x1C';
+	b->s[b->len] = 0;
+	return (1);
+}
+
+static int	reserve(t_strbuf *b, size_t size)
+{
+	size_t	new_cap;
+	char	*new_s;
+
+	if (size <= b->cap)
+		return (1);
+	new_cap = b->cap;
+	if (!new_cap)
+		new_cap = 256;
+	while (new_cap < size)
+		new_cap *= 2;
+	new_s = realloc(b->s, new_cap);
+	if (!new_s)
+		return (0);
+	b->s = new_s;
+	b->cap = new_cap;
+	return (1);
 }
 
 static void	remove_comments(char **lines)

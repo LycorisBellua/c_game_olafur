@@ -1,7 +1,5 @@
 #include "olafur.h"
 
-void	audio_source_end_loop_thread(t_a_source *s);
-
 void	audio_source_unset_track(t_a_source *s)
 {
 	ALint	queued;

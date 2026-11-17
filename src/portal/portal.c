@@ -3,6 +3,7 @@
 static void		set_transform(t_man *man, t_portal *portal);
 static t_vec2	compute_start_pos(t_portal *portal, t_vec2 player_pos);
 static t_vec2	compute_entry_dir(t_vec2 player_pos, t_ivec2 portal_pos);
+static float	get_relative_angle(t_vec2 player_dir, t_vec2 entry_dir);
 
 void	portal_routine(t_man *man)
 {
@@ -44,9 +45,6 @@ static void	set_transform(t_man *man, t_portal *portal)
 	t_vec2	exit_pos;
 	t_vec2	exit_dir;
 	t_vec2	entry_dir;
-	float	player_angle;
-	float	entry_angle;
-	float	relative_angle;
 
 	exit_pos = man->maps[man->curr_map]->start_pos;
 	exit_dir = man->maps[man->curr_map]->start_dir;
@@ -56,10 +54,8 @@ static void	set_transform(t_man *man, t_portal *portal)
 	{
 		exit_pos = compute_start_pos(portal, man->player.pos);
 		entry_dir = compute_entry_dir(man->player.pos, portal->src_pos);
-		player_angle = get_angle_from_dir(man->player.dir);
-		entry_angle = get_angle_from_dir(entry_dir);
-		relative_angle = norm_angle(player_angle - entry_angle);
-		exit_dir = rotate_vec2(exit_dir, relative_angle);
+		exit_dir = rotate_vec2(exit_dir,
+				get_relative_angle(man->player.dir, entry_dir));
 	}
 	set_player_transform(man, exit_pos, exit_dir);
 	return ;
@@ -72,16 +68,16 @@ static t_vec2	compute_start_pos(t_portal *portal, t_vec2 player_pos)
 	float	depth;
 	t_vec2	dir;
 
-	offset = 0.5;
+	offset = 0.5f;
 	if (portal->src_cardinal == 'N' || portal->src_cardinal == 'S')
 		offset = player_pos.x - portal->src_pos.x;
 	else if (portal->src_cardinal == 'E' || portal->src_cardinal == 'W')
 		offset = player_pos.y - portal->src_pos.y;
-	offset = fclamp(offset, 0.0, 1.0);
-	depth = 0.6;
+	offset = fclamp(offset, 0.0f, 1.0f);
+	depth = 0.6f;
 	dir = get_dir_from_cardinal(portal->dst_cardinal);
-	p.x = portal->dst_pos.x + 0.5 + dir.x * depth;
-	p.y = portal->dst_pos.y + 0.5 + dir.y * depth;
+	p.x = portal->dst_pos.x + 0.5f + dir.x * depth;
+	p.y = portal->dst_pos.y + 0.5f + dir.y * depth;
 	if (!dir.x)
 		p.x = portal->dst_pos.x + offset;
 	else
@@ -95,8 +91,8 @@ static t_vec2	compute_entry_dir(t_vec2 player_pos, t_ivec2 portal_pos)
 	t_vec2	diff;
 
 	set_vec2(&entry_dir, 0, 0);
-	diff.x = player_pos.x - (portal_pos.x + 0.5);
-	diff.y = player_pos.y - (portal_pos.y + 0.5);
+	diff.x = player_pos.x - (portal_pos.x + 0.5f);
+	diff.y = player_pos.y - (portal_pos.y + 0.5f);
 	if (fabsf(diff.x) > fabsf(diff.y))
 	{
 		if (diff.x > 0)
@@ -112,4 +108,11 @@ static t_vec2	compute_entry_dir(t_vec2 player_pos, t_ivec2 portal_pos)
 			entry_dir.y = 1;
 	}
 	return (entry_dir);
+}
+
+/* The angle of the player relative to the direction they entered from. */
+static float	get_relative_angle(t_vec2 player_dir, t_vec2 entry_dir)
+{
+	return (norm_angle(get_angle_from_dir(player_dir)
+		- get_angle_from_dir(entry_dir)));
 }

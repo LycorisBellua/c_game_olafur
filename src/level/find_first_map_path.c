@@ -1,170 +1,113 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
+#include "olafur.h"
 
-typedef struct s_strlist
-{
-	char	**items;
-	size_t	count;
-	size_t	cap;
-}	t_strlist;
-
-static void	strlist_init(t_strlist *list);
-static int	scan_dir(const char *dir_path, t_strlist *files, t_strlist *subdirs);
-static void scan_dir_entry(const char *dir_path, struct dirent *entry,
-	            t_strlist *files, t_strlist *subdirs);
-static int	has_map_extension(const char *name);
-static void	strlist_push(t_strlist *list, const char *name);
-static char	*pick_first_file(const char *dir_path, t_strlist *files);
-static void	sort_strings(char **arr, size_t n);
+static int	scan_dir(const char *dir_path, t_strlist *files,
+				t_strlist *subdirs);
+static int	scan_dir_entry(const char *dir_path, const char *name,
+				t_strlist *files, t_strlist *subdirs);
 static char	*search_subdirs(const char *dir_path, t_strlist *subdirs);
-static void	strlist_free(t_strlist *list);
+static char	*join_path(const char *dir_path, const char *name);
 
+/*
+	The first *.map file of the folder, in alphabetical order. If there is 
+	none, the subfolders are searched the same way, in alphabetical order.
+*/
 char	*find_first_map_path(const char *dir_path)
 {
 	t_strlist	files;
 	t_strlist	subdirs;
 	char		*result;
 
-	strlist_init(&files);
-	strlist_init(&subdirs);
-	if (!scan_dir(dir_path, &files, &subdirs))
-		return (0);
+	memset(&files, 0, sizeof(t_strlist));
+	memset(&subdirs, 0, sizeof(t_strlist));
 	result = 0;
-	if (files.count > 0)
-		result = pick_first_file(dir_path, &files);
-	else if (subdirs.count > 0)
-		result = search_subdirs(dir_path, &subdirs);
-	strlist_free(&files);
-	strlist_free(&subdirs);
+	if (scan_dir(dir_path, &files, &subdirs))
+	{
+		sort_strlist(&files);
+		sort_strlist(&subdirs);
+		if (files.count > 0)
+			result = join_path(dir_path, files.items[0]);
+		else
+			result = search_subdirs(dir_path, &subdirs);
+	}
+	free_strlist(&files);
+	free_strlist(&subdirs);
 	return (result);
 }
 
-static void	strlist_init(t_strlist *list)
-{
-	list->items = 0;
-	list->count = 0;
-	list->cap = 0;
-}
-
-static int	scan_dir(const char *dir_path, t_strlist *files, t_strlist *subdirs)
+static int	scan_dir(const char *dir_path, t_strlist *files,
+	t_strlist *subdirs)
 {
 	DIR				*dir;
 	struct dirent	*entry;
+	int				is_success;
 
 	dir = opendir(dir_path);
 	if (!dir)
 		return (0);
+	is_success = 1;
 	entry = readdir(dir);
-	while (entry)
+	while (entry && is_success)
 	{
 		if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
-			scan_dir_entry(dir_path, entry, files, subdirs);
+			is_success = scan_dir_entry(dir_path, entry->d_name, files,
+				subdirs);
 		entry = readdir(dir);
 	}
 	closedir(dir);
-	return (1);
+	return (is_success);
 }
 
-static void	scan_dir_entry(const char *dir_path, struct dirent *entry,
-		t_strlist *files, t_strlist *subdirs)
+static int	scan_dir_entry(const char *dir_path, const char *name,
+	t_strlist *files, t_strlist *subdirs)
 {
-	char			full_path[4096];
-	struct stat		st;
-	int				n;
+	char		*full_path;
+	struct stat	st;
+	int			is_success;
 
-	n = snprintf(full_path, sizeof(full_path), "%s/%s", dir_path, entry->d_name);
-	if (n < 0 || (size_t)n >= sizeof(full_path))
-		return ;
-	if (stat(full_path, &st) < 0)
-		return ;
-	if (S_ISREG(st.st_mode) && has_map_extension(entry->d_name))
-		strlist_push(files, entry->d_name);
-	else if (S_ISDIR(st.st_mode))
-		strlist_push(subdirs, entry->d_name);
-}
-
-static int	has_map_extension(const char *name)
-{
-	size_t	len;
-	size_t	ext_len;
-
-	len = strlen(name);
-	ext_len = 4;
-	if (len < ext_len)
+	full_path = join_path(dir_path, name);
+	if (!full_path)
 		return (0);
-	return (!strcmp(name + len - ext_len, ".map"));
-}
-
-static void	strlist_push(t_strlist *list, const char *name)
-{
-	if (list->count == list->cap)
+	is_success = 1;
+	if (!stat(full_path, &st))
 	{
-		list->cap = !list->cap ? 8 : list->cap * 2;
-		list->items = realloc(list->items, list->cap * sizeof(char *));
+		if (S_ISREG(st.st_mode) && has_extension(name, ".map"))
+			is_success = push_strlist(files, name);
+		else if (S_ISDIR(st.st_mode))
+			is_success = push_strlist(subdirs, name);
 	}
-	list->items[list->count++] = strdup(name);
-}
-
-static char	*pick_first_file(const char *dir_path, t_strlist *files)
-{
-	char	full_path[4096];
-
-	sort_strings(files->items, files->count);
-	snprintf(full_path, sizeof(full_path), "%s/%s", dir_path, files->items[0]);
-	return (strdup(full_path));
-}
-
-static void	sort_strings(char **arr, size_t n)
-{
-	size_t	i;
-	size_t	j;
-	char	*key;
-
-	i = 1;
-	while (i < n)
-	{
-		key = arr[i];
-		j = i;
-		while (j > 0 && strcmp(arr[j - 1], key) > 0)
-		{
-			arr[j] = arr[j - 1];
-			--j;
-		}
-		arr[j] = key;
-		++i;
-	}
+	free(full_path);
+	return (is_success);
 }
 
 static char	*search_subdirs(const char *dir_path, t_strlist *subdirs)
 {
-	char	full_path[4096];
+	char	*full_path;
 	char	*result;
 	size_t	i;
 
-	sort_strings(subdirs->items, subdirs->count);
 	result = 0;
 	i = 0;
 	while (i < subdirs->count && !result)
 	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", dir_path, subdirs->items[i]);
+		full_path = join_path(dir_path, subdirs->items[i]);
+		if (!full_path)
+			return (0);
 		result = find_first_map_path(full_path);
+		free(full_path);
 		++i;
 	}
 	return (result);
 }
 
-static void	strlist_free(t_strlist *list)
+static char	*join_path(const char *dir_path, const char *name)
 {
-	size_t	i;
+	char	*tmp;
+	char	*path;
 
-	i = 0;
-	while (i < list->count)
-	{
-		free(list->items[i]);
-		++i;
-	}
-	free(list->items);
+	tmp = strjoin(dir_path, "/");
+	if (!tmp)
+		return (0);
+	path = strjoin(tmp, name);
+	free(tmp);
+	return (path);
 }

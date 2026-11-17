@@ -7,35 +7,19 @@
 
 ## Explanation
 
-*Olafur* is a grid-based pseudo 3D game running solely on the CPU and written 
-in C. It means that a 2D map is translated into 3D using a technique called 
-raycasting. Rays are casted from the camera until walls are hit, which tells us 
-how far away they are. Knowing the distance allows us to draw the walls: far 
-makes them small, and close makes them big. An example of such a game is 
-Wolfenstein 3D.  
+**Olafur** is written in C, with [GLFW](https://www.glfw.org) (version 3.4.0) 
+for the windowing, [OpenGL](https://docs.gl) (version 4.0+ required) for 
+graphics, [LodePNG](https://github.com/lvandeve/lodepng) to process PNG images, 
+and [dr_mp3](https://github.com/mackron/dr_libs) and 
+[OpenAL](https://github.com/kcat/openal-soft) (version 1.24.3) for audio.  
+
+It's a grid-based pseudo 3D game running solely on the CPU. It means that a 2D 
+map is translated into 3D using a technique called raycasting. Rays are casted 
+from the camera until walls are hit, which tells us how far away they are. 
+Knowing the distance allows us to draw the walls: far makes them small, and 
+close makes them big. An example of such a game is Wolfenstein 3D.  
 
 ![Raycasting](./screenshots/raycasting.png)
-
-The libraries in use are:
-- the C standard library,
-- OpenGL (Open Graphics Library) for the graphics,
-- GLFW (OpenGL Framework) for the windowing and input handling,
-- and OpenAL (Open Audio Library) for the audio.
-
-I intend to specialize in Unreal Engine, so why was I even working on a low 
-level project? Because it's fun. Moving on... No seriously, I've always wanted 
-to work on such a project, so it was a joy to nibble at this from time to time. 
-The aim wasn't to make it a commercial project. It was to experiment and 
-scratch my low level itch.  
-
-Now, I am ready to move on from this one project. That is not to say I won't 
-ever go back to low level dev someday. I might embark on another raycasting 
-project with more complex techniques, inspired from Doom or even Duke Nukem. 
-I'm pretty stoked about discovering other techniques, although this is not part 
-of my current priorities. In any case, this decision led to a name change. The 
-project used to be called "Cimmerian" and is now "Olafur", to be the same as 
-the demo level. This leaves the name of "Cimmerian" available for this 
-potential future project.  
 
 ## Levels
 
@@ -61,21 +45,18 @@ the elevator (and through your keyboard).
 
 ## Controls
 
-| Action                             | Control                                                     |
-| ---------------------------------- | ----------------------------------------------------------- |
-| Move forward                       | `W` or `↑` (Up Arrow)                                       |
-| Move backward                      | `S` or `↓` (Down Arrow)                                     |
-| Rotate left                        | `A` or `←` (Left Arrow)                                     |
-| Rotate right                       | `D` or `→` (Right Arrow)                                    |
-| Move left                          | `Q`                                                         |
-| Move right                         | `E`                                                         |
-| Speed                              | Hold `Shift` to run, release to walk                        |
-| Zoom minimap in/out                | Mouse scroll wheel                                          |
-| Quit                               | Click the window close (`X`) button, `Alt` + `F4`, or `Esc` |
-| Reset player position and rotation | `F5`                                                        |
-| Toggle VSync (on by default)       | `F10`                                                       |
-| Toggle fullscreen                  | `F11`                                                       |
-| Toggle VSync status + FPS counter  | `F12`                                                       |
+| Action                             | Control                                                       |
+| ---------------------------------- | ------------------------------------------------------------- |
+| Movement and rotation              | WASD, arrow keys, keypad with Num Lock off, or Page Up & Down |
+| Rotate with the mouse              | Hold the right button and drag left or right                  |
+| Strafe                             | Q & E                                                         |
+| Speed                              | Hold Shift to run, release to walk                            |
+| Zoom minimap in/out                | Mouse scroll wheel                                            |
+| Quit                               | Click the window X button, Alt+F4, or Escape                  |
+| Reset player position and rotation | F5                                                            |
+| Toggle VSync (on by default)       | F10                                                           |
+| Toggle fullscreen                  | F11                                                           |
+| Toggle VSync status + FPS counter  | F12                                                           |
 
 ## More Screenshots
 

@@ -25,17 +25,17 @@ static int	is_valid_file(const char *filepath)
 {
 	struct stat	st;
 	const char	*name;
-	size_t		len;
 
 	if (!filepath || access(filepath, R_OK) < 0 || stat(filepath, &st) < 0
 		|| !S_ISREG(st.st_mode))
 		return (put_error(E_MAP_READ, filepath, 0));
 	name = get_filename(filepath);
-	len = strlen(name);
-	if (len < 4 || strcmp(name + len - 4, ".map"))
-		return (put_error(E_MAP_TYPE, filepath, 0));
-	if (len < 5)
+	if (!strcmp(name, ".map"))
 		return (put_error(E_MAP_NAME, filepath, 0));
+	if (!has_extension(name, ".map"))
+		return (put_error(E_MAP_TYPE, filepath, 0));
+	if (!st.st_size)
+		return (put_error(E_MAP_EMPTY, filepath, 0));
 	return (1);
 }
 

@@ -1,7 +1,5 @@
 #include "olafur.h"
 
-void				audio_track_create_chunks(t_a_track *t);
-
 static t_a_track	*get_track(t_audio *a, char *abs_path);
 static t_a_track	*allocate_track(char *abs_path, int force_mono);
 static int			add_track_slot(t_audio *a);
@@ -22,16 +20,15 @@ t_a_track	*audio_track_create(t_audio *a, const char *mp3_filename,
 	t = allocate_track(abs_path, force_mono);
 	if (!t)
 		return (0);
+	t->name = abs_path;
 	index = add_track_slot(a);
 	if (index < 0)
-	{
-		free(abs_path);
 		free(t->pcm_data);
+	if (index < 0 || !audio_track_create_chunks(t))
+	{
 		audio_track_delete(a, &t);
 		return (0);
 	}
-	t->name = abs_path;
-	audio_track_create_chunks(t);
 	a->tracks[index] = t;
 	return (t);
 }
@@ -78,7 +75,8 @@ static int	add_track_slot(t_audio *a)
 	new_arr = calloc(count + 1 + 1, sizeof(t_a_track *));
 	if (!new_arr)
 		return (-1);
-	memcpy(new_arr, a->tracks, count * sizeof(t_a_track *));
+	if (a->tracks)
+		memcpy(new_arr, a->tracks, count * sizeof(t_a_track *));
 	free(a->tracks);
 	a->tracks = new_arr;
 	return (count);

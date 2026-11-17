@@ -8,18 +8,17 @@ static void		add_door_to_list(t_list **list, t_door *door);
 
 void	door_routine(t_man *man)
 {
-	static t_list	*opened_doors;
-	static int		curr_map = -1;
-	t_map			*map;
+	static int	curr_map = -1;
+	t_map		*map;
 
 	map = man->maps[man->curr_map];
 	if (curr_map != man->curr_map)
 	{
-		add_doors_already_opened(map, &opened_doors);
+		add_doors_already_opened(map, &man->opened_doors);
 		curr_map = man->curr_map;
 	}
-	close_doors(man, map, &opened_doors, 1);
-	open_new_door(man, &opened_doors, 1);
+	close_doors(man, map, &man->opened_doors, 1);
+	open_new_door(man, &man->opened_doors, 1);
 	return ;
 }
 

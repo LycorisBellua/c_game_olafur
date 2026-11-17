@@ -1,20 +1,5 @@
 #include "olafur.h"
 
-void	*extract_arr_elem(void **array, size_t index)
-{
-	void	*to_extract;
-
-	if (!array || index >= count_arr_elems(array))
-		return (0);
-	to_extract = array[index];
-	while (array[index])
-	{
-		array[index] = array[index + 1];
-		++index;
-	}
-	return (to_extract);
-}
-
 void	**extract_arr_elems(void **array, size_t from, size_t to)
 {
 	size_t	i;

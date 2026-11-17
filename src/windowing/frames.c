@@ -1,7 +1,6 @@
 #include "olafur.h"
 
-void		render_mesh(void);
-
+static void	copy_frame_to_pbo(t_man *man, GLuint pbo);
 static int	set_frame(t_man *man);
 
 int	init_frame(t_man *man)
@@ -12,21 +11,26 @@ int	init_frame(t_man *man)
 	man->z_buf = malloc(man->frame.size.x * sizeof(float));
 	if (!man->z_buf)
 		return (put_error(E_FAIL_MEM, 0, 0));
+	man->ray_len = malloc(man->frame.size.x * sizeof(float));
+	if (!man->ray_len)
+		return (put_error(E_FAIL_MEM, 0, 0));
 	man->fc_depth = malloc(man->frame.size.x * man->frame.size.y
-			* sizeof(float));
+		* sizeof(float));
 	if (!man->fc_depth)
 		return (put_error(E_FAIL_MEM, 0, 0));
 	return (1);
 }
 
+/*
+	Two PBOs (pixel buffer objects) take turns: while the texture is updated 
+	from one, the next frame is copied into the other, so the CPU and the GPU 
+	don't wait on each other. The frame shown is the one drawn the loop before.
+*/
 void	display_frame(t_man *man)
 {
-	int		upload_pbo;
-	int		map_pbo;
-	void	*ptr;
-	int		buf_size;
+	int	upload_pbo;
+	int	map_pbo;
 
-	buf_size = man->frame.size.x * man->frame.size.y * sizeof(t_color);
 	upload_pbo = man->pbo_index;
 	map_pbo = 1 - man->pbo_index;
 	glfwPollEvents();
@@ -37,14 +41,7 @@ void	display_frame(t_man *man)
 		man->frame.size.y, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	render_mesh();
 	glfwSwapBuffers(man->window);
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, man->pbo[map_pbo]);
-	ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
-	if (ptr)
-	{
-		memcpy(ptr, man->frame.buf, buf_size);
-		glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
-	}
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	copy_frame_to_pbo(man, man->pbo[map_pbo]);
 	man->pbo_index = map_pbo;
 	return ;
 }
@@ -63,6 +60,8 @@ void	free_frame(t_man *man)
 	man->frame.buf = 0;
 	free(man->z_buf);
 	man->z_buf = 0;
+	free(man->ray_len);
+	man->ray_len = 0;
 	free(man->fc_depth);
 	man->fc_depth = 0;
 	return ;
@@ -70,11 +69,12 @@ void	free_frame(t_man *man)
 
 static int	set_frame(t_man *man)
 {
-	int buf_size;
+	int	size;
 
 	set_ivec2(&man->frame.size, man->res.res.x, man->res.res.y);
-	buf_size = man->frame.size.x * man->frame.size.y * sizeof(t_color);
-	man->frame.buf = calloc(man->frame.size.x * man->frame.size.y, sizeof(t_color));
+	size = man->frame.size.x * man->frame.size.y * sizeof(t_color);
+	man->frame.buf = calloc(man->frame.size.x * man->frame.size.y,
+		sizeof(t_color));
 	if (!man->frame.buf)
 		return (put_error(E_FAIL_MEM, 0, 0));
 	glGenTextures(1, &man->frame.id);
@@ -87,10 +87,26 @@ static int	set_frame(t_man *man)
 		man->frame.size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, man->frame.buf);
 	glGenBuffers(2, man->pbo);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, man->pbo[0]);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf_size, 0, GL_STREAM_DRAW);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, size, man->frame.buf, GL_STREAM_DRAW);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, man->pbo[1]);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf_size, 0, GL_STREAM_DRAW);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, size, man->frame.buf, GL_STREAM_DRAW);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	man->pbo_index = 0;
 	return (1);
+}
+
+static void	copy_frame_to_pbo(t_man *man, GLuint pbo)
+{
+	void	*ptr;
+
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+	ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+	if (ptr)
+	{
+		memcpy(ptr, man->frame.buf,
+			man->frame.size.x * man->frame.size.y * sizeof(t_color));
+		glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+	}
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	return ;
 }

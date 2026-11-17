@@ -4,10 +4,6 @@ static int	check_segment(t_png *file, t_png_seg *seg);
 static int	check_segment_fields(t_png *file, t_png_seg *seg);
 static int	is_area_inside(t_png *file, t_ivec2 pos, t_ivec2 size);
 
-/*
-	Runs once the pixels of a PNG file object are loaded, so that cutting
-	images out of it can never read outside of its buffers.
-*/
 int	check_png_segments(t_png *file)
 {
 	size_t	i;
@@ -58,6 +54,8 @@ static int	check_segment_fields(t_png *file, t_png_seg *seg)
 		return (put_error(E_IMG_NO_CYCLE, seg->id, 0));
 	if (seg->still_frame < 0 || (size_t)seg->still_frame >= seg->cycle_len)
 		return (put_error(E_IMG_BAD_STILL, seg->id, 0));
+	if (seg->cycle_time_in_ms < 0)
+		return (put_error(E_IMG_BAD_TIME, seg->id, 0));
 	return (1);
 }
 

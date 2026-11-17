@@ -54,13 +54,13 @@ static int	check_top_and_bottom_edges(t_man *man, t_ivec2 *coord, t_ivec2 min,
 			if (min.y >= 0 && min.y < m->size.y
 				&& !m->cells[min.y][coord->x].is_obstacle)
 			{
-				set_vec2(&man->player.pos, coord->x + 0.5, min.y + 0.5);
+				set_vec2(&man->player.pos, coord->x + 0.5f, min.y + 0.5f);
 				return (1);
 			}
 			if (max.y >= 0 && max.y < m->size.y
 				&& !m->cells[max.y][coord->x].is_obstacle)
 			{
-				set_vec2(&man->player.pos, coord->x + 0.5, max.y + 0.5);
+				set_vec2(&man->player.pos, coord->x + 0.5f, max.y + 0.5f);
 				return (1);
 			}
 		}
@@ -83,13 +83,13 @@ static int	check_left_and_right_edges(t_man *man, t_ivec2 *coord, t_ivec2 min,
 			if (min.x >= 0 && min.x < m->size.x
 				&& !m->cells[coord->y][min.x].is_obstacle)
 			{
-				set_vec2(&man->player.pos, min.x + 0.5, coord->y + 0.5);
+				set_vec2(&man->player.pos, min.x + 0.5f, coord->y + 0.5f);
 				return (1);
 			}
 			if (max.x >= 0 && max.x < m->size.x
 				&& !m->cells[coord->y][max.x].is_obstacle)
 			{
-				set_vec2(&man->player.pos, max.x + 0.5, coord->y + 0.5);
+				set_vec2(&man->player.pos, max.x + 0.5f, coord->y + 0.5f);
 				return (1);
 			}
 		}

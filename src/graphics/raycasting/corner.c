@@ -13,7 +13,7 @@ int	is_corner(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 {
 	int	ten_percent;
 
-	ten_percent = img_size_x * 0.1;
+	ten_percent = img_size_x * 0.1f;
 	if (img_coord_x >= ten_percent && img_coord_x < img_size_x - ten_percent)
 		return (0);
 	else if (m->cells[r->m_index.y][r->m_index.x].door
@@ -36,7 +36,7 @@ static int	check_north_face(t_map *m, t_ray *r, int img_coord_x,
 	t_ivec2	c;
 
 	set_ivec2(&c, r->m_index.x, r->m_index.y);
-	if (img_coord_x < img_size_x * 0.1)
+	if (img_coord_x < img_size_x * 0.1f)
 	{
 		if (c.x == m->size.x - 1 || c.y == 0
 			|| !m->cells[c.y][c.x + 1].is_visible
@@ -46,7 +46,7 @@ static int	check_north_face(t_map *m, t_ray *r, int img_coord_x,
 			|| m->cells[c.y - 1][c.x + 1].is_visible)
 			return (1);
 	}
-	else if (img_coord_x >= img_size_x - img_size_x * 0.1)
+	else if (img_coord_x >= img_size_x - img_size_x * 0.1f)
 	{
 		if (c.x == 0 || c.y == 0
 			|| !m->cells[c.y][c.x - 1].is_visible
@@ -65,7 +65,7 @@ static int	check_south_face(t_map *m, t_ray *r, int img_coord_x,
 	t_ivec2	c;
 
 	set_ivec2(&c, r->m_index.x, r->m_index.y);
-	if (img_coord_x < img_size_x * 0.1)
+	if (img_coord_x < img_size_x * 0.1f)
 	{
 		if (c.x == 0 || c.y == m->size.y - 1
 			|| !m->cells[c.y][c.x - 1].is_visible
@@ -75,7 +75,7 @@ static int	check_south_face(t_map *m, t_ray *r, int img_coord_x,
 			|| m->cells[c.y + 1][c.x - 1].is_visible)
 			return (1);
 	}
-	else if (img_coord_x >= img_size_x - img_size_x * 0.1)
+	else if (img_coord_x >= img_size_x - img_size_x * 0.1f)
 	{
 		if (c.x == m->size.x - 1 || c.y == m->size.y - 1
 			|| !m->cells[c.y][c.x + 1].is_visible
@@ -93,7 +93,7 @@ static int	check_west_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 	t_ivec2	c;
 
 	set_ivec2(&c, r->m_index.x, r->m_index.y);
-	if (img_coord_x < img_size_x * 0.1)
+	if (img_coord_x < img_size_x * 0.1f)
 	{
 		if (c.x == 0 || c.y == 0
 			|| !m->cells[c.y - 1][c.x].is_visible
@@ -103,7 +103,7 @@ static int	check_west_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 			|| m->cells[c.y - 1][c.x - 1].is_visible)
 			return (1);
 	}
-	else if (img_coord_x >= img_size_x - img_size_x * 0.1)
+	else if (img_coord_x >= img_size_x - img_size_x * 0.1f)
 	{
 		if (c.x == 0 || c.y == m->size.y - 1
 			|| !m->cells[c.y + 1][c.x].is_visible
@@ -121,7 +121,7 @@ static int	check_east_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 	t_ivec2	c;
 
 	set_ivec2(&c, r->m_index.x, r->m_index.y);
-	if (img_coord_x < img_size_x * 0.1)
+	if (img_coord_x < img_size_x * 0.1f)
 	{
 		if (c.x == m->size.x - 1 || c.y == m->size.y - 1
 			|| !m->cells[c.y + 1][c.x].is_visible
@@ -131,7 +131,7 @@ static int	check_east_face(t_map *m, t_ray *r, int img_coord_x, int img_size_x)
 			|| m->cells[c.y + 1][c.x + 1].is_visible)
 			return (1);
 	}
-	else if (img_coord_x >= img_size_x - img_size_x * 0.1)
+	else if (img_coord_x >= img_size_x - img_size_x * 0.1f)
 	{
 		if (c.x == m->size.x - 1 || c.y == 0
 			|| !m->cells[c.y - 1][c.x].is_visible

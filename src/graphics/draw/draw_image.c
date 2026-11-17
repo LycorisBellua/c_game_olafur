@@ -1,96 +1,58 @@
 #include "olafur.h"
 
-static void	draw_shadow(t_man *man, t_img *img, t_ivec2 pos);
+static void	draw_shadow(t_man *man, t_img *img, t_ivec2 pos, int scale);
 
 void	draw_image(t_man *man, t_img *img, t_ivec2 pos)
+{
+	draw_image_scaled(man, img, pos, man->gui_scale);
+	return ;
+}
+
+void	draw_image_scaled(t_man *man, t_img *img, t_ivec2 pos, int scale)
 {
 	size_t	i;
 	size_t	len;
 	t_ivec2	p;
-	int		s;
+	t_ivec2	at;
 
 	if (!img)
 		return ;
-	s = man->gui_scale;
 	if (img->cycle_shadow)
-		draw_shadow(man, img, pos);
+		draw_shadow(man, img, pos, scale);
 	i = 0;
 	len = img->size.x * img->size.y;
 	while (i < len)
 	{
 		p.x = i / img->size.y;
 		p.y = i - p.x * img->size.y;
-		draw_scaled_point(man, img->cycle[img->cycle_index][i],
-			(t_ivec2){pos.x + p.x * s, pos.y + p.y * s}, s);
+		set_ivec2(&at, pos.x + p.x * scale, pos.y + p.y * scale);
+		draw_scaled_point(man, img->cycle[img->cycle_index][i], at, scale);
 		++i;
-	}
-	return ;
-}
-
-void	draw_png_bg_with_x_offset(t_man *man, t_png *png, int x_offset)
-{
-	t_color	*row_ptr;
-	t_ivec2	f_coord;
-	int		ix;
-
-	x_offset %= png->size.x;
-	if (x_offset < 0)
-		x_offset += png->size.x;
-	f_coord.y = 0;
-	while (f_coord.y < png->size.y && f_coord.y < man->frame.size.y)
-	{
-		row_ptr = png->buf + f_coord.y * png->size.x;
-		ix = x_offset;
-		f_coord.x = 0;
-		while (f_coord.x < man->frame.size.x)
-		{
-			draw_point_fast(man, row_ptr[ix], f_coord.x, f_coord.y);
-			++f_coord.x;
-			if (++ix >= png->size.x)
-				ix = 0;
-		}
-		++f_coord.y;
 	}
 	return ;
 }
 
 void	fill_frame(t_man *man, t_color c)
 {
-	t_ivec2	coord;
+	int	i;
+	int	len;
 
-	coord.x = 0;
-	while (coord.x < man->frame.size.x)
-	{
-		coord.y = 0;
-		while (coord.y < man->frame.size.y)
-		{
-			draw_point(man, c, coord.x, coord.y);
-			++coord.y;
-		}
-		++coord.x;
-	}
+	i = 0;
+	len = man->frame.size.x * man->frame.size.y;
+	while (i < len)
+		man->frame.buf[i++] = c;
 	return ;
 }
 
-static void	draw_shadow(t_man *man, t_img *img, t_ivec2 pos)
+static void	draw_shadow(t_man *man, t_img *img, t_ivec2 pos, int scale)
 {
-	size_t	i;
-	size_t	len;
-	t_ivec2	p;
-	int		s;
+	t_img	shadow;
 
-	s = man->gui_scale;
-	pos.x += img->shadow_offset.x * s;
-	pos.y += img->shadow_offset.y * s;
-	i = 0;
-	len = img->size.x * img->size.y;
-	while (i < len)
-	{
-		p.x = i / img->size.y;
-		p.y = i - p.x * img->size.y;
-		draw_scaled_point(man, img->cycle_shadow[img->cycle_index][i],
-			(t_ivec2){pos.x + p.x * s, pos.y + p.y * s}, s);
-		++i;
-	}
+	shadow = *img;
+	shadow.cycle = img->cycle_shadow;
+	shadow.cycle_shadow = 0;
+	set_ivec2(&pos, pos.x + img->shadow_offset.x * scale,
+		pos.y + img->shadow_offset.y * scale);
+	draw_image_scaled(man, &shadow, pos, scale);
 	return ;
 }

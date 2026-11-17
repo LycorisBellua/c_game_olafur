@@ -1,8 +1,7 @@
 #include "olafur.h"
 
-static void	rotate_on_click(t_man *man);
-static void	init_rotate_click(t_man *man, int *x_first_click, int *x_max_diff);
-static int	get_diff_perc(t_man *man, int diff);
+static void	start_drag_rotation(t_man *man);
+static void	update_drag_rotation(t_man *man);
 
 void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 {
@@ -18,7 +17,7 @@ void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 	else if (button == GLFW_MOUSE_BUTTON_RIGHT)
 	{
 		if (action == GLFW_PRESS)
-			g_man.r_click_action = 1;
+			start_drag_rotation(&g_man);
 		else if (action == GLFW_RELEASE)
 			g_man.r_click_action = 0;
 	}
@@ -27,60 +26,44 @@ void	mouse_callback(GLFWwindow *window, int button, int action, int mods)
 
 void	cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 {
-	g_man.cursor.x = ((int)xpos - g_man.res.viewport_offset.x)
-		* g_man.res.window_size_default.x / g_man.res.viewport_size.x;
-	g_man.cursor.y = ((int)ypos - g_man.res.viewport_offset.y)
-		* g_man.res.window_size_default.y / g_man.res.viewport_size.y;
-	if (g_man.cursor.x < 0
-		|| g_man.cursor.x >= g_man.res.window_size_default.x
-		|| g_man.cursor.y < 0
-		|| g_man.cursor.y >= g_man.res.window_size_default.y)
-	{
-		set_ivec2(&g_man.cursor, -1, -1);
+	if (!window_pos_to_view(&g_man, xpos, ypos, &g_man.cursor))
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		return ;
-	}
-	if (g_man.img_cursor)
+	else if (g_man.img_cursor)
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-	rotate_on_click(&g_man);
+	update_drag_rotation(&g_man);
 	return ;
 }
 
-static void	rotate_on_click(t_man *man)
+static void	start_drag_rotation(t_man *man)
 {
-	static int	x_first_click;
-	static int	x_max_diff;
-	int			diff;
+	man->r_click_action = 1;
+	man->drag_anchor_x = -1;
+	man->drag_max_diff = 0;
+	man->drag_rotate_speed = 0;
+	return ;
+}
 
-	if (!man->r_click_action)
-		x_first_click = -1;
-	else if (x_first_click < 0)
-		init_rotate_click(man, &x_first_click, &x_max_diff);
-	if (x_first_click >= 0)
+static void	update_drag_rotation(t_man *man)
+{
+	int	diff;
+	int	perc;
+
+	if (!man->r_click_action || man->cursor.x < 0)
+		return ;
+	if (man->drag_anchor_x < 0)
+		man->drag_anchor_x = man->cursor.x;
+	diff = man->cursor.x - man->drag_anchor_x;
+	if ((diff > 0 && diff > man->drag_max_diff)
+		|| (diff < 0 && diff < man->drag_max_diff))
+		man->drag_max_diff = diff;
+	if ((diff > 0 && diff < man->drag_max_diff)
+		|| (diff < 0 && diff > man->drag_max_diff))
 	{
-		diff = man->cursor.x - x_first_click;
-		if ((diff > 0 && diff > x_max_diff) || (diff < 0 && diff < x_max_diff))
-			x_max_diff = diff;
-		if ((diff > 0 && diff < x_max_diff) || (diff < 0 && diff > x_max_diff))
-		{
-			x_first_click += x_max_diff;
-			diff = man->cursor.x - x_first_click;
-			x_max_diff = diff;
-		}
-		rotate_player(man,
-			RAD_1 * get_diff_perc(man, diff) * norm(diff) * man->dt);
+		man->drag_anchor_x += man->drag_max_diff;
+		diff = man->cursor.x - man->drag_anchor_x;
+		man->drag_max_diff = diff;
 	}
+	perc = imax(10, abs(diff) * 100 / man->res.res.x);
+	man->drag_rotate_speed = DRAG_ROTATE_SPEED * RAD_1 * perc * norm(diff);
 	return ;
-}
-
-static void	init_rotate_click(t_man *man, int *x_first_click, int *x_max_diff)
-{
-	*x_first_click = man->cursor.x;
-	*x_max_diff = 0;
-	return ;
-}
-
-static int	get_diff_perc(t_man *man, int diff)
-{
-	return (imax(10, abs(diff) * 100 / man->res.window_size_default.x));
 }

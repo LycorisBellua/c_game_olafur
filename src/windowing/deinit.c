@@ -1,14 +1,5 @@
 #include "olafur.h"
 
-void	free_shader_program(t_man *man);
-void	free_uniform(t_man *man);
-void	free_mesh(void);
-void	free_frame(t_man *man);
-
-/*
-	GL objects can only be freed once the GL functions are loaded, and while
-	their context exists, so glfwTerminate() comes last.
-*/
 void	deinit(t_man *man)
 {
 	if (!man)
